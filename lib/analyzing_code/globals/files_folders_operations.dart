@@ -4,7 +4,8 @@ import 'package:path/path.dart' as path;
 
 mixin FilesFoldersOperations {
   //? to get all direct folder children
-  List<FileSystemEntity> getDirectFolderChildern(Directory directory) {
+  List<FileSystemEntity> getDirectFolderChildern(String path) {
+    Directory directory = Directory(path);
     var data = directory.listSync();
     return data.map((e) => e).toList();
   }
@@ -23,8 +24,7 @@ mixin FilesFoldersOperations {
   List<String> getChildrenFiles(String path, List<String> filesTypes) {
     List<String> files = [];
 
-    List<FileSystemEntity> folderChildren =
-        getDirectFolderChildern(Directory(path));
+    List<FileSystemEntity> folderChildren = getDirectFolderChildern(path);
     for (var child in folderChildren) {
       if (isFile(child.path)) {
         String ext = getFileExtension(child.path);
@@ -41,15 +41,14 @@ mixin FilesFoldersOperations {
 
 //? get all folder children
   List<FileSystemEntity> getRecrusiveFolderChildren(String path) {
-    List<FileSystemEntity> folderChildren =
-        getDirectFolderChildern(Directory(path));
+    List<FileSystemEntity> folderChildren = getDirectFolderChildern(path);
     List<FileSystemEntity> children = [];
     for (var child in folderChildren) {
       if (isFile(child.path)) {
         children.add(child);
       } else {
         List<FileSystemEntity> subChildren =
-            getDirectFolderChildern(Directory(child.path));
+            getDirectFolderChildern(child.path);
         children.add(child);
         children.addAll(subChildren);
       }

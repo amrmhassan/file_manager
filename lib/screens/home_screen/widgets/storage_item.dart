@@ -2,15 +2,9 @@
 
 import 'dart:io';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
-import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/global/widgets/h_line.dart';
-import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/home_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/home_screen/widgets/child_item_directory.dart';
 import 'package:explorer/screens/home_screen/widgets/home_item_h_line.dart';

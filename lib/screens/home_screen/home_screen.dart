@@ -2,18 +2,20 @@
 
 import 'dart:io';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/home_screen/widgets/children_view_list.dart';
 import 'package:explorer/screens/home_screen/widgets/current_path_viewer.dart';
-import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:explorer/screens/home_screen/widgets/home_item_h_line.dart';
+import 'package:explorer/utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'isolates/load_folder_children_isolates.dart';
 
 final Directory initialDir = Directory('sdcard');
 
@@ -26,29 +28,63 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<FileSystemEntity> folders = [];
-  Directory currenActiveDir = initialDir;
+  Directory currentActiveDir = initialDir;
   int exitCounter = 0;
+  List<FileSystemEntity> viewedChildren = [];
+  String? error;
+  bool loading = false;
+
+  //? update viewed children
+  void updateViewChildren(String path) async {
+    try {
+      setState(() {
+        loading = true;
+      });
+      List<FileSystemEntity> children =
+          await compute(getFolderChildrenIsolate, currentActiveDir.path);
+      //* don't update if the user clicked another folder because he can't wait to a large folder folder to load
+      if (loading == false) return;
+      if (prioritizeFolders) {
+        List<FileSystemEntity> folders =
+            children.where((element) => isDir(element.path)).toList();
+        List<FileSystemEntity> files =
+            children.where((element) => isFile(element.path)).toList();
+        children = [...folders, ...files];
+      }
+      setState(() {
+        viewedChildren = children;
+        error = null;
+      });
+    } catch (e) {
+      printOnDebug(e);
+      setState(() {
+        viewedChildren.clear();
+        error = e.toString();
+      });
+    }
+    setState(() {
+      loading = false;
+    });
+  }
 
   //? this will handle what happen when clicking a folder
-  void clickFolder(FileSystemEntity folder) {
+  void updateActivePath(FileSystemEntity folder) {
     setState(() {
-      currenActiveDir = Directory(folder.path);
+      currentActiveDir = Directory(folder.path);
     });
+    updateViewChildren(currentActiveDir.path);
   }
 
 //? handling going back in path
   void goBack() {
-    if (currenActiveDir.parent.path == '.') return;
-    setState(() {
-      currenActiveDir = currenActiveDir.parent;
-    });
+    if (currentActiveDir.parent.path == '.') return;
+    updateActivePath(currentActiveDir.parent);
   }
 
   //? to catch clicking the phone back button
   Future<bool> handlePressPhoneBackButton() {
     bool exit = false;
-    String cp = currenActiveDir.path;
+    String cp = currentActiveDir.path;
     String ip = initialDir.path;
     if (cp == ip) {
       exitCounter++;
@@ -62,6 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
       exit = false;
     }
     goBack();
+    //* to reset the exit counter after 2 seconds
+    Future.delayed(Duration(seconds: 5)).then((value) {
+      exitCounter = 0;
+    });
     return Future.delayed(Duration.zero).then((value) => exit);
   }
 
@@ -71,10 +111,18 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(Duration.zero).then((value) async {
       if (await Permission.storage.isDenied) {
         //! show a modal first
-        if (await Permission.storage.request().isGranted) {
-        } else {
+        var resquestPermissonResult = await Permission.storage.request();
+        if (resquestPermissonResult.isDenied ||
+            resquestPermissonResult.isPermanentlyDenied) {
           printOnDebug('Permission not granted');
+          showSnackBar(
+            context: context,
+            message: 'Permission Not Granted',
+            snackBarType: SnackBarType.error,
+          );
         }
+      } else {
+        updateViewChildren(currentActiveDir.path);
       }
     });
 
@@ -90,14 +138,18 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
           child: Column(
             children: [
-              HomeAppBar(goBack: goBack),
+              HomeAppBar(
+                goBack: goBack,
+                loadingFolder: loading,
+              ),
               HomeItemHLine(),
-              CurrentPathViewer(currentActiveDir: currenActiveDir),
+              CurrentPathViewer(currentActiveDir: currentActiveDir),
               HomeItemHLine(),
               VSpace(factor: .5),
               ChildrenViewList(
-                clickFolder: clickFolder,
-                currentActiveDir: currenActiveDir,
+                clickFolder: updateActivePath,
+                viewedChildren: viewedChildren,
+                error: error,
               )
             ],
           ),
