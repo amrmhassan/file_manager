@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/screens/home_screen/isolates/load_folder_children_isolates.dart';
-import 'package:explorer/utils/general_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -15,7 +13,7 @@ bool prioritizeFolders = true;
 
 class ChildrenViewList extends StatefulWidget {
   final Function(FileSystemEntity folder) clickFolder;
-  final List<FileSystemEntity> viewedChildren;
+  final List<FileSystemEntityInfo> viewedChildren;
   final String? error;
 
   const ChildrenViewList({
@@ -39,9 +37,9 @@ class _ChildrenViewListState extends State<ChildrenViewList>
               physics: BouncingScrollPhysics(),
               itemCount: widget.viewedChildren.length,
               itemBuilder: (context, index) {
-                FileSystemEntity f = widget.viewedChildren[index];
+                FileSystemEntityInfo f = widget.viewedChildren[index];
                 return StorageItem(
-                  fileSystemEntity: f,
+                  fileSystemEntityInfo: f,
                   onDirTapped: widget.clickFolder,
                 );
               },

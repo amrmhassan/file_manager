@@ -30,7 +30,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Directory currentActiveDir = initialDir;
   int exitCounter = 0;
-  List<FileSystemEntity> viewedChildren = [];
+  List<FileSystemEntityInfo> viewedChildren = [];
   String? error;
   bool loading = false;
 
@@ -40,23 +40,26 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         loading = true;
       });
-      List<FileSystemEntity> children =
+      List<FileSystemEntityInfo> children =
           await compute(getFolderChildrenIsolate, currentActiveDir.path);
       //* don't update if the user clicked another folder because he can't wait to a large folder folder to load
       if (loading == false) return;
       if (prioritizeFolders) {
-        List<FileSystemEntity> folders =
-            children.where((element) => isDir(element.path)).toList();
-        List<FileSystemEntity> files =
-            children.where((element) => isFile(element.path)).toList();
+        List<FileSystemEntityInfo> folders = children
+            .where((element) => isDir(element.fileSystemEntity.path))
+            .toList();
+        List<FileSystemEntityInfo> files = children
+            .where((element) => isFile(element.fileSystemEntity.path))
+            .toList();
         children = [...folders, ...files];
       }
       setState(() {
         viewedChildren = children;
         error = null;
       });
-    } catch (e) {
+    } catch (e, s) {
       printOnDebug(e);
+      printOnDebug(s);
       setState(() {
         viewedChildren.clear();
         error = e.toString();
@@ -111,9 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(Duration.zero).then((value) async {
       if (await Permission.storage.isDenied) {
         //! show a modal first
-        var resquestPermissonResult = await Permission.storage.request();
-        if (resquestPermissonResult.isDenied ||
-            resquestPermissonResult.isPermanentlyDenied) {
+        var readPermission = await Permission.storage.request();
+        var managePermission = await Permission.manageExternalStorage.request();
+
+        if (readPermission.isDenied ||
+            readPermission.isPermanentlyDenied ||
+            managePermission.isDenied ||
+            managePermission.isPermanentlyDenied) {
           printOnDebug('Permission not granted');
           showSnackBar(
             context: context,
