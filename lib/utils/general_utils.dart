@@ -13,6 +13,8 @@ void printOnDebug(Object? object) {
 void showSnackBar({
   required BuildContext context,
   required String message,
+  Color? backgroundColor,
+  Color? textColor,
   SnackBarType? snackBarType,
   bool aboveBottomNavBar = false,
   EdgeInsets? margin,
@@ -27,21 +29,22 @@ void showSnackBar({
         content: Text(
           message,
         ),
-        backgroundColor:
-            (snackBarType ?? SnackBarType.info) == SnackBarType.success
+        backgroundColor: backgroundColor ??
+            ((snackBarType ?? SnackBarType.info) == SnackBarType.success
                 ? kGreenColor
                 : (snackBarType ?? SnackBarType.info) == SnackBarType.error
                     ? kDangerColor
-                    : null,
+                    : null),
         margin: margin,
         action: SnackBarAction(
-          label: actionString ?? 'تم',
-          textColor: (snackBarType ?? SnackBarType.info) ==
-                      SnackBarType.error ||
-                  (snackBarType ?? SnackBarType.info) == SnackBarType.success ||
-                  (snackBarType ?? SnackBarType.info) == SnackBarType.info
-              ? Colors.white
-              : null,
+          label: actionString ?? 'Done',
+          textColor: textColor ??
+              ((snackBarType ?? SnackBarType.info) == SnackBarType.error ||
+                      (snackBarType ?? SnackBarType.info) ==
+                          SnackBarType.success ||
+                      (snackBarType ?? SnackBarType.info) == SnackBarType.info
+                  ? Colors.white
+                  : null),
           onPressed: onActionTapped ?? () {},
         ),
       ),
