@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/utils/general_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -30,11 +32,10 @@ class _ChildrenViewListState extends State<ChildrenViewList>
   String? error;
 
   //? update viewed children
-  void updateViewChildren() {
+  void updateViewChildren() async {
     try {
-      List<FileSystemEntity> children = getDirectFolderChildern(
-        Directory(widget.currentActiveDir.path),
-      );
+      List<FileSystemEntity> children =
+          getDirectFolderChildern(widget.currentActiveDir);
       if (prioritizeFolders) {
         List<FileSystemEntity> folders =
             children.where((element) => isDir(element.path)).toList();
@@ -46,7 +47,9 @@ class _ChildrenViewListState extends State<ChildrenViewList>
         viewedChildren = children;
         error = null;
       });
-    } catch (e) {
+    } catch (e, s) {
+      printOnDebug(e);
+      printOnDebug(s);
       setState(() {
         viewedChildren.clear();
         error = e.toString();
