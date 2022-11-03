@@ -112,6 +112,8 @@ String getFileTypeIcon(String extension) {
     extImage = 'image';
   } else if (ext == 'pdf') {
     extImage = 'pdf';
+  } else if (ext == 'apk') {
+    extImage = 'apk';
   }
   return '$iconPackFolder$extImage.png';
 }

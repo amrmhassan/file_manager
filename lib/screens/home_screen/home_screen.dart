@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
@@ -8,14 +12,7 @@ import 'package:explorer/screens/home_screen/widgets/children_view_list.dart';
 import 'package:explorer/screens/home_screen/widgets/current_path_viewer.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:explorer/screens/home_screen/widgets/home_item_h_line.dart';
-import 'package:explorer/utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:flutter/foundation.dart';
-
-import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import 'isolates/load_folder_children_isolates.dart';
 
 final Directory initialDir = Directory('sdcard');
 
@@ -30,32 +27,38 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Directory currentActiveDir = initialDir;
   int exitCounter = 0;
-  List<FileSystemEntityInfo> viewedChildren = [];
+  List<FileSystemEntity> viewedChildren = [];
   String? error;
   bool loading = false;
+  StreamSubscription<FileSystemEntity>? streamSub;
 
   //? update viewed children
   void updateViewChildren(String path) async {
     try {
-      setState(() {
-        loading = true;
-      });
-      List<FileSystemEntityInfo> children =
-          await compute(getFolderChildrenIsolate, currentActiveDir.path);
-      //* don't update if the user clicked another folder because he can't wait to a large folder folder to load
-      if (loading == false) return;
-      if (prioritizeFolders) {
-        List<FileSystemEntityInfo> folders = children
-            .where((element) => isDir(element.fileSystemEntity.path))
-            .toList();
-        List<FileSystemEntityInfo> files = children
-            .where((element) => isFile(element.fileSystemEntity.path))
-            .toList();
-        children = [...folders, ...files];
+      if (streamSub != null) {
+        await streamSub!.cancel();
       }
+      Stream<FileSystemEntity> chidrenStream = currentActiveDir.list();
       setState(() {
-        viewedChildren = children;
         error = null;
+        loading = true;
+        viewedChildren.clear();
+      });
+
+      streamSub = chidrenStream.listen((entity) {
+        setState(() {
+          viewedChildren.add(entity);
+        });
+      });
+      streamSub!.onError((e, s) {
+        setState(() {
+          error = e.toString();
+        });
+      });
+      streamSub!.onDone(() {
+        setState(() {
+          loading = false;
+        });
       });
     } catch (e, s) {
       printOnDebug(e);
@@ -65,9 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
         error = e.toString();
       });
     }
-    setState(() {
-      loading = false;
-    });
   }
 
   //? this will handle what happen when clicking a folder
@@ -108,29 +108,33 @@ class _HomeScreenState extends State<HomeScreen> {
     return Future.delayed(Duration.zero).then((value) => exit);
   }
 
+  Future<void> handleStoragePermissions() async {
+    if (await Permission.storage.isDenied) {
+      //! show a modal first
+      var readPermission = await Permission.storage.request();
+      var managePermission = await Permission.manageExternalStorage.request();
+
+      if (readPermission.isDenied ||
+          readPermission.isPermanentlyDenied ||
+          managePermission.isDenied ||
+          managePermission.isPermanentlyDenied) {
+        printOnDebug('Permission not granted');
+        showSnackBar(
+          context: context,
+          message: 'Permission Not Granted',
+          snackBarType: SnackBarType.error,
+        );
+      }
+    } else {
+      updateViewChildren(currentActiveDir.path);
+    }
+  }
+
   @override
   void initState() {
     //? getting storage permission
     Future.delayed(Duration.zero).then((value) async {
-      if (await Permission.storage.isDenied) {
-        //! show a modal first
-        var readPermission = await Permission.storage.request();
-        var managePermission = await Permission.manageExternalStorage.request();
-
-        if (readPermission.isDenied ||
-            readPermission.isPermanentlyDenied ||
-            managePermission.isDenied ||
-            managePermission.isPermanentlyDenied) {
-          printOnDebug('Permission not granted');
-          showSnackBar(
-            context: context,
-            message: 'Permission Not Granted',
-            snackBarType: SnackBarType.error,
-          );
-        }
-      } else {
-        updateViewChildren(currentActiveDir.path);
-      }
+      handleStoragePermissions();
     });
 
     super.initState();
@@ -157,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 clickFolder: updateActivePath,
                 viewedChildren: viewedChildren,
                 error: error,
+                loading: loading,
               )
             ],
           ),
