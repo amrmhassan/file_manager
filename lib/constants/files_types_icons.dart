@@ -99,6 +99,17 @@ List<String> imagesExt = [
   'tiff',
   'jpg'
 ];
+
+List<String> batchFilesExt = [
+  'bat',
+  'batch',
+  'sh',
+  'su',
+  'zsh',
+  'bash',
+  'dash',
+];
+
 String getFileTypeIcon(String extension) {
   String ext = extension.toLowerCase().replaceAll('.', '');
   String iconPackFolder = 'assets/ext_icons/icons_1/';
@@ -114,6 +125,10 @@ String getFileTypeIcon(String extension) {
     extImage = 'pdf';
   } else if (ext == 'apk') {
     extImage = 'apk';
+  } else if (batchFilesExt.contains(ext)) {
+    extImage = 'shellscript';
+  } else if (ext == 'exe') {
+    extImage = 'exec';
   }
   return '$iconPackFolder$extImage.png';
 }
