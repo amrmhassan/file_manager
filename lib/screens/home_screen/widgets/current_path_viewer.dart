@@ -10,15 +10,21 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class CurrentPathViewer extends StatelessWidget {
-  CurrentPathViewer({
+class CurrentPathViewer extends StatefulWidget {
+  final Directory currentActiveDir;
+  const CurrentPathViewer({
     Key? key,
     required this.currentActiveDir,
   }) : super(key: key);
 
-  final Directory currentActiveDir;
+  @override
+  State<CurrentPathViewer> createState() => _CurrentPathViewerState();
+}
+
+class _CurrentPathViewerState extends State<CurrentPathViewer> {
   final ScrollController _scrollController = ScrollController();
-  _scrollToBottom() {
+
+  _scrollToRight() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: Duration(milliseconds: 200),
@@ -27,11 +33,18 @@ class CurrentPathViewer extends StatelessWidget {
   }
 
   @override
+  void didUpdateWidget(covariant CurrentPathViewer oldWidget) {
+    if (oldWidget.currentActiveDir.path != widget.currentActiveDir.path) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToRight());
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     return GestureDetector(
       onTap: () {
-        Clipboard.setData(ClipboardData(text: currentActiveDir.path));
+        Clipboard.setData(ClipboardData(text: widget.currentActiveDir.path));
         showSnackBar(context: context, message: 'Copied To Clipboard');
       },
       child: Container(
@@ -47,7 +60,7 @@ class CurrentPathViewer extends StatelessWidget {
             children: [
               HSpace(),
               Text(
-                currentActiveDir.path,
+                widget.currentActiveDir.path,
                 style: h4TextStyleInactive,
                 maxLines: 1,
               ),

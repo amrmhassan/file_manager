@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -6,8 +6,11 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/models/folder_item_info_model.dart';
+import 'package:explorer/providers/children_info_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 int getFolderChildrenNumber(String path) {
   Directory directory = Directory(path);
@@ -31,12 +34,39 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   int? childrenNumber;
   String? error;
 
+//? to add data to sqlite
+  Future<void> addDataToSqlite(
+    BuildContext context,
+    List<String> directChildren,
+    int itemCount,
+  ) async {
+    FolderItemInfoModel folderItemInfoModel = FolderItemInfoModel(
+      path: widget.fileSystemEntity.path,
+      name: widget.fileName,
+      directChildren: directChildren,
+      itemCount: itemCount,
+    );
+    return Provider.of<ChildrenItemsProvider>(context, listen: false)
+        .addFolderInfo(folderItemInfoModel);
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) async {
       try {
+        FolderItemInfoModel? folderItemInfoModel =
+            Provider.of<ChildrenItemsProvider>(context, listen: false)
+                .getFolderInfo(widget.fileSystemEntity.path);
+        if (folderItemInfoModel != null) {
+          setState(() {
+            childrenNumber = folderItemInfoModel.itemCount;
+          });
+        }
+
         int cn = await compute(
             getFolderChildrenNumber, widget.fileSystemEntity.path);
+        await addDataToSqlite(context, [], cn);
+
         setState(() {
           childrenNumber = cn;
         });

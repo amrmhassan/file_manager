@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,26 +19,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: TextTheme(
-          bodyText1: TextStyle(
-            fontFamily: 'Cairo',
-            color: kActiveTextColor,
-          ),
-          bodyText2: TextStyle(
-            fontFamily: 'Cairo',
-            color: kActiveTextColor,
+    return ChangeNotifierProvider(
+      create: (context) => ChildrenItemsProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          textTheme: TextTheme(
+            bodyText1: TextStyle(
+              fontFamily: 'Cairo',
+              color: kActiveTextColor,
+            ),
+            bodyText2: TextStyle(
+              fontFamily: 'Cairo',
+              color: kActiveTextColor,
+            ),
           ),
         ),
+        initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
+        routes: {
+          HomeScreen.routeName: (context) => HomeScreen(),
+          TestScreen.routeName: (context) => TestScreen(),
+        },
       ),
-      initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
-      routes: {
-        HomeScreen.routeName: (context) => HomeScreen(),
-        TestScreen.routeName: (context) => TestScreen(),
-      },
     );
   }
 }

@@ -110,6 +110,13 @@ List<String> batchFilesExt = [
   'dash',
 ];
 
+List<String> archivesExt = [
+  'zip',
+  'tar',
+  'rar',
+  'iso',
+];
+
 String getFileTypeIcon(String extension) {
   String ext = extension.toLowerCase().replaceAll('.', '');
   String iconPackFolder = 'assets/ext_icons/icons_1/';
@@ -129,6 +136,8 @@ String getFileTypeIcon(String extension) {
     extImage = 'shellscript';
   } else if (ext == 'exe') {
     extImage = 'exec';
+  } else if (archivesExt.contains(ext)) {
+    extImage = 'tar';
   }
   return '$iconPackFolder$extImage.png';
 }

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:explorer/providers/children_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -13,6 +14,7 @@ import 'package:explorer/screens/home_screen/widgets/current_path_viewer.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:explorer/screens/home_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:provider/provider.dart';
 
 final Directory initialDir = Directory('sdcard');
 
@@ -134,6 +136,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     //? getting storage permission
     Future.delayed(Duration.zero).then((value) async {
+      Provider.of<ChildrenItemsProvider>(context, listen: false)
+          .getAndUpdataAllSavedFolders();
       handleStoragePermissions();
     });
 
