@@ -1,2 +1,3 @@
 bool prioritizeFolders = true;
-bool showHiddenFiles = true;
+bool showHiddenFiles = false;
+bool sortAlphapitacally = true;

@@ -132,15 +132,19 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                           style: h5InactiveTextStyle.copyWith(height: 1),
                           overflow: TextOverflow.ellipsis,
                         ),
-                  Text(
-                    ' | ',
-                    style: h5InactiveTextStyle.copyWith(height: 1),
-                  ),
                   if (fileStat != null)
-                    Text(
-                      DateFormat('yyyy-MM-dd').format(fileStat!.changed),
-                      style: h5InactiveTextStyle.copyWith(height: 1),
-                    )
+                    Row(
+                      children: [
+                        Text(
+                          ' | ',
+                          style: h5InactiveTextStyle.copyWith(height: 1),
+                        ),
+                        Text(
+                          DateFormat('yyyy-MM-dd').format(fileStat!.changed),
+                          style: h5InactiveTextStyle.copyWith(height: 1),
+                        )
+                      ],
+                    ),
                 ],
               ),
             ],

@@ -9,6 +9,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 class ChildFileItem extends StatelessWidget {
@@ -38,16 +39,41 @@ class ChildFileItem extends StatelessWidget {
                 style: h4LightTextStyle,
                 overflow: TextOverflow.ellipsis,
               ),
-              FutureBuilder<String>(
-                  future: getFileSize(),
+              FutureBuilder<FileStat>(
+                  future: fileSystemEntityInfo.stat(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return Text(
-                        snapshot.data ?? '',
-                        style: h4TextStyleInactive.copyWith(
-                          color: kInactiveColor,
-                          height: 1,
-                        ),
+                      String fileSize = getFileSize(snapshot.data?.size ?? 0);
+                      return Row(
+                        children: [
+                          Text(
+                            fileSize,
+                            style: h4TextStyleInactive.copyWith(
+                              color: kInactiveColor,
+                              height: 1,
+                            ),
+                          ),
+                          if (snapshot.data != null)
+                            Row(
+                              children: [
+                                Text(
+                                  ' | ',
+                                  style: h4TextStyleInactive.copyWith(
+                                    color: kInactiveColor,
+                                    height: 1,
+                                  ),
+                                ),
+                                Text(
+                                  DateFormat('yyyy-MM-dd')
+                                      .format(snapshot.data!.modified),
+                                  style: h4TextStyleInactive.copyWith(
+                                    color: kInactiveColor,
+                                    height: 1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
                       );
                     } else {
                       return Text(
@@ -72,9 +98,7 @@ class ChildFileItem extends StatelessWidget {
     );
   }
 
-  Future<String> getFileSize() async {
-    int sizeInByte = (await fileSystemEntityInfo.stat()).size;
-
+  String getFileSize(int sizeInByte) {
     String unit = '';
     double covertedSize = 0;
     if (sizeInByte < 1024) {
