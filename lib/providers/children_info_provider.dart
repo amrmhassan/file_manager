@@ -1,6 +1,7 @@
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
+import 'package:explorer/models/folder_scroll_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChildrenItemsProvider extends ChangeNotifier {
@@ -25,5 +26,21 @@ class ChildrenItemsProvider extends ChangeNotifier {
     var data = await DBHelper.getData(folderInfoTableName);
     foldersInfo = data.map((e) => FolderItemInfoModel.fromJSON(e)).toList();
     notifyListeners();
+  }
+
+//# folder scroll (only with state, no db saving unless it is needed in the future)
+  List<FolderScrollModel?> foldersScrolling = [];
+  void setFolderScroll(String path, double offset) {
+    foldersScrolling.removeWhere((element) => element?.path == path);
+    FolderScrollModel folderScrollModel =
+        FolderScrollModel(offset: offset, path: path);
+    foldersScrolling.add(folderScrollModel);
+    notifyListeners();
+  }
+
+  double? getScrollingPosition(String path) {
+    FolderScrollModel? folderScrollModel = foldersScrolling
+        .firstWhere((element) => element?.path == path, orElse: () => null);
+    return folderScrollModel?.offset;
   }
 }

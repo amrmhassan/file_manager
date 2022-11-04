@@ -43,7 +43,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     FolderItemInfoModel folderItemInfoModel = FolderItemInfoModel(
       path: widget.fileSystemEntity.path,
       name: widget.fileName,
-      directChildren: directChildren,
+      // directChildren: directChildren,
       itemCount: itemCount,
     );
     return Provider.of<ChildrenItemsProvider>(context, listen: false)
@@ -62,22 +62,20 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
             childrenNumber = folderItemInfoModel.itemCount;
           });
         }
-
         int cn = await compute(
             getFolderChildrenNumber, widget.fileSystemEntity.path);
         await addDataToSqlite(context, [], cn);
-
+        if (!mounted) {
+          return;
+        }
         setState(() {
           childrenNumber = cn;
         });
       } catch (e) {
-        try {
-          setState(() {
-            error = e.toString();
-          });
-        } catch (E) {
-//
-        }
+        if (!mounted) return;
+        setState(() {
+          error = e.toString();
+        });
       }
     });
     super.initState();

@@ -166,6 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 viewedChildren: viewedChildren,
                 error: error,
                 loading: loading,
+                activeDirectory: currentActiveDir,
               )
             ],
           ),
