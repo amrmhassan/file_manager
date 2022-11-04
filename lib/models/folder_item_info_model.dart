@@ -7,6 +7,7 @@ class FolderItemInfoModel {
   // final List<String> directChildren;
   // final int scrollingTo;
   int? itemCount;
+  DateTime dateCaptured;
   int? size;
 
   FolderItemInfoModel({
@@ -15,6 +16,7 @@ class FolderItemInfoModel {
     // required this.directChildren,
     // this.scrollingTo = 0,
     this.itemCount,
+    required this.dateCaptured,
     this.size,
   });
 
@@ -26,6 +28,7 @@ class FolderItemInfoModel {
       // scrollingToString: scrollingTo.toString(),
       itemCountString: itemCount ?? dbNull,
       sizeString: size ?? dbNull,
+      dateCapturedString: dateCaptured.toIso8601String(),
     };
   }
 
@@ -42,6 +45,7 @@ class FolderItemInfoModel {
         : int.parse(jsonObj[itemCountString]);
     int? size =
         jsonObj[sizeString] == dbNull ? null : int.parse(jsonObj[sizeString]);
+    DateTime dateCaptured = DateTime.parse(jsonObj[dateCapturedString]);
     return FolderItemInfoModel(
       // directChildren: directChildren,
       // scrollingTo: scrollingTo,
@@ -49,10 +53,11 @@ class FolderItemInfoModel {
       path: path,
       itemCount: itemCount,
       size: size,
+      dateCaptured: dateCaptured,
     );
   }
 
   static String toSQLString() {
-    return 'CREATE TABLE $folderInfoTableName ($pathString TEXT PRIMARY KEY,$nameString TEXT,$itemCountString TEXT,$sizeString TEXT)';
+    return 'CREATE TABLE $folderInfoTableName ($pathString TEXT PRIMARY KEY,$nameString TEXT,$itemCountString TEXT,$sizeString TEXT, $dateCapturedString TEXT)';
   }
 }

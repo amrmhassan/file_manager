@@ -10,6 +10,7 @@ import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 int getFolderChildrenNumber(String path) {
@@ -32,6 +33,8 @@ class ChildDirectoryItem extends StatefulWidget {
 
 class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   int? childrenNumber;
+  FileStat? fileStat;
+
   String? error;
 
 //? to add data to sqlite
@@ -43,11 +46,19 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     FolderItemInfoModel folderItemInfoModel = FolderItemInfoModel(
       path: widget.fileSystemEntity.path,
       name: widget.fileName,
-      // directChildren: directChildren,
       itemCount: itemCount,
+      dateCaptured: DateTime.now(),
     );
+
     return Provider.of<ChildrenItemsProvider>(context, listen: false)
         .addFolderInfo(folderItemInfoModel);
+  }
+
+//? to cancel updating folder info if the date that we captured it's info is after it's modification date
+  bool updateFolderInfo(DateTime? modified, DateTime? dateCaptured) {
+    if (modified == null || dateCaptured == null) return true;
+    bool update = dateCaptured.isBefore(modified);
+    return update;
   }
 
   @override
@@ -62,6 +73,13 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
             childrenNumber = folderItemInfoModel.itemCount;
           });
         }
+        FileStat? fState = await widget.fileSystemEntity.stat();
+        setState(() {
+          fileStat = fState;
+        });
+        bool doUpdateInfo = updateFolderInfo(
+            fState.modified, folderItemInfoModel?.dateCaptured);
+        if (!doUpdateInfo) return;
         int cn = await compute(
             getFolderChildrenNumber, widget.fileSystemEntity.path);
         await addDataToSqlite(context, [], cn);
@@ -99,12 +117,32 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                 style: h4LightTextStyle,
                 overflow: TextOverflow.ellipsis,
               ),
-              if (error == null)
-                Text(
-                  childrenNumber == null ? '...' : '$childrenNumber Items',
-                  style: h5InactiveTextStyle.copyWith(height: 1),
-                  overflow: TextOverflow.ellipsis,
-                ),
+              Row(
+                children: [
+                  error == null
+                      ? Text(
+                          childrenNumber == null
+                              ? '...'
+                              : '$childrenNumber Items',
+                          style: h5InactiveTextStyle.copyWith(height: 1),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : Text(
+                          'System',
+                          style: h5InactiveTextStyle.copyWith(height: 1),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                  Text(
+                    ' | ',
+                    style: h5InactiveTextStyle.copyWith(height: 1),
+                  ),
+                  if (fileStat != null)
+                    Text(
+                      DateFormat('yyyy-MM-dd').format(fileStat!.changed),
+                      style: h5InactiveTextStyle.copyWith(height: 1),
+                    )
+                ],
+              ),
             ],
           ),
         ),
