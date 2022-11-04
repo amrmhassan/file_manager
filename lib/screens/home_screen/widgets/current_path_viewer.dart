@@ -7,6 +7,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/screens/home_screen/widgets/path_entity_text.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,9 +51,9 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
     showSnackBar(context: context, message: 'Copied To Clipboard');
   }
 
+//? to get the path row
   Widget getPathRow(String path) {
     List<String> folders = path.split('/');
-    printOnDebug(folders);
     return GestureDetector(
       onLongPress: () {
         copyPathToClipboard();
@@ -129,28 +130,6 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
           ),
         ),
       ],
-    );
-  }
-}
-
-class PathEntityText extends StatelessWidget {
-  final String pathEntity;
-  final VoidCallback onTap;
-  const PathEntityText({
-    Key? key,
-    required this.pathEntity,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Text(
-        pathEntity,
-        style: h4TextStyleInactive,
-        maxLines: 1,
-      ),
     );
   }
 }

@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/constants/global.dart';
+import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -7,8 +10,8 @@ import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/screens/home_screen/widgets/empty_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/error_opening_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/storage_item.dart';
-
-bool prioritizeFolders = true;
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 
 class ChildrenViewList extends StatefulWidget {
   final Function(String path) clickFolder;
@@ -33,6 +36,7 @@ class ChildrenViewList extends StatefulWidget {
 class _ChildrenViewListState extends State<ChildrenViewList>
     with FilesFoldersOperations {
   ScrollController scrollController = ScrollController();
+  List<FileSystemEntity> fl = [];
   // List<FileSystemEntity> get priotorizedChildren {
   //   print('object');
   //   return [
@@ -73,16 +77,33 @@ class _ChildrenViewListState extends State<ChildrenViewList>
   //   super.didUpdateWidget(oldWidget);
   // }
 
+  List<FileSystemEntity> getFixedEntityList(bool priotirizeFoldres) {
+    List<FileSystemEntity> fl;
+    if (priotirizeFoldres) {
+      fl = [
+        ...widget.viewedChildren.where((element) => isDir(element.path)),
+        ...widget.viewedChildren.where((element) => isFile(element.path)),
+      ];
+    } else {
+      fl = [...widget.viewedChildren];
+    }
+
+    return fl;
+  }
+
   @override
   Widget build(BuildContext context) {
+    fl = getFixedEntityList(prioritizeFolders);
+    printOnDebug('****************** Rebuilding children view list');
+
     return Expanded(
-      child: widget.viewedChildren.isNotEmpty
+      child: fl.isNotEmpty
           ? ListView.builder(
               controller: scrollController,
               physics: BouncingScrollPhysics(),
-              itemCount: widget.viewedChildren.length,
+              itemCount: fl.length,
               itemBuilder: (context, index) {
-                FileSystemEntity f = widget.viewedChildren[index];
+                FileSystemEntity f = fl[index];
                 return StorageItem(
                   fileSystemEntity: f,
                   onDirTapped: widget.clickFolder,
