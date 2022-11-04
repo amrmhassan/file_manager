@@ -36,7 +36,7 @@ class ChildrenViewList extends StatefulWidget {
 class _ChildrenViewListState extends State<ChildrenViewList>
     with FilesFoldersOperations {
   ScrollController scrollController = ScrollController();
-  List<FileSystemEntity> fl = [];
+  List<FileSystemEntity> fixedEntityList = [];
   // List<FileSystemEntity> get priotorizedChildren {
   //   print('object');
   //   return [
@@ -78,32 +78,38 @@ class _ChildrenViewListState extends State<ChildrenViewList>
   // }
 
   List<FileSystemEntity> getFixedEntityList(bool priotirizeFoldres) {
-    List<FileSystemEntity> fl;
+    List<FileSystemEntity> fixedEntities = [];
     if (priotirizeFoldres) {
-      fl = [
-        ...widget.viewedChildren.where((element) => isDir(element.path)),
-        ...widget.viewedChildren.where((element) => isFile(element.path)),
+      //* folders
+      List<FileSystemEntity> fd = [
+        ...widget.viewedChildren.where((element) => isDir(element.path))
       ];
+      //* files
+      List<FileSystemEntity> fl = [
+        ...widget.viewedChildren.where((element) => isDir(element.path))
+      ];
+      fixedEntities.addAll(fd);
+      fixedEntities.addAll(fl);
     } else {
-      fl = [...widget.viewedChildren];
+      fixedEntities = [...widget.viewedChildren];
     }
 
-    return fl;
+    return fixedEntities;
   }
 
   @override
   Widget build(BuildContext context) {
-    fl = getFixedEntityList(prioritizeFolders);
+    fixedEntityList = getFixedEntityList(prioritizeFolders);
     printOnDebug('****************** Rebuilding children view list');
 
     return Expanded(
-      child: fl.isNotEmpty
+      child: fixedEntityList.isNotEmpty
           ? ListView.builder(
               controller: scrollController,
               physics: BouncingScrollPhysics(),
-              itemCount: fl.length,
+              itemCount: fixedEntityList.length,
               itemBuilder: (context, index) {
-                FileSystemEntity f = fl[index];
+                FileSystemEntity f = fixedEntityList[index];
                 return StorageItem(
                   fileSystemEntity: f,
                   onDirTapped: widget.clickFolder,
