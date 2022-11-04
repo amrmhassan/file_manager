@@ -79,7 +79,6 @@ class _ChildrenViewListState extends State<ChildrenViewList>
   Widget build(BuildContext context) {
     fixedEntityList =
         getFixedEntityList(prioritizeFolders, widget.viewedChildren);
-    printOnDebug('****************** Rebuilding children view list');
 
     return Expanded(
       child: fixedEntityList.isNotEmpty

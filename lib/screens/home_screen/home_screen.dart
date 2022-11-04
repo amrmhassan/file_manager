@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -164,32 +165,30 @@ class _HomeScreenState extends State<HomeScreen> {
           ).toList();
     return WillPopScope(
       onWillPop: handlePressPhoneBackButton,
-      child: Scaffold(
+      child: ScreensWrapper(
         backgroundColor: kBackgroundColor,
-        body: SafeArea(
-          child: Column(
-            children: [
-              HomeAppBar(
-                goBack: goBack,
-                loadingFolder: loading,
-              ),
-              HomeItemHLine(),
-              CurrentPathViewer(
-                currentActiveDir: currentActiveDir,
-                goHome: goHome,
-                clickFolder: updateActivePath,
-              ),
-              HomeItemHLine(),
-              VSpace(factor: .5),
-              ChildrenViewList(
-                clickFolder: updateActivePath,
-                viewedChildren: childrenToPassToList,
-                error: error,
-                loading: loading,
-                activeDirectory: currentActiveDir,
-              )
-            ],
-          ),
+        child: Column(
+          children: [
+            HomeAppBar(
+              goBack: goBack,
+              loadingFolder: loading,
+            ),
+            HomeItemHLine(),
+            CurrentPathViewer(
+              currentActiveDir: currentActiveDir,
+              goHome: goHome,
+              clickFolder: updateActivePath,
+            ),
+            HomeItemHLine(),
+            VSpace(factor: .5),
+            ChildrenViewList(
+              clickFolder: updateActivePath,
+              viewedChildren: childrenToPassToList,
+              error: error,
+              loading: loading,
+              activeDirectory: currentActiveDir,
+            )
+          ],
         ),
       ),
     );
