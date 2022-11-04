@@ -128,6 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
           message: 'Permission Not Granted',
           snackBarType: SnackBarType.error,
         );
+      } else {
+        updateViewChildren(currentActiveDir.path);
       }
     } else {
       updateViewChildren(currentActiveDir.path);

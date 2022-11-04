@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatefulWidget {
@@ -14,43 +12,32 @@ class TestScreen extends StatefulWidget {
 
 class _TestScreenState extends State<TestScreen> {
   ScrollController scrollController = ScrollController();
-  Directory directory = Directory('sdcard/DCIM/Camera');
-
-  List<FileSystemEntity> children = [];
   @override
   void initState() {
-    var stream = directory.list(recursive: false);
-    stream.listen((event) {
-      setState(() {
-        children.add(event);
-      });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.jumpTo(5000);
     });
 
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   scrollController.addListener(() {});
-    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var data = List.generate(
+      50,
+      (index) => Container(
+        color: Colors.red,
+        height: 50,
+        margin: EdgeInsets.only(bottom: 20),
+      ),
+    );
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Text(children.length.toString()),
-            Expanded(
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: children.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(children[index].path),
-                  );
-                },
-              ),
-            ),
-          ],
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          controller: scrollController,
+          itemCount: data.length,
+          itemBuilder: (context, index) => data[index],
         ),
       ),
     );
