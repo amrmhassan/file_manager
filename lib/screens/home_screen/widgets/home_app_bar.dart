@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +38,19 @@ class HomeAppBar extends StatelessWidget {
             AppBarIconButton(
               onTap: () {
                 //? Add a new folder after showing a modal
+                showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (ctx) {
+                      return ModalWrapper(
+                        color: kCardBackgroundColor,
+                        showTopLine: false,
+                        borderRadius: mediumBorderRadius,
+                        child: Text('Text'),
+                      );
+                    });
               },
-              iconName: 'plus',
+              iconName: 'dots',
               color: Colors.white,
             )
           ],
