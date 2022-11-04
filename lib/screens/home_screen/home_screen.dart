@@ -2,9 +2,11 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as path;
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -151,6 +153,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var childrenToPassToList = showHiddenFiles
+        ? viewedChildren
+        : viewedChildren.where(
+            (element) {
+              return !path.basename(element.path).startsWith('.');
+            },
+          ).toList();
     return WillPopScope(
       onWillPop: handlePressPhoneBackButton,
       child: Scaffold(
@@ -172,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
               VSpace(factor: .5),
               ChildrenViewList(
                 clickFolder: updateActivePath,
-                viewedChildren: viewedChildren,
+                viewedChildren: childrenToPassToList,
                 error: error,
                 loading: loading,
                 activeDirectory: currentActiveDir,

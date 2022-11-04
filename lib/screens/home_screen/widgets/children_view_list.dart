@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/constants/global.dart';
-import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -10,8 +10,6 @@ import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/screens/home_screen/widgets/empty_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/error_opening_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/storage_item.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:provider/provider.dart';
 
 class ChildrenViewList extends StatefulWidget {
   final Function(String path) clickFolder;
@@ -77,29 +75,10 @@ class _ChildrenViewListState extends State<ChildrenViewList>
   //   super.didUpdateWidget(oldWidget);
   // }
 
-  List<FileSystemEntity> getFixedEntityList(bool priotirizeFoldres) {
-    List<FileSystemEntity> fixedEntities = [];
-    if (priotirizeFoldres) {
-      //* folders
-      List<FileSystemEntity> fd = [
-        ...widget.viewedChildren.where((element) => isDir(element.path))
-      ];
-      //* files
-      List<FileSystemEntity> fl = [
-        ...widget.viewedChildren.where((element) => isDir(element.path))
-      ];
-      fixedEntities.addAll(fd);
-      fixedEntities.addAll(fl);
-    } else {
-      fixedEntities = [...widget.viewedChildren];
-    }
-
-    return fixedEntities;
-  }
-
   @override
   Widget build(BuildContext context) {
-    fixedEntityList = getFixedEntityList(prioritizeFolders);
+    fixedEntityList =
+        getFixedEntityList(prioritizeFolders, widget.viewedChildren);
     printOnDebug('****************** Rebuilding children view list');
 
     return Expanded(
