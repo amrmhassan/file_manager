@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/providers/children_info_provider.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -9,13 +7,11 @@ import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/screens/home_screen/widgets/empty_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/error_opening_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/storage_item.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:provider/provider.dart';
 
 bool prioritizeFolders = true;
 
 class ChildrenViewList extends StatefulWidget {
-  final Function(FileSystemEntity folder) clickFolder;
+  final Function(String path) clickFolder;
   final List<FileSystemEntity> viewedChildren;
   final Directory activeDirectory;
   final String? error;

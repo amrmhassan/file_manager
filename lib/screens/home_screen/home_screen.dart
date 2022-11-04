@@ -73,9 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   //? this will handle what happen when clicking a folder
-  void updateActivePath(FileSystemEntity folder) {
+  void updateActivePath(String path) {
     setState(() {
-      currentActiveDir = Directory(folder.path);
+      currentActiveDir = Directory(path);
     });
     updateViewChildren(currentActiveDir.path);
   }
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //? handling going back in path
   void goBack() {
     if (currentActiveDir.parent.path == '.') return;
-    updateActivePath(currentActiveDir.parent);
+    updateActivePath(currentActiveDir.parent.path);
   }
 
   //? to catch clicking the phone back button
@@ -132,6 +132,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  //? go home
+  void goHome() {
+    updateActivePath(initialDir.path);
+  }
+
   @override
   void initState() {
     //? getting storage permission
@@ -158,7 +163,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 loadingFolder: loading,
               ),
               HomeItemHLine(),
-              CurrentPathViewer(currentActiveDir: currentActiveDir),
+              CurrentPathViewer(
+                currentActiveDir: currentActiveDir,
+                goHome: goHome,
+                clickFolder: updateActivePath,
+              ),
               HomeItemHLine(),
               VSpace(factor: .5),
               ChildrenViewList(

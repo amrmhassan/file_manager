@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 
 class StorageItem extends StatelessWidget with FilesFoldersOperations {
   final FileSystemEntity fileSystemEntity;
-  final Function(FileSystemEntity f) onDirTapped;
+  final Function(String path) onDirTapped;
   const StorageItem({
     super.key,
     required this.fileSystemEntity,
@@ -41,7 +41,7 @@ class StorageItem extends StatelessWidget with FilesFoldersOperations {
     return ButtonWrapper(
       onTap: () {
         if (isEntitiyDir) {
-          onDirTapped(fileSystemEntity);
+          onDirTapped(fileSystemEntity.path);
         }
       },
       borderRadius: 0,
