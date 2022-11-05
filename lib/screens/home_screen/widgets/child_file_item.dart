@@ -2,12 +2,12 @@
 
 import 'dart:io';
 
-import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
@@ -43,7 +43,8 @@ class ChildFileItem extends StatelessWidget {
                   future: fileSystemEntityInfo.stat(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      String fileSize = getFileSize(snapshot.data?.size ?? 0);
+                      String fileSize =
+                          handleConvertSize(snapshot.data?.size ?? 0);
                       return Row(
                         children: [
                           Text(
@@ -96,24 +97,5 @@ class ChildFileItem extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String getFileSize(int sizeInByte) {
-    String unit = '';
-    double covertedSize = 0;
-    if (sizeInByte < 1024) {
-      covertedSize = sizeInByte * 1;
-      unit = 'Byte';
-    } else if (sizeInByte < 1024 * 1024) {
-      covertedSize = sizeInByte.toKB;
-      unit = 'KB';
-    } else if (sizeInByte < 1024 * 1024 * 1024) {
-      covertedSize = sizeInByte.toMB;
-      unit = 'MB';
-    } else {
-      covertedSize = sizeInByte.toGB;
-      unit = 'GB';
-    }
-    return '${double.parse(covertedSize.toStringAsFixed(2))}$unit';
   }
 }

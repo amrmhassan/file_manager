@@ -1,3 +1,4 @@
+import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/models/types.dart';
 import 'package:flutter/foundation.dart';
@@ -52,4 +53,24 @@ void showSnackBar({
   } catch (e) {
     //
   }
+}
+
+//? to get the size
+String handleConvertSize(int sizeInByte) {
+  String unit = '';
+  double covertedSize = 0;
+  if (sizeInByte < 1024) {
+    covertedSize = sizeInByte * 1;
+    unit = 'Byte';
+  } else if (sizeInByte < 1024 * 1024) {
+    covertedSize = sizeInByte.toKB;
+    unit = 'KB';
+  } else if (sizeInByte < 1024 * 1024 * 1024) {
+    covertedSize = sizeInByte.toMB;
+    unit = 'MB';
+  } else {
+    covertedSize = sizeInByte.toGB;
+    unit = 'GB';
+  }
+  return '${double.parse(covertedSize.toStringAsFixed(2))}$unit';
 }

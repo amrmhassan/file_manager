@@ -12,6 +12,7 @@ class AdvancedStorageAnalyzer {
   late DateTime _beforeStarting;
   late DateTime _afterAllDone;
   late int timeTaken;
+  int allFilesSize = 0;
 
   List<String> waitingToScanFolders = [];
 
@@ -72,6 +73,7 @@ class AdvancedStorageAnalyzer {
             fileSystemEntityType: fileStat.type,
             fileBaseName: path_operations.basename(fileSystemEntity.path),
           );
+          allFilesSize += fileStat.size;
           //* calling what getting new file info
           if (onFileScanned != null) {
             onFileScanned(fileInfo);
