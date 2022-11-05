@@ -2,7 +2,6 @@
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/children_info_provider.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';

@@ -14,10 +14,6 @@ class _TestScreenState extends State<TestScreen> {
   ScrollController scrollController = ScrollController();
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollController.jumpTo(5000);
-    });
-
     super.initState();
   }
 
