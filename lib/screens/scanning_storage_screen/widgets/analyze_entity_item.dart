@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
@@ -66,7 +65,7 @@ class _AnalyzeEntityItemState extends State<AnalyzeEntityItem> {
     return Stack(
       children: [
         Container(
-          width: 150,
+          width: 100,
           height: height,
           color: kInactiveColor.withOpacity(.2),
         ),
@@ -91,7 +90,8 @@ class _AnalyzeEntityItemState extends State<AnalyzeEntityItem> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.fileSystemEntity.fileBaseName,
+                            getFileNameAndExt(
+                                widget.fileSystemEntity.fileBaseName)[0],
                             style: h4LightTextStyle,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -129,7 +129,8 @@ class _AnalyzeEntityItemState extends State<AnalyzeEntityItem> {
                       ),
                     ),
                     Text(
-                      widget.fileSystemEntity.fileBaseName,
+                      getFileNameAndExt(
+                          widget.fileSystemEntity.fileBaseName)[1],
                       style: h4TextStyleInactive.copyWith(
                         color: kInActiveTextColor.withOpacity(.7),
                       ),
@@ -144,5 +145,13 @@ class _AnalyzeEntityItemState extends State<AnalyzeEntityItem> {
         ),
       ],
     );
+  }
+
+  List<String> getFileNameAndExt(String baseName) {
+    String ext = baseName.split('.').last;
+    List nameList = baseName.split('.');
+    nameList.removeLast();
+    String nameString = nameList.join();
+    return [nameString, ext];
   }
 }

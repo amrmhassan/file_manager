@@ -1,5 +1,8 @@
+// ignore_for_file: unused_import
+
 import 'dart:io';
 
+import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
@@ -49,12 +52,13 @@ class AdvancedStorageAnalyzer {
     Function(LocalFileInfo localFileInfo)? onFileScanned,
     required Function(Object e, Directory directory) onError,
   }) async {
-    //* the current folder sub-folders
+    //* the current folder unscanned sub-folders
     List<String> unscannedFoldersPath = [];
-    //* the current folder children
+    //* the current folder children (files)
     List<LocalFileInfo> folderFilesChildren = [];
     //* the current folder directory object
     Directory dir = Directory(path);
+    //* this will hold the current folder size
     try {
       //* getting stream with the current folder direct children
       var stream = dir.list();
@@ -102,6 +106,7 @@ class AdvancedStorageAnalyzer {
           changed: currentScannedFolderStat.changed,
           fileSystemEntityType: currentScannedFolderStat.type,
           directFiles: [...folderFilesChildren],
+          directFoldersPath: [...unscannedFoldersPath],
         );
         //* adding the current scanned folder to the global list
         foldersInfo.add(currentScannedFolderInfo);
@@ -146,6 +151,8 @@ class AdvancedStorageAnalyzer {
         changed: DateTime.now(),
         fileSystemEntityType: FileSystemEntityType.directory,
         directFiles: [],
+        directFoldersPath: [],
+        size: 0,
       );
       foldersInfo.add(systemFolderInfo);
     }
@@ -184,8 +191,10 @@ class LocalFolderInfo {
   final DateTime changed;
   final FileSystemEntityType fileSystemEntityType;
   final List<LocalFileInfo> directFiles;
+  final List<String> directFoldersPath;
+  final int? size;
 
-  const LocalFolderInfo({
+  LocalFolderInfo({
     required this.parentPath,
     required this.path,
     required this.modified,
@@ -193,5 +202,7 @@ class LocalFolderInfo {
     required this.changed,
     required this.fileSystemEntityType,
     required this.directFiles,
+    required this.directFoldersPath,
+    this.size,
   });
 }

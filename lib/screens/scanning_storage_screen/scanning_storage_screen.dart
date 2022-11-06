@@ -2,11 +2,13 @@
 
 import 'dart:isolate';
 
+import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/screens/scanning_storage_screen/widgets/analyze_entity_item.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -22,6 +24,12 @@ void runAnalyzeStorageIsolate(SendPort sendPort) {
       sendPort.send(localFolderInfo);
     }),
     onError: (e, dir) {},
+  );
+  Future.delayed(Duration(seconds: 15)).then(
+    (value) {
+      printOnDebug(
+          'All Folder count After Waiting 1 sec : ${obj.foldersInfo.length}');
+    },
   );
 }
 
@@ -89,6 +97,15 @@ class _ScanningStorageScreenState extends State<ScanningStorageScreen> {
             currentFolder = '';
             advancedStorageAnalyzer = message;
           });
+          printOnDebug('Folders Count: ${message.foldersInfo.length}');
+          printOnDebug('All Files Sizes: ${message.allFilesSize.toMB}');
+          var testPath = message.filesInfo
+              .map(
+                (e) => e.path,
+              )
+              .toList();
+          printOnDebug('---------------------------------');
+          printOnDebug('---------------------------------');
         } else if (message is LocalFolderInfo) {
           //* here run the code with finishing a folder
           setState(() {
