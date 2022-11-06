@@ -66,7 +66,7 @@ class _AnalyzeEntityItemState extends State<AnalyzeEntityItem> {
     return Stack(
       children: [
         Container(
-          width: 100,
+          width: 150,
           height: height,
           color: kInactiveColor.withOpacity(.2),
         ),
