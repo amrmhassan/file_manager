@@ -2,12 +2,12 @@
 
 import 'dart:io';
 import 'dart:async';
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late PageController pageController;
   Directory currentActiveDir = initialDir;
   int exitCounter = 0;
-  List<FileSystemEntity> viewedChildren = [];
+  List<StorageItemModel> viewedChildren = [];
   String? error;
   bool loading = false;
   StreamSubscription<FileSystemEntity>? streamSub;
@@ -59,9 +59,21 @@ class _HomeScreenState extends State<HomeScreen> {
         viewedChildren.clear();
       });
 
-      streamSub = chidrenStream.listen((entity) {
+      streamSub = chidrenStream.listen((entity) async {
+        FileStat fileStat = entity.statSync();
+        StorageItemModel storageItemModel = StorageItemModel(
+          parentPath: entity.parent.path,
+          path: entity.path,
+          modified: fileStat.modified,
+          accessed: fileStat.accessed,
+          changed: fileStat.changed,
+          fileSystemEntityType: FileSystemEntityType.directory,
+          size: fileStat.type == FileSystemEntityType.directory
+              ? null
+              : fileStat.size,
+        );
         setState(() {
-          viewedChildren.add(entity);
+          viewedChildren.add(storageItemModel);
         });
       });
       streamSub!.onError((e, s) {

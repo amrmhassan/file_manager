@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/utils/files_utils.dart';
 import 'package:path/path.dart' as path;
 
-List<FileSystemEntity> getFixedEntityList(
-  List<FileSystemEntity> viewedChildren,
+List<StorageItemModel> getFixedEntityList(
+  List<StorageItemModel> viewedChildren,
 ) {
   if (!showHiddenFiles) {
     viewedChildren = viewedChildren.where(
@@ -14,7 +13,7 @@ List<FileSystemEntity> getFixedEntityList(
       },
     ).toList();
   }
-  List<FileSystemEntity> fixedEntities = [];
+  List<StorageItemModel> fixedEntities = [];
   if (sortAlphapitacally) {
     viewedChildren.sort(
       (a, b) => a.path.compareTo(b.path),
@@ -22,11 +21,11 @@ List<FileSystemEntity> getFixedEntityList(
   }
   if (prioritizeFolders) {
     //* folders
-    List<FileSystemEntity> fd = [
+    List<StorageItemModel> fd = [
       ...viewedChildren.where((element) => isDir(element.path))
     ];
     //* files
-    List<FileSystemEntity> fl = [
+    List<StorageItemModel> fl = [
       ...viewedChildren.where((element) => isFile(element.path))
     ];
 

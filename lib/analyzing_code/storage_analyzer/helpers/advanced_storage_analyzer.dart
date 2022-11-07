@@ -163,7 +163,6 @@ class AdvancedStorageAnalyzer {
 
 //? file info
 class LocalFileInfo {
-  final int size;
   final String parentPath;
   final String path;
   final DateTime modified;
@@ -171,6 +170,7 @@ class LocalFileInfo {
   final DateTime changed;
   final FileSystemEntityType fileSystemEntityType;
   final String fileBaseName;
+  final int size;
 
   const LocalFileInfo({
     required this.size,

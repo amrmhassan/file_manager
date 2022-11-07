@@ -7,6 +7,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ int getFolderChildrenNumber(String path) {
 
 class ChildDirectoryItem extends StatefulWidget {
   final String fileName;
-  final FileSystemEntity fileSystemEntity;
+  final StorageItemModel fileSystemEntity;
   const ChildDirectoryItem({
     super.key,
     required this.fileName,
@@ -73,7 +74,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
             childrenNumber = folderItemInfoModel.itemCount;
           });
         }
-        FileStat? fState = await widget.fileSystemEntity.stat();
+        FileStat? fState = Directory(widget.fileSystemEntity.path).statSync();
         setState(() {
           fileStat = fState;
         });

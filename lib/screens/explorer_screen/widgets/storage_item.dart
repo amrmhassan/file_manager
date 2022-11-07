@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
@@ -12,7 +12,8 @@ import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 
 class StorageItem extends StatelessWidget {
-  final FileSystemEntity fileSystemEntity;
+  final StorageItemModel fileSystemEntity;
+
   final Function(String path) onDirTapped;
   const StorageItem({
     super.key,

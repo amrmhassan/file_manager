@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class ChildrenViewList extends StatefulWidget {
   final Function(String path) clickFolder;
-  final List<FileSystemEntity> viewedChildren;
+  final List<StorageItemModel> viewedChildren;
   final Directory activeDirectory;
   final String? error;
   final bool loading;
@@ -33,7 +34,7 @@ class ChildrenViewList extends StatefulWidget {
 
 class _ChildrenViewListState extends State<ChildrenViewList> {
   ScrollController scrollController = ScrollController();
-  List<FileSystemEntity> fixedEntityList = [];
+  List<StorageItemModel> fixedEntityList = [];
 
   @override
   void initState() {
@@ -81,7 +82,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
             physics: BouncingScrollPhysics(),
             itemCount: fixedEntityList.length,
             itemBuilder: (context, index) {
-              FileSystemEntity f = fixedEntityList[index];
+              StorageItemModel f = fixedEntityList[index];
               return StorageItem(
                 key: Key(f.path),
                 fileSystemEntity: f,

@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/screens/explorer_screen/widgets/children_view_list.dart';
 import 'package:explorer/screens/explorer_screen/widgets/current_path_viewer.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/material.dart';
 
 class ExplorerScreen extends StatelessWidget {
   final Function(String path) clickFolder;
-  final List<FileSystemEntity> viewedChildren;
+  final List<StorageItemModel> viewedChildren;
   final Directory activeDirectory;
   final String? error;
   final bool loading;

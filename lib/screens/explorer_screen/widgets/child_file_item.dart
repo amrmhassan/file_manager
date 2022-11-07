@@ -7,6 +7,7 @@ import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +15,7 @@ import 'package:path/path.dart' as path;
 
 class ChildFileItem extends StatelessWidget {
   final List<String> fileName;
-  final FileSystemEntity fileSystemEntityInfo;
+  final StorageItemModel fileSystemEntityInfo;
   const ChildFileItem({
     super.key,
     required this.fileName,
@@ -40,7 +41,7 @@ class ChildFileItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               FutureBuilder<FileStat>(
-                  future: fileSystemEntityInfo.stat(),
+                  future: File(fileSystemEntityInfo.path).stat(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       String fileSize =
