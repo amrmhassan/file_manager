@@ -16,6 +16,7 @@ class ButtonWrapper extends StatelessWidget {
   final Clip? clipBehavior;
   final bool active;
   final Color? inactiveColor;
+  final Border? border;
 
   const ButtonWrapper({
     Key? key,
@@ -34,6 +35,7 @@ class ButtonWrapper extends StatelessWidget {
     this.clipBehavior,
     this.active = true,
     this.inactiveColor,
+    this.border,
   }) : super(key: key);
 
   @override
@@ -50,6 +52,7 @@ class ButtonWrapper extends StatelessWidget {
                     (backgroundColor?.withOpacity(.2) ??
                         Colors.transparent.withOpacity(.2)),
             borderRadius: BorderRadius.circular(borderRadius),
+            border: border,
           ),
       child: Material(
         color: Colors.transparent,

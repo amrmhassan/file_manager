@@ -2,7 +2,6 @@
 
 import 'dart:isolate';
 
-import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyser_v2.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/folder_tree_v2.dart';

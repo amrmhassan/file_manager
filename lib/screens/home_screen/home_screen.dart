@@ -2,8 +2,9 @@
 
 import 'dart:io';
 import 'dart:async';
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -28,8 +29,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int activeViewIndex = 0;
-  PageController pageController = PageController();
+  int activeViewIndex = 1;
+  void setActiveScreen(int i) {
+    pageController.animateToPage(
+      i,
+      duration: homePageViewDuration,
+      curve: Curves.easeInOut,
+    );
+    setState(() {
+      activeViewIndex = i;
+    });
+  }
+
+  late PageController pageController;
   Directory currentActiveDir = initialDir;
   int exitCounter = 0;
   List<FileSystemEntity> viewedChildren = [];
@@ -144,14 +156,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    pageController = PageController(
+      initialPage: activeViewIndex,
+    );
     //? getting storage permission
     Future.delayed(Duration.zero).then((value) async {
       Provider.of<ChildrenItemsProvider>(context, listen: false)
           .getAndUpdataAllSavedFolders();
       handleStoragePermissions();
-      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-        pageController.jumpTo(1);
-      });
     });
 
     super.initState();
@@ -175,15 +187,20 @@ class _HomeScreenState extends State<HomeScreen> {
             HomeAppBar(
               goBack: goBack,
               loadingFolder: loading,
+              activeScreenIndex: activeViewIndex,
+              setActiveScreen: setActiveScreen,
             ),
             Expanded(
               child: PageView(
+                onPageChanged: (value) {
+                  setState(() {
+                    activeViewIndex = value;
+                  });
+                },
                 controller: pageController,
                 physics: BouncingScrollPhysics(),
                 children: [
-                  Container(
-                    color: Colors.red,
-                  ),
+                  AnalyzerScreen(),
                   ExplorerScreen(
                     clickFolder: updateActivePath,
                     viewedChildren: childrenToPassToList,

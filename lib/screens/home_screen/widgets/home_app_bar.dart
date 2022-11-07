@@ -10,10 +10,15 @@ import 'package:flutter/material.dart';
 class HomeAppBar extends StatelessWidget {
   final VoidCallback goBack;
   final bool loadingFolder;
+  final int activeScreenIndex;
+  final Function(int index) setActiveScreen;
+
   const HomeAppBar({
     super.key,
     required this.goBack,
     required this.loadingFolder,
+    required this.activeScreenIndex,
+    required this.setActiveScreen,
   });
 
   @override
@@ -55,7 +60,10 @@ class HomeAppBar extends StatelessWidget {
             )
           ],
         ),
-        ExplorerModeSwitcher(),
+        ExplorerModeSwitcher(
+          activeScreenIndex: activeScreenIndex,
+          setActiveScreen: setActiveScreen,
+        ),
       ],
     );
   }
