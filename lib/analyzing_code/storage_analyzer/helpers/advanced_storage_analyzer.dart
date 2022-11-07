@@ -12,6 +12,7 @@ class AdvancedStorageAnalyzer {
   String path;
   List<LocalFileInfo> filesInfo = [];
   List<LocalFolderInfo> foldersInfo = [];
+  List<String> allEntitiesInfos = [];
   late DateTime _beforeStarting;
   late DateTime _afterAllDone;
   late int timeTaken;
@@ -64,6 +65,7 @@ class AdvancedStorageAnalyzer {
       var stream = dir.list();
       var streamSubscription =
           stream.listen((FileSystemEntity fileSystemEntity) async {
+        allEntitiesInfos.add(fileSystemEntity.path);
         if (isFile(fileSystemEntity.path)) {
           //* getting the file info and add it to the global filesInfo list
           FileStat fileStat = await fileSystemEntity.stat();

@@ -1,26 +1,26 @@
+import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
+
 import '../../globals/files_folders_operations.dart';
 import 'extension_count.dart';
-import 'extension_profile.dart';
-import 'file_info.dart';
 
-class FolderTree {
-  List<FolderTree?> folderTree;
+class FolderTreeV2 {
+  List<FolderTreeV2?> folderTree;
   String path;
-  List<FileInfo> files;
+  List<LocalFileInfo> files;
 
-  FolderTree({
+  FolderTreeV2({
     required this.path,
     required this.folderTree,
     required this.files,
   });
 
   //? to add a file info to the folder tree
-  void addFileInfo(FileInfo f) {
+  void addFileInfo(LocalFileInfo f) {
     files.add(f);
   }
 
   //? add a new folder tree
-  void addFolderTree(FolderTree? f) {
+  void addFolderTree(FolderTreeV2? f) {
     folderTree.add(f);
   }
 
@@ -51,10 +51,10 @@ class FolderTree {
   }
 
 //? get all files of the folder even the multi level children
-  List<FileInfo> get getAllFiles {
-    List<FileInfo> totalFiles = [...files];
+  List<LocalFileInfo> get getAllFiles {
+    List<LocalFileInfo> totalFiles = [...files];
     for (var folder in folderTree) {
-      List<FileInfo> folderFiles = folder?.getAllFiles ?? [];
+      List<LocalFileInfo> folderFiles = folder?.getAllFiles ?? [];
       totalFiles.addAll(folderFiles);
     }
     return totalFiles;
@@ -62,12 +62,12 @@ class FolderTree {
 
   //? to get all extensions info of a folder
   List<ExtensionInfo> get folderExtensionsInfo {
-    List<ExtensionProfile?> extesntionsWithRepeat = [];
+    List<ExtensionProfileV2?> extesntionsWithRepeat = [];
 
-    List<FileInfo> files = getAllFiles;
+    List<LocalFileInfo> files = getAllFiles;
     for (var fileInfo in files) {
-      String ext = getFileExtension(fileInfo.fileSystemEntity.path);
-      ExtensionProfile ep = ExtensionProfile(ext: ext, fileInfo: fileInfo);
+      String ext = getFileExtension(fileInfo.path);
+      ExtensionProfileV2 ep = ExtensionProfileV2(ext: ext, fileInfo: fileInfo);
       extesntionsWithRepeat.add(ep);
     }
     extesntionsWithRepeat.sort(
@@ -80,7 +80,7 @@ class FolderTree {
     List<String> iterateExt = [];
     int count = 0;
     int extSize = 0;
-    ExtensionProfile? previousValue = extesntionsWithRepeat[0];
+    ExtensionProfileV2? previousValue = extesntionsWithRepeat[0];
     for (var ext in extesntionsWithRepeat) {
       if (previousValue?.ext != ext?.ext) {
         iterateExt.add(previousValue!.ext);
@@ -100,4 +100,14 @@ class FolderTree {
     }
     return extInfoList;
   }
+}
+
+class ExtensionProfileV2 {
+  final String ext;
+  final LocalFileInfo fileInfo;
+
+  const ExtensionProfileV2({
+    required this.ext,
+    required this.fileInfo,
+  });
 }

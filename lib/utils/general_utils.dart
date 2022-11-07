@@ -74,3 +74,11 @@ String handleConvertSize(int sizeInByte) {
   }
   return '${double.parse(covertedSize.toStringAsFixed(2))}$unit';
 }
+
+//? get code snippet execution time
+int getExecutionTime(VoidCallback callback) {
+  DateTime before = DateTime.now();
+  callback();
+  DateTime after = DateTime.now();
+  return after.difference(before).inMilliseconds;
+}

@@ -3,6 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
+import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.dart';
 import 'package:explorer/screens/scanning_storage_screen/scanning_storage_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
           HomeScreen.routeName: (context) => HomeScreen(),
           ScanningStorageScreen.routeName: (context) => ScanningStorageScreen(),
           TestScreen.routeName: (context) => TestScreen(),
+          IsolateTestingScreen.routeName: (context) => IsolateTestingScreen(),
         },
       ),
     );

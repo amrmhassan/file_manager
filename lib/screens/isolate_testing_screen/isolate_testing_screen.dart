@@ -9,12 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<FolderTree> getFolderTree() async {
-  StorageAnalyser storageAnalyser = StorageAnalyser('sdcard/Songs/Anasheed');
+  StorageAnalyser storageAnalyser = StorageAnalyser('sdcard/Songs');
   FolderTree folderTree = await storageAnalyser.getFolderTree();
   return folderTree;
 }
 
 class IsolateTestingScreen extends StatefulWidget {
+  static const String routeName = '/isolate-testing-screen';
   const IsolateTestingScreen({super.key});
 
   @override
@@ -47,7 +48,7 @@ class _IsolateTestingScreenState extends State<IsolateTestingScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (folderTree != null) Text(folderTree!.totalSize.toGB.toString()),
+            if (folderTree != null) Text(folderTree!.totalSize.toMB.toString()),
             ElevatedButton(
               onPressed: loading ? () {} : analyzeStorage,
               child: Text(loading ? 'Running...' : 'Click Me'),

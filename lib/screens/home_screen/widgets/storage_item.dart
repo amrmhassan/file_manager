@@ -11,7 +11,7 @@ import 'package:explorer/screens/home_screen/widgets/home_item_h_line.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 
-class StorageItem extends StatelessWidget with FilesFoldersOperations {
+class StorageItem extends StatelessWidget {
   final FileSystemEntity fileSystemEntity;
   final Function(String path) onDirTapped;
   const StorageItem({

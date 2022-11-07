@@ -6,7 +6,6 @@ import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/screens/home_screen/widgets/empty_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/error_opening_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/storage_item.dart';
@@ -33,8 +32,7 @@ class ChildrenViewList extends StatefulWidget {
   State<ChildrenViewList> createState() => _ChildrenViewListState();
 }
 
-class _ChildrenViewListState extends State<ChildrenViewList>
-    with FilesFoldersOperations {
+class _ChildrenViewListState extends State<ChildrenViewList> {
   ScrollController scrollController = ScrollController();
   List<FileSystemEntity> fixedEntityList = [];
 
