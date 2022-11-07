@@ -17,7 +17,7 @@ class AnalyzerProvider extends ChangeNotifier {
   get advancedStorageAnalyzer => _advancedStorageAnalyzer;
 
   FolderTreeV2? _totalFolderTree;
-  get totalFolderTree => _totalFolderTree;
+  FolderTreeV2? get totalFolderTree => _totalFolderTree;
 
   void handleAnalyzeEvent() async {
     ReceivePort receivePort = ReceivePort();
