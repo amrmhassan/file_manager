@@ -74,8 +74,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
 
   @override
   Widget build(BuildContext context) {
-    fixedEntityList =
-        getFixedEntityList(prioritizeFolders, widget.viewedChildren);
+    fixedEntityList = getFixedEntityList(widget.viewedChildren);
 
     return fixedEntityList.isNotEmpty
         ? ListView.builder(

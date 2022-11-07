@@ -2,16 +2,25 @@ import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/utils/files_utils.dart';
+import 'package:path/path.dart' as path;
 
 List<FileSystemEntity> getFixedEntityList(
-    bool priotirizeFoldres, List<FileSystemEntity> viewedChildren) {
+  List<FileSystemEntity> viewedChildren,
+) {
+  if (!showHiddenFiles) {
+    viewedChildren = viewedChildren.where(
+      (element) {
+        return !path.basename(element.path).startsWith('.');
+      },
+    ).toList();
+  }
   List<FileSystemEntity> fixedEntities = [];
   if (sortAlphapitacally) {
     viewedChildren.sort(
       (a, b) => a.path.compareTo(b.path),
     );
   }
-  if (priotirizeFoldres) {
+  if (prioritizeFolders) {
     //* folders
     List<FileSystemEntity> fd = [
       ...viewedChildren.where((element) => isDir(element.path))

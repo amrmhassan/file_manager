@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'dart:async';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:provider/provider.dart';
@@ -171,13 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var childrenToPassToList = showHiddenFiles
-        ? viewedChildren
-        : viewedChildren.where(
-            (element) {
-              return !path.basename(element.path).startsWith('.');
-            },
-          ).toList();
     return WillPopScope(
       onWillPop: handlePressPhoneBackButton,
       child: ScreensWrapper(
@@ -203,13 +195,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   AnalyzerScreen(),
                   ExplorerScreen(
                     clickFolder: updateActivePath,
-                    viewedChildren: childrenToPassToList,
+                    viewedChildren: viewedChildren,
                     error: error,
                     loading: loading,
                     activeDirectory: currentActiveDir,
                     currentActiveDir: currentActiveDir,
                     goHome: goHome,
-                    childrenToPassToList: childrenToPassToList,
                     updateActivePath: updateActivePath,
                   ),
                 ],

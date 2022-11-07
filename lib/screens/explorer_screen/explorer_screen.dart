@@ -17,7 +17,6 @@ class ExplorerScreen extends StatelessWidget {
   final Directory currentActiveDir;
   final VoidCallback goHome;
   final Function(String path) updateActivePath;
-  final List<FileSystemEntity> childrenToPassToList;
 
   const ExplorerScreen({
     super.key,
@@ -29,7 +28,6 @@ class ExplorerScreen extends StatelessWidget {
     required this.currentActiveDir,
     required this.goHome,
     required this.updateActivePath,
-    required this.childrenToPassToList,
   });
 
   @override
@@ -47,7 +45,7 @@ class ExplorerScreen extends StatelessWidget {
         Expanded(
           child: ChildrenViewList(
             clickFolder: updateActivePath,
-            viewedChildren: childrenToPassToList,
+            viewedChildren: viewedChildren,
             error: error,
             loading: loading,
             activeDirectory: currentActiveDir,
