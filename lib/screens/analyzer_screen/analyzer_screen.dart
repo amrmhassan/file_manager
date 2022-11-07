@@ -1,46 +1,30 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/screens/analyzer_screen/widgets/analyzing_report.dart';
+import 'package:explorer/screens/analyzer_screen/widgets/analyzing_starter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AnalyzerScreen extends StatelessWidget {
+class AnalyzerScreen extends StatefulWidget {
   const AnalyzerScreen({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<AnalyzerScreen> createState() => _AnalyzerScreenState();
+}
+
+class _AnalyzerScreenState extends State<AnalyzerScreen> {
+  @override
   Widget build(BuildContext context) {
+    var analyzerProvider = Provider.of<AnalyzerProvider>(context);
     return Container(
       color: kBackgroundColor,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: double.infinity,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ButtonWrapper(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kHPad / 2, vertical: kVPad / 3),
-                  onTap: () {},
-                  border: Border.all(color: kInactiveColor),
-                  borderRadius: 1000,
-                  child: Text(
-                    'Start Analyze',
-                    style: h4TextStyleInactive,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+      child: analyzerProvider.totalFolderTree != null
+          ? AnalyzingReport()
+          : AnalyzingStarter(),
     );
   }
 }

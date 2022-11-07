@@ -36,3 +36,17 @@ class AppBarIconButton extends StatelessWidget {
     );
   }
 }
+
+//* this widget will keep the appbar height constant during navigating between explorer screen and analyzer screen
+class EmptyAppBarIconButton extends StatelessWidget {
+  const EmptyAppBarIconButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.transparent,
+      height: largeIconSize + kVPad,
+      width: largeIconSize + kVPad,
+    );
+  }
+}

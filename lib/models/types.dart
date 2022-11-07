@@ -3,3 +3,8 @@ enum SnackBarType {
   error,
   success,
 }
+
+enum EntityType {
+  file,
+  folder,
+}

@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
@@ -67,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
           modified: fileStat.modified,
           accessed: fileStat.accessed,
           changed: fileStat.changed,
-          fileSystemEntityType: FileSystemEntityType.directory,
+          entityType: EntityType.folder,
           size: fileStat.type == FileSystemEntityType.directory
               ? null
               : fileStat.size,

@@ -28,7 +28,8 @@ class HomeAppBar extends StatelessWidget {
       children: [
         Row(
           children: [
-            AppBarIconButton(onTap: goBack, iconName: 'back'),
+            if (activeScreenIndex == 1)
+              AppBarIconButton(onTap: goBack, iconName: 'back'),
             Spacer(),
             Spacer(),
             if (loadingFolder)
@@ -40,24 +41,26 @@ class HomeAppBar extends StatelessWidget {
                   strokeWidth: 2,
                 ),
               ),
-            AppBarIconButton(
-              onTap: () {
-                //? Add a new folder after showing a modal
-                showModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (ctx) {
-                      return ModalWrapper(
-                        color: kCardBackgroundColor,
-                        showTopLine: false,
-                        borderRadius: mediumBorderRadius,
-                        child: Text('Text'),
-                      );
-                    });
-              },
-              iconName: 'dots',
-              color: Colors.white,
-            )
+            activeScreenIndex == 1
+                ? AppBarIconButton(
+                    onTap: () {
+                      //? Add a new folder after showing a modal
+                      showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (ctx) {
+                            return ModalWrapper(
+                              color: kCardBackgroundColor,
+                              showTopLine: false,
+                              borderRadius: mediumBorderRadius,
+                              child: Text('Text'),
+                            );
+                          });
+                    },
+                    iconName: 'dots',
+                    color: Colors.white,
+                  )
+                : EmptyAppBarIconButton(),
           ],
         ),
         ExplorerModeSwitcher(
