@@ -1,23 +1,21 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:async';
 import 'dart:io';
-import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/providers/children_info_provider.dart';
+import 'dart:async';
+import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as path;
 
+import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/screens/home_screen/widgets/children_view_list.dart';
-import 'package:explorer/screens/home_screen/widgets/current_path_viewer.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
-import 'package:explorer/screens/home_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:provider/provider.dart';
 
 final Directory initialDir = Directory('sdcard');
 
@@ -30,6 +28,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int activeViewIndex = 0;
+  PageController pageController = PageController();
   Directory currentActiveDir = initialDir;
   int exitCounter = 0;
   List<FileSystemEntity> viewedChildren = [];
@@ -149,6 +149,9 @@ class _HomeScreenState extends State<HomeScreen> {
       Provider.of<ChildrenItemsProvider>(context, listen: false)
           .getAndUpdataAllSavedFolders();
       handleStoragePermissions();
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+        pageController.jumpTo(1);
+      });
     });
 
     super.initState();
@@ -173,21 +176,28 @@ class _HomeScreenState extends State<HomeScreen> {
               goBack: goBack,
               loadingFolder: loading,
             ),
-            HomeItemHLine(),
-            CurrentPathViewer(
-              currentActiveDir: currentActiveDir,
-              goHome: goHome,
-              clickFolder: updateActivePath,
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                physics: BouncingScrollPhysics(),
+                children: [
+                  Container(
+                    color: Colors.red,
+                  ),
+                  ExplorerScreen(
+                    clickFolder: updateActivePath,
+                    viewedChildren: childrenToPassToList,
+                    error: error,
+                    loading: loading,
+                    activeDirectory: currentActiveDir,
+                    currentActiveDir: currentActiveDir,
+                    goHome: goHome,
+                    childrenToPassToList: childrenToPassToList,
+                    updateActivePath: updateActivePath,
+                  ),
+                ],
+              ),
             ),
-            HomeItemHLine(),
-            VSpace(factor: .5),
-            ChildrenViewList(
-              clickFolder: updateActivePath,
-              viewedChildren: childrenToPassToList,
-              error: error,
-              loading: loading,
-              activeDirectory: currentActiveDir,
-            )
           ],
         ),
       ),

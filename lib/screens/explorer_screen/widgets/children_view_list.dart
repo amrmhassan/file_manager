@@ -6,9 +6,9 @@ import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-import 'package:explorer/screens/home_screen/widgets/empty_folder.dart';
+import 'package:explorer/screens/explorer_screen/widgets/empty_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/error_opening_folder.dart';
-import 'package:explorer/screens/home_screen/widgets/storage_item.dart';
+import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
@@ -77,23 +77,21 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
     fixedEntityList =
         getFixedEntityList(prioritizeFolders, widget.viewedChildren);
 
-    return Expanded(
-      child: fixedEntityList.isNotEmpty
-          ? ListView.builder(
-              controller: scrollController,
-              physics: BouncingScrollPhysics(),
-              itemCount: fixedEntityList.length,
-              itemBuilder: (context, index) {
-                FileSystemEntity f = fixedEntityList[index];
-                return StorageItem(
-                  fileSystemEntity: f,
-                  onDirTapped: widget.clickFolder,
-                );
-              },
-            )
-          : widget.error == null
-              ? (!widget.loading ? EmptyFolder() : SizedBox())
-              : ErrorOpenFolder(),
-    );
+    return fixedEntityList.isNotEmpty
+        ? ListView.builder(
+            controller: scrollController,
+            physics: BouncingScrollPhysics(),
+            itemCount: fixedEntityList.length,
+            itemBuilder: (context, index) {
+              FileSystemEntity f = fixedEntityList[index];
+              return StorageItem(
+                fileSystemEntity: f,
+                onDirTapped: widget.clickFolder,
+              );
+            },
+          )
+        : widget.error == null
+            ? (!widget.loading ? EmptyFolder() : SizedBox())
+            : ErrorOpenFolder();
   }
 }

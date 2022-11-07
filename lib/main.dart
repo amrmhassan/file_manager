@@ -38,8 +38,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        initialRoute:
-            testing ? TestScreen.routeName : ScanningStorageScreen.routeName,
+        initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
         routes: {
           HomeScreen.routeName: (context) => HomeScreen(),
           ScanningStorageScreen.routeName: (context) => ScanningStorageScreen(),

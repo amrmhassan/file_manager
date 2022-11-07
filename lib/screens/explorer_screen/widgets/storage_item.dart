@@ -5,9 +5,9 @@ import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/screens/home_screen/widgets/child_file_item.dart';
-import 'package:explorer/screens/home_screen/widgets/child_item_directory.dart';
-import 'package:explorer/screens/home_screen/widgets/home_item_h_line.dart';
+import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
+import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
+import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 

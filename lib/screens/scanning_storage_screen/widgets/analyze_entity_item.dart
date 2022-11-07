@@ -9,7 +9,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/screens/home_screen/widgets/home_item_h_line.dart';
+import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/scheduler.dart';
