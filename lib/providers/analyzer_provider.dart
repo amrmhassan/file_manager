@@ -1,4 +1,5 @@
 import 'dart:isolate';
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:path/path.dart' as path_operations;
 
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
@@ -44,5 +45,16 @@ class AnalyzerProvider extends ChangeNotifier {
         }
       },
     );
+  }
+
+  //? get extension files
+  List<LocalFileInfo> getExtensionFiles(String ext) {
+    var extFiles = _advancedStorageAnalyzer!.filesInfo
+        .where((element) => getFileExtension(element.path) == ext)
+        .toList();
+    extFiles.sort(
+      (a, b) => b.size.compareTo(a.size),
+    );
+    return extFiles;
   }
 }

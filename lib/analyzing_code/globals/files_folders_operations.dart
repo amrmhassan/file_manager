@@ -14,9 +14,21 @@ List<FileSystemEntity> getDirectFolderChildern(String path) {
 //   return (await fileSystemEntity.stat()).size;
 // }
 
+List<String> _fileNameInfo(String p) {
+  String baseName = path.basename(p);
+  String ext = path.extension(p);
+  baseName = baseName.replaceAll(ext, '');
+  return [baseName, ext.replaceAll('.', '')];
+}
+
 //? to get a file extension
 String getFileExtension(String filePath) {
-  return path.extension(filePath);
+  return _fileNameInfo(filePath).last;
+}
+
+//? to get a file name
+String getFileName(String filePath) {
+  return _fileNameInfo(filePath).first;
 }
 
 //? get folder files children

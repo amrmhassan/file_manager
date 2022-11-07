@@ -1,5 +1,4 @@
 //? Storage Item model
-import 'dart:io';
 
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';

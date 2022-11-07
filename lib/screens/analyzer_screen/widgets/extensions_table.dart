@@ -6,6 +6,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
+import 'package:explorer/screens/extension_report_screen/extension_report_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,16 @@ class ExtensionsTable extends StatelessWidget {
             .map(
               (entry) => TableRow(
                 entry: entry,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    ExtensionReportScreen.routeName,
+                    arguments: {
+                      'ext': entry.value.ext,
+                      'size': entry.value.size,
+                    },
+                  );
+                },
               ),
             )
             .toList()

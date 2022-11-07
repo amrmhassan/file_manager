@@ -54,7 +54,7 @@ class _ScanningStorageScreenState extends State<ScanningStorageScreen> {
               if (advancedStorageAnalyzer != null)
                 AnalyzeEntityItem(
                   fileSystemEntity: advancedStorageAnalyzer!.filesInfo.first,
-                  onDirTapped: (path) {},
+                  parentSize: 100,
                 ),
               if (loading)
                 Column(

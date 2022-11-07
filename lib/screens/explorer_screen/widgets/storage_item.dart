@@ -25,14 +25,6 @@ class StorageItem extends StatelessWidget {
     return isDir(fileSystemEntity.path);
   }
 
-  List<String> fileNameInfo() {
-    String p = fileSystemEntity.path;
-    String baseName = path.basename(p);
-    String ext = path.extension(p);
-    baseName = baseName.replaceAll(ext, '');
-    return [baseName, ext.replaceAll('.', '')];
-  }
-
   String folderName() {
     return path.basename(fileSystemEntity.path);
   }
@@ -56,7 +48,6 @@ class StorageItem extends StatelessWidget {
                     fileSystemEntity: fileSystemEntity,
                   )
                 : ChildFileItem(
-                    fileName: fileNameInfo(),
                     fileSystemEntityInfo: fileSystemEntity,
                   ),
           ),

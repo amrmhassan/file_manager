@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
@@ -14,11 +15,9 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 class ChildFileItem extends StatelessWidget {
-  final List<String> fileName;
   final StorageItemModel fileSystemEntityInfo;
   const ChildFileItem({
     super.key,
-    required this.fileName,
     required this.fileSystemEntityInfo,
   });
 
@@ -36,7 +35,7 @@ class ChildFileItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                fileName.first,
+                getFileName(fileSystemEntityInfo.path),
                 style: h4LightTextStyle,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -91,7 +90,7 @@ class ChildFileItem extends StatelessWidget {
           ),
         ),
         Text(
-          fileName.last,
+          getFileExtension(fileSystemEntityInfo.path),
           style: h4TextStyleInactive.copyWith(
             color: kInActiveTextColor.withOpacity(.7),
           ),

@@ -3,6 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/screens/extension_report_screen/extension_report_screen.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.dart';
 import 'package:explorer/screens/scanning_storage_screen/scanning_storage_screen.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
           ScanningStorageScreen.routeName: (context) => ScanningStorageScreen(),
           TestScreen.routeName: (context) => TestScreen(),
           IsolateTestingScreen.routeName: (context) => IsolateTestingScreen(),
+          ExtensionReportScreen.routeName: (context) => ExtensionReportScreen(),
         },
       ),
     );

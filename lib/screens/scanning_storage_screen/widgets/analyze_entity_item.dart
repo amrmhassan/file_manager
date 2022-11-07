@@ -9,8 +9,8 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
-import 'package:explorer/utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
@@ -19,11 +19,11 @@ import 'package:flutter/material.dart';
 
 class AnalyzeEntityItem extends StatefulWidget {
   final LocalFileInfo fileSystemEntity;
-  final Function(String path) onDirTapped;
+  final int parentSize;
   const AnalyzeEntityItem({
     super.key,
     required this.fileSystemEntity,
-    required this.onDirTapped,
+    required this.parentSize,
   });
 
   @override
@@ -33,22 +33,6 @@ class AnalyzeEntityItem extends StatefulWidget {
 class _AnalyzeEntityItemState extends State<AnalyzeEntityItem> {
   final GlobalKey key = GlobalKey();
   double? height;
-
-  bool get isEntitiyDir {
-    return isDir(widget.fileSystemEntity.path);
-  }
-
-  List<String> fileNameInfo() {
-    String p = widget.fileSystemEntity.path;
-    String baseName = path.basename(p);
-    String ext = path.extension(p);
-    baseName = baseName.replaceAll(ext, '');
-    return [baseName, ext.replaceAll('.', '')];
-  }
-
-  String folderName() {
-    return path.basename(widget.fileSystemEntity.path);
-  }
 
   @override
   void initState() {
@@ -62,10 +46,14 @@ class _AnalyzeEntityItemState extends State<AnalyzeEntityItem> {
 
   @override
   Widget build(BuildContext context) {
+    double percentage = widget.fileSystemEntity.size / widget.parentSize;
     return Stack(
       children: [
         Container(
-          width: 100,
+          width: Responsive.getWidthPercentage(
+            context,
+            percentage,
+          ),
           height: height,
           color: kInactiveColor.withOpacity(.2),
         ),
@@ -129,8 +117,7 @@ class _AnalyzeEntityItemState extends State<AnalyzeEntityItem> {
                       ),
                     ),
                     Text(
-                      getFileNameAndExt(
-                          widget.fileSystemEntity.fileBaseName)[1],
+                      '${(percentage * 100).toStringAsFixed(2)} %',
                       style: h4TextStyleInactive.copyWith(
                         color: kInActiveTextColor.withOpacity(.7),
                       ),

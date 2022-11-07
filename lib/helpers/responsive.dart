@@ -86,7 +86,7 @@ class Responsive extends StatelessWidget {
   }
 
   //? get width percentage
-  static double getWidthPercentage(BuildContext context, int percentage) {
+  static double getWidthPercentage(BuildContext context, double percentage) {
     return MediaQuery.of(context).size.width * percentage;
   }
 
