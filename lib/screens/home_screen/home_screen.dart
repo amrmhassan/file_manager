@@ -1,23 +1,20 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'dart:io';
 import 'dart:async';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
+import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:path/path.dart' as path;
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:explorer/utils/general_utils.dart';
-
-final Directory initialDir = Directory('sdcard');
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
@@ -29,6 +26,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int activeViewIndex = 1;
+  late PageController pageController;
+  Directory currentActiveDir = initialDir;
+  int exitCounter = 0;
+  List<FileSystemEntity> viewedChildren = [];
+  String? error;
+  bool loading = false;
+  StreamSubscription<FileSystemEntity>? streamSub;
+
+//? set the current acitive screen
   void setActiveScreen(int i) {
     pageController.animateToPage(
       i,
@@ -39,14 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
       activeViewIndex = i;
     });
   }
-
-  late PageController pageController;
-  Directory currentActiveDir = initialDir;
-  int exitCounter = 0;
-  List<FileSystemEntity> viewedChildren = [];
-  String? error;
-  bool loading = false;
-  StreamSubscription<FileSystemEntity>? streamSub;
 
   //? update viewed children
   void updateViewChildren(String path) async {
@@ -76,9 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
           loading = false;
         });
       });
-    } catch (e, s) {
-      printOnDebug(e);
-      printOnDebug(s);
+    } catch (e) {
       setState(() {
         viewedChildren.clear();
         error = e.toString();
@@ -124,30 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Future.delayed(Duration.zero).then((value) => exit);
   }
 
-  Future<void> handleStoragePermissions() async {
-    if (await Permission.storage.isDenied) {
-      //! show a modal first
-      var readPermission = await Permission.storage.request();
-      var managePermission = await Permission.manageExternalStorage.request();
-
-      if (readPermission.isDenied ||
-          readPermission.isPermanentlyDenied ||
-          managePermission.isDenied ||
-          managePermission.isPermanentlyDenied) {
-        printOnDebug('Permission not granted');
-        showSnackBar(
-          context: context,
-          message: 'Permission Not Granted',
-          snackBarType: SnackBarType.error,
-        );
-      } else {
-        updateViewChildren(currentActiveDir.path);
-      }
-    } else {
-      updateViewChildren(currentActiveDir.path);
-    }
-  }
-
   //? go home
   void goHome() {
     updateActivePath(initialDir.path);
@@ -158,11 +130,16 @@ class _HomeScreenState extends State<HomeScreen> {
     pageController = PageController(
       initialPage: activeViewIndex,
     );
-    //? getting storage permission
+    //* getting storage permission
     Future.delayed(Duration.zero).then((value) async {
-      Provider.of<ChildrenItemsProvider>(context, listen: false)
+      bool res = await handleStoragePermissions(
+        context: context,
+        currentActiveDir: currentActiveDir,
+        updateViewChildren: updateActivePath,
+      );
+      if (!res) return;
+      await Provider.of<ChildrenItemsProvider>(context, listen: false)
           .getAndUpdataAllSavedFolders();
-      handleStoragePermissions();
     });
 
     super.initState();

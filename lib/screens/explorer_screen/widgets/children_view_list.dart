@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +83,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
             itemBuilder: (context, index) {
               FileSystemEntity f = fixedEntityList[index];
               return StorageItem(
+                key: Key(f.path),
                 fileSystemEntity: f,
                 onDirTapped: widget.clickFolder,
               );

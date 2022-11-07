@@ -8,36 +8,11 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/folder_tree_v2.d
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/screens/analyzer_screen/isolates/analyzing_isolates.dart';
 import 'package:explorer/screens/scanning_storage_screen/widgets/analyze_entity_item.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
-
-String parentPath = 'sdcard';
-void runAnalyzeStorageIsolate(SendPort sendPort) {
-  ReceivePort receivePort = ReceivePort();
-  sendPort.send(receivePort.sendPort);
-  var obj = AdvancedStorageAnalyzer(parentPath);
-  obj.startAnalyzing(
-    onAllDone: () {
-      sendPort.send(obj);
-      int parseTime = getExecutionTime(() {
-        StorageAnalyserV2 storageAnalyserV2 = StorageAnalyserV2(
-          parentPath,
-          obj.allEntitiesInfos,
-          obj.filesInfo,
-        );
-        FolderTreeV2 folderTreeV2 = storageAnalyserV2.getFolderTreeV2();
-        sendPort.send(folderTreeV2);
-      });
-      sendPort.send(parseTime);
-    },
-    onFolderDone: ((localFolderInfo) {
-      sendPort.send(localFolderInfo);
-    }),
-    onError: (e, dir) {},
-  );
-}
 
 class ScanningStorageScreen extends StatefulWidget {
   static const String routeName = '/ScanningStorageScreen';
