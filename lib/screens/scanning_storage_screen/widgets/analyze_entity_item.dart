@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';

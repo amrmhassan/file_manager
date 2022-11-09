@@ -2,12 +2,16 @@
 
 import 'dart:io';
 
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
-import 'package:explorer/utils/files_utils.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
+//! this is good implemtaion it takes about 4 seconds on my phone
 class AdvancedStorageAnalyzer {
   String path;
   List<LocalFileInfo> filesInfo = [];
@@ -76,8 +80,9 @@ class AdvancedStorageAnalyzer {
             modified: fileStat.modified,
             accessed: fileStat.accessed,
             changed: fileStat.changed,
-            fileSystemEntityType: fileStat.type,
+            entityType: EntityType.file,
             fileBaseName: path_operations.basename(fileSystemEntity.path),
+            ext: getFileExtension(fileSystemEntity.path),
           );
           allFilesSize += fileStat.size;
           //* calling what getting new file info
@@ -106,9 +111,8 @@ class AdvancedStorageAnalyzer {
           modified: currentScannedFolderStat.modified,
           accessed: currentScannedFolderStat.accessed,
           changed: currentScannedFolderStat.changed,
-          fileSystemEntityType: currentScannedFolderStat.type,
-          directFiles: [...folderFilesChildren],
-          directFoldersPath: [...unscannedFoldersPath],
+          entityType: EntityType.folder,
+          dateCaptured: DateTime.now(),
         );
         //* adding the current scanned folder to the global list
         foldersInfo.add(currentScannedFolderInfo);
@@ -151,60 +155,11 @@ class AdvancedStorageAnalyzer {
         modified: DateTime.now(),
         accessed: DateTime.now(),
         changed: DateTime.now(),
-        fileSystemEntityType: FileSystemEntityType.directory,
-        directFiles: [],
-        directFoldersPath: [],
+        entityType: EntityType.folder,
+        dateCaptured: DateTime.now(),
         size: 0,
       );
       foldersInfo.add(systemFolderInfo);
     }
   }
-}
-
-//? file info
-class LocalFileInfo {
-  final String parentPath;
-  final String path;
-  final DateTime modified;
-  final DateTime accessed;
-  final DateTime changed;
-  final FileSystemEntityType fileSystemEntityType;
-  final String fileBaseName;
-  final int size;
-
-  const LocalFileInfo({
-    required this.size,
-    required this.parentPath,
-    required this.path,
-    required this.modified,
-    required this.accessed,
-    required this.changed,
-    required this.fileSystemEntityType,
-    required this.fileBaseName,
-  });
-}
-
-//? folder info
-class LocalFolderInfo {
-  final String parentPath;
-  final String path;
-  final DateTime modified;
-  final DateTime accessed;
-  final DateTime changed;
-  final FileSystemEntityType fileSystemEntityType;
-  final List<LocalFileInfo> directFiles;
-  final List<String> directFoldersPath;
-  final int? size;
-
-  LocalFolderInfo({
-    required this.parentPath,
-    required this.path,
-    required this.modified,
-    required this.accessed,
-    required this.changed,
-    required this.fileSystemEntityType,
-    required this.directFiles,
-    required this.directFoldersPath,
-    this.size,
-  });
 }

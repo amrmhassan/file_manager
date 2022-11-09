@@ -1,5 +1,8 @@
 import 'dart:isolate';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
@@ -19,6 +22,13 @@ class AnalyzerProvider extends ChangeNotifier {
 
   FolderTreeV2? _totalFolderTree;
   FolderTreeV2? get totalFolderTree => _totalFolderTree;
+
+  void clearAllData() {
+    _currentFolder = '';
+    _advancedStorageAnalyzer = null;
+    _totalFolderTree = null;
+    notifyListeners();
+  }
 
   void handleAnalyzeEvent() async {
     ReceivePort receivePort = ReceivePort();
@@ -42,6 +52,11 @@ class AnalyzerProvider extends ChangeNotifier {
           _currentFolder = '';
           _loading = false;
           notifyListeners();
+        } else if (message is int) {
+          printOnDebug('Time Taken: ${message / 1000} Second');
+        } else if (message is! SendPort) {
+          //? here handle exeptions
+          // throw Exception(message);
         }
       },
     );

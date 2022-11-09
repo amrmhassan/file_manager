@@ -1,5 +1,6 @@
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/folder_tree_v2.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 
 import '../../globals/files_folders_operations.dart';
 

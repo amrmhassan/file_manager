@@ -1,5 +1,6 @@
-import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/folder_tree_v2.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import '../../globals/files_folders_operations.dart';
 
 //! this will have the ability to save the received data to the sqlite with a localFilesInfo table, and a localFoldersInfo table
@@ -7,8 +8,15 @@ class StorageAnalyserV3 {
   String parentPath;
   List<String> children;
   List<LocalFileInfo> allFilesInfo;
+  List<LocalFolderInfo> allFoldersInfo;
   FolderTreeV2? _folderTreeV2;
-  StorageAnalyserV3(this.parentPath, this.children, this.allFilesInfo);
+
+  StorageAnalyserV3({
+    required this.parentPath,
+    required this.children,
+    required this.allFilesInfo,
+    required this.allFoldersInfo,
+  });
 
   FolderTreeV2? get folderTreeV2 {
     return _folderTreeV2;
@@ -20,7 +28,33 @@ class StorageAnalyserV3 {
     return ft;
   }
 
-//! test the ability of the addSize method on the folder info class to work by making a list of folders info and add size to one of them
+//! start of the new method
+//? this will return all folders info, try to make a compound future to save all folders info to the slqlite and execute it in another method after updating the state
+//? to reduce the time of the user waiting
+  List<LocalFolderInfo> getFoldersFullInfo(String path) {
+    List<LocalFolderInfo> foldersInfoWithSizes = [];
+
+    for (var folderInfo in allFoldersInfo) {
+      int folderSize = calculateFolderSize(folderInfo.path);
+      folderInfo.size = folderSize;
+      foldersInfoWithSizes.add(folderInfo);
+    }
+
+    return foldersInfoWithSizes;
+  }
+
+  int calculateFolderSize(String path) {
+    int size = 0;
+    for (var file in allFilesInfo) {
+      if (file.parentPath.contains(path)) {
+        size += file.size;
+      }
+    }
+    return size;
+  }
+
+//! end of the new method
+
   FolderTreeV2 _analyzeFolder(String path) {
     List<String> directChildren = getFolderDirectChildren(path);
     FolderTreeV2 folderTreeV2 =
@@ -60,47 +94,4 @@ class StorageAnalyserV3 {
   LocalFileInfo getFileInfo(String filePath) {
     return allFilesInfo.firstWhere((element) => element.path == filePath);
   }
-
-// //? to start getting
-//   Future<FolderTreeV2> getFolderTreeV2() async {
-//     FolderTreeV2 ft = await _analyzeFolder(path);
-//     _folderTreeV2 = ft;
-//     return ft;
-//   }
-
-// //? to analyser a folder
-//   Future<FolderTreeV2> _analyzeFolder(String p) async {
-//     Directory dir = Directory(p);
-
-//     try {
-//       var directChildren = dir.listSync();
-
-//       FolderTreeV2 folderTreeV2 = FolderTreeV2(
-//         path: dir.path,
-//         folderTreeV2: [],
-//         files: [],
-//       );
-//       for (var directChild in directChildren) {
-//         if (isFile(directChild.path)) {
-//           int size = (await directChild.stat()).size;
-//           FileInfo fileInfo = FileInfo(
-//             fileSystemEntity: directChild,
-//             size: size,
-//           );
-//           folderTreeV2.addFileInfo(fileInfo);
-//         } else {
-//           FolderTreeV2? ft = await _analyzeFolder(directChild.path);
-//           folderTreeV2.addFolderTreeV2(ft);
-//         }
-//       }
-//       return folderTreeV2;
-//     } catch (e) {
-//       FolderTreeV2 folderTreeV2 = FolderTreeV2(
-//         path: dir.path,
-//         folderTreeV2: [],
-//         files: [],
-//       );
-//       return folderTreeV2;
-//     }
-//   }
 }
