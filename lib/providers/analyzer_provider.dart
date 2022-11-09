@@ -6,7 +6,9 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;
@@ -43,6 +45,26 @@ class AnalyzerProvider extends ChangeNotifier {
 
   List<ExtensionInfo>? _allExtensionsInfo;
   List<ExtensionInfo>? get allExtensionInfo => _allExtensionsInfo;
+
+  //? last date the user performed (analyzing storage)
+  DateTime? lastAnalyzingReportDate;
+  Future<void> setLastAnalyzingDate() async {
+    await SharedPrefHelper.setString(
+        lastAnalyzingReportDateKey, DateTime.now().toIso8601String());
+  }
+
+  Future<void> loadLastAnalyzingDate() async {
+    String? date = await SharedPrefHelper.getString(lastAnalyzingReportDateKey);
+    if (date != null) {
+      lastAnalyzingReportDate = DateTime.parse(date);
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadInitialAppData() async {
+    await loadLastAnalyzingDate();
+    await getSavedExtensionsInfo();
+  }
 
 //? get dir info by path
   Future<LocalFolderInfo?> getDirInfoByPath(String path) async {
@@ -97,7 +119,9 @@ class AnalyzerProvider extends ChangeNotifier {
           _foldersInfo = message.allFolderInfoWithSize;
           _allExtensionsInfo = message.allExtensionsInfo;
           _loading = false;
+          //? if we reached here this mean the storage analyzer report done successfully
           await saveResultsToSqlite();
+          setLastAnalyzingDate();
         } else if (message is int) {
           printOnDebug('Time Taken: ${message / 1000} Second');
         } else if (message is! SendPort) {

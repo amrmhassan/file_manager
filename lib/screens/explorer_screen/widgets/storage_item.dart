@@ -45,6 +45,8 @@ class StorageItem extends StatelessWidget {
               ? ChildDirectoryItem(
                   fileName: folderName(),
                   fileSystemEntity: storageItemModel,
+                  parentSize: parentSize,
+                  sizesExplorer: sizesExplorer,
                 )
               : ChildFileItem(
                   fileSystemEntityInfo: storageItemModel,

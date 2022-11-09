@@ -12,6 +12,7 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
@@ -48,15 +49,6 @@ class _ChildFileItemState extends State<ChildFileItem> {
     super.initState();
   }
 
-  double getSizePercentage() {
-    return ((widget.fileSystemEntityInfo.size ?? 0) / widget.parentSize) * 1;
-  }
-
-//? update this to be readable
-  String sizePercentagleString() {
-    return '${(getSizePercentage() * 100).toStringAsFixed(2)}%';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -65,7 +57,8 @@ class _ChildFileItemState extends State<ChildFileItem> {
           Container(
             width: Responsive.getWidthPercentage(
               context,
-              getSizePercentage(),
+              getSizePercentage(
+                  widget.fileSystemEntityInfo.size ?? 0, widget.parentSize),
             ),
             color: kInactiveColor.withOpacity(.2),
             height: height,
@@ -147,7 +140,10 @@ class _ChildFileItemState extends State<ChildFileItem> {
                   ),
                   Text(
                     widget.sizesExplorer
-                        ? sizePercentagleString()
+                        ? sizePercentagleString(getSizePercentage(
+                            widget.fileSystemEntityInfo.size ?? 0,
+                            widget.parentSize,
+                          ))
                         : getFileExtension(widget.fileSystemEntityInfo.path),
                     style: h4TextStyleInactive.copyWith(
                       color: kInActiveTextColor.withOpacity(.7),

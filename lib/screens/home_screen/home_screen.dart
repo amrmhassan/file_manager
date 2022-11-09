@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     Future.delayed(Duration.zero).then((value) async {
       await Provider.of<AnalyzerProvider>(context, listen: false)
-          .getSavedExtensionsInfo();
+          .loadInitialAppData();
       //* getting storage permission
       bool res = await handleStoragePermissions(
         context: context,
