@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
@@ -12,7 +11,6 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
@@ -30,14 +28,14 @@ int getFolderChildrenNumber(String path) {
 
 class ChildDirectoryItem extends StatefulWidget {
   final String fileName;
-  final StorageItemModel fileSystemEntity;
+  final StorageItemModel storageItemModel;
   final bool sizesExplorer;
   final int parentSize;
 
   const ChildDirectoryItem({
     super.key,
     required this.fileName,
-    required this.fileSystemEntity,
+    required this.storageItemModel,
     required this.sizesExplorer,
     required this.parentSize,
   });
@@ -51,7 +49,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   int? childrenNumber;
   FileStat? fileStat;
   double? height;
-  int? size;
+  // int? size;
 
   String? error;
 
@@ -62,7 +60,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     int itemCount,
   ) async {
     FolderItemInfoModel folderItemInfoModel = FolderItemInfoModel(
-      path: widget.fileSystemEntity.path,
+      path: widget.storageItemModel.path,
       name: widget.fileName,
       itemCount: itemCount,
       dateCaptured: DateTime.now(),
@@ -79,54 +77,61 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     return update;
   }
 
-  void updateFolderSize() {
-    Future.delayed(Duration.zero).then((value) async {
-      //? here i will update the current active dir size
-      LocalFolderInfo? localFolderInfo =
-          await Provider.of<AnalyzerProvider>(context, listen: false)
-              .getDirInfoByPath(widget.fileSystemEntity.path);
-      if (localFolderInfo != null && localFolderInfo.size != null) {
-        setState(() {
-          size = localFolderInfo.size;
-        });
-      }
-    });
-  }
+  // void updateFolderSize() {
+  //   Future.delayed(Duration.zero).then((value) async {
+  //     //? here i will update the current active dir size
+  //     LocalFolderInfo? localFolderInfo =
+  //         await Provider.of<AnalyzerProvider>(context, listen: false)
+  //             .getDirInfoByPath(widget.storageItemModel.path);
+  //     if (localFolderInfo != null && localFolderInfo.size != null) {
+  //       setState(() {
+  //         size = localFolderInfo.size;
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
-    if (widget.sizesExplorer) updateFolderSize();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        height = key.currentContext?.size?.height;
-      });
+      if (mounted) {
+        setState(() {
+          height = key.currentContext?.size?.height;
+        });
+      }
     });
     Future.delayed(Duration.zero).then((value) async {
       try {
         FolderItemInfoModel? folderItemInfoModel =
             Provider.of<ChildrenItemsProvider>(context, listen: false)
-                .getFolderInfo(widget.fileSystemEntity.path);
+                .getFolderInfo(widget.storageItemModel.path);
         if (folderItemInfoModel != null) {
+          if (mounted) {
+            setState(() {
+              childrenNumber = folderItemInfoModel.itemCount;
+            });
+          }
+        }
+        FileStat? fState = Directory(widget.storageItemModel.path).statSync();
+        if (mounted) {
           setState(() {
-            childrenNumber = folderItemInfoModel.itemCount;
+            fileStat = fState;
           });
         }
-        FileStat? fState = Directory(widget.fileSystemEntity.path).statSync();
-        setState(() {
-          fileStat = fState;
-        });
         bool doUpdateInfo = updateFolderInfo(
             fState.modified, folderItemInfoModel?.dateCaptured);
         if (!doUpdateInfo) return;
         int cn = await compute(
-            getFolderChildrenNumber, widget.fileSystemEntity.path);
+            getFolderChildrenNumber, widget.storageItemModel.path);
         await addDataToSqlite(context, [], cn);
         if (!mounted) {
           return;
         }
-        setState(() {
-          childrenNumber = cn;
-        });
+        if (mounted) {
+          setState(() {
+            childrenNumber = cn;
+          });
+        }
       } catch (e) {
         if (!mounted) return;
         setState(() {
@@ -145,7 +150,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
           Container(
             width: Responsive.getWidthPercentage(
               context,
-              getSizePercentage(size ?? 0, widget.parentSize),
+              getSizePercentage(
+                  widget.storageItemModel.size ?? 0, widget.parentSize),
             ),
             color: kInactiveColor.withOpacity(.2),
             height: height,
@@ -198,7 +204,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                   ),
                                   Text(
                                     widget.sizesExplorer
-                                        ? handleConvertSize(size ?? 0)
+                                        ? handleConvertSize(
+                                            widget.storageItemModel.size ?? 0)
                                         : DateFormat('yyyy-MM-dd')
                                             .format(fileStat!.changed),
                                     style:
@@ -215,7 +222,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                     Text(
                       sizePercentagleString(
                         getSizePercentage(
-                          size ?? 0,
+                          widget.storageItemModel.size ?? 0,
                           widget.parentSize,
                         ),
                       ),

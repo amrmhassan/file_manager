@@ -1,10 +1,3 @@
-add saving last scroll position of each folder (add a listerner to get the last scroll position , not the whole set of numbers while scrolling)
-
--- fix the folders items glitch which loads the previous folder data to the current folders
-
--- start playing with the code inside storage_analyser copy to create the callback method for returing the current file
--- working with
-
 # the analyzer screen will have the results of the analyzer, and if there is no analyzer data , just show the button to analyze the sotorage
 
 # add parent percentage to each extension

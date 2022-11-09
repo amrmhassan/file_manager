@@ -1,7 +1,10 @@
+// ignore_for_file: unused_import
+
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:flutter/foundation.dart';

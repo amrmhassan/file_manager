@@ -13,21 +13,21 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
+import 'package:explorer/screens/explorer_screen/widgets/file_size_with_date_modified.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 class ChildFileItem extends StatefulWidget {
-  final StorageItemModel fileSystemEntityInfo;
+  final StorageItemModel storageItemModel;
   final bool sizesExplorer;
   final int parentSize;
 
   const ChildFileItem({
     super.key,
-    required this.fileSystemEntityInfo,
+    required this.storageItemModel,
     required this.sizesExplorer,
     required this.parentSize,
   });
@@ -58,7 +58,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
             width: Responsive.getWidthPercentage(
               context,
               getSizePercentage(
-                  widget.fileSystemEntityInfo.size ?? 0, widget.parentSize),
+                  widget.storageItemModel.size ?? 0, widget.parentSize),
             ),
             color: kInactiveColor.withOpacity(.2),
             height: height,
@@ -72,7 +72,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                 children: [
                   Image.asset(
                     getFileTypeIcon(
-                        path.extension(widget.fileSystemEntityInfo.path)),
+                        path.extension(widget.storageItemModel.path)),
                     width: largeIconSize,
                   ),
                   HSpace(),
@@ -82,69 +82,51 @@ class _ChildFileItemState extends State<ChildFileItem> {
                       children: [
                         Text(
                           widget.sizesExplorer
-                              ? path.basename(widget.fileSystemEntityInfo.path)
-                              : getFileName(widget.fileSystemEntityInfo.path),
+                              ? path.basename(widget.storageItemModel.path)
+                              : getFileName(widget.storageItemModel.path),
                           style: h4LightTextStyle,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        FutureBuilder<FileStat>(
-                            future:
-                                File(widget.fileSystemEntityInfo.path).stat(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                String fileSize =
-                                    handleConvertSize(snapshot.data?.size ?? 0);
-                                return Row(
-                                  children: [
-                                    Text(
-                                      fileSize,
+                        widget.sizesExplorer
+                            ? FileSizeWithDateModifed(
+                                fileSize: handleConvertSize(
+                                  widget.storageItemModel.size ?? 0,
+                                ),
+                                hasData: true,
+                                modified: widget.storageItemModel.modified,
+                              )
+                            : FutureBuilder<FileStat>(
+                                future:
+                                    File(widget.storageItemModel.path).stat(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    String fileSize = handleConvertSize(
+                                        snapshot.data?.size ?? 0);
+                                    return FileSizeWithDateModifed(
+                                      fileSize: fileSize,
+                                      hasData: snapshot.data != null,
+                                      modified: snapshot.data!.modified,
+                                    );
+                                  } else {
+                                    return Text(
+                                      '...',
                                       style: h4TextStyleInactive.copyWith(
                                         color: kInactiveColor,
                                         height: 1,
                                       ),
-                                    ),
-                                    if (snapshot.data != null)
-                                      Row(
-                                        children: [
-                                          Text(
-                                            ' | ',
-                                            style: h4TextStyleInactive.copyWith(
-                                              color: kInactiveColor,
-                                              height: 1,
-                                            ),
-                                          ),
-                                          Text(
-                                            DateFormat('yyyy-MM-dd').format(
-                                                snapshot.data!.modified),
-                                            style: h4TextStyleInactive.copyWith(
-                                              color: kInactiveColor,
-                                              height: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                  ],
-                                );
-                              } else {
-                                return Text(
-                                  '...',
-                                  style: h4TextStyleInactive.copyWith(
-                                    color: kInactiveColor,
-                                    height: 1,
-                                  ),
-                                );
-                              }
-                            }),
+                                    );
+                                  }
+                                }),
                       ],
                     ),
                   ),
                   Text(
                     widget.sizesExplorer
                         ? sizePercentagleString(getSizePercentage(
-                            widget.fileSystemEntityInfo.size ?? 0,
+                            widget.storageItemModel.size ?? 0,
                             widget.parentSize,
                           ))
-                        : getFileExtension(widget.fileSystemEntityInfo.path),
+                        : getFileExtension(widget.storageItemModel.path),
                     style: h4TextStyleInactive.copyWith(
                       color: kInActiveTextColor.withOpacity(.7),
                     ),

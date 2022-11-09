@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int exitCounter = 0;
   List<StorageItemModel> viewedChildren = [];
   String? error;
-  bool loading = false;
+  bool loadingDirDirectChildren = false;
   StreamSubscription<FileSystemEntity>? streamSub;
 
 //? set the current acitive screen
@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Stream<FileSystemEntity> chidrenStream = currentActiveDir.list();
       setState(() {
         error = null;
-        loading = true;
+        loadingDirDirectChildren = true;
         viewedChildren.clear();
       });
 
@@ -69,7 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
           modified: fileStat.modified,
           accessed: fileStat.accessed,
           changed: fileStat.changed,
-          entityType: EntityType.folder,
+          entityType: fileStat.type == FileSystemEntityType.directory
+              ? EntityType.folder
+              : EntityType.file,
           size: fileStat.type == FileSystemEntityType.directory
               ? null
               : fileStat.size,
@@ -85,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       streamSub!.onDone(() {
         setState(() {
-          loading = false;
+          loadingDirDirectChildren = false;
         });
       });
     } catch (e) {
@@ -171,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             HomeAppBar(
               goBack: goBack,
-              loadingFolder: loading,
+              loadingFolder: loadingDirDirectChildren,
               activeScreenIndex: activeViewIndex,
               setActiveScreen: setActiveScreen,
             ),
@@ -190,11 +192,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     clickFolder: updateActivePath,
                     viewedChildren: viewedChildren,
                     error: error,
-                    loading: loading,
+                    loading: loadingDirDirectChildren,
                     activeDirectory: currentActiveDir,
                     currentActiveDir: currentActiveDir,
                     goHome: goHome,
-                    sizesExplorer: true,
+                    sizesExplorer: false,
                     updateActivePath: updateActivePath,
                   ),
                 ],

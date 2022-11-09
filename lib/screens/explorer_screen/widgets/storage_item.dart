@@ -22,34 +22,26 @@ class StorageItem extends StatelessWidget {
     required this.parentSize,
   });
 
-  bool get isEntitiyDir {
-    return isDir(storageItemModel.path);
-  }
-
-  String folderName() {
-    return path.basename(storageItemModel.path);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         ButtonWrapper(
           onTap: () {
-            if (isEntitiyDir) {
+            if (isDir(storageItemModel.path)) {
               onDirTapped(storageItemModel.path);
             }
           },
           borderRadius: 0,
-          child: isEntitiyDir
+          child: isDir(storageItemModel.path)
               ? ChildDirectoryItem(
-                  fileName: folderName(),
-                  fileSystemEntity: storageItemModel,
+                  fileName: path.basename(storageItemModel.path),
+                  storageItemModel: storageItemModel,
                   parentSize: parentSize,
                   sizesExplorer: sizesExplorer,
                 )
               : ChildFileItem(
-                  fileSystemEntityInfo: storageItemModel,
+                  storageItemModel: storageItemModel,
                   parentSize: parentSize,
                   sizesExplorer: sizesExplorer,
                 ),

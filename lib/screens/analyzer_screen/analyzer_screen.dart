@@ -20,6 +20,7 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
   @override
   Widget build(BuildContext context) {
     var analyzerProvider = Provider.of<AnalyzerProvider>(context);
+
     return Container(
       color: kBackgroundColor,
       child: analyzerProvider.storageAnalyserV4 != null

@@ -40,7 +40,7 @@ class AnalyzerProvider extends ChangeNotifier {
   StorageAnalyserV4? get storageAnalyserV4 => _storageAnalyserV4;
 
   //? these data will be loaded from the sqlite after reopening the app or after running the analyzer
-  List<LocalFolderInfo>? _foldersInfo;
+  List<LocalFolderInfo> _foldersInfo = [];
   List<LocalFolderInfo>? get foldersInfo => _foldersInfo;
 
   List<ExtensionInfo>? _allExtensionsInfo;
@@ -69,8 +69,8 @@ class AnalyzerProvider extends ChangeNotifier {
 //? get dir info by path
   Future<LocalFolderInfo?> getDirInfoByPath(String path) async {
     try {
-      LocalFolderInfo localFolderInfo = _foldersInfo
-          ?.firstWhere((element) => element.path == path) as LocalFolderInfo;
+      LocalFolderInfo localFolderInfo =
+          _foldersInfo.firstWhere((element) => element.path == path);
       return localFolderInfo;
     } catch (e) {
       try {
@@ -78,6 +78,7 @@ class AnalyzerProvider extends ChangeNotifier {
         var data = await DBHelper.getDataWhere(
             localFolderInfoTableName, pathString, path);
         LocalFolderInfo localFolderInfo = LocalFolderInfo.fromJSON(data.first);
+        _foldersInfo.add(localFolderInfo);
         return localFolderInfo;
       } catch (e) {
         return null;
