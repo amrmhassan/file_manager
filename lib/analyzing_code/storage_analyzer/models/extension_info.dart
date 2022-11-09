@@ -24,7 +24,7 @@ class ExtensionInfo {
     return ExtensionInfo(
       count: int.parse(jsonOBJ[countString]),
       ext: jsonOBJ[extString],
-      size: jsonOBJ[sizeString],
+      size: int.parse(jsonOBJ[sizeString]),
     );
   }
 

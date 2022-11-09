@@ -4,6 +4,7 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
@@ -13,10 +14,10 @@ class DBHelper {
 
     String finalPath = path.join(databasePathDir, dbName);
 
-    // if (kDebugMode) {
-    //   await sql.deleteDatabase(finalPath);
-    //   await SharedPrefHelper.removeAllSavedKeys();
-    // }
+    if (kDebugMode) {
+      // await sql.deleteDatabase(finalPath);
+      // await SharedPrefHelper.removeAllSavedKeys();
+    }
 
     return sql.openDatabase(
       finalPath,

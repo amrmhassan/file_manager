@@ -18,6 +18,8 @@ class ChildrenViewList extends StatefulWidget {
   final Directory activeDirectory;
   final String? error;
   final bool loading;
+  final bool sizesExplorer;
+  final int? parentSize;
 
   const ChildrenViewList({
     super.key,
@@ -26,6 +28,8 @@ class ChildrenViewList extends StatefulWidget {
     required this.clickFolder,
     required this.loading,
     required this.activeDirectory,
+    this.sizesExplorer = false,
+    this.parentSize,
   });
 
   @override
@@ -85,8 +89,10 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
               StorageItemModel f = fixedEntityList[index];
               return StorageItem(
                 key: Key(f.path),
-                fileSystemEntity: f,
+                storageItemModel: f,
                 onDirTapped: widget.clickFolder,
+                sizesExplorer: widget.sizesExplorer,
+                parentSize: widget.parentSize ?? 0,
               );
             },
           )

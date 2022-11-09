@@ -5,6 +5,7 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.d
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -13,6 +14,11 @@ import 'package:path/path.dart' as path_operations;
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
 import 'package:explorer/screens/analyzer_screen/isolates/analyzing_isolates.dart';
 import 'package:flutter/cupertino.dart';
+
+//! don't load all folders info to the state when loading the app
+//! just load the extensions info to the state to save memory
+//! and for the folders just load the current opened folder children with their info
+//! for the sizes explorer load normal explorer list but with the sizes futures, and the children list will need a parameter of sizesExplorer (bool)
 
 class AnalyzerProvider extends ChangeNotifier {
   //? these data will be available after running the analyzer without closing the app
@@ -37,6 +43,25 @@ class AnalyzerProvider extends ChangeNotifier {
 
   List<ExtensionInfo>? _allExtensionsInfo;
   List<ExtensionInfo>? get allExtensionInfo => _allExtensionsInfo;
+
+//? get dir info by path
+  Future<LocalFolderInfo?> getDirInfoByPath(String path) async {
+    try {
+      LocalFolderInfo localFolderInfo = _foldersInfo
+          ?.firstWhere((element) => element.path == path) as LocalFolderInfo;
+      return localFolderInfo;
+    } catch (e) {
+      try {
+        //* load its data form db if it doesnt exist in the local state
+        var data = await DBHelper.getDataWhere(
+            localFolderInfoTableName, pathString, path);
+        LocalFolderInfo localFolderInfo = LocalFolderInfo.fromJSON(data.first);
+        return localFolderInfo;
+      } catch (e) {
+        return null;
+      }
+    }
+  }
 
 //? to clear all saved data
   void clearAllData() {
