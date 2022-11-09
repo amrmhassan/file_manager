@@ -82,3 +82,18 @@ int getExecutionTime(VoidCallback callback) {
   DateTime after = DateTime.now();
   return after.difference(before).inMilliseconds;
 }
+
+//? to handle double to string
+String doubleToString(double d, [int roundTo = 2]) {
+  List<String> s = d.toStringAsFixed(roundTo).split('');
+  for (int i = 0; i < roundTo; i++) {
+    if (s.last == '0') {
+      s.removeLast();
+    }
+  }
+
+  if (s.last == '.') {
+    s.removeLast();
+  }
+  return s.join();
+}
