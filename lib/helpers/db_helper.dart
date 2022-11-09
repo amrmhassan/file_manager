@@ -1,7 +1,8 @@
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
@@ -11,16 +12,20 @@ class DBHelper {
 
     String finalPath = path.join(databasePathDir, dbName);
 
-    if (kDebugMode) {
-      // await sql.deleteDatabase(finalPath);
-      // await SharedPrefHelper.removeAllSavedKeys();
-    }
+    // if (kDebugMode) {
+    //   await sql.deleteDatabase(finalPath);
+    //   await SharedPrefHelper.removeAllSavedKeys();
+    // }
 
     return sql.openDatabase(
       finalPath,
       //? this is when creating the database itself so create all your tables here
       onCreate: (db, version) async {
-        //? creating cart items table
+        //? creating analyzer reports table
+        await db.execute(AnalyzerReportInfoModel.toSQLString());
+        //? creating info of the analyzer folders info
+        await db.execute(LocalFolderInfo.toSQLString());
+        //? creating info of the explorer folders
         return db.execute(FolderItemInfoModel.toSQLString());
       },
       version: 1,

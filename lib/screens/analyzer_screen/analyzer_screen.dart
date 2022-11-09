@@ -22,7 +22,7 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
     var analyzerProvider = Provider.of<AnalyzerProvider>(context);
     return Container(
       color: kBackgroundColor,
-      child: analyzerProvider.totalFolderTree != null
+      child: analyzerProvider.storageAnalyserV3 != null
           ? AnalyzingReport()
           : AnalyzingStarter(),
     );

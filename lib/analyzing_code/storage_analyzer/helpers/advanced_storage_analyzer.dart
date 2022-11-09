@@ -16,9 +16,7 @@ class AdvancedStorageAnalyzer {
   String path;
   List<LocalFileInfo> filesInfo = [];
   List<LocalFolderInfo> foldersInfo = [];
-  List<String> allEntitiesInfos = [];
-  late DateTime _beforeStarting;
-  late DateTime _afterAllDone;
+  List<String> allEntitiesPathes = [];
   late int timeTaken;
   int allFilesSize = 0;
 
@@ -38,7 +36,6 @@ class AdvancedStorageAnalyzer {
     Function(LocalFileInfo localFileInfo)? onFileScanned,
     required Function(Object e, Directory directory) onError,
   }) async {
-    _beforeStarting = DateTime.now();
     //* the single function of it scan the direct children, but it is recrusive
     getDirChildren(
       path: path,
@@ -69,7 +66,7 @@ class AdvancedStorageAnalyzer {
       var stream = dir.list();
       var streamSubscription =
           stream.listen((FileSystemEntity fileSystemEntity) async {
-        allEntitiesInfos.add(fileSystemEntity.path);
+        allEntitiesPathes.add(fileSystemEntity.path);
         if (isFile(fileSystemEntity.path)) {
           //* getting the file info and add it to the global filesInfo list
           FileStat fileStat = await fileSystemEntity.stat();
@@ -122,8 +119,6 @@ class AdvancedStorageAnalyzer {
         bool firstDir = !waitingToScanFolders.remove(dir.path);
         bool allDone = !firstDir && waitingToScanFolders.isEmpty;
         if (allDone) {
-          _afterAllDone = DateTime.now();
-          timeTaken = _afterAllDone.difference(_beforeStarting).inMilliseconds;
           onAllDone();
         }
 

@@ -26,6 +26,7 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var analyzerProvider = Provider.of<AnalyzerProvider>(context);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -35,7 +36,7 @@ class HomeAppBar extends StatelessWidget {
               AppBarIconButton(onTap: goBack, iconName: 'back'),
             Spacer(),
             Spacer(),
-            if (loadingFolder)
+            if (loadingFolder || analyzerProvider.savingInfoToSqlite)
               SizedBox(
                 width: smallIconSize,
                 height: smallIconSize,

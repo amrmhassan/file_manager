@@ -12,3 +12,10 @@ const String modifiedString = 'modifiedString';
 const String accessedString = 'accessedString';
 const String changedString = 'changedString';
 const String entityTypeString = 'entityTypeString';
+
+//? analyzer report info
+const String dateDoneString = 'dateDoneString';
+const String folderCountString = 'folderCountString';
+const String filesCountString = 'filesCountString';
+const String extensionsCountString = 'extensionsCountString';
+const String totalFilesSizeString = 'totalFilesSizeString';

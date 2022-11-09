@@ -64,6 +64,12 @@ class AnalyzingStarter extends StatelessWidget {
                 'You should analyze storage first.',
                 style: h4TextStyleInactive,
               ),
+            TextButton(
+                onPressed: () {
+                  Provider.of<AnalyzerProvider>(context, listen: false)
+                      .getSavedFoldersInfo();
+                },
+                child: Text('Get Data')),
           ],
         ),
       ],

@@ -28,8 +28,8 @@ class LocalFolderInfo {
 
   Map<String, String> toJSON() {
     return {
-      parentPathString: parentPath,
       pathString: path,
+      parentPathString: parentPath,
       modifiedString: modified.toIso8601String(),
       accessedString: accessed.toIso8601String(),
       changedString: changed.toIso8601String(),
@@ -39,18 +39,22 @@ class LocalFolderInfo {
     };
   }
 
-  static LocalFolderInfo fromJSON(Map<String, String> jsonOBJ) {
+  static LocalFolderInfo fromJSON(Map<String, dynamic> jsonOBJ) {
     return LocalFolderInfo(
-      parentPath: jsonOBJ[parentPathString]!,
-      path: jsonOBJ[pathString]!,
-      modified: DateTime.parse(jsonOBJ[modifiedString]!),
-      accessed: DateTime.parse(jsonOBJ[accessedString]!),
-      changed: DateTime.parse(jsonOBJ[changedString]!),
-      dateCaptured: DateTime.parse(jsonOBJ[dateCapturedString]!),
-      entityType: stringToEnum(jsonOBJ[entityTypeString]!, EntityType.values),
+      parentPath: jsonOBJ[parentPathString],
+      path: jsonOBJ[pathString],
+      modified: DateTime.parse(jsonOBJ[modifiedString]),
+      accessed: DateTime.parse(jsonOBJ[accessedString]),
+      changed: DateTime.parse(jsonOBJ[changedString]),
+      dateCaptured: DateTime.parse(jsonOBJ[dateCapturedString]),
+      entityType: stringToEnum(jsonOBJ[entityTypeString], EntityType.values),
       size: jsonOBJ[sizeString] == dbNull
           ? null
           : int.parse(jsonOBJ[sizeString]!),
     );
+  }
+
+  static String toSQLString() {
+    return 'CREATE TABLE $localFolderInfoTableName ($pathString TEXT PRIMARY KEY,$parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $dateCapturedString TEXT, $sizeString TEXT)';
   }
 }
