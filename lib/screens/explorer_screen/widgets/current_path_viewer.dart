@@ -1,25 +1,18 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:io';
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/providers/dir_children_list_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/path_entity_text.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class CurrentPathViewer extends StatefulWidget {
-  final Directory currentActiveDir;
-  final VoidCallback goHome;
-  final Function(String path) clickFolder;
   const CurrentPathViewer({
     Key? key,
-    required this.currentActiveDir,
-    required this.goHome,
-    required this.clickFolder,
   }) : super(key: key);
 
   @override
@@ -39,24 +32,70 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
 
   @override
   void didUpdateWidget(covariant CurrentPathViewer oldWidget) {
-    if (oldWidget.currentActiveDir.path != widget.currentActiveDir.path) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToRight());
-    }
     super.didUpdateWidget(oldWidget);
   }
 
-  void copyPathToClipboard() {
-    Clipboard.setData(ClipboardData(text: widget.currentActiveDir.path));
-    showSnackBar(context: context, message: 'Copied To Clipboard');
-  }
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToRight());
 
-//? to get the path row
-  Widget getPathRow(String path) {
-    List<String> folders = path.split('/');
+    var expProviderFalse =
+        Provider.of<ExplorerProvider>(context, listen: false);
+    var pathPartHeight = largePadding * 2 + ultraLargeIconSize / 2;
+    return Row(
+      children: [
+        ButtonWrapper(
+          onTap: expProviderFalse.goHome,
+          borderRadius: 0,
+          padding: EdgeInsets.all(largePadding),
+          child: Image.asset(
+            'assets/icons/home.png',
+            color: Colors.white,
+            width: ultraLargeIconSize / 2,
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => copyPathToClipboard(
+                context, expProviderFalse.currentActiveDir.path),
+            child: Container(
+              width: double.infinity,
+              color: kCardBackgroundColor,
+              height: pathPartHeight,
+              alignment: Alignment.centerLeft,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
+                physics: BouncingScrollPhysics(),
+                child: Row(
+                  children: [
+                    HSpace(),
+                    PathRow(),
+                    HSpace(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class PathRow extends StatelessWidget {
+  const PathRow({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var expProvider = Provider.of<ExplorerProvider>(context);
+    var expProviderFalse =
+        Provider.of<ExplorerProvider>(context, listen: false);
+    List<String> folders = expProvider.currentActiveDir.path.split('/');
+
     return GestureDetector(
-      onLongPress: () {
-        copyPathToClipboard();
-      },
+      onLongPress: () =>
+          copyPathToClipboard(context, expProviderFalse.currentActiveDir.path),
       child: Row(
         children: [
           ...folders.asMap().entries.map(
@@ -69,9 +108,10 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
                       if (entry.key != folders.length - 1) {
                         String newPath =
                             folders.sublist(0, entry.key + 1).join('/');
-                        widget.clickFolder(newPath);
+                        expProviderFalse.setActiveDir(newPath);
                       } else {
-                        copyPathToClipboard();
+                        copyPathToClipboard(
+                            context, expProviderFalse.currentActiveDir.path);
                       }
                     },
                   ),
@@ -87,48 +127,6 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
           )
         ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var pathPartHeight = largePadding * 2 + ultraLargeIconSize / 2;
-    return Row(
-      children: [
-        ButtonWrapper(
-          onTap: widget.goHome,
-          borderRadius: 0,
-          padding: EdgeInsets.all(largePadding),
-          child: Image.asset(
-            'assets/icons/home.png',
-            color: Colors.white,
-            width: ultraLargeIconSize / 2,
-          ),
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: copyPathToClipboard,
-            child: Container(
-              width: double.infinity,
-              color: kCardBackgroundColor,
-              height: pathPartHeight,
-              alignment: Alignment.centerLeft,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                physics: BouncingScrollPhysics(),
-                child: Row(
-                  children: [
-                    HSpace(),
-                    getPathRow(widget.currentActiveDir.path),
-                    HSpace(),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

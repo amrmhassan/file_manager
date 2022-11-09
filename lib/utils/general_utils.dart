@@ -3,6 +3,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/models/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void printOnDebug(Object? object) {
   if (kDebugMode) {
@@ -96,4 +97,10 @@ String doubleToString(double d, [int roundTo = 2]) {
     s.removeLast();
   }
   return s.join();
+}
+
+//? copy to clipboard
+void copyPathToClipboard(BuildContext context, String path) {
+  Clipboard.setData(ClipboardData(text: path));
+  showSnackBar(context: context, message: 'Copied To Clipboard');
 }

@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/dir_children_list_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -11,15 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomeAppBar extends StatelessWidget {
-  final VoidCallback goBack;
-  final bool loadingFolder;
   final int activeScreenIndex;
   final Function(int index) setActiveScreen;
 
   const HomeAppBar({
     super.key,
-    required this.goBack,
-    required this.loadingFolder,
     required this.activeScreenIndex,
     required this.setActiveScreen,
   });
@@ -27,16 +24,21 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var analyzerProvider = Provider.of<AnalyzerProvider>(context);
+    var expProvider = Provider.of<ExplorerProvider>(context);
     return Stack(
       alignment: Alignment.center,
       children: [
         Row(
           children: [
             if (activeScreenIndex == 1)
-              AppBarIconButton(onTap: goBack, iconName: 'back'),
+              AppBarIconButton(
+                  onTap: Provider.of<ExplorerProvider>(context, listen: false)
+                      .goBack,
+                  iconName: 'back'),
             Spacer(),
             Spacer(),
-            if (loadingFolder || analyzerProvider.savingInfoToSqlite)
+            if (expProvider.loadingChildren ||
+                analyzerProvider.savingInfoToSqlite)
               SizedBox(
                 width: smallIconSize,
                 height: smallIconSize,

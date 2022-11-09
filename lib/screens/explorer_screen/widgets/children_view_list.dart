@@ -5,6 +5,7 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/providers/dir_children_list_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
@@ -17,21 +18,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 class ChildrenViewList extends StatefulWidget {
-  final Function(String path) clickFolder;
-  final List<StorageItemModel> viewedChildren;
-  final Directory activeDirectory;
-  final String? error;
-  final bool loading;
   final bool sizesExplorer;
   final int? parentSize;
 
   const ChildrenViewList({
     super.key,
-    required this.viewedChildren,
-    required this.error,
-    required this.clickFolder,
-    required this.loading,
-    required this.activeDirectory,
     this.sizesExplorer = false,
     this.parentSize,
   });
@@ -45,53 +36,19 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
   List<StorageItemModel> fixedEntityList = [];
 
 //? this will arrange the children with size if the size explorer is true
-  Future<void> handleViewLisChildren() async {
-    if (widget.sizesExplorer) {
-      List<StorageItemModel> items = [];
-
-      for (var i = 0; i < widget.viewedChildren.length; i++) {
-        StorageItemModel child = widget.viewedChildren[i];
-        int? entitySize;
-        if (child.entityType == EntityType.folder) {
-          LocalFolderInfo? localFolderInfo =
-              await Provider.of<AnalyzerProvider>(context, listen: false)
-                  .getDirInfoByPath(child.path);
-          if (localFolderInfo != null) {
-            entitySize = localFolderInfo.size ?? 0;
-          }
-        } else {
-          FileStat fileStat = await File(child.path).stat();
-          entitySize = fileStat.size;
-        }
-        StorageItemModel updatedStoraItemModel = StorageItemModel(
-          parentPath: child.parentPath,
-          path: child.path,
-          modified: child.modified,
-          accessed: child.accessed,
-          changed: child.changed,
-          entityType: child.entityType,
-          size: entitySize,
-        );
-        items.add(updatedStoraItemModel);
-      }
-      items.sort(
-        (a, b) => (b.size ?? 0).compareTo(a.size ?? 0),
-      );
-      setState(() {
-        fixedEntityList = items;
-      });
-    } else {
-      setState(() {
-        fixedEntityList = getFixedEntityList(widget.viewedChildren);
-      });
-    }
-  }
 
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-      handleViewLisChildren();
-    });
+    var expProviderFalse =
+        Provider.of<ExplorerProvider>(context, listen: false);
+    // Future.delayed(Duration.zero).then((value) async {
+    //   var test =
+    //       await expProviderFalse.viewedChildren(context, widget.sizesExplorer);
+    //   printOnDebug('from initstate ${test.length}');
+    //   setState(() {
+    //     fixedEntityList = test;
+    //   });
+    // });
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       scrollController.removeListener(() {});
@@ -99,7 +56,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
       scrollController.addListener(() {
         Provider.of<ChildrenItemsProvider>(context, listen: false)
             .setFolderScroll(
-          widget.activeDirectory.path,
+          expProviderFalse.currentActiveDir.path,
           scrollController.offset,
         );
       });
@@ -111,27 +68,34 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
 //? to update when path changes
   @override
   void didUpdateWidget(covariant ChildrenViewList oldWidget) {
-    handleViewLisChildren();
+    var expProviderFalse =
+        Provider.of<ExplorerProvider>(context, listen: false);
+    // Future.delayed(Duration.zero).then((value) async {
+    //   var test = await Provider.of<ExplorerProvider>(context, listen: false)
+    //       .viewedChildren(context, widget.sizesExplorer);
+    //   printOnDebug('from did update ${test.length}');
+    //   setState(() {
+    //     fixedEntityList = test;
+    //   });
+    // });
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Future.delayed(Duration(milliseconds: 50)).then((value) {
         //! this is also a very bad implementation to scroll a list
-        if (oldWidget.activeDirectory.path != widget.activeDirectory.path) {
-          double? scrollPos =
-              Provider.of<ChildrenItemsProvider>(context, listen: false)
-                  .getScrollingPosition(widget.activeDirectory.path);
-          if (scrollPos != null) {
-            try {
-              scrollController.jumpTo(scrollPos);
-            } catch (e) {
-              Future.delayed(Duration(milliseconds: 100)).then((value) {
-                try {
-                  scrollController.jumpTo(scrollPos);
-                } catch (e) {
-                  printOnDebug('Error with auto scroll list');
-                }
-              });
-            }
+        double? scrollPos =
+            Provider.of<ChildrenItemsProvider>(context, listen: false)
+                .getScrollingPosition(expProviderFalse.currentActiveDir.path);
+        if (scrollPos != null) {
+          try {
+            scrollController.jumpTo(scrollPos);
+          } catch (e) {
+            Future.delayed(Duration(milliseconds: 100)).then((value) {
+              try {
+                scrollController.jumpTo(scrollPos);
+              } catch (e) {
+                printOnDebug('Error with auto scroll list');
+              }
+            });
           }
         }
       });
@@ -142,26 +106,42 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.loading
+    var expProvider = Provider.of<ExplorerProvider>(context);
+    var expProviderFalse =
+        Provider.of<ExplorerProvider>(context, listen: false);
+    return expProvider.loadingChildren
         ? SizedBox()
-        : fixedEntityList.isNotEmpty
-            ? ListView.builder(
-                // controller: scrollController,
-                physics: BouncingScrollPhysics(),
-                itemCount: fixedEntityList.length,
-                itemBuilder: (context, index) {
-                  StorageItemModel f = fixedEntityList[index];
-                  return StorageItem(
-                    key: Key(f.path),
-                    storageItemModel: f,
-                    onDirTapped: widget.clickFolder,
-                    sizesExplorer: widget.sizesExplorer,
-                    parentSize: widget.parentSize ?? 0,
-                  );
-                },
-              )
-            : widget.error == null
-                ? (!widget.loading ? EmptyFolder() : SizedBox())
-                : ErrorOpenFolder();
+        : FutureBuilder(
+            future: expProvider.viewedChildren(context, widget.sizesExplorer),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var viewedList = snapshot.data;
+                if (viewedList == null) return EmptyFolder();
+                return viewedList.isNotEmpty
+                    ? ListView.builder(
+                        // controller: scrollController,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: viewedList.length,
+                        itemBuilder: (context, index) {
+                          StorageItemModel f = viewedList[index];
+                          return StorageItem(
+                            key: Key(f.path),
+                            storageItemModel: f,
+                            onDirTapped: expProviderFalse.setActiveDir,
+                            sizesExplorer: widget.sizesExplorer,
+                            parentSize: widget.parentSize ?? 0,
+                          );
+                        },
+                      )
+                    : expProviderFalse.error == null
+                        ? (!expProviderFalse.loadingChildren
+                            ? EmptyFolder()
+                            : SizedBox())
+                        : ErrorOpenFolder();
+              } else {
+                return Text('Loading.......');
+              }
+            },
+          );
   }
 }

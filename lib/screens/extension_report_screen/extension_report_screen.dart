@@ -21,7 +21,7 @@ class _ExtensionReportScreenState extends State<ExtensionReportScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     var analyzeProvider = Provider.of<AnalyzerProvider>(context);
     var extFiles = analyzeProvider.getExtensionFiles(data['ext']);
-    int extensionSize = data['size'];
+    // int extensionSize = data['size'];
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: ListView(
