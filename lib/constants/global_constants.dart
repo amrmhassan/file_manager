@@ -6,4 +6,4 @@ bool sortAlphapitacally = true;
 
 const Duration homePageViewDuration = Duration(milliseconds: 180);
 
-final Directory initialDir = Directory('sdcard');
+final Directory initialDir = Directory('sdcard/DCIM/Camera');

@@ -81,33 +81,33 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
                 factor: .5,
               ),
               ReportCountItem(
-                title: 'Total Storage Size: ',
+                title: 'Total Storage Size ',
                 count: (totalStorageSize ?? 0) / (1024),
                 trailing: ' GB',
               ),
               ReportCountItem(
-                title: 'Free Storage Size: ',
+                title: 'Free Storage Size ',
                 count: (freeStorageSize ?? 0) / (1024),
                 trailing: ' GB',
               ),
               ReportCountItem(
-                title: 'Total Files Size: ',
+                title: 'Total Files Size ',
                 count: analyzerProvider.reportInfo?.totalFilesSize.toGB ?? 0,
                 trailing: ' GB',
               ),
               ReportCountItem(
-                title: 'Apps Data Size: ',
+                title: 'Apps Data Size ',
                 count: (totalStorageSize ?? 0) / (1024) -
                     (freeStorageSize ?? 0) / (1024) -
                     (analyzerProvider.reportInfo?.totalFilesSize.toGB ?? 0),
                 trailing: ' GB',
               ),
               ReportCountItem(
-                title: 'Total Folders Count : ',
+                title: 'Total Folders Count  ',
                 count: analyzerProvider.reportInfo!.folderCount * 1,
               ),
               ReportCountItem(
-                title: 'Total Files Count : ',
+                title: 'Total Files Count  ',
                 count: analyzerProvider.reportInfo!.filesCount * 1,
               ),
             ],

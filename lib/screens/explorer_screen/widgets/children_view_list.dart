@@ -5,6 +5,7 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -124,7 +125,11 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
               scrollController.jumpTo(scrollPos);
             } catch (e) {
               Future.delayed(Duration(milliseconds: 100)).then((value) {
-                scrollController.jumpTo(scrollPos);
+                try {
+                  scrollController.jumpTo(scrollPos);
+                } catch (e) {
+                  printOnDebug('Error with auto scroll list');
+                }
               });
             }
           }
@@ -141,7 +146,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
         ? SizedBox()
         : fixedEntityList.isNotEmpty
             ? ListView.builder(
-                controller: scrollController,
+                // controller: scrollController,
                 physics: BouncingScrollPhysics(),
                 itemCount: fixedEntityList.length,
                 itemBuilder: (context, index) {

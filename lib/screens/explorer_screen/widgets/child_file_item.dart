@@ -42,9 +42,11 @@ class _ChildFileItemState extends State<ChildFileItem> {
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        height = key.currentContext?.size?.height;
-      });
+      if (mounted && widget.sizesExplorer) {
+        setState(() {
+          height = key.currentContext?.size?.height;
+        });
+      }
     });
     super.initState();
   }

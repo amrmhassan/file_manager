@@ -2,11 +2,13 @@
 
 import 'dart:io';
 import 'dart:async';
+import 'dart:isolate';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
+import 'package:explorer/screens/home_screen/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? error;
   bool loadingDirDirectChildren = false;
   StreamSubscription<FileSystemEntity>? streamSub;
+  SendPort? globalSendPort;
 
 //? set the current acitive screen
   void setActiveScreen(int i) {
@@ -53,55 +56,94 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  //? update viewed children
-  void updateViewChildren(String path) async {
-    try {
-      if (streamSub != null) {
-        await streamSub!.cancel();
+  void runTheIsolate() {
+    var receivePort = ReceivePort();
+    var sendPort = receivePort.sendPort;
+    Isolate.spawn(loadExplorerChildren, sendPort);
+    receivePort.listen((message) {
+      if (message is SendPort) {
+        globalSendPort = message;
+      } else if (message is LoadChildrenMessagesData) {
+        if (message.flag == LoadChildrenMessagesFlags.childrenChunck) {
+          setState(() {
+            viewedChildren.addAll(message.data);
+          });
+        } else if (message.flag == LoadChildrenMessagesFlags.done) {
+          setState(() {
+            viewedChildren.addAll(message.data);
+            loadingDirDirectChildren = false;
+          });
+        } else if (message.flag == LoadChildrenMessagesFlags.error) {
+          setState(() {
+            error = error.toString();
+          });
+        }
       }
-      Stream<FileSystemEntity> chidrenStream = currentActiveDir.list();
-      setState(() {
-        error = null;
-        loadingDirDirectChildren = true;
-        viewedChildren.clear();
-      });
+    });
+  }
 
-      streamSub = chidrenStream.listen((entity) async {
-        FileStat fileStat = entity.statSync();
-        StorageItemModel storageItemModel = StorageItemModel(
-          parentPath: entity.parent.path,
-          path: entity.path,
-          modified: fileStat.modified,
-          accessed: fileStat.accessed,
-          changed: fileStat.changed,
-          entityType: fileStat.type == FileSystemEntityType.directory
-              ? EntityType.folder
-              : EntityType.file,
-          size: fileStat.type == FileSystemEntityType.directory
-              ? null
-              : fileStat.size,
-        );
-        setState(() {
-          viewedChildren.add(storageItemModel);
-        });
-      });
-      streamSub!.onError((e, s) {
-        setState(() {
-          error = e.toString();
-        });
-      });
-      streamSub!.onDone(() {
-        setState(() {
-          loadingDirDirectChildren = false;
-        });
-      });
-    } catch (e) {
-      setState(() {
-        viewedChildren.clear();
-        error = e.toString();
-      });
+  void updateViewChildren(String path) async {
+    setState(() {
+      error = null;
+      loadingDirDirectChildren = true;
+      viewedChildren.clear();
+    });
+    if (globalSendPort != null) {
+      globalSendPort!.send(path);
     }
   }
+
+//? update viewed children
+
+  //? update viewed children
+  // void updateViewChildren(String path) async {
+  // try {
+  // if (streamSub != null) {
+  //   await streamSub!.cancel();
+  // }
+  // Stream<FileSystemEntity> chidrenStream = currentActiveDir.list();
+  // setState(() {
+  //   error = null;
+  //   loadingDirDirectChildren = true;
+  //   viewedChildren.clear();
+  // });
+
+  // streamSub = chidrenStream.listen((entity) async {
+  //   FileStat fileStat = entity.statSync();
+  //   StorageItemModel storageItemModel = StorageItemModel(
+  //     parentPath: entity.parent.path,
+  //     path: entity.path,
+  //     modified: fileStat.modified,
+  //     accessed: fileStat.accessed,
+  //     changed: fileStat.changed,
+  //     entityType: fileStat.type == FileSystemEntityType.directory
+  //         ? EntityType.folder
+  //         : EntityType.file,
+  //     size: fileStat.type == FileSystemEntityType.directory
+  //         ? null
+  //         : fileStat.size,
+  //   );
+  //   setState(() {
+  //     viewedChildren.add(storageItemModel);
+  //   });
+  // });
+  // streamSub!.onError((e, s) {
+  //   setState(() {
+  //     error = e.toString();
+  //   });
+  // });
+  // streamSub!.onDone(() {
+  //   setState(() {
+  //     loadingDirDirectChildren = false;
+  //   });
+  // });
+  // } catch (e) {
+  //   setState(() {
+  //     viewedChildren.clear();
+  //     error = e.toString();
+  //   });
+  // }
+  // }
 
   //? this will handle what happen when clicking a folder
   void updateActivePath(String path) {
@@ -151,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    runTheIsolate();
     pageController = PageController(
       initialPage: activeViewIndex,
     );
@@ -161,7 +204,10 @@ class _HomeScreenState extends State<HomeScreen> {
       bool res = await handleStoragePermissions(
         context: context,
         currentActiveDir: currentActiveDir,
-        updateViewChildren: updateActivePath,
+        updateViewChildren: (String path) {
+          updateActivePath(path);
+          runTheIsolate();
+        },
       );
       if (!res) return;
       await Provider.of<ChildrenItemsProvider>(context, listen: false)
