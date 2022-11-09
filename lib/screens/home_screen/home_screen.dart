@@ -19,8 +19,13 @@ import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:explorer/utils/general_utils.dart';
 
 class HomeScreen extends StatefulWidget {
+  final bool sizesExplorer;
   static const String routeName = '/home-screen';
-  const HomeScreen({super.key});
+
+  const HomeScreen({
+    super.key,
+    this.sizesExplorer = false,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -118,6 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
     String cp = currentActiveDir.path;
     String ip = initialDir.path;
     if (cp == ip) {
+      if (widget.sizesExplorer) {
+        return Future.delayed(Duration.zero).then((value) => true);
+      }
       exitCounter++;
       if (exitCounter <= 1) {
         showSnackBar(context: context, message: 'Back Again To Exit');
@@ -185,7 +193,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
                 controller: pageController,
-                physics: BouncingScrollPhysics(),
+                physics: widget.sizesExplorer
+                    ? NeverScrollableScrollPhysics()
+                    : BouncingScrollPhysics(),
                 children: [
                   AnalyzerScreen(),
                   ExplorerScreen(
@@ -196,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     activeDirectory: currentActiveDir,
                     currentActiveDir: currentActiveDir,
                     goHome: goHome,
-                    sizesExplorer: false,
+                    sizesExplorer: widget.sizesExplorer,
                     updateActivePath: updateActivePath,
                   ),
                 ],

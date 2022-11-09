@@ -46,11 +46,16 @@ class AnalyzerProvider extends ChangeNotifier {
   List<ExtensionInfo>? _allExtensionsInfo;
   List<ExtensionInfo>? get allExtensionInfo => _allExtensionsInfo;
 
+  AnalyzerReportInfoModel? reportInfo;
+
   //? last date the user performed (analyzing storage)
   DateTime? lastAnalyzingReportDate;
   Future<void> setLastAnalyzingDate() async {
+    DateTime now = DateTime.now();
     await SharedPrefHelper.setString(
-        lastAnalyzingReportDateKey, DateTime.now().toIso8601String());
+        lastAnalyzingReportDateKey, now.toIso8601String());
+    lastAnalyzingReportDate = now;
+    notifyListeners();
   }
 
   Future<void> loadLastAnalyzingDate() async {
@@ -64,6 +69,7 @@ class AnalyzerProvider extends ChangeNotifier {
   Future<void> loadInitialAppData() async {
     await loadLastAnalyzingDate();
     await getSavedExtensionsInfo();
+    await _getReportInfo();
   }
 
 //? get dir info by path
@@ -155,7 +161,7 @@ class AnalyzerProvider extends ChangeNotifier {
     for (var folderInfo in storageAnalyserV4!.allFolderInfoWithSize) {
       await DBHelper.insert(localFolderInfoTableName, folderInfo.toJSON());
     }
-    _saveReportInfo();
+    await _saveReportInfo();
   }
 
 //? get saved folders info
@@ -197,6 +203,21 @@ class AnalyzerProvider extends ChangeNotifier {
       totalFilesSize: _advancedStorageAnalyzer!.allFilesSize,
     );
     await DBHelper.insert(
-        analyzerReportInfoTableName, analyzerReportInfoModel.toJSON());
+      analyzerReportInfoTableName,
+      analyzerReportInfoModel.toJSON(),
+    );
+    reportInfo = analyzerReportInfoModel;
+    notifyListeners();
+  }
+
+  //? load report info
+  Future<void> _getReportInfo() async {
+    if (lastAnalyzingReportDate != null) {
+      var data = await DBHelper.getData(analyzerReportInfoTableName);
+      AnalyzerReportInfoModel analyzerReportInfoModel =
+          AnalyzerReportInfoModel.fromJSON(data.first);
+      reportInfo = analyzerReportInfoModel;
+      notifyListeners();
+    }
   }
 }

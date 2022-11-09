@@ -23,7 +23,7 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
 
     return Container(
       color: kBackgroundColor,
-      child: analyzerProvider.storageAnalyserV4 != null
+      child: analyzerProvider.lastAnalyzingReportDate != null
           ? AnalyzingReport()
           : AnalyzingStarter(),
     );
