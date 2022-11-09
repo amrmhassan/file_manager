@@ -1,3 +1,4 @@
+import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
@@ -21,6 +22,8 @@ class DBHelper {
       finalPath,
       //? this is when creating the database itself so create all your tables here
       onCreate: (db, version) async {
+        //? create extension info table
+        await db.execute(ExtensionInfo.toSQLString());
         //? creating analyzer reports table
         await db.execute(AnalyzerReportInfoModel.toSQLString());
         //? creating info of the analyzer folders info

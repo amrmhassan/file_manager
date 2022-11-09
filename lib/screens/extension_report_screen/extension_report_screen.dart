@@ -3,7 +3,6 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
-import 'package:explorer/screens/scanning_storage_screen/widgets/analyze_entity_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,10 +28,7 @@ class _ExtensionReportScreenState extends State<ExtensionReportScreen> {
         physics: BouncingScrollPhysics(),
         children: extFiles
             .map(
-              (e) => AnalyzeEntityItem(
-                fileSystemEntity: e,
-                parentSize: extensionSize,
-              ),
+              (e) => Text('data'),
             )
             .toList(),
       ),

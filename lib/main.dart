@@ -8,7 +8,6 @@ import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/screens/extension_report_screen/extension_report_screen.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.dart';
-import 'package:explorer/screens/scanning_storage_screen/scanning_storage_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +48,6 @@ class MyApp extends StatelessWidget {
         initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
         routes: {
           HomeScreen.routeName: (context) => HomeScreen(),
-          ScanningStorageScreen.routeName: (context) => ScanningStorageScreen(),
           TestScreen.routeName: (context) => TestScreen(),
           IsolateTestingScreen.routeName: (context) => IsolateTestingScreen(),
           ExtensionReportScreen.routeName: (context) => ExtensionReportScreen(),

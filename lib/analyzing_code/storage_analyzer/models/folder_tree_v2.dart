@@ -1,7 +1,7 @@
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 
 import '../../globals/files_folders_operations.dart';
-import 'extension_count.dart';
+import 'extension_info.dart';
 
 class FolderTreeV2 {
   List<FolderTreeV2?> folderTree;

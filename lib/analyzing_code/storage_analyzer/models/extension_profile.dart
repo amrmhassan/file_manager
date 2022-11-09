@@ -1,11 +1,13 @@
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
+
 import 'file_info.dart';
 
 class ExtensionProfile {
   final String ext;
-  final FileInfo fileInfo;
+  final LocalFileInfo localFileInfo;
 
   const ExtensionProfile({
     required this.ext,
-    required this.fileInfo,
+    required this.localFileInfo,
   });
 }

@@ -19,3 +19,7 @@ const String folderCountString = 'folderCountString';
 const String filesCountString = 'filesCountString';
 const String extensionsCountString = 'extensionsCountString';
 const String totalFilesSizeString = 'totalFilesSizeString';
+
+//? extension info
+const String countString = 'countString';
+const String extString = 'extString';
