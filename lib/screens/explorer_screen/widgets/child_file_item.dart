@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
@@ -41,9 +42,20 @@ class ChildFileItem extends StatefulWidget {
 class _ChildFileItemState extends State<ChildFileItem> {
   final GlobalKey key = GlobalKey();
   Directory? tempDir;
-  double? height;
+  double? height = 100;
+  late int parentSize;
+  double marginAnimations = allowNormalExpAnimation ? 20 : 0;
   @override
   void initState() {
+    parentSize = allowSizesExpAnimation ? 0 : widget.parentSize;
+    Future.delayed(entitySizePercentageDuration).then((value) {
+      if (mounted) {
+        setState(() {
+          parentSize = widget.parentSize;
+          marginAnimations = 0;
+        });
+      }
+    });
     Future.delayed(Duration.zero).then((value) async {
       tempDir = await getTemporaryDirectory();
     });
@@ -62,115 +74,121 @@ class _ChildFileItemState extends State<ChildFileItem> {
     return Stack(
       children: [
         if (widget.sizesExplorer)
-          Container(
+          AnimatedContainer(
+            duration: entitySizePercentageDuration,
             width: Responsive.getWidthPercentage(
               context,
-              getSizePercentage(
-                  widget.storageItemModel.size ?? 0, widget.parentSize),
+              getSizePercentage(widget.storageItemModel.size ?? 0, parentSize),
             ),
             color: kInactiveColor.withOpacity(.2),
             height: height,
           ),
-        Column(
-          key: key,
-          children: [
-            VSpace(factor: .5),
-            PaddingWrapper(
-              child: Row(
-                children: [
-                  false
-                      ? FutureBuilder(
-                          future: VideoThumbnail.thumbnailFile(
-                            thumbnailPath: tempDir?.path ?? 'sdcard',
-                            video: widget.storageItemModel.path,
-                            maxWidth: largeIconSize.toInt(),
-                            imageFormat: ImageFormat.JPEG,
-                            quality: 25,
+        AnimatedContainer(
+          duration: entitySizePercentageDuration,
+          margin: EdgeInsets.only(bottom: marginAnimations),
+          child: Column(
+            key: key,
+            children: [
+              VSpace(factor: .5),
+              PaddingWrapper(
+                child: Row(
+                  children: [
+                    false
+                        ? FutureBuilder(
+                            future: VideoThumbnail.thumbnailFile(
+                              thumbnailPath: tempDir?.path ?? 'sdcard',
+                              video: widget.storageItemModel.path,
+                              maxWidth: largeIconSize.toInt(),
+                              imageFormat: ImageFormat.JPEG,
+                              quality: 25,
+                            ),
+                            builder: (context, snapshot) {
+                              printOnDebug('object');
+                              if (snapshot.hasData) {
+                                printOnDebug(snapshot.data);
+                                return Image.file(
+                                  File(snapshot.data!),
+                                  width: largeIconSize,
+                                );
+                              } else {
+                                return Image.asset(
+                                  getFileTypeIcon(path
+                                      .extension(widget.storageItemModel.path)),
+                                  width: largeIconSize,
+                                );
+                              }
+                            },
+                          )
+                        : Image.asset(
+                            getFileTypeIcon(
+                                path.extension(widget.storageItemModel.path)),
+                            width: largeIconSize,
                           ),
-                          builder: (context, snapshot) {
-                            printOnDebug('object');
-                            if (snapshot.hasData) {
-                              printOnDebug(snapshot.data);
-                              return Image.file(
-                                File(snapshot.data!),
-                                width: largeIconSize,
-                              );
-                            } else {
-                              return Image.asset(
-                                getFileTypeIcon(path
-                                    .extension(widget.storageItemModel.path)),
-                                width: largeIconSize,
-                              );
-                            }
-                          },
-                        )
-                      : Image.asset(
-                          getFileTypeIcon(
-                              path.extension(widget.storageItemModel.path)),
-                          width: largeIconSize,
-                        ),
-                  HSpace(),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
+                    HSpace(),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.sizesExplorer
+                                ? path.basename(widget.storageItemModel.path)
+                                : getFileName(widget.storageItemModel.path),
+                            style: h4LightTextStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           widget.sizesExplorer
-                              ? path.basename(widget.storageItemModel.path)
-                              : getFileName(widget.storageItemModel.path),
-                          style: h4LightTextStyle,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        widget.sizesExplorer
-                            ? FileSizeWithDateModifed(
-                                fileSize: handleConvertSize(
-                                  widget.storageItemModel.size ?? 0,
-                                ),
-                                hasData: true,
-                                modified: widget.storageItemModel.modified,
-                              )
-                            : FutureBuilder<FileStat>(
-                                future:
-                                    File(widget.storageItemModel.path).stat(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    String fileSize = handleConvertSize(
-                                        snapshot.data?.size ?? 0);
-                                    return FileSizeWithDateModifed(
-                                      fileSize: fileSize,
-                                      hasData: snapshot.data != null,
-                                      modified: snapshot.data!.modified,
-                                    );
-                                  } else {
-                                    return Text(
-                                      '...',
-                                      style: h4TextStyleInactive.copyWith(
-                                        color: kInactiveColor,
-                                        height: 1,
-                                      ),
-                                    );
-                                  }
-                                }),
-                      ],
+                              ? FileSizeWithDateModifed(
+                                  fileSize: handleConvertSize(
+                                    widget.storageItemModel.size ?? 0,
+                                  ),
+                                  hasData: true,
+                                  modified: widget.storageItemModel.modified,
+                                )
+                              : FutureBuilder<FileStat>(
+                                  future:
+                                      File(widget.storageItemModel.path).stat(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      String fileSize = handleConvertSize(
+                                          snapshot.data?.size ?? 0);
+                                      return FileSizeWithDateModifed(
+                                        fileSize: fileSize,
+                                        hasData: snapshot.data != null,
+                                        modified: snapshot.data!.modified,
+                                      );
+                                    } else {
+                                      return Text(
+                                        '...',
+                                        style: h4TextStyleInactive.copyWith(
+                                          color: kInactiveColor,
+                                          height: 1,
+                                        ),
+                                      );
+                                    }
+                                  }),
+                        ],
+                      ),
                     ),
-                  ),
-                  Text(
-                    widget.sizesExplorer
-                        ? sizePercentagleString(getSizePercentage(
-                            widget.storageItemModel.size ?? 0,
-                            widget.parentSize,
-                          ))
-                        : getFileExtension(widget.storageItemModel.path),
-                    style: h4TextStyleInactive.copyWith(
-                      color: kInActiveTextColor.withOpacity(.7),
+                    Text(
+                      widget.sizesExplorer
+                          ? sizePercentagleString(
+                              getSizePercentage(
+                                widget.storageItemModel.size ?? 0,
+                                parentSize,
+                              ),
+                            )
+                          : getFileExtension(widget.storageItemModel.path),
+                      style: h4TextStyleInactive.copyWith(
+                        color: kInActiveTextColor.withOpacity(.7),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            VSpace(factor: .5),
-            HomeItemHLine(),
-          ],
+              VSpace(factor: .5),
+              HomeItemHLine(),
+            ],
+          ),
         ),
       ],
     );

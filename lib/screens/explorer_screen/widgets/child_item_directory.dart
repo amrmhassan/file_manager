@@ -50,8 +50,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   int? childrenNumber;
   FileStat? fileStat;
   double? height = 60;
-  int parentSize = 0;
-  // int? size;
+  late int parentSize;
+  double marginAnimations = allowNormalExpAnimation ? 20 : 0;
 
   String? error;
 
@@ -95,10 +95,14 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
 
   @override
   void initState() {
+    parentSize = allowSizesExpAnimation ? 0 : widget.parentSize;
     Future.delayed(entitySizePercentageDuration).then((value) {
-      setState(() {
-        parentSize = widget.parentSize;
-      });
+      if (mounted) {
+        setState(() {
+          parentSize = widget.parentSize;
+          marginAnimations = 0;
+        });
+      }
     });
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -166,91 +170,95 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
             color: kInactiveColor.withOpacity(.2),
             height: height,
           ),
-        Column(
-          key: key,
-          children: [
-            VSpace(factor: .5),
-            PaddingWrapper(
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/icons/folder_colorful.png',
-                    width: largeIconSize,
-                  ),
-                  HSpace(),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.fileName,
-                          style: h4LightTextStyle,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Row(
-                          children: [
-                            error == null
-                                ? Text(
-                                    childrenNumber == null
-                                        ? '...'
-                                        : '$childrenNumber Items',
-                                    style:
-                                        h5InactiveTextStyle.copyWith(height: 1),
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                : Text(
-                                    'System',
-                                    style:
-                                        h5InactiveTextStyle.copyWith(height: 1),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                            if (fileStat != null)
-                              Row(
-                                children: [
-                                  Text(
-                                    ' | ',
-                                    style:
-                                        h5InactiveTextStyle.copyWith(height: 1),
-                                  ),
-                                  Text(
-                                    widget.sizesExplorer
-                                        ? handleConvertSize(
-                                            widget.storageItemModel.size ?? 0)
-                                        : DateFormat('yyyy-MM-dd')
-                                            .format(fileStat!.changed),
-                                    style:
-                                        h5InactiveTextStyle.copyWith(height: 1),
-                                  )
-                                ],
-                              ),
-                          ],
-                        ),
-                      ],
+        AnimatedContainer(
+          duration: entitySizePercentageDuration,
+          margin: EdgeInsets.only(bottom: marginAnimations),
+          child: Column(
+            key: key,
+            children: [
+              VSpace(factor: .5),
+              PaddingWrapper(
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/icons/folder_colorful.png',
+                      width: largeIconSize,
                     ),
-                  ),
-                  if (widget.sizesExplorer)
-                    Text(
-                      sizePercentagleString(
-                        getSizePercentage(
-                          widget.storageItemModel.size ?? 0,
-                          parentSize,
-                        ),
-                      ),
-                      style: h4TextStyleInactive.copyWith(
-                        color: kInActiveTextColor.withOpacity(.7),
+                    HSpace(),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.fileName,
+                            style: h4LightTextStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Row(
+                            children: [
+                              error == null
+                                  ? Text(
+                                      childrenNumber == null
+                                          ? '...'
+                                          : '$childrenNumber Items',
+                                      style: h5InactiveTextStyle.copyWith(
+                                          height: 1),
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  : Text(
+                                      'System',
+                                      style: h5InactiveTextStyle.copyWith(
+                                          height: 1),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                              if (fileStat != null)
+                                Row(
+                                  children: [
+                                    Text(
+                                      ' | ',
+                                      style: h5InactiveTextStyle.copyWith(
+                                          height: 1),
+                                    ),
+                                    Text(
+                                      widget.sizesExplorer
+                                          ? handleConvertSize(
+                                              widget.storageItemModel.size ?? 0)
+                                          : DateFormat('yyyy-MM-dd')
+                                              .format(fileStat!.changed),
+                                      style: h5InactiveTextStyle.copyWith(
+                                          height: 1),
+                                    )
+                                  ],
+                                ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  Image.asset(
-                    'assets/icons/right-arrow.png',
-                    width: mediumIconSize,
-                    color: kInactiveColor,
-                  )
-                ],
+                    if (widget.sizesExplorer)
+                      Text(
+                        sizePercentagleString(
+                          getSizePercentage(
+                            widget.storageItemModel.size ?? 0,
+                            parentSize,
+                          ),
+                        ),
+                        style: h4TextStyleInactive.copyWith(
+                          color: kInActiveTextColor.withOpacity(.7),
+                        ),
+                      ),
+                    Image.asset(
+                      'assets/icons/right-arrow.png',
+                      width: mediumIconSize,
+                      color: kInactiveColor,
+                    )
+                  ],
+                ),
               ),
-            ),
-            VSpace(factor: .5),
-            HomeItemHLine(),
-          ],
+              VSpace(factor: .5),
+              HomeItemHLine(),
+            ],
+          ),
         ),
       ],
     );
