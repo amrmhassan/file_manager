@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
@@ -48,7 +49,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   final GlobalKey key = GlobalKey();
   int? childrenNumber;
   FileStat? fileStat;
-  double? height;
+  double? height = 60;
+  int parentSize = 0;
   // int? size;
 
   String? error;
@@ -93,10 +95,15 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
 
   @override
   void initState() {
+    Future.delayed(entitySizePercentageDuration).then((value) {
+      setState(() {
+        parentSize = widget.parentSize;
+      });
+    });
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
-          height = key.currentContext?.size?.height;
+          height = key.currentContext?.size?.height ?? 0;
         });
       }
     });
@@ -147,11 +154,14 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     return Stack(
       children: [
         if (widget.sizesExplorer)
-          Container(
+          AnimatedContainer(
+            duration: entitySizePercentageDuration,
             width: Responsive.getWidthPercentage(
               context,
               getSizePercentage(
-                  widget.storageItemModel.size ?? 0, widget.parentSize),
+                widget.storageItemModel.size ?? 0,
+                parentSize,
+              ),
             ),
             color: kInactiveColor.withOpacity(.2),
             height: height,
@@ -223,7 +233,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                       sizePercentagleString(
                         getSizePercentage(
                           widget.storageItemModel.size ?? 0,
-                          widget.parentSize,
+                          parentSize,
                         ),
                       ),
                       style: h4TextStyleInactive.copyWith(

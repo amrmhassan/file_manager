@@ -106,7 +106,6 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
     var expProvider = Provider.of<ExplorerProvider>(context);
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
-    var analyzerProvider = Provider.of<AnalyzerProvider>(context);
     var analyzerProviderFalse =
         Provider.of<AnalyzerProvider>(context, listen: false);
     return expProvider.loadingChildren && expProvider.ch.isEmpty

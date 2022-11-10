@@ -20,6 +20,9 @@ Future<bool> handlePressPhoneBackButton({
   String cp = expProvider.currentActiveDir.path;
   String ip = initialDir.path;
   if (cp == ip) {
+    if (sizesExplorer) {
+      return Future.delayed(Duration.zero).then((value) => true);
+    }
     exitCounter++;
     incrmentExitCounter();
     if (exitCounter <= 1) {
