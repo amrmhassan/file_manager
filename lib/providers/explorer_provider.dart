@@ -8,7 +8,6 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/isolates/load_folder_children_isolates.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -16,14 +15,26 @@ import 'package:provider/provider.dart';
 class ExplorerProvider extends ChangeNotifier {
   final List<StorageItemModel> _children = [];
   List<StorageItemModel> get ch => _children;
+  SendPort? globalSendPort;
   ExplorerProvider() {
     runTheIsolate();
   }
+  int? parentSize;
+  //? to update the parent size if in sizes explorer mode
+  void updateParentSize(AnalyzerProvider analyzerProvider) async {
+    //? here i will update the current active dir size
+    LocalFolderInfo? localFolderInfo =
+        await analyzerProvider.getDirInfoByPath(currentActiveDir.path);
+    if (localFolderInfo != null && localFolderInfo.size != null) {
+      parentSize = localFolderInfo.size;
+      notifyListeners();
+    }
+  }
 
-  SendPort? globalSendPort;
-
-  Future<List<StorageItemModel>> viewedChildren(BuildContext context,
-      [bool sizesExplorer = false]) async {
+  Future<List<StorageItemModel>> viewedChildren(
+    BuildContext context, [
+    bool sizesExplorer = false,
+  ]) async {
     if (sizesExplorer) {
       List<StorageItemModel> items = [];
 
@@ -109,20 +120,40 @@ class ExplorerProvider extends ChangeNotifier {
   //   });
   // }
 
-  void goBack() {
+  void goBack({
+    required AnalyzerProvider? analyzerProvider,
+    required bool sizesExplorer,
+  }) {
     if (currentActiveDir.parent.path == '.') return;
-    setActiveDir(currentActiveDir.parent.path);
+    setActiveDir(
+      path: currentActiveDir.parent.path,
+      sizesExplorer: sizesExplorer,
+      analyzerProvider: analyzerProvider,
+    );
   }
 
   //? go home
-  void goHome() {
-    setActiveDir(initialDir.path);
+  void goHome({
+    required AnalyzerProvider? analyzerProvider,
+    required bool sizesExplorer,
+  }) {
+    setActiveDir(
+        path: initialDir.path,
+        analyzerProvider: analyzerProvider,
+        sizesExplorer: sizesExplorer);
   }
 
-  void setActiveDir(String path) {
+  void setActiveDir({
+    required String path,
+    AnalyzerProvider? analyzerProvider,
+    bool sizesExplorer = false,
+  }) {
     currentActiveDir = Directory(path);
     notifyListeners();
     _updateViewedChildren();
+    if (sizesExplorer && analyzerProvider != null) {
+      updateParentSize(analyzerProvider);
+    }
   }
 
 //? add chunk to children list

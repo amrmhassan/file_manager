@@ -4,6 +4,8 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyze_report.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
+import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 class AnalyzingReport extends StatefulWidget {
@@ -26,6 +28,7 @@ class _AnalyzingReportState extends State<AnalyzingReport> {
 
   @override
   Widget build(BuildContext context) {
+    printOnDebug('Analyzing report build');
     return Column(
       children: [
         VSpace(),
@@ -37,9 +40,7 @@ class _AnalyzingReportState extends State<AnalyzingReport> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => HomeScreen(
-                  sizesExplorer: true,
-                ),
+                builder: (context) => SizesExpScreen(),
               ),
             );
           },

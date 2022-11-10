@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
@@ -14,11 +16,13 @@ import 'package:provider/provider.dart';
 class HomeAppBar extends StatelessWidget {
   final int activeScreenIndex;
   final Function(int index) setActiveScreen;
+  final bool sizesExplorer;
 
   const HomeAppBar({
     super.key,
     required this.activeScreenIndex,
     required this.setActiveScreen,
+    required this.sizesExplorer,
   });
 
   @override
@@ -32,8 +36,13 @@ class HomeAppBar extends StatelessWidget {
           children: [
             if (activeScreenIndex == 1)
               AppBarIconButton(
-                  onTap: Provider.of<ExplorerProvider>(context, listen: false)
-                      .goBack,
+                  onTap: () =>
+                      Provider.of<ExplorerProvider>(context, listen: false)
+                          .goBack(
+                              sizesExplorer: sizesExplorer,
+                              analyzerProvider: Provider.of<AnalyzerProvider>(
+                                  context,
+                                  listen: false)),
                   iconName: 'back'),
             Spacer(),
             Spacer(),
@@ -56,10 +65,48 @@ class HomeAppBar extends StatelessWidget {
                           context: context,
                           builder: (ctx) {
                             return ModalWrapper(
+                              afterLinePaddingFactor: 0,
+                              bottomPaddingFactor: 0,
+                              padding: EdgeInsets.zero,
                               color: kCardBackgroundColor,
                               showTopLine: false,
                               borderRadius: mediumBorderRadius,
-                              child: Text('Text'),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ButtonWrapper(
+                                    borderRadius: 0,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: kHPad / 2,
+                                      vertical: kVPad / 2,
+                                    ),
+                                    onTap: () {},
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Create Folder',
+                                      style: h4TextStyleInactive.copyWith(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  ButtonWrapper(
+                                    borderRadius: 0,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: kHPad / 2,
+                                      vertical: kVPad / 2,
+                                    ),
+                                    onTap: () {},
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Create Folder',
+                                      style: h4TextStyleInactive.copyWith(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             );
                           });
                     },
@@ -74,13 +121,15 @@ class HomeAppBar extends StatelessWidget {
                       Provider.of<AnalyzerProvider>(context, listen: false)
                           .handleAnalyzeEvent();
                     },
-                    iconName: 'down-arrow'),
+                    iconName: 'reload',
+                  ),
           ],
         ),
-        ExplorerModeSwitcher(
-          activeScreenIndex: activeScreenIndex,
-          setActiveScreen: setActiveScreen,
-        ),
+        if (!sizesExplorer)
+          ExplorerModeSwitcher(
+            activeScreenIndex: activeScreenIndex,
+            setActiveScreen: setActiveScreen,
+          ),
       ],
     );
   }

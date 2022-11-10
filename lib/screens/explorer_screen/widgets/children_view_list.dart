@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -16,12 +17,10 @@ import 'package:path/path.dart' as path_operations;
 
 class ChildrenViewList extends StatefulWidget {
   final bool sizesExplorer;
-  final int? parentSize;
 
   const ChildrenViewList({
     super.key,
     this.sizesExplorer = false,
-    this.parentSize,
   });
 
   @override
@@ -107,6 +106,9 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
     var expProvider = Provider.of<ExplorerProvider>(context);
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
+    var analyzerProvider = Provider.of<AnalyzerProvider>(context);
+    var analyzerProviderFalse =
+        Provider.of<AnalyzerProvider>(context, listen: false);
     return expProvider.loadingChildren && expProvider.ch.isEmpty
         ? Center(child: CircularProgressIndicator())
         : FutureBuilder(
@@ -127,9 +129,14 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
                               : StorageItem(
                                   key: Key(f.path),
                                   storageItemModel: f,
-                                  onDirTapped: expProviderFalse.setActiveDir,
+                                  onDirTapped: (path) =>
+                                      expProviderFalse.setActiveDir(
+                                          path: path,
+                                          sizesExplorer: widget.sizesExplorer,
+                                          analyzerProvider:
+                                              analyzerProviderFalse),
                                   sizesExplorer: widget.sizesExplorer,
-                                  parentSize: widget.parentSize ?? 0,
+                                  parentSize: expProvider.parentSize ?? 0,
                                 );
                         },
                       )
@@ -156,8 +163,6 @@ class TestEntity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Here');
-
     return Container(
       width: double.infinity,
       height: 50,

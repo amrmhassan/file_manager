@@ -6,7 +6,6 @@ import 'dart:isolate';
 
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/utils/general_utils.dart';
 
 //! add a counter to send the data after receiving for example 3 chuncks of data
 //! then clear the list then add agian until done

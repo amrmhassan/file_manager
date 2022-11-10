@@ -14,9 +14,11 @@ class ModalWrapper extends StatelessWidget {
   final Color? color;
   final bool applyActive;
   final double? afterLinePaddingFactor;
+  final double? bottomPaddingFactor;
   final bool showTopLine;
   final Color? applyButtonColor;
   final double? borderRadius;
+  final EdgeInsets? padding;
 
   const ModalWrapper({
     Key? key,
@@ -26,9 +28,11 @@ class ModalWrapper extends StatelessWidget {
     this.applyActive = true,
     this.color,
     this.afterLinePaddingFactor,
+    this.bottomPaddingFactor,
     this.showTopLine = true,
     this.applyButtonColor,
     this.borderRadius,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -37,10 +41,11 @@ class ModalWrapper extends StatelessWidget {
 
     return PaddingWrapper(
       margin: EdgeInsets.only(bottom: bottomPadding),
-      padding: EdgeInsets.only(
-        right: kHPad,
-        left: kHPad,
-      ),
+      padding: padding ??
+          EdgeInsets.only(
+            right: kHPad,
+            left: kHPad,
+          ),
       decoration: BoxDecoration(
         color: color ?? Colors.white,
         borderRadius: BorderRadius.only(
@@ -64,7 +69,7 @@ class ModalWrapper extends StatelessWidget {
             ),
           VSpace(factor: afterLinePaddingFactor ?? 2),
           child,
-          VSpace(factor: 2),
+          VSpace(factor: bottomPaddingFactor ?? 2),
           if (onApply != null && applyButtonTitle != null)
             ApplyModalButton(
                 color: applyButtonColor,

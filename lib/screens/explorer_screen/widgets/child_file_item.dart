@@ -59,11 +59,6 @@ class _ChildFileItemState extends State<ChildFileItem> {
 
   @override
   Widget build(BuildContext context) {
-    String ext = path
-        .extension(widget.storageItemModel.path)
-        .toLowerCase()
-        .replaceAll('.', '');
-
     return Stack(
       children: [
         if (widget.sizesExplorer)

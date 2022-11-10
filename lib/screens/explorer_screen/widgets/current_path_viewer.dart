@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/path_entity_text.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -11,8 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CurrentPathViewer extends StatefulWidget {
+  final bool sizesExplorer;
   const CurrentPathViewer({
     Key? key,
+    required this.sizesExplorer,
   }) : super(key: key);
 
   @override
@@ -45,7 +48,10 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
     return Row(
       children: [
         ButtonWrapper(
-          onTap: expProviderFalse.goHome,
+          onTap: () => expProviderFalse.goHome(
+              sizesExplorer: widget.sizesExplorer,
+              analyzerProvider:
+                  Provider.of<AnalyzerProvider>(context, listen: false)),
           borderRadius: 0,
           padding: EdgeInsets.all(largePadding),
           child: Image.asset(
@@ -70,7 +76,9 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
                 child: Row(
                   children: [
                     HSpace(),
-                    PathRow(),
+                    PathRow(
+                      sizesExplorer: widget.sizesExplorer,
+                    ),
                     HSpace(),
                   ],
                 ),
@@ -84,7 +92,11 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
 }
 
 class PathRow extends StatelessWidget {
-  const PathRow({super.key});
+  final bool sizesExplorer;
+  const PathRow({
+    super.key,
+    required this.sizesExplorer,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +104,8 @@ class PathRow extends StatelessWidget {
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
     List<String> folders = expProvider.currentActiveDir.path.split('/');
+    var analyzerProvieer =
+        Provider.of<AnalyzerProvider>(context, listen: false);
 
     return GestureDetector(
       onLongPress: () =>
@@ -108,7 +122,11 @@ class PathRow extends StatelessWidget {
                       if (entry.key != folders.length - 1) {
                         String newPath =
                             folders.sublist(0, entry.key + 1).join('/');
-                        expProviderFalse.setActiveDir(newPath);
+                        expProviderFalse.setActiveDir(
+                          sizesExplorer: sizesExplorer,
+                          path: newPath,
+                          analyzerProvider: analyzerProvieer,
+                        );
                       } else {
                         copyPathToClipboard(
                             context, expProviderFalse.currentActiveDir.path);

@@ -7,6 +7,7 @@ import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
+import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -18,12 +19,10 @@ import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:explorer/utils/general_utils.dart';
 
 class HomeScreen extends StatefulWidget {
-  final bool sizesExplorer;
   static const String routeName = '/home-screen';
 
   const HomeScreen({
     super.key,
-    this.sizesExplorer = false,
   });
 
   @override
@@ -87,39 +86,12 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   //? update viewed children
-  void updateViewChildren(String path) async {
-    Provider.of<ExplorerProvider>(context, listen: false).setActiveDir(path);
-  }
+  // void updateViewChildren(String path) async {
+  //   Provider.of<ExplorerProvider>(context, listen: false)
+  //       .setActiveDir(path: path);
+  // }
 
 //? handling going back in path
-
-  //? to catch clicking the phone back button
-  Future<bool> handlePressPhoneBackButton() {
-    var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
-    bool exit = false;
-    String cp = expProvider.currentActiveDir.path;
-    String ip = initialDir.path;
-    if (cp == ip) {
-      if (widget.sizesExplorer) {
-        return Future.delayed(Duration.zero).then((value) => true);
-      }
-      exitCounter++;
-      if (exitCounter <= 1) {
-        showSnackBar(context: context, message: 'Back Again To Exit');
-        exit = false;
-      } else {
-        exit = true;
-      }
-    } else {
-      exit = false;
-    }
-    expProvider.goBack();
-    //* to reset the exit counter after 2 seconds
-    Future.delayed(Duration(seconds: 5)).then((value) {
-      exitCounter = 0;
-    });
-    return Future.delayed(Duration.zero).then((value) => exit);
-  }
 
   @override
   void initState() {
@@ -135,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bool res = await handleStoragePermissions(
         context: context,
         callback: () {
-          expProvider.setActiveDir(expProvider.currentActiveDir.path);
+          expProvider.setActiveDir(path: expProvider.currentActiveDir.path);
         },
       );
       if (!res) return;
@@ -149,7 +121,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: handlePressPhoneBackButton,
+      onWillPop: () => handlePressPhoneBackButton(
+        context: context,
+        exitCounter: exitCounter,
+        sizesExplorer: false,
+        clearExitCounter: () {
+          exitCounter = 0;
+        },
+        incrmentExitCounter: () {
+          exitCounter++;
+        },
+      ),
       child: ScreensWrapper(
         backgroundColor: kBackgroundColor,
         child: Column(
@@ -157,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
             HomeAppBar(
               activeScreenIndex: activeViewIndex,
               setActiveScreen: setActiveScreen,
+              sizesExplorer: false,
             ),
             Expanded(
               child: PageView(
@@ -166,13 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
                 controller: pageController,
-                physics: widget.sizesExplorer
-                    ? NeverScrollableScrollPhysics()
-                    : BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 children: [
                   AnalyzerScreen(),
                   ExplorerScreen(
-                    sizesExplorer: widget.sizesExplorer,
+                    sizesExplorer: false,
                   ),
                 ],
               ),
