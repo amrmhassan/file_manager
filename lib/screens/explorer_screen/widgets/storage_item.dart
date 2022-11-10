@@ -32,14 +32,22 @@ class StorageItem extends StatelessWidget {
         ButtonWrapper(
           onTap: () async {
             if (isDir(storageItemModel.path)) {
+              //* here open the folder
               onDirTapped(storageItemModel.path);
             } else {
-              //? here perform open the file
-              var res = await OpenFile.open(storageItemModel.path);
-              printOnDebug(res.message);
-              printOnDebug(res.type);
+              //* here perform open the file
+              await OpenFile.open(storageItemModel.path);
             }
           },
+          //* this will delay the normal tap response
+          // onDoubleTapped: () {
+          //   printOnDebug(storageItemModel.entityType.name);
+          //   if (isDir(storageItemModel.path)) {
+          //     //? view the folder details screen here
+          //   } else {
+          //     //? fast open file (audio, video, text)
+          //   }
+          // },
           borderRadius: 0,
           child: isDir(storageItemModel.path)
               ? ChildDirectoryItem(

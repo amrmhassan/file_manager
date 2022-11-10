@@ -3,6 +3,7 @@
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyze_report.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
+import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
@@ -36,19 +37,16 @@ class _AnalyzingReportState extends State<AnalyzingReport> {
         AnalyzerOptionsItem(
           logoName: 'sizes_explorer',
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SizesExpScreen(),
-              ),
-            );
+            Navigator.pushNamed(context, SizesExpScreen.routeName);
           },
           title: 'Sizes Explorer',
         ),
         VSpace(),
         AnalyzerOptionsItem(
           logoName: 'txt',
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, ExtReportScreen.routeName);
+          },
           title: 'Extensions',
         ),
       ],

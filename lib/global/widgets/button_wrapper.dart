@@ -17,6 +17,9 @@ class ButtonWrapper extends StatelessWidget {
   final bool active;
   final Color? inactiveColor;
   final Border? border;
+  final VoidCallback? onDoubleTapped;
+  final Color? hoverColor;
+  final Color? focusedColor;
 
   const ButtonWrapper({
     Key? key,
@@ -36,6 +39,9 @@ class ButtonWrapper extends StatelessWidget {
     this.active = true,
     this.inactiveColor,
     this.border,
+    this.onDoubleTapped,
+    this.hoverColor,
+    this.focusedColor,
   }) : super(key: key);
 
   @override
@@ -57,6 +63,9 @@ class ButtonWrapper extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+          hoverColor: hoverColor,
+          focusColor: focusedColor,
+          onDoubleTap: onDoubleTapped,
           onLongPress: onLongPress,
           onTap: active ? onTap : null,
           child: Container(

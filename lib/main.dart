@@ -4,7 +4,8 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
-import 'package:explorer/screens/extension_report_screen/extension_report_screen.dart';
+import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
+import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
@@ -50,8 +51,9 @@ class MyApp extends StatelessWidget {
           HomeScreen.routeName: (context) => HomeScreen(),
           TestScreen.routeName: (context) => TestScreen(),
           IsolateTestingScreen.routeName: (context) => IsolateTestingScreen(),
-          ExtensionReportScreen.routeName: (context) => ExtensionReportScreen(),
           SizesExpScreen.routeName: (context) => SizesExpScreen(),
+          ExtReportScreen.routeName: (context) => ExtReportScreen(),
+          ExtFilesScreen.routeName: (context) => ExtFilesScreen(),
         },
       ),
     );

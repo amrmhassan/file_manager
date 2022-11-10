@@ -104,3 +104,18 @@ void copyPathToClipboard(BuildContext context, String path) {
   Clipboard.setData(ClipboardData(text: path));
   showSnackBar(context: context, message: 'Copied To Clipboard');
 }
+
+//? captalize a single word
+String captlizeWord(String s) {
+  String firstLetter = s[0];
+  String remaining = s.substring(1);
+  return firstLetter.toUpperCase() + remaining;
+}
+
+//? captlize a sentence
+String captlizeSentence(String s) {
+  List<String> words = s.split(' ');
+  var caps = words.map((e) => captlizeWord(e));
+  String capSentence = caps.join(' ');
+  return capSentence;
+}

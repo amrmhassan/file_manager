@@ -127,8 +127,8 @@ class AnalyzerProvider extends ChangeNotifier {
           _allExtensionsInfo = message.allExtensionsInfo;
           _loading = false;
           //? if we reached here this mean the storage analyzer report done successfully
-          await saveResultsToSqlite();
           setLastAnalyzingDate();
+          await saveResultsToSqlite();
         } else if (message is int) {
           printOnDebug('Time Taken: ${message / 1000} Second');
         } else if (message is! SendPort) {
