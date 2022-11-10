@@ -4,9 +4,7 @@ import 'dart:io';
 
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
@@ -15,13 +13,13 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_size_with_date_modified.dart';
+import 'package:explorer/screens/explorer_screen/widgets/file_thumbnail.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ChildFileItem extends StatefulWidget {
   final StorageItemModel storageItemModel;
@@ -93,37 +91,9 @@ class _ChildFileItemState extends State<ChildFileItem> {
               PaddingWrapper(
                 child: Row(
                   children: [
-                    false
-                        ? FutureBuilder(
-                            future: VideoThumbnail.thumbnailFile(
-                              thumbnailPath: tempDir?.path ?? 'sdcard',
-                              video: widget.storageItemModel.path,
-                              maxWidth: largeIconSize.toInt(),
-                              imageFormat: ImageFormat.JPEG,
-                              quality: 25,
-                            ),
-                            builder: (context, snapshot) {
-                              printOnDebug('object');
-                              if (snapshot.hasData) {
-                                printOnDebug(snapshot.data);
-                                return Image.file(
-                                  File(snapshot.data!),
-                                  width: largeIconSize,
-                                );
-                              } else {
-                                return Image.asset(
-                                  getFileTypeIcon(path
-                                      .extension(widget.storageItemModel.path)),
-                                  width: largeIconSize,
-                                );
-                              }
-                            },
-                          )
-                        : Image.asset(
-                            getFileTypeIcon(
-                                path.extension(widget.storageItemModel.path)),
-                            width: largeIconSize,
-                          ),
+                    FileThumnail(
+                      path: widget.storageItemModel.path,
+                    ),
                     HSpace(),
                     Expanded(
                       child: Column(

@@ -1,11 +1,17 @@
+enum FileType {
+  image,
+  video,
+  audio,
+  batch,
+  archive,
+  unknown,
+}
+
 List<String> audioExt = [
-  '3gp'
-      ','
-      'aa'
-      ','
-      'aac'
-      ','
-      'aax',
+  '3gp',
+  'aa',
+  'aac',
+  'aax',
   'act',
   'aiff',
   'alac',
@@ -116,6 +122,23 @@ List<String> archivesExt = [
   'rar',
   'iso',
 ];
+
+FileType getFileType(String extension) {
+  String ext = extension.toLowerCase().replaceAll('.', '');
+  if (audioExt.contains(ext)) {
+    return FileType.audio;
+  } else if (videoExt.contains(ext)) {
+    return FileType.video;
+  } else if (imagesExt.contains(ext)) {
+    return FileType.image;
+  } else if (archivesExt.contains(ext)) {
+    return FileType.archive;
+  } else if (batchFilesExt.contains(ext)) {
+    return FileType.batch;
+  } else {
+    return FileType.unknown;
+  }
+}
 
 String getFileTypeIcon(String extension) {
   String ext = extension.toLowerCase().replaceAll('.', '');
