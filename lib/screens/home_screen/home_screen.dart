@@ -3,7 +3,7 @@
 import 'dart:async';
 import 'dart:isolate';
 import 'package:explorer/providers/analyzer_provider.dart';
-import 'package:explorer/providers/dir_children_list_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';

@@ -4,7 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
-import 'package:explorer/providers/dir_children_list_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart';
 import 'package:explorer/utils/general_utils.dart';

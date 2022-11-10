@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, dead_code
 
 import 'dart:io';
 
@@ -19,6 +19,8 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ChildFileItem extends StatefulWidget {
   final StorageItemModel storageItemModel;
@@ -38,9 +40,13 @@ class ChildFileItem extends StatefulWidget {
 
 class _ChildFileItemState extends State<ChildFileItem> {
   final GlobalKey key = GlobalKey();
+  Directory? tempDir;
   double? height;
   @override
   void initState() {
+    Future.delayed(Duration.zero).then((value) async {
+      tempDir = await getTemporaryDirectory();
+    });
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (mounted && widget.sizesExplorer) {
         setState(() {
@@ -53,6 +59,11 @@ class _ChildFileItemState extends State<ChildFileItem> {
 
   @override
   Widget build(BuildContext context) {
+    String ext = path
+        .extension(widget.storageItemModel.path)
+        .toLowerCase()
+        .replaceAll('.', '');
+
     return Stack(
       children: [
         if (widget.sizesExplorer)
@@ -72,11 +83,37 @@ class _ChildFileItemState extends State<ChildFileItem> {
             PaddingWrapper(
               child: Row(
                 children: [
-                  Image.asset(
-                    getFileTypeIcon(
-                        path.extension(widget.storageItemModel.path)),
-                    width: largeIconSize,
-                  ),
+                  false
+                      ? FutureBuilder(
+                          future: VideoThumbnail.thumbnailFile(
+                            thumbnailPath: tempDir?.path ?? 'sdcard',
+                            video: widget.storageItemModel.path,
+                            maxWidth: largeIconSize.toInt(),
+                            imageFormat: ImageFormat.JPEG,
+                            quality: 25,
+                          ),
+                          builder: (context, snapshot) {
+                            printOnDebug('object');
+                            if (snapshot.hasData) {
+                              printOnDebug(snapshot.data);
+                              return Image.file(
+                                File(snapshot.data!),
+                                width: largeIconSize,
+                              );
+                            } else {
+                              return Image.asset(
+                                getFileTypeIcon(path
+                                    .extension(widget.storageItemModel.path)),
+                                width: largeIconSize,
+                              );
+                            }
+                          },
+                        )
+                      : Image.asset(
+                          getFileTypeIcon(
+                              path.extension(widget.storageItemModel.path)),
+                          width: largeIconSize,
+                        ),
                   HSpace(),
                   Expanded(
                     child: Column(

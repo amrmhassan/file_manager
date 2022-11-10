@@ -6,6 +6,7 @@ import 'dart:isolate';
 
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/utils/general_utils.dart';
 
 //! add a counter to send the data after receiving for example 3 chuncks of data
 //! then clear the list then add agian until done
@@ -50,7 +51,7 @@ void _listingDirChildren(String path, SendPort sendPort) {
   Directory directory = Directory(path);
   var stream = directory.list();
   streamSub = stream.listen((entity) async {
-    if (cachedChildren.length > 100) {
+    if (cachedChildren.length % 100 == 0 && cachedChildren.isNotEmpty) {
       //? here send the list then clear it
       sendPort.send(
         LoadChildrenMessagesData(
@@ -60,7 +61,7 @@ void _listingDirChildren(String path, SendPort sendPort) {
       cachedChildren.clear();
     } else {
       //? here just add to the list
-      FileStat entityStat = await entity.stat();
+      FileStat entityStat = entity.statSync();
       StorageItemModel storageItemModel = StorageItemModel(
         parentPath: entity.parent.path,
         path: entity.path,
@@ -86,6 +87,7 @@ void _listingDirChildren(String path, SendPort sendPort) {
           flag: LoadChildrenMessagesFlags.done,
         ),
       );
+      cachedChildren.clear();
     },
   );
 

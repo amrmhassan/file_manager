@@ -1,21 +1,18 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, dead_code
 
-import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
+import 'package:explorer/constants/styles.dart';
 import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
-import 'package:explorer/providers/dir_children_list_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 import 'package:explorer/screens/explorer_screen/widgets/empty_folder.dart';
 import 'package:explorer/screens/home_screen/widgets/error_opening_folder.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as path_operations;
 
 class ChildrenViewList extends StatefulWidget {
   final bool sizesExplorer;
@@ -106,11 +103,12 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
 
   @override
   Widget build(BuildContext context) {
+    bool test = false;
     var expProvider = Provider.of<ExplorerProvider>(context);
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
-    return expProvider.loadingChildren
-        ? SizedBox()
+    return expProvider.loadingChildren && expProvider.ch.isEmpty
+        ? Center(child: CircularProgressIndicator())
         : FutureBuilder(
             future: expProvider.viewedChildren(context, widget.sizesExplorer),
             builder: (context, snapshot) {
@@ -124,13 +122,15 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
                         itemCount: viewedList.length,
                         itemBuilder: (context, index) {
                           StorageItemModel f = viewedList[index];
-                          return StorageItem(
-                            key: Key(f.path),
-                            storageItemModel: f,
-                            onDirTapped: expProviderFalse.setActiveDir,
-                            sizesExplorer: widget.sizesExplorer,
-                            parentSize: widget.parentSize ?? 0,
-                          );
+                          return test
+                              ? TestEntity(f: f)
+                              : StorageItem(
+                                  key: Key(f.path),
+                                  storageItemModel: f,
+                                  onDirTapped: expProviderFalse.setActiveDir,
+                                  sizesExplorer: widget.sizesExplorer,
+                                  parentSize: widget.parentSize ?? 0,
+                                );
                         },
                       )
                     : expProviderFalse.error == null
@@ -139,9 +139,37 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
                             : SizedBox())
                         : ErrorOpenFolder();
               } else {
-                return Text('Loading.......');
+                return Center(child: CircularProgressIndicator());
               }
             },
           );
+  }
+}
+
+class TestEntity extends StatelessWidget {
+  const TestEntity({
+    Key? key,
+    required this.f,
+  }) : super(key: key);
+
+  final StorageItemModel f;
+
+  @override
+  Widget build(BuildContext context) {
+    print('Here');
+
+    return Container(
+      width: double.infinity,
+      height: 50,
+      margin: EdgeInsets.only(
+        bottom: 10,
+      ),
+      child: Text(
+        path_operations.basename(f.path),
+        style: h4TextStyle.copyWith(
+          color: Colors.white,
+        ),
+      ),
+    );
   }
 }

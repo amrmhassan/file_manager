@@ -4,7 +4,7 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_inf
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
-import 'package:explorer/providers/dir_children_list_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/children_view_list.dart';
 import 'package:explorer/screens/explorer_screen/widgets/current_path_viewer.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
