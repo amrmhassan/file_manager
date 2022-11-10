@@ -14,7 +14,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
-import 'package:explorer/screens/analyzer_screen/isolates/analyzing_isolates.dart';
+import 'package:explorer/providers/isolates/analyzing_isolates.dart';
 import 'package:flutter/cupertino.dart';
 
 //! don't load all folders info to the state when loading the app

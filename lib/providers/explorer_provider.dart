@@ -7,7 +7,7 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
-import 'package:explorer/screens/home_screen/isolates/load_folder_children_isolates.dart';
+import 'package:explorer/providers/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
