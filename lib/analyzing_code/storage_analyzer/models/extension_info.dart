@@ -5,18 +5,22 @@ class ExtensionInfo {
   final int count;
   final String ext;
   final int size;
+  final List<String> filesPath;
 
   const ExtensionInfo({
     required this.count,
     required this.ext,
     required this.size,
+    required this.filesPath,
   });
 
   Map<String, String> toJSON() {
+    String fp = filesPath.join('++==');
     return {
       countString: count.toString(),
       extString: ext,
       sizeString: size.toString(),
+      filesPathString: fp,
     };
   }
 
@@ -25,10 +29,11 @@ class ExtensionInfo {
       count: int.parse(jsonOBJ[countString]),
       ext: jsonOBJ[extString],
       size: int.parse(jsonOBJ[sizeString]),
+      filesPath: (jsonOBJ[filesPathString] as String).split('++=='),
     );
   }
 
   static String toSQLString() {
-    return 'CREATE TABLE $extensionInfoTableName ($extString TEXT PRIMARY KEY,$countString TEXT, $sizeString TEXT)';
+    return 'CREATE TABLE $extensionInfoTableName ($extString TEXT PRIMARY KEY,$countString TEXT, $sizeString TEXT, $filesPathString TEXT)';
   }
 }

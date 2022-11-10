@@ -28,7 +28,6 @@ class _AnalyzingReportState extends State<AnalyzingReport> {
 
   @override
   Widget build(BuildContext context) {
-    printOnDebug('Analyzing report build');
     return Column(
       children: [
         VSpace(),

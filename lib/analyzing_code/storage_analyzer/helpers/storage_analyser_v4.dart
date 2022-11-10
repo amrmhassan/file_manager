@@ -1,6 +1,4 @@
-import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
-import 'package:explorer/analyzing_code/storage_analyzer/models/extension_profile.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 
@@ -53,41 +51,39 @@ class StorageAnalyserV4 {
 
   //? to get all extensions info of a folder
   List<ExtensionInfo> _folderExtensionsInfo() {
-    List<ExtensionProfile?> extesntionsWithRepeat = [];
+    List<LocalFileInfo?> allFiles = [...allFilesInfo];
 
-    List<LocalFileInfo> files = allFilesInfo;
-    for (var fileInfo in files) {
-      String ext = getFileExtension(fileInfo.path);
-      ExtensionProfile ep = ExtensionProfile(ext: ext, localFileInfo: fileInfo);
-      extesntionsWithRepeat.add(ep);
-    }
-    extesntionsWithRepeat.sort(
+    allFiles.sort(
       (a, b) {
         return a!.ext.compareTo(b!.ext);
       },
     );
-    extesntionsWithRepeat.add(null);
+    allFiles.add(null);
     List<ExtensionInfo> extInfoList = [];
     List<String> iterateExt = [];
+    List<String> filesPathes = [];
     int count = 0;
     int extSize = 0;
-    ExtensionProfile? previousValue = extesntionsWithRepeat[0];
-    for (var ext in extesntionsWithRepeat) {
-      if (previousValue?.ext != ext?.ext) {
+    LocalFileInfo? previousValue = allFiles[0];
+    for (var file in allFiles) {
+      if (previousValue?.ext != file?.ext) {
         iterateExt.add(previousValue!.ext);
         ExtensionInfo ec = ExtensionInfo(
           count: count,
           ext: previousValue.ext,
           size: extSize,
+          filesPath: [...filesPathes],
         );
         extInfoList.add(ec);
-        extSize = ext?.localFileInfo.size ?? 0;
+        filesPathes.clear();
+        extSize = file?.size ?? 0;
         count = 1;
-      } else if (ext != null) {
-        extSize += ext.localFileInfo.size;
+      } else if (file != null) {
+        extSize += file.size;
         count++;
+        filesPathes.add(file.path);
       }
-      previousValue = ext;
+      previousValue = file;
     }
     return extInfoList;
   }

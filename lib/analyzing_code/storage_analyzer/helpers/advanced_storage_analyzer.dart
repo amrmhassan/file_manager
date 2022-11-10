@@ -133,7 +133,6 @@ class AdvancedStorageAnalyzer {
               onError: onError,
             );
           } catch (e) {
-            printOnDebug('lskjdfklsjdf');
             //
 
           }

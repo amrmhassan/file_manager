@@ -23,3 +23,4 @@ const String totalFilesSizeString = 'totalFilesSizeString';
 //? extension info
 const String countString = 'countString';
 const String extString = 'extString';
+const String filesPathString = 'filesPathString';

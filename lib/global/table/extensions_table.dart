@@ -43,6 +43,7 @@ class ExtensionsTable extends StatelessWidget {
                           arguments: {
                             'ext': entry.value.ext,
                             'size': entry.value.size,
+                            'files': entry.value.filesPath,
                           },
                         );
                       },

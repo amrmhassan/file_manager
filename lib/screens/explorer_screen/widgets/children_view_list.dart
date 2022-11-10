@@ -40,7 +40,6 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
     // Future.delayed(Duration.zero).then((value) async {
     //   var test =
     //       await expProviderFalse.viewedChildren(context, widget.sizesExplorer);
-    //   printOnDebug('from initstate ${test.length}');
     //   setState(() {
     //     fixedEntityList = test;
     //   });
@@ -69,7 +68,6 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
     // Future.delayed(Duration.zero).then((value) async {
     //   var test = await Provider.of<ExplorerProvider>(context, listen: false)
     //       .viewedChildren(context, widget.sizesExplorer);
-    //   printOnDebug('from did update ${test.length}');
     //   setState(() {
     //     fixedEntityList = test;
     //   });
@@ -89,7 +87,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
               try {
                 scrollController.jumpTo(scrollPos);
               } catch (e) {
-                printOnDebug('Error with auto scroll list');
+                //
               }
             });
           }
