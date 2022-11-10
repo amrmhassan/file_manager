@@ -42,10 +42,11 @@ dependencies:
   provider: ^6.0.4
   intl: ^0.17.0
   disk_space: ^0.2.1
-  video_thumbnail: ^0.5.3
   path_provider: ^2.0.11
   thumbnailer: ^2.1.0
   image: ^3.2.2
+  open_file: ^3.2.1
+  file_picker: ^4.6.1
 
 dev_dependencies:
   flutter_test:

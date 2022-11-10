@@ -5,6 +5,9 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
+import 'package:explorer/utils/general_utils.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 
@@ -27,9 +30,14 @@ class StorageItem extends StatelessWidget {
     return Stack(
       children: [
         ButtonWrapper(
-          onTap: () {
+          onTap: () async {
             if (isDir(storageItemModel.path)) {
               onDirTapped(storageItemModel.path);
+            } else {
+              //? here perform open the file
+              var res = await OpenFile.open(storageItemModel.path);
+              printOnDebug(res.message);
+              printOnDebug(res.type);
             }
           },
           borderRadius: 0,
