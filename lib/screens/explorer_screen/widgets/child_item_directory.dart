@@ -13,7 +13,9 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
+import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -32,6 +34,7 @@ class ChildDirectoryItem extends StatefulWidget {
   final StorageItemModel storageItemModel;
   final bool sizesExplorer;
   final int parentSize;
+  final bool isSelected;
 
   const ChildDirectoryItem({
     super.key,
@@ -39,6 +42,7 @@ class ChildDirectoryItem extends StatefulWidget {
     required this.storageItemModel,
     required this.sizesExplorer,
     required this.parentSize,
+    required this.isSelected,
   });
 
   @override
@@ -155,6 +159,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
 
   @override
   Widget build(BuildContext context) {
+    var foProvider = Provider.of<FilesOperationsProvider>(context);
     return Stack(
       children: [
         if (widget.sizesExplorer)
@@ -247,11 +252,16 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                           color: kInActiveTextColor.withOpacity(.7),
                         ),
                       ),
-                    Image.asset(
-                      'assets/icons/right-arrow.png',
-                      width: mediumIconSize,
-                      color: kInactiveColor,
-                    )
+                    foProvider.explorMode == ExplorMode.selection
+                        ? EntityCeckBox(
+                            isSelected: widget.isSelected,
+                            storageItemModel: widget.storageItemModel,
+                          )
+                        : Image.asset(
+                            'assets/icons/right-arrow.png',
+                            width: mediumIconSize,
+                            color: kInactiveColor,
+                          )
                   ],
                 ),
               ),

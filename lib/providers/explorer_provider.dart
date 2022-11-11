@@ -4,13 +4,11 @@ import 'dart:isolate';
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -221,23 +219,5 @@ class ExplorerProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
-    //* add to folder watcher
-    // handleWatchCreateWithinActiveDir(
-    //   currentActiveDir: currentActiveDir,
-    //   watchDirStreamSub: watchDirStreamSub,
-    //   callback: (storageItemModel) {
-    //     bool contain = false;
-    //     for (var entity in _children) {
-    //       if (entity.path == storageItemModel.path) {
-    //         contain = true;
-    //         break;
-    //       }
-    //     }
-    //     if (!contain) {
-    //       _children.add(storageItemModel);
-    //       notifyListeners();
-    //     }
-    //   },
-    // );
   }
 }
