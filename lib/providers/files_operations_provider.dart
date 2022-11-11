@@ -57,6 +57,8 @@ class FilesOperationsProvider extends ChangeNotifier {
 //? copy files
   Future<void> performCopy(String currentActiveDir) async {
     List<StorageItemModel> items = [..._selectedItems];
+    FileOparation localOperation =
+        FileOparation.values[currentOperation!.index];
     _loadingOperation = true;
     currentOperation = null;
     _selectedItems.clear();
@@ -66,6 +68,9 @@ class FilesOperationsProvider extends ChangeNotifier {
       if (entity.entityType == EntityType.file) {
         try {
           await compute((m) => copyFile(entity.path, currentActiveDir), '');
+          if (localOperation == FileOparation.move) {
+            await compute((message) => deleteFile(entity.path), '');
+          }
         } catch (e) {
           rethrow;
         }

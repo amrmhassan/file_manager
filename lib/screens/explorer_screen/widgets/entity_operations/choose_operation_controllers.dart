@@ -30,7 +30,11 @@ class ChooseOperationContollers extends StatelessWidget {
               foProviderFalse.setOperation(FileOparation.copy);
             }),
         HSpace(factor: .5),
-        OperationButton(iconName: 'scissors', onTap: () {}),
+        OperationButton(
+            iconName: 'scissors',
+            onTap: () {
+              foProviderFalse.setOperation(FileOparation.move);
+            }),
         HSpace(factor: .5),
         OperationButton(
             iconName: 'delete',
