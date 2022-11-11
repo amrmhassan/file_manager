@@ -44,6 +44,7 @@ const TextStyle h3TextStyle = TextStyle(
   fontFamily: 'Cairo',
 );
 const TextStyle h3LiteTextStyle = TextStyle(
+  color: kInactiveColor,
   fontSize: h3TextSize,
   fontFamily: 'Cairo',
 );

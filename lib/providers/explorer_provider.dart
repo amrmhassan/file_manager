@@ -4,17 +4,20 @@ import 'dart:isolate';
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/isolates/load_folder_children_isolates.dart';
+import 'package:explorer/utils/directory_watchers.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class ExplorerProvider extends ChangeNotifier {
   final List<StorageItemModel> _children = [];
-  List<StorageItemModel> get ch => _children;
+  List<StorageItemModel> get children => _children;
   SendPort? globalSendPort;
   ExplorerProvider() {
     runTheIsolate();
@@ -76,6 +79,7 @@ class ExplorerProvider extends ChangeNotifier {
   String? error;
   Directory currentActiveDir = initialDir;
   StreamSubscription<FileSystemEntity>? streamSub;
+  StreamSubscription? watchDirStreamSub;
 
   // void _updateViewedChildren() async {
   //   if (streamSub != null) {
@@ -149,6 +153,8 @@ class ExplorerProvider extends ChangeNotifier {
     bool sizesExplorer = false,
   }) {
     currentActiveDir = Directory(path);
+    //? run folder watchers
+    runActiveDirWatchers();
     notifyListeners();
     _updateViewedChildren();
     if (sizesExplorer && analyzerProvider != null) {
@@ -196,5 +202,42 @@ class ExplorerProvider extends ChangeNotifier {
     if (globalSendPort != null) {
       globalSendPort!.send(currentActiveDir.path);
     }
+  }
+
+  void runActiveDirWatchers() {
+    DirecotryWatchers direcotryWatchers =
+        DirecotryWatchers(currentActiveDir: currentActiveDir);
+    //* add entity watcher
+    direcotryWatchers.addWatcher(callback: (storageItemModel) {
+      bool contain = false;
+      for (var entity in _children) {
+        if (entity.path == storageItemModel.path) {
+          contain = true;
+          break;
+        }
+      }
+      if (!contain) {
+        _children.add(storageItemModel);
+        notifyListeners();
+      }
+    });
+    //* add to folder watcher
+    // handleWatchCreateWithinActiveDir(
+    //   currentActiveDir: currentActiveDir,
+    //   watchDirStreamSub: watchDirStreamSub,
+    //   callback: (storageItemModel) {
+    //     bool contain = false;
+    //     for (var entity in _children) {
+    //       if (entity.path == storageItemModel.path) {
+    //         contain = true;
+    //         break;
+    //       }
+    //     }
+    //     if (!contain) {
+    //       _children.add(storageItemModel);
+    //       notifyListeners();
+    //     }
+    //   },
+    // );
   }
 }

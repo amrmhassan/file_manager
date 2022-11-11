@@ -5,7 +5,6 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:explorer/screens/explorer_screen/widgets/empty_folder.dart';
@@ -106,7 +105,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
         Provider.of<ExplorerProvider>(context, listen: false);
     var analyzerProviderFalse =
         Provider.of<AnalyzerProvider>(context, listen: false);
-    return expProvider.loadingChildren && expProvider.ch.isEmpty
+    return expProvider.loadingChildren && expProvider.children.isEmpty
         ? Center(child: CircularProgressIndicator())
         : FutureBuilder(
             future: expProvider.viewedChildren(context, widget.sizesExplorer),

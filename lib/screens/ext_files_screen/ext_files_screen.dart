@@ -2,15 +2,12 @@
 
 import 'dart:io';
 
-import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 
@@ -31,7 +28,7 @@ class _ExtFilesScreenState extends State<ExtFilesScreen> {
     Future.delayed(Duration.zero).then((value) async {
       Map<String, dynamic> data =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      String extName = data['ext'];
+      // String extName = data['ext'];
       int extSize = data['size'];
       List<String> filesPathes = data['files'];
       var futures = filesPathes.map(

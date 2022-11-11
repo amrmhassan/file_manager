@@ -49,7 +49,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
     Future.delayed(entitySizePercentageDuration).then((value) {
       if (mounted) {
         setState(() {
-          parentSize = widget.parentSize;
+          parentSize = widget.parentSize < 0 ? 0 : widget.parentSize;
           marginAnimations = 0;
         });
       }
@@ -73,6 +73,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
       children: [
         if (widget.sizesExplorer)
           AnimatedContainer(
+            curve: true ? Curves.elasticOut : Curves.easeInSine,
             duration: entitySizePercentageDuration,
             width: Responsive.getWidthPercentage(
               context,

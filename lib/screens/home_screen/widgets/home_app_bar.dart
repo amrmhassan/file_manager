@@ -2,13 +2,14 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/global/modals/create_folder_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
+import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart';
+import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,7 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     var analyzerProvider = Provider.of<AnalyzerProvider>(context);
     var expProvider = Provider.of<ExplorerProvider>(context);
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -75,36 +77,20 @@ class HomeAppBar extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ButtonWrapper(
-                                    borderRadius: 0,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: kHPad / 2,
-                                      vertical: kVPad / 2,
-                                    ),
-                                    onTap: () {},
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Create Folder',
-                                      style: h4TextStyleInactive.copyWith(
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                  VSpace(),
+                                  ModalButtonElement(
+                                    title: 'Create Folder',
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      showModalBottomSheet(
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (ctx) {
+                                            return CreateFolderModal();
+                                          });
+                                    },
                                   ),
-                                  ButtonWrapper(
-                                    borderRadius: 0,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: kHPad / 2,
-                                      vertical: kVPad / 2,
-                                    ),
-                                    onTap: () {},
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Create Folder',
-                                      style: h4TextStyleInactive.copyWith(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
+                                  VSpace(),
                                 ],
                               ),
                             );
