@@ -4,7 +4,7 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/utils/files_operations_utiles/copy_utils.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -26,11 +26,22 @@ class FilesOperationsProvider extends ChangeNotifier {
     return _loadingOperation;
   }
 
+//? select all
+  void selectAll(List<StorageItemModel> dirChildren) {
+    for (var element in dirChildren) {
+      _addToSelectedItems(element);
+    }
+  }
+
 //? delete files
   Future<void> performDelete() async {
+    List<StorageItemModel> items = [..._selectedItems];
     _loadingOperation = true;
+    currentOperation = null;
+    _selectedItems.clear();
+
     notifyListeners();
-    for (var entity in selectedItems) {
+    for (var entity in items) {
       if (entity.entityType == EntityType.file) {
         try {
           await compute((m) => deleteFile(entity.path), '');
@@ -40,16 +51,18 @@ class FilesOperationsProvider extends ChangeNotifier {
       }
     }
     _loadingOperation = false;
-    currentOperation = null;
-    _selectedItems.clear();
     notifyListeners();
   }
 
 //? copy files
   Future<void> performCopy(String currentActiveDir) async {
+    List<StorageItemModel> items = [..._selectedItems];
     _loadingOperation = true;
+    currentOperation = null;
+    _selectedItems.clear();
     notifyListeners();
-    for (var entity in selectedItems) {
+
+    for (var entity in items) {
       if (entity.entityType == EntityType.file) {
         try {
           await compute((m) => copyFile(entity.path, currentActiveDir), '');
@@ -58,9 +71,8 @@ class FilesOperationsProvider extends ChangeNotifier {
         }
       }
     }
+
     _loadingOperation = false;
-    currentOperation = null;
-    _selectedItems.clear();
     notifyListeners();
   }
 
@@ -104,8 +116,10 @@ class FilesOperationsProvider extends ChangeNotifier {
 
 //? add to selected items
   void _addToSelectedItems(StorageItemModel s) {
-    _selectedItems.add(s);
-    notifyListeners();
+    if (!_selectedItems.any((element) => element.path == s.path)) {
+      _selectedItems.add(s);
+      notifyListeners();
+    }
   }
 
   //? remove from selected items

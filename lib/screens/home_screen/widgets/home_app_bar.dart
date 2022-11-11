@@ -13,6 +13,7 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
+import 'package:explorer/screens/home_screen/widgets/selected_item_number.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -134,38 +135,6 @@ class HomeAppBar extends StatelessWidget {
             setActiveScreen: setActiveScreen,
           ),
       ],
-    );
-  }
-}
-
-class SelectedItemNumber extends StatelessWidget {
-  const SelectedItemNumber({
-    Key? key,
-    required this.foProvider,
-  }) : super(key: key);
-
-  final FilesOperationsProvider foProvider;
-
-  @override
-  Widget build(BuildContext context) {
-    return ButtonWrapper(
-      onTap: () {
-        showSnackBar(
-          context: context,
-          message: 'I will show a modal of selected items here',
-        );
-      },
-      alignment: Alignment.center,
-      width: mediumIconSize,
-      height: mediumIconSize,
-      decoration: BoxDecoration(
-        color: kLightCardBackgroundColor,
-        borderRadius: BorderRadius.circular(mediumBorderRadius),
-      ),
-      child: Text(
-        foProvider.selectedItems.length.toString(),
-        style: h4TextStyle.copyWith(color: Colors.white),
-      ),
     );
   }
 }

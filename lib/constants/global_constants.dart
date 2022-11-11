@@ -1,7 +1,7 @@
 import 'dart:io';
 
 bool prioritizeFolders = true;
-bool showHiddenFiles = false;
+bool showHiddenFiles = true;
 bool sortAlphapitacally = true;
 
 const Duration homePageViewDuration = Duration(milliseconds: 180);
@@ -9,5 +9,6 @@ const Duration homePageViewDuration = Duration(milliseconds: 180);
 final Directory initialDir = Directory('sdcard');
 const Duration entitySizePercentageDuration = Duration(milliseconds: 200);
 const Duration bottomActionsDuration = Duration(milliseconds: 230);
-const bool allowNormalExpAnimation = true;
+//? animations constants
+const bool allowNormalExpAnimation = false;
 const bool allowSizesExpAnimation = true;

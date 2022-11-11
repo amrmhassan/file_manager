@@ -533,7 +533,7 @@ packages:
     source: hosted
     version: "1.0.0+1"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       url: "https://pub.dartlang.org"

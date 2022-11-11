@@ -6,6 +6,8 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/explorer_screen/widgets/path_row.dart';
 import 'package:explorer/screens/home_screen/widgets/path_entity_text.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +46,8 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
 
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
+    var foProvider =
+        Provider.of<FilesOperationsProvider>(context, listen: false);
     var pathPartHeight = largePadding * 2 + ultraLargeIconSize / 2;
     return Row(
       children: [
@@ -86,65 +90,27 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
             ),
           ),
         ),
-      ],
-    );
-  }
-}
-
-class PathRow extends StatelessWidget {
-  final bool sizesExplorer;
-  const PathRow({
-    super.key,
-    required this.sizesExplorer,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    var expProvider = Provider.of<ExplorerProvider>(context);
-    var expProviderFalse =
-        Provider.of<ExplorerProvider>(context, listen: false);
-    List<String> folders = expProvider.currentActiveDir.path.split('/');
-    var analyzerProvieer =
-        Provider.of<AnalyzerProvider>(context, listen: false);
-
-    return GestureDetector(
-      onLongPress: () =>
-          copyPathToClipboard(context, expProviderFalse.currentActiveDir.path),
-      child: Row(
-        children: [
-          ...folders.asMap().entries.map(
-            (entry) {
-              return Row(
-                children: [
-                  PathEntityText(
-                    pathEntity: entry.value,
-                    onTap: () {
-                      if (entry.key != folders.length - 1) {
-                        String newPath =
-                            folders.sublist(0, entry.key + 1).join('/');
-                        expProviderFalse.setActiveDir(
-                          sizesExplorer: sizesExplorer,
-                          path: newPath,
-                          analyzerProvider: analyzerProvieer,
-                        );
-                      } else {
-                        copyPathToClipboard(
-                            context, expProviderFalse.currentActiveDir.path);
-                      }
-                    },
-                  ),
-                  if (entry.key != folders.length - 1)
-                    Image.asset(
-                      'assets/icons/right-arrow.png',
-                      width: smallIconSize,
-                      color: kInactiveColor,
-                    )
-                ],
-              );
+        if (foProvider.explorMode == ExplorMode.selection)
+          ButtonWrapper(
+            onTap: () {
+              var currentDirChildren =
+                  Provider.of<ExplorerProvider>(context, listen: false)
+                      .children;
+              Provider.of<FilesOperationsProvider>(context, listen: false)
+                  .selectAll(currentDirChildren);
+              showSnackBar(
+                  context: context,
+                  message: 'Here i will allow selected and deselect all');
             },
-          )
-        ],
-      ),
+            borderRadius: 0,
+            padding: EdgeInsets.all(largePadding),
+            child: Image.asset(
+              'assets/icons/select-all.png',
+              color: Colors.white,
+              width: ultraLargeIconSize / 2,
+            ),
+          ),
+      ],
     );
   }
 }

@@ -2,8 +2,6 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/choose_operation_controllers.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/perform_paste_operation_controller.dart';

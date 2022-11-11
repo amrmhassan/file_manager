@@ -82,6 +82,10 @@ class ChooseOperationContollers extends StatelessWidget {
                             child: ButtonWrapper(
                               onTap: () {
                                 //? here delete the items
+                                Provider.of<FilesOperationsProvider>(context,
+                                        listen: false)
+                                    .performDelete();
+                                Navigator.pop(context);
                               },
                               padding: EdgeInsets.symmetric(
                                   horizontal: kHPad / 2, vertical: kVPad / 2),

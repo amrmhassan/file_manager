@@ -32,11 +32,12 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
     Future.delayed(Duration.zero).then((value) async {
       double? totalSpace = await DiskSpace.getTotalDiskSpace;
       double? freeSpace = await DiskSpace.getFreeDiskSpace;
-
-      setState(() {
-        totalStorageSize = totalSpace;
-        freeStorageSize = freeSpace;
-      });
+      if (mounted) {
+        setState(() {
+          totalStorageSize = totalSpace;
+          freeStorageSize = freeSpace;
+        });
+      }
     });
     super.initState();
   }
