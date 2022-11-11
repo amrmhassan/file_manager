@@ -76,6 +76,7 @@ class _ExtFilesScreenState extends State<ExtFilesScreen> {
                     await OpenFile.open(e.path);
                   },
                   child: ChildFileItem(
+                    isSelected: false,
                     storageItemModel: e,
                     sizesExplorer: true,
                     parentSize: parentSize ?? 0,

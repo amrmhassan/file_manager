@@ -27,8 +27,9 @@ class StorageItem extends StatelessWidget {
   });
 
   bool isSelected(BuildContext context) {
-    return Provider.of<FilesOperationsProvider>(context, listen: false)
-        .isSelected(storageItemModel.path);
+    var foProvider =
+        Provider.of<FilesOperationsProvider>(context, listen: false);
+    return foProvider.isSelected(storageItemModel.path);
   }
 
   @override
@@ -82,6 +83,7 @@ class StorageItem extends StatelessWidget {
                   storageItemModel: storageItemModel,
                   parentSize: parentSize,
                   sizesExplorer: sizesExplorer,
+                  isSelected: isSelected(context),
                 ),
         ),
       ],

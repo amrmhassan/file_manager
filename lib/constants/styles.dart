@@ -40,6 +40,7 @@ const TextStyle h2LightTextStyle = TextStyle(
 //@ h3 text styles
 const TextStyle h3TextStyle = TextStyle(
   fontSize: h3TextSize,
+  color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
 );

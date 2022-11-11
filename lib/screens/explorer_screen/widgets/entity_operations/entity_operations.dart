@@ -2,13 +2,16 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/explorer_screen/widgets/entity_operations/choose_operation_controllers.dart';
+import 'package:explorer/screens/explorer_screen/widgets/entity_operations/perform_paste_operation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 double _height = 75;
+// an error happen here, when the container heigt is lowered to zero it's children give RenderFlex overflow
 
 class EntityOperations extends StatelessWidget {
   const EntityOperations({
@@ -18,7 +21,9 @@ class EntityOperations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var foProvider = Provider.of<FilesOperationsProvider>(context);
+
     return AnimatedContainer(
+      clipBehavior: Clip.hardEdge,
       transform: Matrix4.translationValues(
         0,
         foProvider.selectedItems.isEmpty ? _height : 0,
@@ -42,26 +47,9 @@ class EntityOperations extends StatelessWidget {
           )
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ButtonWrapper(
-                borderRadius: 599,
-                padding: EdgeInsets.all(ultraLargePadding),
-                onTap: () {},
-                child: Image.asset(
-                  'assets/icons/dots.png',
-                  width: smallIconSize,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+      child: foProvider.currentOperation == null
+          ? ChooseOperationContollers()
+          : PerformPasteOperationContoller(),
     );
   }
 }

@@ -11,7 +11,9 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
+import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_size_with_date_modified.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_thumbnail.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
@@ -20,17 +22,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 class ChildFileItem extends StatefulWidget {
   final StorageItemModel storageItemModel;
   final bool sizesExplorer;
   final int parentSize;
+  final bool isSelected;
 
   const ChildFileItem({
     super.key,
     required this.storageItemModel,
     required this.sizesExplorer,
     required this.parentSize,
+    required this.isSelected,
   });
 
   @override
@@ -69,6 +74,8 @@ class _ChildFileItemState extends State<ChildFileItem> {
 
   @override
   Widget build(BuildContext context) {
+    var foProvider = Provider.of<FilesOperationsProvider>(context);
+
     return Stack(
       children: [
         if (widget.sizesExplorer)
@@ -101,7 +108,9 @@ class _ChildFileItemState extends State<ChildFileItem> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.sizesExplorer
+                            widget.sizesExplorer ||
+                                    foProvider.explorMode ==
+                                        ExplorMode.selection
                                 ? path.basename(widget.storageItemModel.path)
                                 : getFileName(widget.storageItemModel.path),
                             style: h4LightTextStyle,
@@ -140,19 +149,26 @@ class _ChildFileItemState extends State<ChildFileItem> {
                         ],
                       ),
                     ),
-                    Text(
-                      widget.sizesExplorer
-                          ? sizePercentagleString(
-                              getSizePercentage(
-                                widget.storageItemModel.size ?? 0,
-                                parentSize,
-                              ),
-                            )
-                          : getFileExtension(widget.storageItemModel.path),
-                      style: h4TextStyleInactive.copyWith(
-                        color: kInActiveTextColor.withOpacity(.7),
-                      ),
-                    ),
+                    HSpace(),
+                    foProvider.explorMode == ExplorMode.selection
+                        ? EntityCeckBox(
+                            isSelected: widget.isSelected,
+                            storageItemModel: widget.storageItemModel,
+                          )
+                        : Text(
+                            widget.sizesExplorer
+                                ? sizePercentagleString(
+                                    getSizePercentage(
+                                      widget.storageItemModel.size ?? 0,
+                                      parentSize,
+                                    ),
+                                  )
+                                : getFileExtension(
+                                    widget.storageItemModel.path),
+                            style: h4TextStyleInactive.copyWith(
+                              color: kInActiveTextColor.withOpacity(.7),
+                            ),
+                          ),
                   ],
                 ),
               ),

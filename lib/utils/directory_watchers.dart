@@ -1,4 +1,6 @@
 //? to watch the active dir for any changes and update the UI
+// ignore_for_file: unused_field
+
 import 'dart:async';
 import 'dart:io';
 
