@@ -4,6 +4,7 @@
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -34,9 +35,15 @@ Future<bool> handlePressPhoneBackButton({
   } else {
     exit = false;
   }
+  var foProviderFalse = Provider.of<FilesOperationsProvider>(
+    context,
+    listen: false,
+  );
   expProvider.goBack(
-      sizesExplorer: sizesExplorer,
-      analyzerProvider: Provider.of<AnalyzerProvider>(context, listen: false));
+    sizesExplorer: sizesExplorer,
+    analyzerProvider: Provider.of<AnalyzerProvider>(context, listen: false),
+    filesOperationsProvider: foProviderFalse,
+  );
   //* to reset the exit counter after 2 seconds
   Future.delayed(Duration(seconds: 5)).then((value) {
     clearExitCounter();

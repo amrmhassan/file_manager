@@ -5,6 +5,7 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:explorer/screens/explorer_screen/widgets/empty_folder.dart';
@@ -125,12 +126,19 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
                               : StorageItem(
                                   key: Key(f.path),
                                   storageItemModel: f,
-                                  onDirTapped: (path) =>
-                                      expProviderFalse.setActiveDir(
-                                          path: path,
-                                          sizesExplorer: widget.sizesExplorer,
-                                          analyzerProvider:
-                                              analyzerProviderFalse),
+                                  onDirTapped: (path) {
+                                    var foProvider =
+                                        Provider.of<FilesOperationsProvider>(
+                                      context,
+                                      listen: false,
+                                    );
+                                    expProviderFalse.setActiveDir(
+                                      path: path,
+                                      sizesExplorer: widget.sizesExplorer,
+                                      analyzerProvider: analyzerProviderFalse,
+                                      filesOperationsProvider: foProvider,
+                                    );
+                                  },
                                   sizesExplorer: widget.sizesExplorer,
                                   parentSize: expProvider.parentSize ?? 0,
                                 );

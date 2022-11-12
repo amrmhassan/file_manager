@@ -7,6 +7,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/operation_button.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +115,9 @@ class ChooseOperationContollers extends StatelessWidget {
         OperationButton(
             iconName: 'close1',
             onTap: () {
-              foProviderFalse.clearAllSelectedItems();
+              var expProvider =
+                  Provider.of<ExplorerProvider>(context, listen: false);
+              foProviderFalse.clearAllSelectedItems(expProvider);
             }),
       ],
     );

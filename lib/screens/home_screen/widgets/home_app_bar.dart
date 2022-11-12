@@ -2,9 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/create_folder_modal.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
@@ -43,13 +41,18 @@ class HomeAppBar extends StatelessWidget {
           children: [
             if (activeScreenIndex == 1)
               AppBarIconButton(
-                onTap: () =>
-                    Provider.of<ExplorerProvider>(context, listen: false)
-                        .goBack(
-                            sizesExplorer: sizesExplorer,
-                            analyzerProvider: Provider.of<AnalyzerProvider>(
-                                context,
-                                listen: false)),
+                onTap: () {
+                  var foProviderFalse = Provider.of<FilesOperationsProvider>(
+                    context,
+                    listen: false,
+                  );
+                  Provider.of<ExplorerProvider>(context, listen: false).goBack(
+                    sizesExplorer: sizesExplorer,
+                    analyzerProvider:
+                        Provider.of<AnalyzerProvider>(context, listen: false),
+                    filesOperationsProvider: foProviderFalse,
+                  );
+                },
                 iconName: 'back',
               ),
             //! this will hold the progress of the loading operation if i figure a way to do so

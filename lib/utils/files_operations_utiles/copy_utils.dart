@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;

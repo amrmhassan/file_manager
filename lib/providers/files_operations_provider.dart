@@ -4,7 +4,6 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/utils/files_operations_utiles/copy_utils.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -21,15 +20,33 @@ enum ExplorMode {
 }
 
 class FilesOperationsProvider extends ChangeNotifier {
+  final List<StorageItemModel> _selectedItems = [];
+  List<StorageItemModel> get selectedItems {
+    return [..._selectedItems];
+  }
+
+  FileOparation? currentOperation;
+
   bool _loadingOperation = false;
   bool get loadingOperation {
     return _loadingOperation;
   }
 
 //? select all
-  void selectAll(List<StorageItemModel> dirChildren) {
+  void selectAll(
+      List<StorageItemModel> dirChildren, ExplorerProvider explorerProvider) {
     for (var element in dirChildren) {
       _addToSelectedItems(element);
+      explorerProvider.addToSelectedFromCurrentDir(element);
+    }
+  }
+
+//? select all
+  void deselctAll(
+      List<StorageItemModel> dirChildren, ExplorerProvider explorerProvider) {
+    for (var element in dirChildren) {
+      _removeFromSelectedItems(element.path);
+      explorerProvider.removeFromSelectedFromCurrentDir(element.path);
     }
   }
 
@@ -82,19 +99,13 @@ class FilesOperationsProvider extends ChangeNotifier {
   }
 
 //? to clear selected items
-  void clearAllSelectedItems() {
+  void clearAllSelectedItems(ExplorerProvider explorerProvider) {
     _selectedItems.clear();
     //* clear the current operation
     currentOperation = null;
+    explorerProvider.clearSelectedFromActiveDir();
     notifyListeners();
   }
-
-  final List<StorageItemModel> _selectedItems = [];
-  List<StorageItemModel> get selectedItems {
-    return [..._selectedItems];
-  }
-
-  FileOparation? currentOperation;
 
 //? apply the operation
   void applyOperation(String dest) {
@@ -134,12 +145,15 @@ class FilesOperationsProvider extends ChangeNotifier {
   }
 
 //? to toggle from selected items
-  void toggleFromSelectedItems(StorageItemModel s) {
+  void toggleFromSelectedItems(
+      StorageItemModel s, ExplorerProvider explorerProvider) {
     //* prevent any adding or removing to or from selected items if the operation is selected
     if (currentOperation != null) return;
     if (_selectedItems.any((element) => element.path == s.path)) {
+      explorerProvider.removeFromSelectedFromCurrentDir(s.path);
       return _removeFromSelectedItems(s.path);
     }
+    explorerProvider.addToSelectedFromCurrentDir(s);
     return _addToSelectedItems(s);
   }
 

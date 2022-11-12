@@ -30,7 +30,10 @@ class PerformPasteOperationContoller extends StatelessWidget {
         OperationButton(
             iconName: 'close1',
             onTap: () {
-              foProviderFalse.clearAllSelectedItems();
+              var expProvider =
+                  Provider.of<ExplorerProvider>(context, listen: false);
+
+              foProviderFalse.clearAllSelectedItems(expProvider);
             }),
       ],
     );
