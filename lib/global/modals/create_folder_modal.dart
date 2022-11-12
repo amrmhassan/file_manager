@@ -28,7 +28,7 @@ class CreateFolderModal extends StatefulWidget {
 }
 
 class _CreateFolderModalState extends State<CreateFolderModal> {
-  TextEditingController folderNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   bool rename = false;
 
 //? handle apply modal
@@ -51,12 +51,12 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
 
   //? create new folder
   void handleCreateNewFolder() {
-    if (folderNameController.text.trim().isEmpty) return;
+    if (nameController.text.trim().isEmpty) return;
     var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
     try {
       Provider.of<FilesOperationsProvider>(context, listen: false)
-          .createFolder(folderNameController.text.trim(), expProvider);
-      folderNameController.text = '';
+          .createFolder(nameController.text.trim(), expProvider);
+      nameController.text = '';
       Navigator.pop(context);
     } catch (E) {
       Navigator.pop(context);
@@ -70,17 +70,28 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
   }
 
   //? rename file
-  void handleRenameFile() {}
+  void handleRenameFile() {
+    if (nameController.text.isEmpty) return;
+    var foProvider =
+        Provider.of<FilesOperationsProvider>(context, listen: false);
+    var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
+    String filePath = foProvider.selectedItems.first.path;
+    foProvider.performRenameFile(
+      newFileName: nameController.text,
+      filePath: filePath,
+      explorerProvider: expProvider,
+    );
+  }
 
   //? rename folder
   void handleRenameFolder() {
-    if (folderNameController.text.isEmpty) return;
+    if (nameController.text.isEmpty) return;
     var foProvider =
         Provider.of<FilesOperationsProvider>(context, listen: false);
     var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
     String folderPath = foProvider.selectedItems.first.path;
     foProvider.performRenameFolder(
-      newFolderName: folderNameController.text,
+      newFolderName: nameController.text,
       folderPath: folderPath,
       explorerProvider: expProvider,
     );
@@ -88,10 +99,10 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
 
   @override
   void initState() {
-    folderNameController.text = widget.oldName ?? 'New Folder';
+    nameController.text = widget.oldName ?? 'New Folder';
     if (widget.oldName != null) rename = true;
-    folderNameController.selection = TextSelection(
-        baseOffset: 0, extentOffset: folderNameController.text.length);
+    nameController.selection =
+        TextSelection(baseOffset: 0, extentOffset: nameController.text.length);
     super.initState();
   }
 
@@ -111,7 +122,7 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
           VSpace(),
           CustomTextField(
             title: 'Enter Folder Name',
-            controller: folderNameController,
+            controller: nameController,
             autoFocus: true,
             color: kInactiveColor,
             textStyle: h4TextStyleInactive.copyWith(
@@ -124,7 +135,7 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
                 Spacer(),
                 TextButton(
                   onPressed: () {
-                    folderNameController.text = '';
+                    nameController.text = '';
 
                     Navigator.pop(context);
                   },

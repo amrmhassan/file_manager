@@ -57,6 +57,31 @@ class FilesOperationsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+//? rename file
+  Future<void> performRenameFile({
+    required String newFileName,
+    required String filePath,
+    required ExplorerProvider explorerProvider,
+  }) async {
+    _loadingOperation = true;
+    notifyListeners();
+    String newPath =
+        '${(filePath.split('/')..removeLast()).join('/')}/$newFileName';
+    bool containTheSameName =
+        explorerProvider.children.any((element) => element.path == newPath);
+    if (containTheSameName) {
+      throw Exception('The folder Contain The same Name');
+    }
+    await compute(
+        (message) => renameFile(
+              newPath: newPath,
+              filePath: filePath,
+            ),
+        '');
+    _loadingOperation = false;
+    notifyListeners();
+  }
+
 //? select all
   void selectAll(
       List<StorageItemModel> dirChildren, ExplorerProvider explorerProvider) {

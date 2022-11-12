@@ -96,3 +96,12 @@ void renameFolder({
   Directory directory = Directory(folderPath);
   directory.renameSync(newPath);
 }
+
+//? rename file
+void renameFile({
+  required String newPath,
+  required String filePath,
+}) {
+  File file = File(filePath);
+  file.renameSync(newPath);
+}
