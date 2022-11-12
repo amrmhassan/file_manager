@@ -5,6 +5,7 @@ class ScreensWrapper extends StatelessWidget {
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
   final Color? backgroundColor;
+  final Widget? drawer;
   //? drop your scaffold props here
   const ScreensWrapper({
     Key? key,
@@ -12,11 +13,13 @@ class ScreensWrapper extends StatelessWidget {
     this.floatingActionButton,
     this.backgroundColor,
     this.floatingActionButtonLocation,
+    this.drawer,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: drawer,
       backgroundColor: backgroundColor,
       floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButton: floatingActionButton,

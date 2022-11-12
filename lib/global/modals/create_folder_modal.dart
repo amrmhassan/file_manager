@@ -16,8 +16,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CreateFolderModal extends StatefulWidget {
+  final String? oldName;
+
   const CreateFolderModal({
     Key? key,
+    this.oldName,
   }) : super(key: key);
 
   @override
@@ -26,11 +29,28 @@ class CreateFolderModal extends StatefulWidget {
 
 class _CreateFolderModalState extends State<CreateFolderModal> {
   TextEditingController folderNameController = TextEditingController();
+  bool rename = false;
 
-  void handleCreateNewFolder(
-    BuildContext context,
-    TextEditingController folderNameController,
-  ) {
+//? handle apply modal
+  void handleApplyModal() {
+    if (rename) {
+      EntityType entityType =
+          Provider.of<FilesOperationsProvider>(context, listen: false)
+              .selectedItems
+              .first
+              .entityType;
+      if (entityType == EntityType.folder) {
+        handleRenameFolder();
+      } else if (entityType == EntityType.file) {
+        handleRenameFile();
+      }
+    } else {
+      handleCreateNewFolder();
+    }
+  }
+
+  //? create new folder
+  void handleCreateNewFolder() {
     if (folderNameController.text.trim().isEmpty) return;
     var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
     try {
@@ -49,9 +69,27 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
     }
   }
 
+  //? rename file
+  void handleRenameFile() {}
+
+  //? rename folder
+  void handleRenameFolder() {
+    if (folderNameController.text.isEmpty) return;
+    var foProvider =
+        Provider.of<FilesOperationsProvider>(context, listen: false);
+    var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
+    String folderPath = foProvider.selectedItems.first.path;
+    foProvider.performRenameFolder(
+      newFolderName: folderNameController.text,
+      folderPath: folderPath,
+      explorerProvider: expProvider,
+    );
+  }
+
   @override
   void initState() {
-    folderNameController.text = 'New Folder';
+    folderNameController.text = widget.oldName ?? 'New Folder';
+    if (widget.oldName != null) rename = true;
     folderNameController.selection = TextSelection(
         baseOffset: 0, extentOffset: folderNameController.text.length);
     super.initState();
@@ -97,10 +135,9 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
                 ),
                 HSpace(),
                 TextButton(
-                  onPressed: () =>
-                      {handleCreateNewFolder(context, folderNameController)},
+                  onPressed: handleApplyModal,
                   child: Text(
-                    'Create',
+                    rename ? 'Rename' : 'Create',
                     style: h4TextStyle,
                   ),
                 ),

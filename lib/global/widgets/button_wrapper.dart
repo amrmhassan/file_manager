@@ -20,6 +20,7 @@ class ButtonWrapper extends StatelessWidget {
   final VoidCallback? onDoubleTapped;
   final Color? hoverColor;
   final Color? focusedColor;
+  final double? opacity;
 
   const ButtonWrapper({
     Key? key,
@@ -42,39 +43,43 @@ class ButtonWrapper extends StatelessWidget {
     this.onDoubleTapped,
     this.hoverColor,
     this.focusedColor,
+    this.opacity,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: clipBehavior ?? Clip.hardEdge,
-      alignment: alignment,
-      margin: margin,
-      decoration: decoration ??
-          BoxDecoration(
-            color: active
-                ? (backgroundColor ?? Colors.transparent)
-                : (inactiveColor) ??
-                    (backgroundColor?.withOpacity(.2) ??
-                        Colors.transparent.withOpacity(.2)),
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: border,
-          ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          hoverColor: hoverColor,
-          focusColor: focusedColor,
-          onDoubleTap: onDoubleTapped,
-          onLongPress: onLongPress,
-          onTap: active ? onTap : null,
-          child: Container(
-            //! this caused a UI error, if something like that happened again just fix this line
-            alignment: alignment ?? Alignment.center,
-            padding: padding,
-            width: width,
-            height: height,
-            child: child,
+    return Opacity(
+      opacity: opacity ?? 1,
+      child: Container(
+        clipBehavior: clipBehavior ?? Clip.hardEdge,
+        alignment: alignment,
+        margin: margin,
+        decoration: decoration ??
+            BoxDecoration(
+              color: active
+                  ? (backgroundColor ?? Colors.transparent)
+                  : (inactiveColor) ??
+                      (backgroundColor?.withOpacity(.2) ??
+                          Colors.transparent.withOpacity(.2)),
+              borderRadius: BorderRadius.circular(borderRadius),
+              border: border,
+            ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            hoverColor: hoverColor,
+            focusColor: focusedColor,
+            onDoubleTap: onDoubleTapped,
+            onLongPress: onLongPress,
+            onTap: active ? onTap : null,
+            child: Container(
+              //! this caused a UI error, if something like that happened again just fix this line
+              alignment: alignment ?? Alignment.center,
+              padding: padding,
+              width: width,
+              height: height,
+              child: child,
+            ),
           ),
         ),
       ),

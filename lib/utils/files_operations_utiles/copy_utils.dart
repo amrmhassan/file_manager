@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -85,4 +86,13 @@ void deleteFolder(String folderPath) {
   } catch (e) {
     rethrow;
   }
+}
+
+//? rename folder
+void renameFolder({
+  required String newPath,
+  required String folderPath,
+}) {
+  Directory directory = Directory(folderPath);
+  directory.renameSync(newPath);
 }

@@ -10,11 +10,17 @@ import 'package:flutter/material.dart';
 class ModalButtonElement extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
+  final bool active;
+  final Color? inactiveColor;
+  final double? opacity;
 
   const ModalButtonElement({
     Key? key,
     required this.title,
     required this.onTap,
+    this.inactiveColor,
+    this.active = true,
+    this.opacity,
   }) : super(key: key);
 
   @override
@@ -22,6 +28,9 @@ class ModalButtonElement extends StatelessWidget {
     return Column(
       children: [
         ButtonWrapper(
+          inactiveColor: inactiveColor,
+          active: active,
+          opacity: opacity,
           borderRadius: 0,
           padding: EdgeInsets.symmetric(
             horizontal: kHPad / 1.2,
@@ -37,7 +46,7 @@ class ModalButtonElement extends StatelessWidget {
           ),
         ),
         HLine(
-          color: kInactiveColor.withOpacity(.4),
+          color: kInactiveColor.withOpacity(.2),
           thickness: 1,
         ),
       ],

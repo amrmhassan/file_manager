@@ -10,5 +10,5 @@ final Directory initialDir = Directory('sdcard');
 const Duration entitySizePercentageDuration = Duration(milliseconds: 200);
 const Duration bottomActionsDuration = Duration(milliseconds: 230);
 //? animations constants
-const bool allowNormalExpAnimation = false;
+const bool allowNormalExpAnimation = true;
 const bool allowSizesExpAnimation = true;

@@ -2,6 +2,8 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -140,6 +142,22 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       child: ScreensWrapper(
+        drawer: Container(
+          color: kBackgroundColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                color: kBackgroundColor,
+                width: Responsive.getWidthPercentage(context, .75),
+                child: Text(
+                  'This will be the app drawer',
+                  style: h4TextStyleInactive,
+                ),
+              ),
+            ],
+          ),
+        ),
         backgroundColor: kBackgroundColor,
         child: Column(
           children: [

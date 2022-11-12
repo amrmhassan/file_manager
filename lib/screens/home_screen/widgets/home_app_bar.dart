@@ -42,18 +42,19 @@ class HomeAppBar extends StatelessWidget {
             if (activeScreenIndex == 1)
               AppBarIconButton(
                 onTap: () {
-                  var foProviderFalse = Provider.of<FilesOperationsProvider>(
-                    context,
-                    listen: false,
-                  );
-                  Provider.of<ExplorerProvider>(context, listen: false).goBack(
-                    sizesExplorer: sizesExplorer,
-                    analyzerProvider:
-                        Provider.of<AnalyzerProvider>(context, listen: false),
-                    filesOperationsProvider: foProviderFalse,
-                  );
+                  // var foProviderFalse = Provider.of<FilesOperationsProvider>(
+                  //   context,
+                  //   listen: false,
+                  // );
+                  // Provider.of<ExplorerProvider>(context, listen: false).goBack(
+                  //   sizesExplorer: sizesExplorer,
+                  //   analyzerProvider:
+                  //       Provider.of<AnalyzerProvider>(context, listen: false),
+                  //   filesOperationsProvider: foProviderFalse,
+                  // );
+                  Scaffold.of(context).openDrawer();
                 },
-                iconName: 'back',
+                iconName: 'list',
               ),
             //! this will hold the progress of the loading operation if i figure a way to do so
             if (foProvider.loadingOperation)
