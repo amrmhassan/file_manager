@@ -59,12 +59,14 @@ class FilesOperationsProvider extends ChangeNotifier {
 
     notifyListeners();
     for (var entity in items) {
-      if (entity.entityType == EntityType.file) {
-        try {
+      try {
+        if (entity.entityType == EntityType.file) {
           await compute((m) => deleteFile(entity.path), '');
-        } catch (e) {
-          rethrow;
+        } else {
+          await compute((m) => deleteFolder(entity.path), '');
         }
+      } catch (e) {
+        rethrow;
       }
     }
     _loadingOperation = false;
@@ -81,15 +83,26 @@ class FilesOperationsProvider extends ChangeNotifier {
     _selectedItems.clear();
     notifyListeners();
 
+//* don't remove the copied folders when it is cut until the whole files and folders are copied successfully
     for (var entity in items) {
-      if (entity.entityType == EntityType.file) {
-        try {
+      try {
+        if (entity.entityType == EntityType.file) {
           await compute((m) => copyFile(entity.path, currentActiveDir), '');
-          if (localOperation == FileOparation.move) {
-            await compute((message) => deleteFile(entity.path), '');
-          }
-        } catch (e) {
-          rethrow;
+        } else {
+          await compute(
+              (message) => copyFolder(entity.path, currentActiveDir), '');
+        }
+      } catch (e) {
+        rethrow;
+      }
+    }
+    //* delete after all files copied
+    if (localOperation == FileOparation.move) {
+      for (var entity in items) {
+        if (entity.entityType == EntityType.file) {
+          await compute((message) => deleteFile(entity.path), '');
+        } else {
+          await compute((message) => deleteFolder(entity.path), '');
         }
       }
     }
