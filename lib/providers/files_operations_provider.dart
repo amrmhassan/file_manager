@@ -79,6 +79,7 @@ class FilesOperationsProvider extends ChangeNotifier {
             ),
         '');
     _loadingOperation = false;
+    clearAllSelectedItems(explorerProvider);
     notifyListeners();
   }
 

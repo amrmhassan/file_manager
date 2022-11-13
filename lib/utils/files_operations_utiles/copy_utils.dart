@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
-import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;
 

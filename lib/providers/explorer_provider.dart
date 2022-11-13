@@ -10,6 +10,7 @@ import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -274,6 +275,10 @@ class ExplorerProvider extends ChangeNotifier {
         _children.add(storageItemModel);
         notifyListeners();
       }
+    });
+
+    direcotryWatchers.renameWatcher(callback: (storageItemModel) {
+      printOnDebug('from callback ${storageItemModel.path}');
     });
   }
 }
