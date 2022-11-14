@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:isolate';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
@@ -142,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       child: ScreensWrapper(
+        scfKey: expScreenKey,
         drawer: Container(
           color: kBackgroundColor,
           child: Column(

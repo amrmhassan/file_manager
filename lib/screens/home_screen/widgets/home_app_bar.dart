@@ -108,7 +108,7 @@ class HomeAppBar extends StatelessWidget {
                                           backgroundColor: Colors.transparent,
                                           context: context,
                                           builder: (ctx) {
-                                            return CreateFolderModal();
+                                            return EntityInfoEditingModal();
                                           });
                                     },
                                   ),

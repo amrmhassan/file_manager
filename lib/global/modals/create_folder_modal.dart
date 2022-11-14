@@ -4,6 +4,7 @@ import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/custom_text_field.dart';
 import 'package:explorer/global/widgets/h_space.dart';
@@ -17,26 +18,26 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CreateFolderModal extends StatefulWidget {
+class EntityInfoEditingModal extends StatefulWidget {
   final String? oldName;
 
-  const CreateFolderModal({
+  const EntityInfoEditingModal({
     Key? key,
     this.oldName,
   }) : super(key: key);
 
   @override
-  State<CreateFolderModal> createState() => _CreateFolderModalState();
+  State<EntityInfoEditingModal> createState() => _EntityInfoEditingModalState();
 }
 
-class _CreateFolderModalState extends State<CreateFolderModal> {
+class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
   TextEditingController nameController = TextEditingController();
   bool rename = false;
   String? orgFileExt;
   String? orgFileName;
 
 //? handle apply modal
-  void handleApplyModal() async {
+  void handleApplyModal(BuildContext context) async {
     try {
       if (rename) {
         if (orgFileName == nameController.text) {
@@ -50,7 +51,7 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
           if (entityType == EntityType.folder) {
             handleRenameFolder();
           } else if (entityType == EntityType.file) {
-            await handleRenameFile();
+            await handleRenameFile(context);
           }
         }
       } else {
@@ -63,7 +64,9 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
           snackBarType: SnackBarType.error);
     }
 
-    Navigator.pop(context);
+    if (mounted) {
+      Navigator.pop(context);
+    }
   }
 
   //? create new folder
@@ -74,10 +77,7 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
       Provider.of<FilesOperationsProvider>(context, listen: false)
           .createFolder(nameController.text.trim(), expProvider);
       nameController.text = '';
-      Navigator.pop(context);
     } catch (E) {
-      Navigator.pop(context);
-
       showSnackBar(
         context: context,
         message: 'This Folder Already Exists',
@@ -87,17 +87,21 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
   }
 
   //? rename file
-  Future<void> handleRenameFile([bool checkExt = true]) async {
+  Future<void> handleRenameFile(
+    BuildContext context, [
+    bool checkExt = true,
+  ]) async {
     if (nameController.text.isEmpty) return;
     String newExt = '.${getFileExtension(nameController.text)}';
 
     if (orgFileExt != newExt && checkExt) {
+      Navigator.pop(context);
       await showModalBottomSheet(
         backgroundColor: Colors.transparent,
-        context: context,
+        context: expScreenKey.currentContext!,
         builder: (ctx) => DoubleButtonsModal(
           onOk: () {
-            handleRenameFile(false);
+            handleRenameFile(context, false);
           },
           title: 'File Extension Change.',
           subTitle: 'If you changed a file extension it might not work.',
@@ -106,9 +110,12 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
         ),
       );
     } else {
-      var foProvider =
-          Provider.of<FilesOperationsProvider>(context, listen: false);
-      var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
+      var foProvider = Provider.of<FilesOperationsProvider>(
+          expScreenKey.currentContext!,
+          listen: false);
+      var expProvider = Provider.of<ExplorerProvider>(
+          expScreenKey.currentContext!,
+          listen: false);
       String filePath = foProvider.selectedItems.first.path;
       foProvider.performRenameFile(
         newFileName: nameController.text,
@@ -143,6 +150,9 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
       int extStart = widget.oldName!.indexOf(ext);
       nameController.selection =
           TextSelection(baseOffset: 0, extentOffset: extStart);
+    } else {
+      nameController.selection = TextSelection(
+          baseOffset: 0, extentOffset: nameController.text.length);
     }
     super.initState();
   }
@@ -187,7 +197,7 @@ class _CreateFolderModalState extends State<CreateFolderModal> {
                 ),
                 HSpace(),
                 TextButton(
-                  onPressed: handleApplyModal,
+                  onPressed: () => handleApplyModal(context),
                   child: Text(
                     rename ? 'Rename' : 'Create',
                     style: h4TextStyle,

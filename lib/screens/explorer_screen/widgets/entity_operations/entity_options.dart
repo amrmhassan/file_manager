@@ -2,12 +2,14 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/create_folder_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/operation_button.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
@@ -46,21 +48,22 @@ class EntityOptions extends StatelessWidget {
                     active: foProviderFalse.selectedItems.length == 1,
                     title: 'Rename',
                     onTap: () async {
+                      Navigator.pop(ctx);
                       //? rename modal
-                      showModalBottomSheet(
+                      await showModalBottomSheet(
                           backgroundColor: Colors.transparent,
-                          context: context,
+                          context: expScreenKey.currentContext!,
                           builder: (_) {
                             String oldName = path_operations.basename(
-                                Provider.of<FilesOperationsProvider>(context,
+                                Provider.of<FilesOperationsProvider>(
+                                        expScreenKey.currentContext!,
                                         listen: false)
                                     .selectedItems[0]
                                     .path);
-                            return CreateFolderModal(
+                            return EntityInfoEditingModal(
                               oldName: oldName,
                             );
                           });
-                      Navigator.pop(ctx);
                     },
                   ),
                   ModalButtonElement(
