@@ -263,7 +263,7 @@ class ExplorerProvider extends ChangeNotifier {
     DirecotryWatchers direcotryWatchers =
         DirecotryWatchers(currentActiveDir: currentActiveDir);
     //* add entity watcher
-    direcotryWatchers.addWatcher(callback: (storageItemModel) {
+    direcotryWatchers.createWatcher(callback: (storageItemModel) {
       bool contain = false;
       for (var entity in _children) {
         if (entity.path == storageItemModel.path) {
@@ -275,10 +275,6 @@ class ExplorerProvider extends ChangeNotifier {
         _children.add(storageItemModel);
         notifyListeners();
       }
-    });
-
-    direcotryWatchers.renameWatcher(callback: (storageItemModel) {
-      printOnDebug('from callback ${storageItemModel.path}');
     });
   }
 }

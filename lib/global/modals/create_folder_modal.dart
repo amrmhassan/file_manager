@@ -117,11 +117,19 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
           expScreenKey.currentContext!,
           listen: false);
       String filePath = foProvider.selectedItems.first.path;
-      foProvider.performRenameFile(
-        newFileName: nameController.text,
-        filePath: filePath,
-        explorerProvider: expProvider,
-      );
+      try {
+        foProvider.performRenameFile(
+          newFileName: nameController.text,
+          filePath: filePath,
+          explorerProvider: expProvider,
+        );
+      } catch (e) {
+        showSnackBar(
+          context: context,
+          message: 'Error with renaming file',
+          snackBarType: SnackBarType.error,
+        );
+      }
     }
   }
 
