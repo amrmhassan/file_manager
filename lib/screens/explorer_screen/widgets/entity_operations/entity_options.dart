@@ -9,7 +9,6 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/operation_button.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;

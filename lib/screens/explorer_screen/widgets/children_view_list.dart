@@ -74,6 +74,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
     // });
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (!mounted) return;
       Future.delayed(Duration(milliseconds: 50)).then((value) {
         //! this is also a very bad implementation to scroll a list
         double? scrollPos =

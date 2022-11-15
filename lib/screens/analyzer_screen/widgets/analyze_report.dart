@@ -10,6 +10,7 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/report_count_itemd.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -71,9 +72,8 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
                   ),
                   Spacer(),
                   Text(
-                    DateFormat('yyyy-MM-dd').format(
-                      analyzerProvider.lastAnalyzingReportDate!,
-                    ),
+                    getLastAnalyzingData(
+                        analyzerProvider.lastAnalyzingReportDate!),
                     style: h4TextStyleInactive,
                   ),
                 ],
@@ -105,16 +105,29 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
               ),
               ReportCountItem(
                 title: 'Total Folders Count  ',
-                count: analyzerProvider.reportInfo!.folderCount * 1,
+                count: (analyzerProvider.reportInfo?.folderCount ?? 0) * 1,
               ),
               ReportCountItem(
                 title: 'Total Files Count  ',
-                count: analyzerProvider.reportInfo!.filesCount * 1,
+                count: (analyzerProvider.reportInfo?.filesCount ?? 0) * 1,
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  String getLastAnalyzingData(DateTime lastDate) {
+    DateTime now = DateTime.now();
+    int diff = now.difference(lastDate).inMinutes;
+    const int oneDayMinutes = 24 * 60;
+    if (diff > oneDayMinutes) {
+      //? this means it is lager than a day
+      return DateFormat('yyyy-MM-dd').format(lastDate);
+    } else {
+      //? less than a day
+      return DateFormat('hh:mm aa').format(lastDate);
+    }
   }
 }

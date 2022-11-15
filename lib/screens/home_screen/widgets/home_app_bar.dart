@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/create_folder_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -133,11 +134,15 @@ class HomeAppBar extends StatelessWidget {
                   ),
           ],
         ),
-        if (!sizesExplorer)
-          ExplorerModeSwitcher(
-            activeScreenIndex: activeScreenIndex,
-            setActiveScreen: setActiveScreen,
-          ),
+        !sizesExplorer
+            ? ExplorerModeSwitcher(
+                activeScreenIndex: activeScreenIndex,
+                setActiveScreen: setActiveScreen,
+              )
+            : Text(
+                'Sizes Explorer',
+                style: h2TextStyle.copyWith(color: Colors.white),
+              ),
       ],
     );
   }

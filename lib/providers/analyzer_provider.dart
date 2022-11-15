@@ -48,6 +48,13 @@ class AnalyzerProvider extends ChangeNotifier {
 
   AnalyzerReportInfoModel? reportInfo;
 
+//? this will hold the current loading message for analyzing, saving to db, or any thing else
+  String? loadingMessage;
+  void setLoadingMessage(String s) {
+    loadingMessage = s;
+    notifyListeners();
+  }
+
   //? last date the user performed (analyzing storage)
   DateTime? lastAnalyzingReportDate;
   Future<void> setLastAnalyzingDate() async {
@@ -66,6 +73,7 @@ class AnalyzerProvider extends ChangeNotifier {
     }
   }
 
+//? load data to the app
   Future<void> loadInitialAppData() async {
     await loadLastAnalyzingDate();
     await getSavedExtensionsInfo();
@@ -102,6 +110,7 @@ class AnalyzerProvider extends ChangeNotifier {
 
 //? to start anayzing storage
   Future<void> handleAnalyzeEvent() async {
+    // _loading = true;
     ReceivePort receivePort = ReceivePort();
     SendPort sendPort = receivePort.sendPort;
     _loading = true;

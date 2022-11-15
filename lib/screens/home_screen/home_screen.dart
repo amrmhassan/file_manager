@@ -2,16 +2,18 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/responsive.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
-import 'package:explorer/providers/explorer_provider.dart';
-import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -94,8 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
   //       .setActiveDir(path: path);
   // }
 
-//? handling going back in path
-
   @override
   void initState() {
     // runTheIsolate();
@@ -105,20 +105,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(Duration.zero).then((value) async {
       await Provider.of<AnalyzerProvider>(context, listen: false)
           .loadInitialAppData();
-      var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
       //* getting storage permission
       bool res = await handleStoragePermissions(
         context: context,
-        callback: () {
-          var foProviderFalse = Provider.of<FilesOperationsProvider>(
-            context,
-            listen: false,
-          );
-          expProvider.setActiveDir(
-            path: expProvider.currentActiveDir.path,
-            filesOperationsProvider: foProviderFalse,
-          );
-        },
+        callback: () => handlePermissionsGrantedCallback(context),
       );
       if (!res) return;
       await Provider.of<ChildrenItemsProvider>(context, listen: false)
@@ -161,30 +151,46 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         backgroundColor: kBackgroundColor,
-        child: Column(
+        child: Stack(
           children: [
-            HomeAppBar(
-              activeScreenIndex: activeViewIndex,
-              setActiveScreen: setActiveScreen,
-              sizesExplorer: false,
-            ),
-            Expanded(
-              child: PageView(
-                onPageChanged: (value) {
-                  setState(() {
-                    activeViewIndex = value;
-                  });
-                },
-                controller: pageController,
-                physics: BouncingScrollPhysics(),
-                children: [
-                  AnalyzerScreen(),
-                  ExplorerScreen(
-                    sizesExplorer: false,
+            Column(
+              children: [
+                HomeAppBar(
+                  activeScreenIndex: activeViewIndex,
+                  setActiveScreen: setActiveScreen,
+                  sizesExplorer: false,
+                ),
+                Expanded(
+                  child: PageView(
+                    onPageChanged: (value) {
+                      setState(() {
+                        activeViewIndex = value;
+                      });
+                    },
+                    controller: pageController,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      AnalyzerScreen(),
+                      ExplorerScreen(
+                        sizesExplorer: false,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            if (kDebugMode)
+              GestureDetector(
+                onTap: () async {
+                  await DBHelper.deleteDatabase(dbName);
+                  await SharedPrefHelper.removeAllSavedKeys();
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.red,
+                ),
+              )
           ],
         ),
       ),

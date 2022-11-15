@@ -9,6 +9,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
+//? handle press back button
 Future<bool> handlePressPhoneBackButton({
   required BuildContext context,
   required int exitCounter,
@@ -49,4 +50,20 @@ Future<bool> handlePressPhoneBackButton({
     clearExitCounter();
   });
   return Future.delayed(Duration.zero).then((value) => exit);
+}
+
+//? to handle apply permissions callback after granting permissions
+void handlePermissionsGrantedCallback(BuildContext context) async {
+  var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
+
+  var foProviderFalse = Provider.of<FilesOperationsProvider>(
+    context,
+    listen: false,
+  );
+  expProvider.setActiveDir(
+    path: expProvider.currentActiveDir.path,
+    filesOperationsProvider: foProviderFalse,
+  );
+  await Provider.of<AnalyzerProvider>(context, listen: false)
+      .handleAnalyzeEvent();
 }
