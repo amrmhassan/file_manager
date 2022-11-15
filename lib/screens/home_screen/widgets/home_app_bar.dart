@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/create_folder_modal.dart';
+import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
@@ -84,40 +85,7 @@ class HomeAppBar extends StatelessWidget {
             activeScreenIndex == 1
                 ? AppBarIconButton(
                     onTap: () {
-                      //? Add a new folder after showing a modal
-                      showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (ctx) {
-                            return ModalWrapper(
-                              afterLinePaddingFactor: 0,
-                              bottomPaddingFactor: 0,
-                              padding: EdgeInsets.zero,
-                              color: kCardBackgroundColor,
-                              showTopLine: false,
-                              borderRadius: mediumBorderRadius,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  VSpace(),
-                                  ModalButtonElement(
-                                    title: 'Create Folder',
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      showModalBottomSheet(
-                                          backgroundColor: Colors.transparent,
-                                          context: context,
-                                          builder: (ctx) {
-                                            return EntityInfoEditingModal();
-                                          });
-                                    },
-                                  ),
-                                  VSpace(),
-                                ],
-                              ),
-                            );
-                          });
+                      showCurrentActiveDirOptions(context);
                     },
                     iconName: 'dots',
                     color: Colors.white,

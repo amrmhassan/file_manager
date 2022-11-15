@@ -6,6 +6,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
+import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/custom_text_field.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
@@ -96,19 +97,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
 
     if (orgFileExt != newExt && checkExt) {
       Navigator.pop(context);
-      await showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: expScreenKey.currentContext!,
-        builder: (ctx) => DoubleButtonsModal(
-          onOk: () {
-            handleRenameFile(context, false);
-          },
-          title: 'File Extension Change.',
-          subTitle: 'If you changed a file extension it might not work.',
-          okText: 'Rename',
-          okColor: Colors.blue,
-        ),
-      );
+      await showFileExtChangeModal(context, handleRenameFile);
     } else {
       var foProvider = Provider.of<FilesOperationsProvider>(
           expScreenKey.currentContext!,
@@ -156,6 +145,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
       orgFileExt = ext;
       orgFileName = widget.oldName;
       int extStart = widget.oldName!.indexOf(ext);
+      extStart = extStart == -1 ? nameController.text.length : extStart;
       nameController.selection =
           TextSelection(baseOffset: 0, extentOffset: extStart);
     } else {
