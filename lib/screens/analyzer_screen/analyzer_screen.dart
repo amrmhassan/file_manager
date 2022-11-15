@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/screens/analyzer_screen/recents_widget/recents_widget.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzing_report.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzing_starter.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,17 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
   Widget build(BuildContext context) {
     var analyzerProvider = Provider.of<AnalyzerProvider>(context);
 
-    return Container(
-      color: kBackgroundColor,
-      child: analyzerProvider.lastAnalyzingReportDate != null
-          ? AnalyzingReport()
-          : AnalyzingStarter(),
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      children: [
+        RecentsWidget(),
+        Container(
+          color: kBackgroundColor,
+          child: analyzerProvider.lastAnalyzingReportDate != null
+              ? AnalyzingReport()
+              : AnalyzingStarter(),
+        ),
+      ],
     );
   }
 }

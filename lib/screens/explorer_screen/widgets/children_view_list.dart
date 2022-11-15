@@ -63,8 +63,8 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
 //? to update when path changes
   @override
   void didUpdateWidget(covariant ChildrenViewList oldWidget) {
-    var expProviderFalse =
-        Provider.of<ExplorerProvider>(context, listen: false);
+    // var expProviderFalse =
+    //     Provider.of<ExplorerProvider>(context, listen: false);
     // Future.delayed(Duration.zero).then((value) async {
     //   var test = await Provider.of<ExplorerProvider>(context, listen: false)
     //       .viewedChildren(context, widget.sizesExplorer);
@@ -73,28 +73,28 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
     //   });
     // });
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (!mounted) return;
-      Future.delayed(Duration(milliseconds: 50)).then((value) {
-        //! this is also a very bad implementation to scroll a list
-        double? scrollPos =
-            Provider.of<ChildrenItemsProvider>(context, listen: false)
-                .getScrollingPosition(expProviderFalse.currentActiveDir.path);
-        if (scrollPos != null) {
-          try {
-            scrollController.jumpTo(scrollPos);
-          } catch (e) {
-            Future.delayed(Duration(milliseconds: 100)).then((value) {
-              try {
-                scrollController.jumpTo(scrollPos);
-              } catch (e) {
-                //
-              }
-            });
-          }
-        }
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Future.delayed(Duration(milliseconds: 50)).then((value) {
+    //     if (!mounted) return;
+    //     //! this is also a very bad implementation to scroll a list
+    //     double? scrollPos =
+    //         Provider.of<ChildrenItemsProvider>(context, listen: false)
+    //             .getScrollingPosition(expProviderFalse.currentActiveDir.path);
+    //     if (scrollPos != null) {
+    //       try {
+    //         scrollController.jumpTo(scrollPos);
+    //       } catch (e) {
+    //         Future.delayed(Duration(milliseconds: 100)).then((value) {
+    //           try {
+    //             scrollController.jumpTo(scrollPos);
+    //           } catch (e) {
+    //             //
+    //           }
+    //         });
+    //       }
+    //     }
+    //   });
+    // });
 
     super.didUpdateWidget(oldWidget);
   }

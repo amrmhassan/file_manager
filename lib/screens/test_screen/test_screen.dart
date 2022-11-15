@@ -52,7 +52,6 @@ class _TestScreenState extends State<TestScreen> {
               myIsolate = await Isolate.spawn(heavyWork, sendPort);
               receivePort.listen((message) {
                 if (message is int) {
-                  printOnDebug(message);
                 } else {
                   SendPort sendPort = message as SendPort;
                   sendPort.send(IsolateData(0, 1000000));

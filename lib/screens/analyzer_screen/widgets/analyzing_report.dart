@@ -30,8 +30,6 @@ class _AnalyzingReportState extends State<AnalyzingReport> {
     return Column(
       children: [
         VSpace(),
-        AnalyzeReport(),
-        VSpace(),
         AnalyzerOptionsItem(
           logoName: 'sizes_explorer',
           onTap: () {
@@ -47,6 +45,9 @@ class _AnalyzingReportState extends State<AnalyzingReport> {
           },
           title: 'Extensions',
         ),
+        VSpace(),
+        AnalyzeReport(),
+        VSpace(),
       ],
     );
   }
