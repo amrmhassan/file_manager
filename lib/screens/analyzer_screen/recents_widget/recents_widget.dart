@@ -70,6 +70,7 @@ class RecentsWidget extends StatelessWidget {
                 ),
               ),
             ),
+            VSpace(),
           ],
         ),
       ),

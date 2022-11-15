@@ -38,6 +38,7 @@ class _RecentsItemState extends State<RecentsItem> {
             right: kHPad / 1,
             left: kHPad / 1,
             top: kVPad / 2,
+            bottom: kVPad / 2,
           ),
           onTap: () {
             setState(() {
@@ -88,13 +89,13 @@ class _RecentsItemState extends State<RecentsItem> {
                       color: Colors.white,
                       width: ultraLargeIconSize,
                     ),
+                    VSpace(),
                   ],
                 ),
               )
             ],
           ),
         ),
-        VSpace(),
       ],
     );
   }
