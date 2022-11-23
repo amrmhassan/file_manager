@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
@@ -59,7 +60,7 @@ class HomeAppBar extends StatelessWidget {
                 width: smallIconSize,
                 height: smallIconSize,
                 child: CircularProgressIndicator(
-                  color: Colors.blue,
+                  color: kBlueColor,
                   strokeWidth: 2,
                 ),
               )

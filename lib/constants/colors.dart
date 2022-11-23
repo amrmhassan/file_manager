@@ -5,6 +5,7 @@ const Color kBackgroundColor = Color(0xff212332);
 const Color kCardBackgroundColor = Color(0xff2A2D3E);
 const Color kLightCardBackgroundColor = Color(0xff474B63);
 const Color kInactiveColor = Color(0xff9A9CA3);
+const Color kBlueColor = Colors.blue;
 
 //? text colors
 const Color kActiveTextColor = Color(0xFF362B4B);

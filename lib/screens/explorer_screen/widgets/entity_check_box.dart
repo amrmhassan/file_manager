@@ -40,9 +40,9 @@ class EntityCeckBox extends StatelessWidget {
           height: largeIconSize / 2,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(500),
-            color: isSelected ? Colors.blue : Colors.transparent,
+            color: isSelected ? kBlueColor : Colors.transparent,
             border: Border.all(
-              color: isSelected ? Colors.blue : kInactiveColor,
+              color: isSelected ? kBlueColor : kInactiveColor,
               width: 1,
             ),
           ),

@@ -1,5 +1,10 @@
 import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -62,16 +67,16 @@ String handleConvertSize(int sizeInByte) {
   double covertedSize = 0;
   if (sizeInByte < 1024) {
     covertedSize = sizeInByte * 1;
-    unit = 'Byte';
+    unit = ' Byte';
   } else if (sizeInByte < 1024 * 1024) {
     covertedSize = sizeInByte.toKB;
-    unit = 'KB';
+    unit = ' KB';
   } else if (sizeInByte < 1024 * 1024 * 1024) {
     covertedSize = sizeInByte.toMB;
-    unit = 'MB';
+    unit = ' MB';
   } else {
     covertedSize = sizeInByte.toGB;
-    unit = 'GB';
+    unit = ' GB';
   }
   return '${double.parse(covertedSize.toStringAsFixed(2))}$unit';
 }
@@ -100,9 +105,10 @@ String doubleToString(double d, [int roundTo = 2]) {
 }
 
 //? copy to clipboard
-void copyPathToClipboard(BuildContext context, String path) {
+void copyPathToClipboard(BuildContext context, String path,
+    [bool showSnack = true]) {
   Clipboard.setData(ClipboardData(text: path));
-  showSnackBar(context: context, message: 'Copied To Clipboard');
+  if (showSnack) showSnackBar(context: context, message: 'Copied To Clipboard');
 }
 
 //? captalize a single word
@@ -118,4 +124,15 @@ String captlizeSentence(String s) {
   var caps = words.map((e) => captlizeWord(e));
   String capSentence = caps.join(' ');
   return capSentence;
+}
+
+//? get folder size from sqlite
+Future<int?> getFolderSize(String path) async {
+  var data =
+      await DBHelper.getDataWhere(localFolderInfoTableName, pathString, path);
+  if (data.isNotEmpty) {
+    int folderSize = LocalFolderInfo.fromJSON(data.first).size ?? 0;
+    return folderSize;
+  }
+  return null;
 }
