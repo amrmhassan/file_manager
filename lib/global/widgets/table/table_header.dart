@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:explorer/global/table/custom_header_cell.dart';
+import 'package:explorer/global/widgets/table/custom_header_cell.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:flutter/material.dart';

@@ -2,18 +2,15 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/create_folder_modal.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/single_item_details_modal.dart';
-import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;

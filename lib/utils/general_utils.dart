@@ -4,7 +4,6 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
-import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -127,12 +126,12 @@ String captlizeSentence(String s) {
 }
 
 //? get folder size from sqlite
-Future<int?> getFolderSize(String path) async {
+Future<LocalFolderInfo?> getFolderSize(String path) async {
   var data =
       await DBHelper.getDataWhere(localFolderInfoTableName, pathString, path);
   if (data.isNotEmpty) {
-    int folderSize = LocalFolderInfo.fromJSON(data.first).size ?? 0;
-    return folderSize;
+    LocalFolderInfo? localFolderInfo = LocalFolderInfo.fromJSON(data.first);
+    return localFolderInfo;
   }
   return null;
 }

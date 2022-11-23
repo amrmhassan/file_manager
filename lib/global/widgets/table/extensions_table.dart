@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
-import 'package:explorer/global/table/table_header.dart';
-import 'package:explorer/global/table/table_row.dart';
+import 'package:explorer/global/widgets/table/table_header.dart';
+import 'package:explorer/global/widgets/table/table_row.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:flutter/material.dart';
