@@ -5,7 +5,6 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/constants/widget_keys.dart';
-import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/custom_text_field.dart';
 import 'package:explorer/global/widgets/h_space.dart';

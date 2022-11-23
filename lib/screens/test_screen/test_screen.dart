@@ -4,7 +4,6 @@ import 'dart:isolate';
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 class IsolateData {

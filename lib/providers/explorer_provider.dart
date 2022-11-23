@@ -30,6 +30,24 @@ class ExplorerProvider extends ChangeNotifier {
   }
   int? parentSize;
 
+  //? to change viewed file name
+  void changeViewdFileName(String oldPath, String newPath) {
+    File newFile = File(newPath);
+    FileStat fileStat = newFile.statSync();
+    StorageItemModel newitem = StorageItemModel(
+      parentPath: newFile.parent.path,
+      path: newFile.path,
+      modified: fileStat.modified,
+      accessed: fileStat.accessed,
+      changed: fileStat.changed,
+      entityType: EntityType.file,
+      size: fileStat.size,
+    );
+    int index = _children.indexWhere((element) => element.path == oldPath);
+    _children.removeAt(index);
+    _children.insert(index, newitem);
+  }
+
   //? selected from the current active folder
   List<StorageItemModel> _selectedFromCurrentActiveDir = [];
   List<StorageItemModel> get selectedFromCurrentActiveDir {
@@ -258,6 +276,7 @@ class ExplorerProvider extends ChangeNotifier {
     }
   }
 
+//? to run watchers
   void _runActiveDirWatchers() {
     DirecotryWatchers direcotryWatchers =
         DirecotryWatchers(currentActiveDir: currentActiveDir);

@@ -80,6 +80,7 @@ class FilesOperationsProvider extends ChangeNotifier {
               filePath: filePath,
             ),
         '');
+    explorerProvider.changeViewdFileName(filePath, newPath);
     _loadingOperation = false;
     clearAllSelectedItems(explorerProvider);
     notifyListeners();
