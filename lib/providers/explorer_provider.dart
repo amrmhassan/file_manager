@@ -48,6 +48,24 @@ class ExplorerProvider extends ChangeNotifier {
     _children.insert(index, newitem);
   }
 
+  //? to change viewed file name
+  void changeViewdFName(String oldPath, String newPath) {
+    Directory newFile = Directory(newPath);
+    FileStat fileStat = newFile.statSync();
+    StorageItemModel newitem = StorageItemModel(
+      parentPath: newFile.parent.path,
+      path: newFile.path,
+      modified: fileStat.modified,
+      accessed: fileStat.accessed,
+      changed: fileStat.changed,
+      entityType: EntityType.folder,
+      size: fileStat.size,
+    );
+    int index = _children.indexWhere((element) => element.path == oldPath);
+    _children.removeAt(index);
+    _children.insert(index, newitem);
+  }
+
   //? selected from the current active folder
   List<StorageItemModel> _selectedFromCurrentActiveDir = [];
   List<StorageItemModel> get selectedFromCurrentActiveDir {

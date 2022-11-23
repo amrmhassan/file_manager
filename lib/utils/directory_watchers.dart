@@ -29,8 +29,6 @@ class DirecotryWatchers {
       _createSub!.cancel();
     }
     _createSub = currentActiveDir.watch().listen((event) {
-      printOnDebug(event.type);
-      printOnDebug(event.path);
       StorageItemModel storageItemModel;
       if (event.isDirectory) {
         Directory dir = Directory(event.path);

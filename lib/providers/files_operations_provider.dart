@@ -53,6 +53,8 @@ class FilesOperationsProvider extends ChangeNotifier {
               folderPath: folderPath,
             ),
         '');
+    explorerProvider.changeViewdFName(folderPath, newPath);
+
     _loadingOperation = false;
     clearAllSelectedItems(explorerProvider);
 
