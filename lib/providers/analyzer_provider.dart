@@ -152,6 +152,7 @@ class AnalyzerProvider extends ChangeNotifier {
   Future<void> saveResultsToSqlite() async {
     _savingInfoToSqlite = true;
     notifyListeners();
+    await DBHelper.clearDb();
     await _saveExtensionsInfo();
     await _saveFolderSizes();
     _savingInfoToSqlite = false;

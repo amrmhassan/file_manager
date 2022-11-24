@@ -3,6 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -20,27 +21,35 @@ class DetailItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
       children: [
-        Text(
-          title,
-          style: h4LiteTextStyle.copyWith(color: Colors.white.withOpacity(.8)),
-        ),
-        HSpace(factor: .6),
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              copyPathToClipboard(context, value);
-              showSnackBar(context: context, message: 'Copied To Clipboard');
-            },
-            child: Text(
-              value,
-              style: h4LiteTextStyle.copyWith(color: valueColor ?? kBlueColor),
-              softWrap: true,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style:
+                  h4LiteTextStyle.copyWith(color: Colors.white.withOpacity(.8)),
             ),
-          ),
+            HSpace(factor: .6),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  copyPathToClipboard(context, value);
+                  showSnackBar(
+                      context: context, message: 'Copied To Clipboard');
+                },
+                child: Text(
+                  value,
+                  style:
+                      h4LiteTextStyle.copyWith(color: valueColor ?? kBlueColor),
+                  softWrap: true,
+                ),
+              ),
+            ),
+          ],
         ),
+        VSpace(factor: .5),
       ],
     );
   }

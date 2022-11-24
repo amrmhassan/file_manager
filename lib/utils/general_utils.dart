@@ -126,7 +126,7 @@ String captlizeSentence(String s) {
 }
 
 //? get folder size from sqlite
-Future<LocalFolderInfo?> getFolderSize(String path) async {
+Future<LocalFolderInfo?> getFolderSizeFromDb(String path) async {
   var data =
       await DBHelper.getDataWhere(localFolderInfoTableName, pathString, path);
   if (data.isNotEmpty) {

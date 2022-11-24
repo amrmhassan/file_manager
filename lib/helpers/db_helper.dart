@@ -39,6 +39,14 @@ class DBHelper {
     );
   }
 
+  static Future<void> clearDb() async {
+    final databasePathDir = await sql.getDatabasesPath();
+    String finalPath = path.join(databasePathDir, dbName);
+
+    await sql.deleteDatabase(finalPath);
+    await SharedPrefHelper.removeAllSavedKeys();
+  }
+
   static Future<void> insert(
     String table,
     Map<String, dynamic> data,

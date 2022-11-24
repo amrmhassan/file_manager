@@ -5,10 +5,9 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/create_folder_modal.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
-import 'package:explorer/global/modals/single_item_details_modal.dart';
+import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,7 @@ Future<void> showRenameModal(BuildContext context) async {
 
 //? show rename modal
 Future<void> showDetailsModal(BuildContext context) async {
-  //? rename modal
+  //? details modal
   await showModalBottomSheet(
       backgroundColor: Colors.transparent,
       context: expScreenKey.currentContext!,
@@ -43,12 +42,7 @@ Future<void> showDetailsModal(BuildContext context) async {
         var foProvider = Provider.of<FilesOperationsProvider>(
             expScreenKey.currentContext!,
             listen: false);
-        if (foProvider.selectedItems.length < 2) {
-          StorageItemModel singleItem = foProvider.selectedItems[0];
-          return SingleItemDetailsModal(singleItem: singleItem);
-        } else {
-          return Text('Details for multiple items');
-        }
+        return SingleItemDetailsModal(selectedItems: foProvider.selectedItems);
       });
 }
 
