@@ -13,8 +13,11 @@ int calcFolderSize(String path) {
       0, (previousValue, element) => previousValue + element.statSync().size);
 }
 
+//? to update folder size in sqlite
 void updateFolderSizeInSqlite(
-    StorageItemModel storageItemModel, int newSize) async {
+  StorageItemModel storageItemModel,
+  int newSize,
+) async {
   LocalFolderInfo localFolderInfo = LocalFolderInfo(
     parentPath: storageItemModel.parentPath,
     path: storageItemModel.path,
@@ -26,4 +29,11 @@ void updateFolderSizeInSqlite(
     size: newSize,
   );
   await DBHelper.insert(localFolderInfoTableName, localFolderInfo.toJSON());
+}
+
+//? get all folder children
+List<FileSystemEntity> getFolderItems(String path) {
+  Directory directory = Directory(path);
+  List<FileSystemEntity> children = directory.listSync(recursive: true);
+  return children;
 }

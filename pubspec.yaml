@@ -48,6 +48,7 @@ dependencies:
   open_file: ^3.2.1
   file_picker: ^4.6.1
   uuid: ^3.0.6
+  share_plus: ^4.5.3
 
 dev_dependencies:
   flutter_test:

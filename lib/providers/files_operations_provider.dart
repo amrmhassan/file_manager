@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/utils/files_operations_utiles/copy_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path_operations;
+import 'package:share_plus/share_plus.dart' as share_plus;
 
 enum FileOparation {
   delete,
@@ -248,5 +250,38 @@ class FilesOperationsProvider extends ChangeNotifier {
     } else {
       throw Exception('This Folder already exists');
     }
+  }
+
+  //? to share files
+  void shareFiles(ExplorerProvider explorerProvider) async {
+    List<StorageItemModel> sI = _selectedItems;
+    List<String> items = [];
+    _loadingOperation = true;
+    notifyListeners();
+    //! here loading the folder children
+    for (var item in sI) {
+      if (item.entityType == EntityType.file) {
+        items.add(item.path);
+      } else {
+        List<FileSystemEntity> folderChildren =
+            await compute(getFolderItems, item.path);
+        for (var element in folderChildren) {
+          if (!items.contains(element.path) &&
+              element.statSync().type == FileSystemEntityType.file) {
+            items.add(element.path);
+          }
+        }
+      }
+    }
+
+    //! this might have a problem in the future
+    await share_plus.Share.shareFiles(
+      items,
+      subject: 'Share Files',
+      text: 'Share Items',
+    );
+    _loadingOperation = false;
+    clearAllSelectedItems(explorerProvider);
+    notifyListeners();
   }
 }

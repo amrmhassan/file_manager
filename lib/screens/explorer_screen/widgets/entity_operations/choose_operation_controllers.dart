@@ -6,6 +6,7 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/delete_button.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/entity_options.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/operation_button.dart';
+import 'package:explorer/screens/explorer_screen/widgets/entity_operations/share_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,8 @@ class ChooseOperationContollers extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        ShareButton(),
+        HSpace(factor: .5),
         OperationButton(
             iconName: 'copy',
             onTap: () {
