@@ -1,21 +1,19 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/details_modal/widgets/file_details.dart';
 import 'package:explorer/global/modals/details_modal/widgets/folder_details.dart';
+import 'package:explorer/global/modals/details_modal/widgets/multiple_items_details.dart';
 import 'package:explorer/global/modals/widgets/detail_item.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path_operations;
@@ -144,59 +142,7 @@ class _SingleItemDetailsModalState extends State<SingleItemDetailsModal> {
           ? widget.selectedItems[0].entityType == EntityType.file
               ? FileDetails(storageItemModel: widget.selectedItems[0])
               : FolderDetails(storageItemModel: widget.selectedItems[0])
-          : Column(
-              children: [
-                GestureDetector(
-                  onTap: singleItem
-                      ? () {
-                          copyPathToClipboard(
-                              context,
-                              path_operations
-                                  .basename(widget.selectedItems[0].path));
-                        }
-                      : null,
-                  child: Text(
-                    singleItem
-                        ? path_operations.basename(widget.selectedItems[0].path)
-                        : '${widget.selectedItems.length} Items',
-                    style: h4TextStyle.copyWith(color: Colors.white),
-                  ),
-                ),
-                VSpace(),
-                if (singleItem)
-                  DetailItem(
-                    title: 'Path: ',
-                    value: widget.selectedItems[0].path,
-                  ),
-                if (!singleItem ||
-                    (singleItem &&
-                        widget.selectedItems[0].entityType ==
-                            EntityType.folder))
-                  DetailItem(
-                    title: 'Files: ',
-                    value: files.toString(),
-                    valueColor: kInActiveTextColor,
-                  ),
-                if (!singleItem)
-                  DetailItem(
-                    title: 'Folders: ',
-                    value: folders.toString(),
-                    valueColor: kInActiveTextColor,
-                  ),
-                DetailItem(
-                  title: 'Size: ',
-                  value: handleConvertSize(size ?? 0),
-                  valueColor: kInActiveTextColor,
-                ),
-                if (singleItem)
-                  DetailItem(
-                    title: 'Modified: ',
-                    value: DateFormat('yyyy-MM-dd   hh:mmaa')
-                        .format(widget.selectedItems[0].modified),
-                    valueColor: kInActiveTextColor,
-                  ),
-              ],
-            ),
+          : MultipleItemsDetails(selectedItems: widget.selectedItems),
     );
   }
 }

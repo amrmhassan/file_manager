@@ -6,13 +6,15 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 
-void getFolderSize({
+void getFolderDetails({
   required StorageItemModel storageItemModel,
-  required Function(FolderDetailsModel folderDetailsModel) callAfterAvailable,
+  required Function(FolderDetailsModel folderDetailsModel, int? oldSize)
+      callAfterAvailable,
 }) async {
   String path = storageItemModel.path;
   FolderDetailsModel folderDetailsModel = FolderDetailsModel(path: path);
-  callAfterAvailable(folderDetailsModel);
+  // this won't return any size or files or folders
+  callAfterAvailable(folderDetailsModel, null);
 
   LocalFolderInfo? localFolderInfo =
       await getFolderSizeFromDb(storageItemModel.path);
@@ -20,14 +22,14 @@ void getFolderSize({
     //? not saved in db
     FolderDetailsModel folderDetailsModel =
         await _getAndUpdateFolderDetails(path, storageItemModel);
-    callAfterAvailable(folderDetailsModel);
+    callAfterAvailable(folderDetailsModel, null);
   } else {
     //? saved in db
     folderDetailsModel.size = localFolderInfo.size;
-    callAfterAvailable(folderDetailsModel);
+    callAfterAvailable(folderDetailsModel, null);
     FolderDetailsModel latestFoldeDetails =
         await _getAndUpdateFolderDetails(path, storageItemModel);
-    callAfterAvailable(latestFoldeDetails);
+    callAfterAvailable(latestFoldeDetails, localFolderInfo.size);
   }
 }
 

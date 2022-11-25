@@ -1,26 +1,17 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/widgets/detail_item.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/folder_details_model.dart';
-import 'package:explorer/models/folder_item_info_model.dart';
-import 'package:explorer/models/folder_scroll_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/explorer_provider.dart';
-import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/utils/files_operations_utiles/folder_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path_operations;
-import 'package:provider/provider.dart';
 
 class FolderDetails extends StatefulWidget {
   final StorageItemModel storageItemModel;
@@ -40,13 +31,10 @@ class _FolderDetailsState extends State<FolderDetails> {
   //? to get single item info
   void getFolderInfo() async {
     folderDetailsModel = FolderDetailsModel(path: widget.storageItemModel.path);
-    // Provider.of<FilesOperationsProvider>(context, listen: false)
-    //     .clearAllSelectedItems(
-    //         Provider.of<ExplorerProvider>(context, listen: false));
 
-    getFolderSize(
+    getFolderDetails(
       storageItemModel: widget.storageItemModel,
-      callAfterAvailable: (fdm) {
+      callAfterAvailable: (fdm, oldSize) {
         setState(() {
           folderDetailsModel = FolderDetailsModel(
             path: folderDetailsModel.path,
