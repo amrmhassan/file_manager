@@ -11,12 +11,14 @@ class DetailItem extends StatelessWidget {
   final String title;
   final String value;
   final Color? valueColor;
+  final bool allowCopy;
 
   const DetailItem({
     Key? key,
     required this.title,
     required this.value,
     this.valueColor,
+    this.allowCopy = false,
   }) : super(key: key);
 
   @override
@@ -34,11 +36,14 @@ class DetailItem extends StatelessWidget {
             HSpace(factor: .6),
             Expanded(
               child: GestureDetector(
-                onTap: () {
-                  copyPathToClipboard(context, value);
-                  showSnackBar(
-                      context: context, message: 'Copied To Clipboard');
-                },
+                onTap: allowCopy
+                    ? () {
+                        copyPathToClipboard(context, value);
+                        showSnackBar(
+                            context: context, message: 'Copied To Clipboard');
+                        Navigator.pop(context);
+                      }
+                    : null,
                 child: Text(
                   value,
                   style:

@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/widgets/detail_item.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/folder_details_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/files_operations_utiles/folder_utils.dart';
@@ -42,11 +40,13 @@ class _MultipleItemsDetailsState extends State<MultipleItemsDetails> {
         getFolderDetails(
             storageItemModel: item,
             callAfterAvailable: (fdm, oldSize) {
-              setState(() {
-                size = size + (fdm.size ?? 0) - (oldSize ?? 0);
-                foldersCount += fdm.folderCount ?? 0;
-                filesCount += fdm.filesCount ?? 0;
-              });
+              if (mounted) {
+                setState(() {
+                  size = size + (fdm.size ?? 0) - (oldSize ?? 0);
+                  foldersCount += fdm.folderCount ?? 0;
+                  filesCount += fdm.filesCount ?? 0;
+                });
+              }
             });
       }
     }

@@ -8,7 +8,10 @@ import 'package:flutter/foundation.dart';
 
 void getFolderDetails({
   required StorageItemModel storageItemModel,
-  required Function(FolderDetailsModel folderDetailsModel, int? oldSize)
+  required Function(
+    FolderDetailsModel folderDetailsModel,
+    int? oldSize,
+  )
       callAfterAvailable,
 }) async {
   String path = storageItemModel.path;

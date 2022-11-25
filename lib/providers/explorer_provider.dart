@@ -90,9 +90,9 @@ class ExplorerProvider extends ChangeNotifier {
   }
 
   //? to clear the ...
-  void clearSelectedFromActiveDir() {
+  void clearSelectedFromActiveDir([bool notify = true]) {
     _selectedFromCurrentActiveDir.clear();
-    notifyListeners();
+    if (notify) notifyListeners();
   }
 
   //? is all in the current active folder selected or not

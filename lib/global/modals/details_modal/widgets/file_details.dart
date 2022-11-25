@@ -40,6 +40,7 @@ class FileDetails extends StatelessWidget {
           DetailItem(
             title: 'Path: ',
             value: storageItemModel.path,
+            allowCopy: true,
           ),
           DetailItem(
             title: 'Size: ',
@@ -55,6 +56,5 @@ class FileDetails extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

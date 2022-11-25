@@ -170,11 +170,12 @@ class FilesOperationsProvider extends ChangeNotifier {
   }
 
 //? to clear selected items
-  void clearAllSelectedItems(ExplorerProvider explorerProvider) {
+  void clearAllSelectedItems(ExplorerProvider explorerProvider,
+      [bool notify = true]) {
     _selectedItems.clear();
     //* clear the current operation
     currentOperation = null;
-    explorerProvider.clearSelectedFromActiveDir();
+    explorerProvider.clearSelectedFromActiveDir(notify);
     notifyListeners();
   }
 
@@ -264,7 +265,7 @@ class FilesOperationsProvider extends ChangeNotifier {
         items.add(item.path);
       } else {
         List<FileSystemEntity> folderChildren =
-            await compute(getFolderItems, item.path);
+            await compute(getFolderAllItems, item.path);
         for (var element in folderChildren) {
           if (!items.contains(element.path) &&
               element.statSync().type == FileSystemEntityType.file) {

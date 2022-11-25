@@ -8,6 +8,7 @@ import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,15 @@ Future<void> showDetailsModal(BuildContext context) async {
         var foProvider = Provider.of<FilesOperationsProvider>(
             expScreenKey.currentContext!,
             listen: false);
+        // Provider.of<FilesOperationsProvider>(context, listen: false)
+        //     .clearAllSelectedItems(
+        //         Provider.of<ExplorerProvider>(context, listen: false), false);
+
         return SingleItemDetailsModal(selectedItems: foProvider.selectedItems);
+        // return Container(
+        //   height: 100,
+        //   color: Colors.white,
+        // );
       });
 }
 

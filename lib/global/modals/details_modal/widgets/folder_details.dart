@@ -35,14 +35,16 @@ class _FolderDetailsState extends State<FolderDetails> {
     getFolderDetails(
       storageItemModel: widget.storageItemModel,
       callAfterAvailable: (fdm, oldSize) {
-        setState(() {
-          folderDetailsModel = FolderDetailsModel(
-            path: folderDetailsModel.path,
-            size: fdm.size ?? folderDetailsModel.size,
-            filesCount: fdm.filesCount ?? folderDetailsModel.filesCount,
-            folderCount: fdm.folderCount ?? folderDetailsModel.folderCount,
-          );
-        });
+        if (mounted) {
+          setState(() {
+            folderDetailsModel = FolderDetailsModel(
+              path: folderDetailsModel.path,
+              size: fdm.size ?? folderDetailsModel.size,
+              filesCount: fdm.filesCount ?? folderDetailsModel.filesCount,
+              folderCount: fdm.folderCount ?? folderDetailsModel.folderCount,
+            );
+          });
+        }
       },
     );
   }
@@ -75,6 +77,7 @@ class _FolderDetailsState extends State<FolderDetails> {
           DetailItem(
             title: 'Path: ',
             value: widget.storageItemModel.path,
+            allowCopy: true,
           ),
           DetailItem(
             title: 'Size: ',
@@ -100,6 +103,5 @@ class _FolderDetailsState extends State<FolderDetails> {
         ],
       ),
     );
-    ;
   }
 }

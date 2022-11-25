@@ -5,11 +5,12 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/models/folder_details_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/utils/general_utils.dart';
 
 //? to get the folder size
 FolderDetailsModel calcFolderDetails(String path) {
   Directory directory = Directory(path);
-  List<FileSystemEntity> children = directory.listSync(recursive: true);
+  List<FileSystemEntity> children = getFolderAllItems(path);
   int size = children.fold(
       0, (previousValue, element) => previousValue + element.statSync().size);
   var files = children
@@ -44,8 +45,21 @@ void updateFolderSizeInSqlite(
 }
 
 //? get all folder children
-List<FileSystemEntity> getFolderItems(String path) {
-  Directory directory = Directory(path);
-  List<FileSystemEntity> children = directory.listSync(recursive: true);
-  return children;
+List<FileSystemEntity> getFolderAllItems(String path) {
+  try {
+    Directory directory = Directory(path);
+    List<FileSystemEntity> allChildren = [];
+    var children = directory.listSync();
+    for (var child in children) {
+      allChildren.add(child);
+      if (child.statSync().type == FileSystemEntityType.directory) {
+        var subChildren = getFolderAllItems(child.path);
+        allChildren.addAll(subChildren);
+      }
+    }
+    return allChildren;
+  } catch (e) {
+    printOnDebug(e);
+    return [];
+  }
 }
