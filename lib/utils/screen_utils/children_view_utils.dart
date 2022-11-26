@@ -2,6 +2,7 @@ import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 // import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path;
 
 List<StorageItemModel> getFixedEntityList({
@@ -10,6 +11,7 @@ List<StorageItemModel> getFixedEntityList({
   required bool prioritizeFolders,
   required SortOption sortOption,
 }) {
+  //? for hidden files
   if (!showHiddenFiles) {
     viewedChildren = viewedChildren.where(
       (element) {
@@ -18,6 +20,7 @@ List<StorageItemModel> getFixedEntityList({
     ).toList();
   }
   List<StorageItemModel> fixedEntities = [];
+  //? for sorting options
   if (sortOption == SortOption.nameAsc) {
     viewedChildren.sort(
       (a, b) => a.path.compareTo(b.path),
@@ -64,11 +67,12 @@ List<StorageItemModel> getFixedEntityList({
       },
     );
   } else {
-    //? if there is no sorting option or a worng option is selected
+    // if there is no sorting option or a worng option is selected
     viewedChildren.sort(
       (a, b) => a.path.compareTo(b.path),
     );
   }
+  //? for folders first
   if (prioritizeFolders) {
     //* folders
     List<StorageItemModel> fd = [

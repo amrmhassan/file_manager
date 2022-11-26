@@ -109,51 +109,63 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
         Provider.of<AnalyzerProvider>(context, listen: false);
     return expProvider.loadingChildren && expProvider.children.isEmpty
         ? Center(child: CircularProgressIndicator())
-        : FutureBuilder(
-            future: expProvider.viewedChildren(context, widget.sizesExplorer),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var viewedList = snapshot.data;
-                if (viewedList == null) return EmptyFolder();
-                return viewedList.isNotEmpty
-                    ? ListView.builder(
-                        // controller: scrollController,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: viewedList.length,
-                        itemBuilder: (context, index) {
-                          StorageItemModel f = viewedList[index];
-                          return test
-                              ? TestEntity(f: f)
-                              : StorageItem(
-                                  key: Key(f.path),
-                                  storageItemModel: f,
-                                  onDirTapped: (path) {
-                                    var foProvider =
-                                        Provider.of<FilesOperationsProvider>(
-                                      context,
-                                      listen: false,
-                                    );
-                                    expProviderFalse.setActiveDir(
-                                      path: path,
-                                      sizesExplorer: widget.sizesExplorer,
-                                      analyzerProvider: analyzerProviderFalse,
-                                      filesOperationsProvider: foProvider,
-                                    );
-                                  },
-                                  sizesExplorer: widget.sizesExplorer,
-                                  parentSize: expProvider.parentSize ?? 0,
-                                );
-                        },
-                      )
-                    : expProviderFalse.error == null
-                        ? (!expProviderFalse.loadingChildren
-                            ? EmptyFolder()
-                            : SizedBox())
-                        : ErrorOpenFolder();
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
+        : Column(
+            children: [
+              Text(
+                expProvider.sortOption.name,
+                style: TextStyle(color: Colors.white),
+              ),
+              Expanded(
+                child: FutureBuilder(
+                  future:
+                      expProvider.viewedChildren(context, widget.sizesExplorer),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var viewedList = snapshot.data;
+                      if (viewedList == null) return EmptyFolder();
+                      return viewedList.isNotEmpty
+                          ? ListView.builder(
+                              // controller: scrollController,
+                              physics: BouncingScrollPhysics(),
+                              itemCount: viewedList.length,
+                              itemBuilder: (context, index) {
+                                StorageItemModel f = viewedList[index];
+                                return test
+                                    ? TestEntity(f: f)
+                                    : StorageItem(
+                                        key: Key(f.path),
+                                        storageItemModel: f,
+                                        onDirTapped: (path) {
+                                          var foProvider = Provider.of<
+                                              FilesOperationsProvider>(
+                                            context,
+                                            listen: false,
+                                          );
+                                          expProviderFalse.setActiveDir(
+                                            path: path,
+                                            sizesExplorer: widget.sizesExplorer,
+                                            analyzerProvider:
+                                                analyzerProviderFalse,
+                                            filesOperationsProvider: foProvider,
+                                          );
+                                        },
+                                        sizesExplorer: widget.sizesExplorer,
+                                        parentSize: expProvider.parentSize ?? 0,
+                                      );
+                              },
+                            )
+                          : expProviderFalse.error == null
+                              ? (!expProviderFalse.loadingChildren
+                                  ? EmptyFolder()
+                                  : SizedBox())
+                              : ErrorOpenFolder();
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ),
+            ],
           );
   }
 }
