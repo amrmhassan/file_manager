@@ -2,7 +2,6 @@ import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 // import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/explorer_provider.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path;
 
 List<StorageItemModel> getFixedEntityList({
@@ -45,8 +44,7 @@ List<StorageItemModel> getFixedEntityList({
     viewedChildren.sort(
       (a, b) => getFileExtension(b.path).compareTo(getFileExtension(a.path)),
     );
-  }
-  if (sortOption == SortOption.sizeAsc) {
+  } else if (sortOption == SortOption.sizeAsc) {
     viewedChildren.sort(
       (a, b) {
         if (a.size == null && b.size == null) {
