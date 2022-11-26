@@ -27,6 +27,8 @@ enum SortOption {
   sizeDec,
   modifiedAsc,
   modifiedDec,
+  typeAsc,
+  typeDec,
 }
 
 class ExplorerProvider extends ChangeNotifier {

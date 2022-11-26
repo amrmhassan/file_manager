@@ -4,11 +4,13 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/create_folder_modal.dart';
+import 'package:explorer/global/modals/current_active_dir_options_modal.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/details_modal/details_modal.dart';
+import 'package:explorer/global/modals/entity_options_modal.dart';
+import 'package:explorer/global/modals/sort_by_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:flutter/material.dart';
@@ -92,47 +94,11 @@ void confirmDeleteEntityModal(BuildContext context) {
 
 //? entity options modal
 Future<void> showEntityOptionsModal(BuildContext context) async {
-  var foProviderFalse =
-      Provider.of<FilesOperationsProvider>(context, listen: false);
   //? entity options modal
   showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
-    builder: (ctx) => ModalWrapper(
-      afterLinePaddingFactor: 0,
-      bottomPaddingFactor: 0,
-      padding: EdgeInsets.zero,
-      color: kCardBackgroundColor,
-      showTopLine: false,
-      borderRadius: mediumBorderRadius,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          VSpace(),
-          ModalButtonElement(
-            inactiveColor: Colors.transparent,
-            opacity: foProviderFalse.selectedItems.length == 1 ? 1 : .5,
-            active: foProviderFalse.selectedItems.length == 1,
-            title: 'Rename',
-            onTap: () async {
-              Navigator.pop(ctx);
-              await showRenameModal(context);
-            },
-          ),
-          ModalButtonElement(
-            title: 'Details',
-            onTap: () async {
-              Navigator.pop(context);
-              await showDetailsModal(
-                context,
-              );
-            },
-          ),
-          VSpace(),
-        ],
-      ),
-    ),
+    builder: (ctx) => EntityOptionsModal(),
   );
 }
 
@@ -142,58 +108,7 @@ void showCurrentActiveDirOptions(BuildContext context) {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (ctx) {
-        return ModalWrapper(
-          afterLinePaddingFactor: 0,
-          bottomPaddingFactor: 0,
-          padding: EdgeInsets.zero,
-          color: kCardBackgroundColor,
-          showTopLine: false,
-          borderRadius: mediumBorderRadius,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              VSpace(),
-              ModalButtonElement(
-                title: 'Show Hidden Fiels',
-                onTap: () {
-                  var expProvider =
-                      Provider.of<ExplorerProvider>(context, listen: false);
-                  expProvider.toggleShowHiddenFiles();
-                  Navigator.pop(context);
-                },
-                checked: Provider.of<ExplorerProvider>(context, listen: false)
-                    .showHiddenFiles,
-              ),
-              ModalButtonElement(
-                title: 'Folders First',
-                onTap: () {
-                  var expProvider =
-                      Provider.of<ExplorerProvider>(context, listen: false);
-                  expProvider.togglePriotorizeFolders();
-                  Navigator.pop(context);
-                },
-                checked: Provider.of<ExplorerProvider>(context, listen: false)
-                    .prioritizeFolders,
-              ),
-              ModalButtonElement(
-                title: 'Create Folder',
-                onTap: () {
-                  Navigator.pop(context);
-                  createNewFolderModal(context);
-                },
-              ),
-              ModalButtonElement(
-                title: 'Sort By ..',
-                onTap: () {
-                  Navigator.pop(context);
-                  createNewFolderModal(context);
-                },
-              ),
-              VSpace(),
-            ],
-          ),
-        );
+        return CurrentActiveDirOptionsModal();
       });
 }
 
@@ -207,4 +122,13 @@ void createNewFolderModal(BuildContext context) {
       builder: (ctx) {
         return EntityInfoEditingModal();
       });
+}
+
+//? sort by modal
+void sortByModal(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    builder: (ctx) => SortByModal(),
+  );
 }

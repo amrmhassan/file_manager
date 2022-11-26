@@ -34,6 +34,14 @@ List<StorageItemModel> getFixedEntityList({
     viewedChildren.sort(
       (a, b) => b.modified.compareTo(a.modified),
     );
+  } else if (sortOption == SortOption.typeAsc) {
+    viewedChildren.sort(
+      (a, b) => getFileExtension(a.path).compareTo(getFileExtension(b.path)),
+    );
+  } else if (sortOption == SortOption.typeDec) {
+    viewedChildren.sort(
+      (a, b) => getFileExtension(b.path).compareTo(getFileExtension(a.path)),
+    );
   } else {
     //? if there is no sorting option or a worng option is selected
     viewedChildren.sort(
