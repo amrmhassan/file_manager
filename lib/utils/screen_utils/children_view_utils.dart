@@ -1,5 +1,4 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
-// import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:path/path.dart' as path;
