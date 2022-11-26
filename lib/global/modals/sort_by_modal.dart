@@ -74,6 +74,16 @@ class SortByModal extends StatelessWidget {
             onTap: () => setSortOption(SortOption.typeDec, context),
             checked: checked(SortOption.typeDec, context),
           ),
+          ModalButtonElement(
+            title: 'Size ( smallest first )',
+            onTap: () => setSortOption(SortOption.sizeAsc, context),
+            checked: checked(SortOption.sizeAsc, context),
+          ),
+          ModalButtonElement(
+            title: 'Size ( largest first )',
+            onTap: () => setSortOption(SortOption.sizeDec, context),
+            checked: checked(SortOption.sizeDec, context),
+          ),
           VSpace(),
         ],
       ),

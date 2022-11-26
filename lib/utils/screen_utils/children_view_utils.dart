@@ -42,6 +42,27 @@ List<StorageItemModel> getFixedEntityList({
     viewedChildren.sort(
       (a, b) => getFileExtension(b.path).compareTo(getFileExtension(a.path)),
     );
+  }
+  if (sortOption == SortOption.sizeAsc) {
+    viewedChildren.sort(
+      (a, b) {
+        if (a.size == null && b.size == null) {
+          return a.path.compareTo(b.path);
+        } else {
+          return (a.size ?? 0).compareTo(b.size ?? 0);
+        }
+      },
+    );
+  } else if (sortOption == SortOption.sizeDec) {
+    viewedChildren.sort(
+      (a, b) {
+        if (a.size == null && b.size == null) {
+          return b.path.compareTo(a.path);
+        } else {
+          return (b.size ?? 0).compareTo(a.size ?? 0);
+        }
+      },
+    );
   } else {
     //? if there is no sorting option or a worng option is selected
     viewedChildren.sort(

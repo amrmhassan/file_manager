@@ -19,6 +19,7 @@ import 'package:explorer/screens/explorer_screen/widgets/file_thumbnail.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -155,18 +156,22 @@ class _ChildFileItemState extends State<ChildFileItem> {
                             isSelected: widget.isSelected,
                             storageItemModel: widget.storageItemModel,
                           )
-                        : Text(
-                            widget.sizesExplorer
-                                ? sizePercentagleString(
-                                    getSizePercentage(
-                                      widget.storageItemModel.size ?? 0,
-                                      parentSize,
-                                    ),
-                                  )
-                                : getFileExtension(
-                                    widget.storageItemModel.path),
-                            style: h4TextStyleInactive.copyWith(
-                              color: kInActiveTextColor.withOpacity(.7),
+                        : Container(
+                            constraints: BoxConstraints(maxWidth: 50),
+                            child: Text(
+                              widget.sizesExplorer
+                                  ? sizePercentagleString(
+                                      getSizePercentage(
+                                        widget.storageItemModel.size ?? 0,
+                                        parentSize,
+                                      ),
+                                    )
+                                  : getFileExtension(
+                                      widget.storageItemModel.path),
+                              style: h4TextStyleInactive.copyWith(
+                                color: kInActiveTextColor.withOpacity(.7),
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                   ],
