@@ -6,6 +6,7 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -76,12 +77,22 @@ class SortByModal extends StatelessWidget {
           ),
           ModalButtonElement(
             title: 'Size ( smallest first )',
-            onTap: () => setSortOption(SortOption.sizeAsc, context),
+            onTap: () {
+              setSortOption(SortOption.sizeAsc, context);
+              showSnackBar(
+                  context: context,
+                  message: 'You can use size explorer instead');
+            },
             checked: checked(SortOption.sizeAsc, context),
           ),
           ModalButtonElement(
             title: 'Size ( largest first )',
-            onTap: () => setSortOption(SortOption.sizeDec, context),
+            onTap: () {
+              setSortOption(SortOption.sizeDec, context);
+              showSnackBar(
+                  context: context,
+                  message: 'You can use size explorer instead');
+            },
             checked: checked(SortOption.sizeDec, context),
           ),
           VSpace(),

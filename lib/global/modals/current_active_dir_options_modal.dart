@@ -7,6 +7,7 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -63,6 +64,14 @@ class CurrentActiveDirOptionsModal extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               sortByModal(context);
+            },
+          ),
+          ModalButtonElement(
+            title: 'Search Files',
+            onTap: () {
+              showSnackBar(
+                  context: context,
+                  message: 'Coming soon, will search files, folders');
             },
           ),
           VSpace(),

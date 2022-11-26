@@ -29,6 +29,7 @@ class AnalyzingStarter extends StatelessWidget {
             if (analyzerProvider.loading)
               Column(
                 children: [
+                  VSpace(),
                   CircularProgressIndicator(
                     color: Colors.white,
                     strokeWidth: 2,
