@@ -155,7 +155,36 @@ void showCurrentActiveDirOptions(BuildContext context) {
             children: [
               VSpace(),
               ModalButtonElement(
+                title: 'Show Hidden Fiels',
+                onTap: () {
+                  var expProvider =
+                      Provider.of<ExplorerProvider>(context, listen: false);
+                  expProvider.toggleShowHiddenFiles();
+                  Navigator.pop(context);
+                },
+                checked: Provider.of<ExplorerProvider>(context, listen: false)
+                    .showHiddenFiles,
+              ),
+              ModalButtonElement(
+                title: 'Folders First',
+                onTap: () {
+                  var expProvider =
+                      Provider.of<ExplorerProvider>(context, listen: false);
+                  expProvider.togglePriotorizeFolders();
+                  Navigator.pop(context);
+                },
+                checked: Provider.of<ExplorerProvider>(context, listen: false)
+                    .prioritizeFolders,
+              ),
+              ModalButtonElement(
                 title: 'Create Folder',
+                onTap: () {
+                  Navigator.pop(context);
+                  createNewFolderModal(context);
+                },
+              ),
+              ModalButtonElement(
+                title: 'Sort By ..',
                 onTap: () {
                   Navigator.pop(context);
                   createNewFolderModal(context);

@@ -17,11 +17,6 @@ class DBHelper {
 
     String finalPath = path.join(databasePathDir, dbName);
 
-    if (kDebugMode) {
-      // await sql.deleteDatabase(finalPath);
-      // await SharedPrefHelper.removeAllSavedKeys();
-    }
-
     return sql.openDatabase(
       finalPath,
       //? this is when creating the database itself so create all your tables here
@@ -44,7 +39,6 @@ class DBHelper {
     String finalPath = path.join(databasePathDir, dbName);
 
     await sql.deleteDatabase(finalPath);
-    await SharedPrefHelper.removeAllSavedKeys();
   }
 
   static Future<void> insert(

@@ -4,6 +4,9 @@ import 'dart:isolate';
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/shared_pref_constants.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
+import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
@@ -13,6 +16,18 @@ import 'package:explorer/utils/directory_watchers.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+
+//? asc means the smallest first or from A to Z or oldest to earliest
+//? desc means the largest first
+
+enum SortOption {
+  nameAsc,
+  nameDes,
+  sizeAsc,
+  sizeDec,
+  modifiedAsc,
+  modifiedDec,
+}
 
 class ExplorerProvider extends ChangeNotifier {
   final List<StorageItemModel> _children = [];
@@ -24,11 +39,65 @@ class ExplorerProvider extends ChangeNotifier {
   Directory currentActiveDir = initialDir;
   StreamSubscription<FileSystemEntity>? streamSub;
   StreamSubscription? watchDirStreamSub;
+  int? parentSize;
 
+  //# sorting options
+  //? sort parameters
+  SortOption _sortOption = defaultSortOption;
+  SortOption get sortOption => _sortOption;
+  bool _prioritizeFolders = defaultPriotorizeFolders;
+  bool get prioritizeFolders => _prioritizeFolders;
+  bool _showHiddenFiles = defaultShowHiddenFiles;
+  bool get showHiddenFiles => _showHiddenFiles;
+
+  //? to set the sort option
+  void setSortOptions(SortOption s) async {
+    _sortOption = s;
+    notifyListeners();
+    await SharedPrefHelper.setString(sortOptionKey, _sortOption.name);
+  }
+
+  //? to set priotorize folders
+  void togglePriotorizeFolders() async {
+    _prioritizeFolders = !_prioritizeFolders;
+    notifyListeners();
+    await SharedPrefHelper.setBool(priotorizeFoldersKey, _prioritizeFolders);
+  }
+
+  //? to set show hidden files
+  void toggleShowHiddenFiles() async {
+    _showHiddenFiles = !_showHiddenFiles;
+    notifyListeners();
+    await SharedPrefHelper.setBool(showHiddenFilesKey, _showHiddenFiles);
+  }
+
+  //? to load sort options when app loaded
+  Future loadSortOptions() async {
+    String? sortOptionString = await SharedPrefHelper.getString(sortOptionKey);
+    bool? prioritizeFoldersLoadedBool =
+        await SharedPrefHelper.getBool(priotorizeFoldersKey);
+    bool? showHiddenFilesLoadedBool =
+        await SharedPrefHelper.getBool(showHiddenFilesKey);
+
+    SortOption sortOptionLoaded = sortOptionString == null
+        ? defaultSortOption
+        : stringToEnum(sortOptionString, SortOption.values);
+    bool priotorizeLoaded =
+        prioritizeFoldersLoadedBool ?? defaultPriotorizeFolders;
+    bool showHiddenFilesLoaded =
+        showHiddenFilesLoadedBool ?? defaultShowHiddenFiles;
+
+    _sortOption = sortOptionLoaded;
+    _prioritizeFolders = priotorizeLoaded;
+    _showHiddenFiles = showHiddenFilesLoaded;
+    notifyListeners();
+  }
+  //# end of sort options
+
+  //? to run the isolate in the background
   ExplorerProvider() {
     runTheIsolate();
   }
-  int? parentSize;
 
   //? to change viewed file name
   void changeViewdFileName(String oldPath, String newPath) {
@@ -148,52 +217,14 @@ class ExplorerProvider extends ChangeNotifier {
       );
       return items;
     } else {
-      return getFixedEntityList(_children);
+      return getFixedEntityList(
+        viewedChildren: _children,
+        showHiddenFiles: _showHiddenFiles,
+        prioritizeFolders: _prioritizeFolders,
+        sortOption: _sortOption,
+      );
     }
   }
-
-  // void _updateViewedChildren() async {
-  //   if (streamSub != null) {
-  //     await streamSub!.cancel();
-  //   }
-  //   Stream<FileSystemEntity> chidrenStream = currentActiveDir.list();
-  //   error = null;
-  //   loadingChildren = true;
-  //   _children.clear();
-  //   notifyListeners();
-  //   streamSub = chidrenStream.listen((entity) {
-  //     FileStat fileStat = entity.statSync();
-  //     StorageItemModel storageItemModel = StorageItemModel(
-  //       parentPath: entity.parent.path,
-  //       path: entity.path,
-  //       modified: fileStat.modified,
-  //       accessed: fileStat.accessed,
-  //       changed: fileStat.changed,
-  //       entityType: fileStat.type == FileSystemEntityType.directory
-  //           ? EntityType.folder
-  //           : EntityType.file,
-  //       size: fileStat.type == FileSystemEntityType.directory
-  //           ? null
-  //           : fileStat.size,
-  //     );
-  //     _children.add(storageItemModel);
-  //     if (_children.length % 100 == 0) {
-  //       print('Herer');
-  //       print(_children.length);
-  //       notifyListeners();
-  //     }
-  //   });
-
-  //   streamSub!.onError((e, s) {
-  //     error = e.toString();
-  //     notifyListeners();
-  //   });
-
-  //   streamSub!.onDone(() {
-  //     loadingChildren = false;
-  //     notifyListeners();
-  //   });
-  // }
 
   void goBack({
     required AnalyzerProvider? analyzerProvider,
@@ -223,7 +254,7 @@ class ExplorerProvider extends ChangeNotifier {
     );
   }
 
-//? update the selected items from the current dir when ever the active dir changes
+  //? update the selected items from the current dir when ever the active dir changes
   void updateSelectedFromActiveDir({
     required FilesOperationsProvider filesOperationsProvider,
   }) {
@@ -233,7 +264,7 @@ class ExplorerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//? update the active dir
+  //? update the active dir
   void setActiveDir({
     required String path,
     AnalyzerProvider? analyzerProvider,
@@ -294,7 +325,7 @@ class ExplorerProvider extends ChangeNotifier {
     }
   }
 
-//? to run watchers
+  //? to run watchers
   void _runActiveDirWatchers() {
     DirecotryWatchers direcotryWatchers =
         DirecotryWatchers(currentActiveDir: currentActiveDir);

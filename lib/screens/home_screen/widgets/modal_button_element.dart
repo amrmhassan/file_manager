@@ -13,6 +13,7 @@ class ModalButtonElement extends StatelessWidget {
   final bool active;
   final Color? inactiveColor;
   final double? opacity;
+  final bool? checked;
 
   const ModalButtonElement({
     Key? key,
@@ -21,6 +22,7 @@ class ModalButtonElement extends StatelessWidget {
     this.inactiveColor,
     this.active = true,
     this.opacity,
+    this.checked,
   }) : super(key: key);
 
   @override
@@ -38,11 +40,38 @@ class ModalButtonElement extends StatelessWidget {
           ),
           onTap: onTap,
           alignment: Alignment.centerLeft,
-          child: Text(
-            title,
-            style: h4TextStyleInactive.copyWith(
-              color: Colors.white,
-            ),
+          child: Row(
+            children: [
+              Text(
+                title,
+                style: h4TextStyleInactive.copyWith(
+                  color: Colors.white,
+                ),
+              ),
+              Spacer(),
+              if (checked != null)
+                Container(
+                  padding: EdgeInsets.all(smallPadding),
+                  width: smallIconSize,
+                  height: smallIconSize,
+                  decoration: BoxDecoration(
+                    color: checked! ? kBlueColor : null,
+                    borderRadius: BorderRadius.circular(smallBorderRadius),
+                    border: checked!
+                        ? null
+                        : Border.all(
+                            color: kInactiveColor,
+                            width: 2,
+                          ),
+                  ),
+                  child: checked!
+                      ? Image.asset(
+                          'assets/icons/check.png',
+                          color: Colors.white,
+                        )
+                      : null,
+                ),
+            ],
           ),
         ),
         HLine(

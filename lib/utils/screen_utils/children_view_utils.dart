@@ -1,11 +1,15 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
-import 'package:explorer/constants/global_constants.dart';
+// import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:path/path.dart' as path;
 
-List<StorageItemModel> getFixedEntityList(
-  List<StorageItemModel> viewedChildren,
-) {
+List<StorageItemModel> getFixedEntityList({
+  required List<StorageItemModel> viewedChildren,
+  required bool showHiddenFiles,
+  required bool prioritizeFolders,
+  required SortOption sortOption,
+}) {
   if (!showHiddenFiles) {
     viewedChildren = viewedChildren.where(
       (element) {
@@ -14,7 +18,24 @@ List<StorageItemModel> getFixedEntityList(
     ).toList();
   }
   List<StorageItemModel> fixedEntities = [];
-  if (sortAlphapitacally) {
+  if (sortOption == SortOption.nameAsc) {
+    viewedChildren.sort(
+      (a, b) => a.path.compareTo(b.path),
+    );
+  } else if (sortOption == SortOption.nameDes) {
+    viewedChildren.sort(
+      (a, b) => b.path.compareTo(a.path),
+    );
+  } else if (sortOption == SortOption.modifiedAsc) {
+    viewedChildren.sort(
+      (a, b) => a.modified.compareTo(b.modified),
+    );
+  } else if (sortOption == SortOption.modifiedDec) {
+    viewedChildren.sort(
+      (a, b) => b.modified.compareTo(a.modified),
+    );
+  } else {
+    //? if there is no sorting option or a worng option is selected
     viewedChildren.sort(
       (a, b) => a.path.compareTo(b.path),
     );

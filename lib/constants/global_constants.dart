@@ -1,10 +1,8 @@
 import 'dart:io';
 
-final Directory initialDir = Directory('sdcard');
+import 'package:explorer/providers/explorer_provider.dart';
 
-bool prioritizeFolders = true;
-bool showHiddenFiles = true;
-bool sortAlphapitacally = true;
+final Directory initialDir = Directory('sdcard');
 
 const Duration homePageViewDuration = Duration(milliseconds: 180);
 
@@ -16,3 +14,8 @@ const Duration recentExpandDuration = Duration(milliseconds: 150);
 //? animations constants
 const bool allowNormalExpAnimation = false;
 const bool allowSizesExpAnimation = true;
+
+//? sort options default
+const SortOption defaultSortOption = SortOption.nameAsc;
+const bool defaultShowHiddenFiles = false;
+const bool defaultPriotorizeFolders = true;

@@ -2,13 +2,12 @@
 
 import 'dart:async';
 import 'dart:isolate';
-import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/responsive.dart';
-import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
@@ -52,60 +51,19 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // void runTheIsolate() {
-  //   var receivePort = ReceivePort();
-  //   var sendPort = receivePort.sendPort;
-  //   Isolate.spawn(loadExplorerChildren, sendPort);
-  //   receivePort.listen((message) {
-  //     if (message is SendPort) {
-  //       globalSendPort = message;
-  //     } else if (message is LoadChildrenMessagesData) {
-  //       if (message.flag == LoadChildrenMessagesFlags.childrenChunck) {
-  //         setState(() {
-  //           viewedChildren.addAll(message.data);
-  //         });
-  //       } else if (message.flag == LoadChildrenMessagesFlags.done) {
-  //         setState(() {
-  //           viewedChildren.addAll(message.data);
-  //           loadingDirDirectChildren = false;
-  //         });
-  //       } else if (message.flag == LoadChildrenMessagesFlags.error) {
-  //         setState(() {
-  //           error = error.toString();
-  //         });
-  //       }
-  //     }
-  //   });
-  // }
-
-//? update viewed children
-  // void updateViewChildren(String path) async {
-  //   setState(() {
-  //     error = null;
-  //     loadingDirDirectChildren = true;
-  //     viewedChildren.clear();
-  //   });
-  //   if (globalSendPort != null) {
-  //     globalSendPort!.send(path);
-  //   }
-  // }
-
-  //? update viewed children
-  // void updateViewChildren(String path) async {
-  //   Provider.of<ExplorerProvider>(context, listen: false)
-  //       .setActiveDir(path: path);
-  // }
-
   @override
   void initState() {
     pageController = PageController(
       initialPage: activeViewIndex,
     );
     Future.delayed(Duration.zero).then((value) async {
+      await Provider.of<ExplorerProvider>(context, listen: false)
+          .loadSortOptions();
       await Provider.of<AnalyzerProvider>(context, listen: false)
           .loadInitialAppData();
+
       //* getting storage permission
-      bool res = await handleStoragePermissions(
+      bool res = await showPermissionsModal(
         context: context,
         callback: () => handlePermissionsGrantedCallback(context),
       );
@@ -181,8 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (kDebugMode)
               GestureDetector(
                 onTap: () async {
-                  await DBHelper.deleteDatabase(dbName);
-                  await SharedPrefHelper.removeAllSavedKeys();
+                  await DBHelper.clearDb();
                 },
                 child: Container(
                   width: 50,
