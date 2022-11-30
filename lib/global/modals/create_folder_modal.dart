@@ -48,6 +48,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
                   .selectedItems
                   .first
                   .entityType;
+          printOnDebug(entityType);
           if (entityType == EntityType.folder) {
             handleRenameFolder();
           } else if (entityType == EntityType.file) {

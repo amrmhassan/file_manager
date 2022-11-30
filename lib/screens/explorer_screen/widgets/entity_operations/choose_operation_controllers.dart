@@ -10,8 +10,8 @@ import 'package:explorer/screens/explorer_screen/widgets/entity_operations/share
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChooseOperationContollers extends StatelessWidget {
-  const ChooseOperationContollers({
+class ChooseOperationControllers extends StatelessWidget {
+  const ChooseOperationControllers({
     Key? key,
   }) : super(key: key);
 
@@ -27,13 +27,13 @@ class ChooseOperationContollers extends StatelessWidget {
         OperationButton(
             iconName: 'copy',
             onTap: () {
-              foProviderFalse.setOperation(FileOparation.copy);
+              foProviderFalse.setOperation(FileOperation.copy);
             }),
         HSpace(factor: .5),
         OperationButton(
             iconName: 'scissors',
             onTap: () {
-              foProviderFalse.setOperation(FileOparation.move);
+              foProviderFalse.setOperation(FileOperation.move);
             }),
         HSpace(factor: .5),
         DeleteButton(),

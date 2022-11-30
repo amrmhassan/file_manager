@@ -11,20 +11,20 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 
-class RecentsItem extends StatefulWidget {
+class RecentItem extends StatefulWidget {
   final String title;
   final List<Widget> children;
-  const RecentsItem({
+  const RecentItem({
     Key? key,
     required this.title,
     required this.children,
   }) : super(key: key);
 
   @override
-  State<RecentsItem> createState() => _RecentsItemState();
+  State<RecentItem> createState() => _RecentItemState();
 }
 
-class _RecentsItemState extends State<RecentsItem> {
+class _RecentItemState extends State<RecentItem> {
   bool isExpanded = true;
 
   @override
@@ -89,7 +89,6 @@ class _RecentsItemState extends State<RecentsItem> {
                       color: Colors.white,
                       width: ultraLargeIconSize,
                     ),
-                    VSpace(),
                   ],
                 ),
               )

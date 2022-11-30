@@ -21,7 +21,7 @@ class ChildrenItemsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getAndUpdataAllSavedFolders() async {
+  Future<void> getAndUpdateAllSavedFolders() async {
     foldersInfo.clear();
     var data = await DBHelper.getData(folderInfoTableName);
     foldersInfo = data.map((e) => FolderItemInfoModel.fromJSON(e)).toList();

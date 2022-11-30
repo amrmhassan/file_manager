@@ -2,15 +2,17 @@
 
 import 'dart:async';
 import 'dart:isolate';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
 import 'package:explorer/helpers/db_helper.dart';
-import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
+import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +36,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int activeViewIndex = 1;
+  int activeViewIndex = 0;
   late PageController pageController;
   int exitCounter = 0;
   SendPort? globalSendPort;
@@ -69,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
       if (!res) return;
       await Provider.of<ChildrenItemsProvider>(context, listen: false)
-          .getAndUpdataAllSavedFolders();
+          .getAndUpdateAllSavedFolders();
     });
 
     super.initState();
@@ -91,22 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: ScreensWrapper(
         scfKey: expScreenKey,
-        drawer: Container(
-          color: kBackgroundColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                color: kBackgroundColor,
-                width: Responsive.getWidthPercentage(context, .75),
-                child: Text(
-                  'This will be the app drawer',
-                  style: h4TextStyleInactive,
-                ),
-              ),
-            ],
-          ),
-        ),
+        drawer: CustomAppDrawer(),
         backgroundColor: kBackgroundColor,
         child: Stack(
           children: [
@@ -127,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: pageController,
                     physics: BouncingScrollPhysics(),
                     children: [
-                      AnalyzerScreen(),
+                      RecentScreen(),
                       ExplorerScreen(
                         sizesExplorer: false,
                       ),
@@ -138,8 +125,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             if (kDebugMode)
               GestureDetector(
-                onTap: () async {
+                onLongPress: () async {
                   await DBHelper.clearDb();
+                },
+                onTap: () async {
+                  Provider.of<FilesOperationsProvider>(context, listen: false)
+                      .copyDB();
                 },
                 child: Container(
                   width: 50,

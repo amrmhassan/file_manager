@@ -5,7 +5,9 @@ import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/user_pref_provider.dart';
+import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
@@ -34,6 +36,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => ExplorerProvider()),
         ChangeNotifierProvider(create: (ctx) => FilesOperationsProvider()),
         ChangeNotifierProvider(create: (ctx) => UserPrefProvider()),
+        ChangeNotifierProvider(create: (ctx) => RecentProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -58,6 +61,7 @@ class MyApp extends StatelessWidget {
           SizesExpScreen.routeName: (context) => SizesExpScreen(),
           ExtReportScreen.routeName: (context) => ExtReportScreen(),
           ExtFilesScreen.routeName: (context) => ExtFilesScreen(),
+          AnalyzerScreen.routeName: (context) => AnalyzerScreen(),
         },
       ),
     );

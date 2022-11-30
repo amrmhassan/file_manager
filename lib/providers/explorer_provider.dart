@@ -13,7 +13,6 @@ import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -103,10 +102,10 @@ class ExplorerProvider extends ChangeNotifier {
   }
 
   //? to change viewed file name
-  void changeViewdFileName(String oldPath, String newPath) {
+  void changeViewedFileName(String oldPath, String newPath) {
     File newFile = File(newPath);
     FileStat fileStat = newFile.statSync();
-    StorageItemModel newitem = StorageItemModel(
+    StorageItemModel newItem = StorageItemModel(
       parentPath: newFile.parent.path,
       path: newFile.path,
       modified: fileStat.modified,
@@ -117,14 +116,20 @@ class ExplorerProvider extends ChangeNotifier {
     );
     int index = _children.indexWhere((element) => element.path == oldPath);
     _children.removeAt(index);
-    _children.insert(index, newitem);
+    _children.insert(index, newItem);
+  }
+
+  //? void remove item when deleted
+  void removeItemWhenDeleted(String path) {
+    _children.removeWhere((element) => element.path == path);
+    notifyListeners();
   }
 
   //? to change viewed file name
-  void changeViewdFName(String oldPath, String newPath) {
+  void changeViewedFName(String oldPath, String newPath) {
     Directory newFile = Directory(newPath);
     FileStat fileStat = newFile.statSync();
-    StorageItemModel newitem = StorageItemModel(
+    StorageItemModel newItem = StorageItemModel(
       parentPath: newFile.parent.path,
       path: newFile.path,
       modified: fileStat.modified,
@@ -135,7 +140,7 @@ class ExplorerProvider extends ChangeNotifier {
     );
     int index = _children.indexWhere((element) => element.path == oldPath);
     _children.removeAt(index);
-    _children.insert(index, newitem);
+    _children.insert(index, newItem);
   }
 
   //? selected from the current active folder

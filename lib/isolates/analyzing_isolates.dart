@@ -5,6 +5,8 @@ import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyse
 import 'package:explorer/utils/general_utils.dart';
 
 String parentPath = 'sdcard';
+
+//? to start analyzing the storage
 void runAnalyzeStorageIsolate(SendPort sendPort) {
   ReceivePort receivePort = ReceivePort();
   sendPort.send(receivePort.sendPort);
@@ -16,15 +18,15 @@ void runAnalyzeStorageIsolate(SendPort sendPort) {
       sendPort.send(afterScanning.difference(beforeScanning).inMilliseconds);
       sendPort.send(obj);
       int parseTime = getExecutionTime(() {
-        StorageAnalyserV4 storageAnalyserV4 = StorageAnalyserV4(
+        StorageAnalyzerV4 storageAnalyzerV4 = StorageAnalyzerV4(
           allFilesInfo: obj.filesInfo,
           allFoldersInfo: obj.foldersInfo,
-          children: obj.allEntitiesPathes,
+          children: obj.allEntitiesPaths,
           parentPath: parentPath,
         );
-        storageAnalyserV4.run();
+        storageAnalyzerV4.run();
 
-        sendPort.send(storageAnalyserV4);
+        sendPort.send(storageAnalyzerV4);
       });
       sendPort.send(parseTime);
     },

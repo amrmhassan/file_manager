@@ -4,6 +4,7 @@ enum FileType {
   audio,
   batch,
   archive,
+  docs,
   unknown,
 }
 

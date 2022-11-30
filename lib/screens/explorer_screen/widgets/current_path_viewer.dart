@@ -108,7 +108,7 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
                   Provider.of<ExplorerProvider>(context, listen: false);
               if (expProvider.allActiveDirChildrenSelected) {
                 Provider.of<FilesOperationsProvider>(context, listen: false)
-                    .deselctAll(currentDirChildren, expProvider);
+                    .deselectAll(currentDirChildren, expProvider);
               } else {
                 Provider.of<FilesOperationsProvider>(context, listen: false)
                     .selectAll(currentDirChildren, expProvider);

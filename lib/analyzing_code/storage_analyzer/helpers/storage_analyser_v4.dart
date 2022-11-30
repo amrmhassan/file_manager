@@ -2,7 +2,7 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.d
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 
-class StorageAnalyserV4 {
+class StorageAnalyzerV4 {
   String parentPath;
   List<String> children;
   List<LocalFileInfo> allFilesInfo;
@@ -10,7 +10,7 @@ class StorageAnalyserV4 {
   List<LocalFolderInfo> allFolderInfoWithSize = [];
   List<ExtensionInfo> allExtensionsInfo = [];
 
-  StorageAnalyserV4({
+  StorageAnalyzerV4({
     required this.parentPath,
     required this.children,
     required this.allFilesInfo,

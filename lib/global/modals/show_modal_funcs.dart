@@ -8,6 +8,7 @@ import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/modals/entity_options_modal.dart';
 import 'package:explorer/global/modals/sort_by_modal.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -80,9 +81,10 @@ void confirmDeleteEntityModal(BuildContext context) {
       title: 'Confirm Delete',
       subTitle: 'Do you want to delete selected items?',
       onOk: () {
+        var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
         //? here delete the items
         Provider.of<FilesOperationsProvider>(context, listen: false)
-            .performDelete();
+            .performDelete(expProvider);
       },
     ),
   );

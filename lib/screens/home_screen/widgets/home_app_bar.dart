@@ -7,6 +7,7 @@ import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart';
 import 'package:explorer/screens/home_screen/widgets/selected_item_number.dart';
@@ -89,10 +90,12 @@ class HomeAppBar extends StatelessWidget {
                 : AppBarIconButton(
                     onTap: () {
                       showSnackBar(context: context, message: 'Rescanning');
+                      var recentProvider =
+                          Provider.of<RecentProvider>(context, listen: false);
                       Provider.of<AnalyzerProvider>(context, listen: false)
                           .clearAllData();
                       Provider.of<AnalyzerProvider>(context, listen: false)
-                          .handleAnalyzeEvent();
+                          .handleAnalyzeEvent(recentProvider);
                     },
                     iconName: 'reload',
                   ),

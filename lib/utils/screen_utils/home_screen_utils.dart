@@ -5,6 +5,7 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +65,7 @@ void handlePermissionsGrantedCallback(BuildContext context) async {
     path: expProvider.currentActiveDir.path,
     filesOperationsProvider: foProviderFalse,
   );
+  var recentProvider = Provider.of<RecentProvider>(context, listen: false);
   await Provider.of<AnalyzerProvider>(context, listen: false)
-      .handleAnalyzeEvent();
+      .handleAnalyzeEvent(recentProvider);
 }

@@ -12,6 +12,13 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
 class DBHelper {
+  static Future<String> getDbPath() async {
+    final databasePathDir = await sql.getDatabasesPath();
+
+    String finalPath = path.join(databasePathDir, dbName);
+    return finalPath;
+  }
+
   static Future<sql.Database> database(String table) async {
     final databasePathDir = await sql.getDatabasesPath();
 
@@ -21,6 +28,12 @@ class DBHelper {
       finalPath,
       //? this is when creating the database itself so create all your tables here
       onCreate: (db, version) async {
+        //? create recent images table
+        await db.execute(
+            'CREATE TABLE $imagesRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
+        //? create recent video table
+        await db.execute(
+            'CREATE TABLE $videosRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
         //? create extension info table
         await db.execute(ExtensionInfo.toSQLString());
         //? creating analyzer reports table

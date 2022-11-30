@@ -6,6 +6,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/recent_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,8 +50,12 @@ class AnalyzingStarter extends StatelessWidget {
                   ButtonWrapper(
                     padding: EdgeInsets.symmetric(
                         horizontal: kHPad / 2, vertical: kVPad / 3),
-                    onTap: Provider.of<AnalyzerProvider>(context, listen: false)
-                        .handleAnalyzeEvent,
+                    onTap: () {
+                      var recentProvider =
+                          Provider.of<RecentProvider>(context, listen: false);
+                      Provider.of<AnalyzerProvider>(context, listen: false)
+                          .handleAnalyzeEvent(recentProvider);
+                    },
                     border: Border.all(color: Colors.white.withOpacity(.5)),
                     borderRadius: 1000,
                     child: Text(

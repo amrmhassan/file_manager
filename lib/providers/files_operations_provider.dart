@@ -1,15 +1,19 @@
 import 'dart:io';
 
+import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/utils/files_operations_utiles/copy_utils.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:share_plus/share_plus.dart' as share_plus;
 
-enum FileOparation {
+enum FileOperation {
   delete,
   move,
   copy,
@@ -27,7 +31,7 @@ class FilesOperationsProvider extends ChangeNotifier {
     return [..._selectedItems];
   }
 
-  FileOparation? currentOperation;
+  FileOperation? currentOperation;
 
   bool _loadingOperation = false;
   bool get loadingOperation {
@@ -55,7 +59,7 @@ class FilesOperationsProvider extends ChangeNotifier {
               folderPath: folderPath,
             ),
         '');
-    explorerProvider.changeViewdFName(folderPath, newPath);
+    explorerProvider.changeViewedFName(folderPath, newPath);
 
     _loadingOperation = false;
     clearAllSelectedItems(explorerProvider);
@@ -84,7 +88,7 @@ class FilesOperationsProvider extends ChangeNotifier {
               filePath: filePath,
             ),
         '');
-    explorerProvider.changeViewdFileName(filePath, newPath);
+    explorerProvider.changeViewedFileName(filePath, newPath);
     _loadingOperation = false;
     clearAllSelectedItems(explorerProvider);
     notifyListeners();
@@ -100,7 +104,7 @@ class FilesOperationsProvider extends ChangeNotifier {
   }
 
 //? select all
-  void deselctAll(
+  void deselectAll(
       List<StorageItemModel> dirChildren, ExplorerProvider explorerProvider) {
     for (var element in dirChildren) {
       _removeFromSelectedItems(element.path);
@@ -109,7 +113,7 @@ class FilesOperationsProvider extends ChangeNotifier {
   }
 
 //? delete files
-  Future<void> performDelete() async {
+  Future<void> performDelete(ExplorerProvider explorerProvider) async {
     List<StorageItemModel> items = [..._selectedItems];
     _loadingOperation = true;
     currentOperation = null;
@@ -123,10 +127,12 @@ class FilesOperationsProvider extends ChangeNotifier {
         } else {
           await compute((m) => deleteFolder(entity.path), '');
         }
+        explorerProvider.removeItemWhenDeleted(entity.path);
       } catch (e) {
         rethrow;
       }
     }
+
     _loadingOperation = false;
     notifyListeners();
   }
@@ -134,8 +140,8 @@ class FilesOperationsProvider extends ChangeNotifier {
 //? copy files
   Future<void> performCopy(String currentActiveDir) async {
     List<StorageItemModel> items = [..._selectedItems];
-    FileOparation localOperation =
-        FileOparation.values[currentOperation!.index];
+    FileOperation localOperation =
+        FileOperation.values[currentOperation!.index];
     _loadingOperation = true;
     currentOperation = null;
     _selectedItems.clear();
@@ -155,7 +161,7 @@ class FilesOperationsProvider extends ChangeNotifier {
       }
     }
     //* delete after all files copied
-    if (localOperation == FileOparation.move) {
+    if (localOperation == FileOperation.move) {
       for (var entity in items) {
         if (entity.entityType == EntityType.file) {
           await compute((message) => deleteFile(entity.path), '');
@@ -185,7 +191,7 @@ class FilesOperationsProvider extends ChangeNotifier {
     //! copy , delete, move, send
   }
   //? to set an operation
-  void setOperation(FileOparation? fo) {
+  void setOperation(FileOperation? fo) {
     currentOperation = fo;
     notifyListeners();
   }
@@ -284,5 +290,16 @@ class FilesOperationsProvider extends ChangeNotifier {
     _loadingOperation = false;
     clearAllSelectedItems(explorerProvider);
     notifyListeners();
+  }
+
+  //? to copy the db to sdcard to view it
+  void copyDB() async {
+    String dbPath = await DBHelper.getDbPath();
+    File oldDb = File('sdcard/$dbName');
+    if (oldDb.existsSync()) {
+      oldDb.deleteSync();
+    }
+    File copiedFile = copyFile(dbPath, 'sdcard');
+    printOnDebug(copiedFile.path);
   }
 }

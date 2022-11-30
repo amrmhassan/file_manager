@@ -1,8 +1,6 @@
 import 'dart:isolate';
-import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyser_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
-import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
@@ -10,6 +8,7 @@ import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
+import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -36,8 +35,8 @@ class AnalyzerProvider extends ChangeNotifier {
   AdvancedStorageAnalyzer? _advancedStorageAnalyzer;
   get advancedStorageAnalyzer => _advancedStorageAnalyzer;
 
-  StorageAnalyserV4? _storageAnalyserV4;
-  StorageAnalyserV4? get storageAnalyserV4 => _storageAnalyserV4;
+  StorageAnalyzerV4? _storageAnalyzerV4;
+  StorageAnalyzerV4? get storageAnalyzerV4 => _storageAnalyzerV4;
 
   //? these data will be loaded from the sqlite after reopening the app or after running the analyzer
   List<LocalFolderInfo> _foldersInfo = [];
@@ -48,16 +47,9 @@ class AnalyzerProvider extends ChangeNotifier {
 
   AnalyzerReportInfoModel? reportInfo;
 
-//? this will hold the current loading message for analyzing, saving to db, or any thing else
-  String? loadingMessage;
-  void setLoadingMessage(String s) {
-    loadingMessage = s;
-    notifyListeners();
-  }
-
   //? last date the user performed (analyzing storage)
   DateTime? lastAnalyzingReportDate;
-  Future<void> setLastAnalyzingDate() async {
+  Future<void> _setLastAnalyzingDate() async {
     DateTime now = DateTime.now();
     await SharedPrefHelper.setString(
         lastAnalyzingReportDateKey, now.toIso8601String());
@@ -65,7 +57,8 @@ class AnalyzerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadLastAnalyzingDate() async {
+//? to load the last analyzing date from the shared prefs
+  Future<void> _loadLastAnalyzingDate() async {
     String? date = await SharedPrefHelper.getString(lastAnalyzingReportDateKey);
     if (date != null) {
       lastAnalyzingReportDate = DateTime.parse(date);
@@ -75,8 +68,8 @@ class AnalyzerProvider extends ChangeNotifier {
 
 //? load data to the app
   Future<void> loadInitialAppData() async {
-    await loadLastAnalyzingDate();
-    await getSavedExtensionsInfo();
+    await _loadLastAnalyzingDate();
+    await _getSavedExtensionsInfo();
     await _getReportInfo();
   }
 
@@ -88,7 +81,7 @@ class AnalyzerProvider extends ChangeNotifier {
       return localFolderInfo;
     } catch (e) {
       try {
-        //* load its data form db if it doesnt exist in the local state
+        //* load its data form db if it doesn't exist in the local state
         var data = await DBHelper.getDataWhere(
             localFolderInfoTableName, pathString, path);
         LocalFolderInfo localFolderInfo = LocalFolderInfo.fromJSON(data.first);
@@ -100,16 +93,16 @@ class AnalyzerProvider extends ChangeNotifier {
     }
   }
 
-//? to clear all saved data
+//? to clear all saved data from the RAM
   void clearAllData() {
     _currentFolder = '';
     _advancedStorageAnalyzer = null;
-    _storageAnalyserV4 = null;
+    _storageAnalyzerV4 = null;
     notifyListeners();
   }
 
 //? to start anayzing storage
-  Future<void> handleAnalyzeEvent() async {
+  Future<void> handleAnalyzeEvent(RecentProvider recentProvider) async {
     // _loading = true;
     ReceivePort receivePort = ReceivePort();
     SendPort sendPort = receivePort.sendPort;
@@ -128,28 +121,34 @@ class AnalyzerProvider extends ChangeNotifier {
           //* here run the code with finishing a folder
           _currentFolder = path_operations.basename(message.path);
           notifyListeners();
-        } else if (message is StorageAnalyserV4) {
+        } else if (message is StorageAnalyzerV4) {
           //* here getting the folders info with sizes
-          _storageAnalyserV4 = message;
+          _storageAnalyzerV4 = message;
           _currentFolder = '';
           _foldersInfo = message.allFolderInfoWithSize;
           _allExtensionsInfo = message.allExtensionsInfo;
           _loading = false;
           //? if we reached here this mean the storage analyzer report done successfully
-          setLastAnalyzingDate();
-          await saveResultsToSqlite();
+          await _setLastAnalyzingDate();
+          await _handleSaveRecentFiles(recentProvider);
+          await _saveResultsToSqlite();
         } else if (message is int) {
           printOnDebug('Time Taken: ${message / 1000} Second');
         } else if (message is! SendPort) {
-          //? here handle exeptions
+          //? here handle extensions
           // throw Exception(message);
         }
       },
     );
   }
 
+  //? handle save recent files
+  Future _handleSaveRecentFiles(RecentProvider recentProvider) async {
+    await recentProvider.initialize(_storageAnalyzerV4!);
+  }
+
 //? save data to sqlite
-  Future<void> saveResultsToSqlite() async {
+  Future<void> _saveResultsToSqlite() async {
     _savingInfoToSqlite = true;
     notifyListeners();
     await DBHelper.clearDb();
@@ -161,54 +160,38 @@ class AnalyzerProvider extends ChangeNotifier {
 
   //? save extensions info to sqlite
   Future<void> _saveExtensionsInfo() async {
-    for (var extension in storageAnalyserV4!.allExtensionsInfo) {
+    for (var extension in storageAnalyzerV4!.allExtensionsInfo) {
       await DBHelper.insert(extensionInfoTableName, extension.toJSON());
     }
   }
 
   //? save folders sizes to sqlite
   Future<void> _saveFolderSizes() async {
-    for (var folderInfo in storageAnalyserV4!.allFolderInfoWithSize) {
+    for (var folderInfo in storageAnalyzerV4!.allFolderInfoWithSize) {
       await DBHelper.insert(localFolderInfoTableName, folderInfo.toJSON());
     }
     await _saveReportInfo();
   }
 
-//? get saved folders info
-  Future<void> getSavedFoldersInfo() async {
-    var data = await DBHelper.getData(localFolderInfoTableName);
-    List<LocalFolderInfo> fi =
-        data.map((e) => LocalFolderInfo.fromJSON(e)).toList();
-    _foldersInfo = fi;
-    notifyListeners();
-  }
-
   //? get saved extensions info
-  Future<void> getSavedExtensionsInfo() async {
-    var data = await DBHelper.getData(extensionInfoTableName);
-    List<ExtensionInfo> ei =
-        data.map((e) => ExtensionInfo.fromJSON(e)).toList();
-    _allExtensionsInfo = ei;
-    notifyListeners();
-  }
-
-  //? get extension files
-  List<LocalFileInfo> getExtensionFiles(String ext) {
-    var extFiles = _advancedStorageAnalyzer!.filesInfo
-        .where((element) => getFileExtension(element.path) == ext)
-        .toList();
-    extFiles.sort(
-      (a, b) => b.size.compareTo(a.size),
-    );
-    return extFiles;
+  Future<void> _getSavedExtensionsInfo() async {
+    try {
+      var data = await DBHelper.getData(extensionInfoTableName);
+      List<ExtensionInfo> ei =
+          data.map((e) => ExtensionInfo.fromJSON(e)).toList();
+      _allExtensionsInfo = ei;
+      notifyListeners();
+    } catch (e) {
+      printOnDebug(e.toString());
+    }
   }
 
   //? save the report info
   Future<void> _saveReportInfo() async {
     AnalyzerReportInfoModel analyzerReportInfoModel = AnalyzerReportInfoModel(
       dateDone: DateTime.now(),
-      folderCount: _storageAnalyserV4!.allFolderInfoWithSize.length,
-      filesCount: _storageAnalyserV4!.allFilesInfo.length,
+      folderCount: _storageAnalyzerV4!.allFolderInfoWithSize.length,
+      filesCount: _storageAnalyzerV4!.allFilesInfo.length,
       extensionsCount: 0,
       totalFilesSize: _advancedStorageAnalyzer!.allFilesSize,
     );
@@ -223,11 +206,15 @@ class AnalyzerProvider extends ChangeNotifier {
   //? load report info
   Future<void> _getReportInfo() async {
     if (lastAnalyzingReportDate != null) {
-      var data = await DBHelper.getData(analyzerReportInfoTableName);
-      AnalyzerReportInfoModel analyzerReportInfoModel =
-          AnalyzerReportInfoModel.fromJSON(data.first);
-      reportInfo = analyzerReportInfoModel;
-      notifyListeners();
+      try {
+        var data = await DBHelper.getData(analyzerReportInfoTableName);
+        AnalyzerReportInfoModel analyzerReportInfoModel =
+            AnalyzerReportInfoModel.fromJSON(data.first);
+        reportInfo = analyzerReportInfoModel;
+        notifyListeners();
+      } catch (e) {
+        printOnDebug('No report info yet');
+      }
     }
   }
 }

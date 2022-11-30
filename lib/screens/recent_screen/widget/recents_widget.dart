@@ -6,14 +6,14 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/screens/analyzer_screen/recents_widget/widgets/recents_item.dart';
+import 'package:explorer/screens/recent_screen/widget/widgets/recents_item.dart';
 import 'package:flutter/material.dart';
 
 //! this will hold the last 100 files of each type
 //! with the first 2 of them in the main screen
 
-class RecentsWidget extends StatelessWidget {
-  const RecentsWidget({
+class RecentWidget extends StatelessWidget {
+  const RecentWidget({
     Key? key,
   }) : super(key: key);
 
@@ -36,11 +36,11 @@ class RecentsWidget extends StatelessWidget {
                 top: kVPad / 2,
               ),
               child: Text(
-                'Recents',
+                'Recent',
                 style: h3TextStyle.copyWith(color: Colors.white),
               ),
             ),
-            RecentsItem(
+            RecentItem(
               title: 'Images',
               children: List.generate(
                 5,
@@ -54,7 +54,7 @@ class RecentsWidget extends StatelessWidget {
                 ),
               ),
             ),
-            RecentsItem(
+            RecentItem(
               title: 'Books',
               children: List.generate(
                 5,

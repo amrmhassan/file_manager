@@ -1,10 +1,11 @@
-const String scrollingToString = 'scrollingTo';
-const String directChildrenString = 'directChildren';
-const String itemCountString = 'itemCount';
-const String sizeString = 'size';
-const String nameString = 'name';
-const String pathString = 'path';
+const String scrollingToString = 'scrollingToString';
+const String directChildrenString = 'directChildrenString';
+const String itemCountString = 'itemCountString';
+const String sizeString = 'sizeString';
+const String nameString = 'nameString';
+const String pathString = 'pathString';
 const String dateCapturedString = 'dateCapturedString';
+const String fileBaseNameString = 'fileBaseNameString';
 
 //? storage item model
 const String parentPathString = 'parentPathString';
