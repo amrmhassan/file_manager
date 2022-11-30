@@ -129,6 +129,7 @@ class AnalyzerProvider extends ChangeNotifier {
           _allExtensionsInfo = message.allExtensionsInfo;
           _loading = false;
           //? if we reached here this mean the storage analyzer report done successfully
+          await DBHelper.clearDb();
           await _setLastAnalyzingDate();
           await _handleSaveRecentFiles(recentProvider);
           await _saveResultsToSqlite();
@@ -151,7 +152,6 @@ class AnalyzerProvider extends ChangeNotifier {
   Future<void> _saveResultsToSqlite() async {
     _savingInfoToSqlite = true;
     notifyListeners();
-    await DBHelper.clearDb();
     await _saveExtensionsInfo();
     await _saveFolderSizes();
     _savingInfoToSqlite = false;

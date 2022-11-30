@@ -1,6 +1,7 @@
 //? file info
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
+import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 
 class LocalFileInfo {
@@ -40,7 +41,7 @@ class LocalFileInfo {
     };
   }
 
-  static LocalFileInfo fromJSON(Map<String, String> jsonOBJ) {
+  static LocalFileInfo fromJSON(Map<String, dynamic> jsonOBJ) {
     int size = int.parse(jsonOBJ[sizeString]!);
     String parentPath = jsonOBJ[parentPathString]!;
     String path = jsonOBJ[pathString]!;
@@ -61,6 +62,18 @@ class LocalFileInfo {
       entityType: entityType,
       fileBaseName: fileBaseName,
       ext: ext,
+    );
+  }
+
+  StorageItemModel toStorageItemModel() {
+    return StorageItemModel(
+      parentPath: parentPath,
+      path: path,
+      modified: modified,
+      accessed: accessed,
+      changed: changed,
+      entityType: entityType,
+      size: size,
     );
   }
 }

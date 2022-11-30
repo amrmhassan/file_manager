@@ -12,6 +12,7 @@ import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.dart';
+import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,8 @@ class MyApp extends StatelessWidget {
           ExtReportScreen.routeName: (context) => ExtReportScreen(),
           ExtFilesScreen.routeName: (context) => ExtFilesScreen(),
           AnalyzerScreen.routeName: (context) => AnalyzerScreen(),
+          RecentItemsViewerScreen.routeName: (context) =>
+              RecentItemsViewerScreen(),
         },
       ),
     );

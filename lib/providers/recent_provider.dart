@@ -63,15 +63,29 @@ class RecentProvider extends ChangeNotifier {
     }
   }
 
+//! don't load all data all at once , just load each type when entering
+  Future loadAllData() async {
+    await loadImages();
+    await loadVideos();
+  }
+
   Future loadImages() async {
+    imagesFiles.clear();
     var data = await DBHelper.getData(imagesRecentFilesTableName);
-    printOnDebug(data.length);
+    for (var image in data) {
+      imagesFiles.add(LocalFileInfo.fromJSON(image));
+    }
+  }
+
+  Future loadVideos() async {
+    videosFiles.clear();
+    var data = await DBHelper.getData(videosRecentFilesTableName);
+    for (var video in data) {
+      videosFiles.add(LocalFileInfo.fromJSON(video));
+    }
   }
 
   Future<void> saveResultsToSqlite() async {
-    printOnDebug(imagesFiles.length);
-    printOnDebug(videosFiles.length);
-    printOnDebug('-------------------------------------');
     for (var imageFile in imagesFiles) {
       var jsonOBJ = imageFile.toJSON();
       await DBHelper.insert(imagesRecentFilesTableName, jsonOBJ);
@@ -81,7 +95,5 @@ class RecentProvider extends ChangeNotifier {
       var jsonOBJ = video.toJSON();
       await DBHelper.insert(videosRecentFilesTableName, jsonOBJ);
     }
-
-    printOnDebug('Done saving data -----------------------');
   }
 }

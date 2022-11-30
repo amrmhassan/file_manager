@@ -24,7 +24,7 @@ class RecentItemType extends StatelessWidget {
       width: 80,
       height: 80,
       borderRadius: 0,
-      onTap: () {},
+      onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
