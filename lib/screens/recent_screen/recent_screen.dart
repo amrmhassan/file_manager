@@ -60,7 +60,6 @@ class _RecentScreenState extends State<RecentScreen> {
                       iconName: 'photo',
                       title: 'Images',
                       onTap: () {
-                        print('object');
                         Navigator.pushNamed(
                           context,
                           RecentItemsViewerScreen.routeName,
@@ -71,16 +70,34 @@ class _RecentScreenState extends State<RecentScreen> {
                     RecentItemType(
                       iconName: 'video',
                       title: 'Videos',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RecentItemsViewerScreen.routeName,
+                          arguments: RecentType.video,
+                        );
+                      },
                     ),
                     RecentItemType(
                       iconName: 'doc',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RecentItemsViewerScreen.routeName,
+                          arguments: RecentType.doc,
+                        );
+                      },
                       title: 'Docs',
                     ),
                     RecentItemType(
                       iconName: 'music',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RecentItemsViewerScreen.routeName,
+                          arguments: RecentType.music,
+                        );
+                      },
                       title: 'Music',
                     ),
                   ],
@@ -92,7 +109,13 @@ class _RecentScreenState extends State<RecentScreen> {
                     RecentItemType(
                       iconName: 'android',
                       title: 'APKs',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RecentItemsViewerScreen.routeName,
+                          arguments: RecentType.apk,
+                        );
+                      },
                     ),
                     RecentItemType(
                       iconName: 'download2',
@@ -101,7 +124,13 @@ class _RecentScreenState extends State<RecentScreen> {
                     ),
                     RecentItemType(
                       iconName: 'archive',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RecentItemsViewerScreen.routeName,
+                          arguments: RecentType.archives,
+                        );
+                      },
                       title: 'Archives',
                     ),
                     RecentItemType(

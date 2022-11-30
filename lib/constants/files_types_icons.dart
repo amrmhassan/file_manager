@@ -6,7 +6,23 @@ enum FileType {
   archive,
   docs,
   unknown,
+  apk,
 }
+
+List<String> docsExt = [
+  'pdf',
+  'txt',
+  'xls',
+  'xlsx',
+  'doc',
+  'docx',
+  'ppt',
+  'pptx',
+  'ods',
+  'odt',
+  'htm',
+  'html',
+];
 
 List<String> audioExt = [
   '3gp',
@@ -136,6 +152,10 @@ FileType getFileType(String extension) {
     return FileType.archive;
   } else if (batchFilesExt.contains(ext)) {
     return FileType.batch;
+  } else if (ext == 'apk') {
+    return FileType.apk;
+  } else if (docsExt.contains(ext)) {
+    return FileType.docs;
   } else {
     return FileType.unknown;
   }
