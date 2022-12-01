@@ -9,14 +9,32 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.dart';
 import 'package:explorer/screens/whats_app_screen/widgets/status_item.dart';
 import 'package:explorer/screens/whats_app_screen/widgets/whats_app_folder_card.dart';
 import 'package:explorer/screens/whats_app_screen/widgets/whatsapp_section_title.dart';
 import 'package:flutter/material.dart';
 
+enum MediaType {
+  image,
+  video,
+  audio,
+  voiceNote,
+  statusImages,
+  statusVideo,
+}
+
 class WhatsAppScreen extends StatelessWidget {
   static const String routeName = '/WhatsAppScreen';
   const WhatsAppScreen({super.key});
+
+  void openFilesScreen(MediaType mediaType, BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      WhatsappFilesScreen.routeName,
+      arguments: mediaType,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,22 +69,30 @@ class WhatsAppScreen extends StatelessWidget {
                   WhatsAppFolderCard(
                     iconName: 'photo',
                     title: 'Images',
-                    onTap: () {},
+                    onTap: () {
+                      openFilesScreen(MediaType.image, context);
+                    },
                   ),
                   WhatsAppFolderCard(
                     iconName: 'video',
                     title: 'Videos',
-                    onTap: () {},
+                    onTap: () {
+                      openFilesScreen(MediaType.video, context);
+                    },
                   ),
                   WhatsAppFolderCard(
                     iconName: 'audio',
                     title: 'Audios',
-                    onTap: () {},
+                    onTap: () {
+                      openFilesScreen(MediaType.audio, context);
+                    },
                   ),
                   WhatsAppFolderCard(
                     iconName: 'voice-note',
                     title: 'Voice Notes',
-                    onTap: () {},
+                    onTap: () {
+                      openFilesScreen(MediaType.voiceNote, context);
+                    },
                   ),
                 ],
               ),
@@ -90,13 +116,17 @@ class WhatsAppScreen extends StatelessWidget {
                   children: [
                     StatusItem(
                       iconName: 'photo',
-                      onTap: () {},
+                      onTap: () {
+                        openFilesScreen(MediaType.statusImages, context);
+                      },
                       title: 'Images',
                     ),
                     HSpace(),
                     StatusItem(
                       iconName: 'video',
-                      onTap: () {},
+                      onTap: () {
+                        openFilesScreen(MediaType.statusVideo, context);
+                      },
                       title: 'Videos',
                     ),
                   ],
