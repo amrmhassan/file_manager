@@ -22,6 +22,15 @@ class RecentScreen extends StatefulWidget {
 }
 
 class _RecentScreenState extends State<RecentScreen> {
+  //? open recent screen
+  void openRecentScreen(RecentType recentType) {
+    Navigator.pushNamed(
+      context,
+      RecentItemsViewerScreen.routeName,
+      arguments: recentType,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -33,16 +42,7 @@ class _RecentScreenState extends State<RecentScreen> {
           thickness: 1,
           color: kInactiveColor.withOpacity(.2),
         ),
-        // Container(
-        //   width: double.infinity,
-        //   alignment: Alignment.center,
-        //   child: Text(
-        //     'Recent Files',
-        //     style: h2TextStyle.copyWith(
-        //       color: Colors.white,
-        //     ),
-        //   ),
-        // ),
+
         VSpace(),
         PaddingWrapper(
           child: Container(
@@ -60,43 +60,27 @@ class _RecentScreenState extends State<RecentScreen> {
                       iconName: 'photo',
                       title: 'Images',
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          RecentItemsViewerScreen.routeName,
-                          arguments: RecentType.image,
-                        );
+                        openRecentScreen(RecentType.image);
                       },
                     ),
                     RecentItemType(
                       iconName: 'video',
                       title: 'Videos',
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          RecentItemsViewerScreen.routeName,
-                          arguments: RecentType.video,
-                        );
+                        openRecentScreen(RecentType.video);
                       },
                     ),
                     RecentItemType(
                       iconName: 'doc',
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          RecentItemsViewerScreen.routeName,
-                          arguments: RecentType.doc,
-                        );
+                        openRecentScreen(RecentType.doc);
                       },
                       title: 'Docs',
                     ),
                     RecentItemType(
                       iconName: 'music',
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          RecentItemsViewerScreen.routeName,
-                          arguments: RecentType.music,
-                        );
+                        openRecentScreen(RecentType.music);
                       },
                       title: 'Music',
                     ),
@@ -110,26 +94,20 @@ class _RecentScreenState extends State<RecentScreen> {
                       iconName: 'android',
                       title: 'APKs',
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          RecentItemsViewerScreen.routeName,
-                          arguments: RecentType.apk,
-                        );
+                        openRecentScreen(RecentType.apk);
                       },
                     ),
                     RecentItemType(
                       iconName: 'download2',
                       title: 'Downloads',
-                      onTap: () {},
+                      onTap: () {
+                        openRecentScreen(RecentType.download);
+                      },
                     ),
                     RecentItemType(
                       iconName: 'archive',
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          RecentItemsViewerScreen.routeName,
-                          arguments: RecentType.archives,
-                        );
+                        openRecentScreen(RecentType.archives);
                       },
                       title: 'Archives',
                     ),

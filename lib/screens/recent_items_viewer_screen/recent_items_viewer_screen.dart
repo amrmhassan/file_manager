@@ -49,6 +49,8 @@ class _RecentItemsViewerScreenState extends State<RecentItemsViewerScreen> {
       return recentProvider.archivesFiles[index];
     } else if (recentType == RecentType.doc) {
       return recentProvider.docsFiles[index];
+    } else if (recentType == RecentType.download) {
+      return recentProvider.downloadsFiles[index];
     } else {
       return recentProvider.musicFiles[index];
     }
@@ -69,6 +71,8 @@ class _RecentItemsViewerScreenState extends State<RecentItemsViewerScreen> {
       return recentProvider.archivesFiles.length;
     } else if (recentType == RecentType.doc) {
       return recentProvider.docsFiles.length;
+    } else if (recentType == RecentType.download) {
+      return recentProvider.downloadsFiles.length;
     } else {
       return recentProvider.musicFiles.length;
     }
@@ -92,6 +96,9 @@ class _RecentItemsViewerScreenState extends State<RecentItemsViewerScreen> {
             .loadArchives();
       } else if (recentType == RecentType.doc) {
         await Provider.of<RecentProvider>(context, listen: false).loadDocs();
+      } else if (recentType == RecentType.download) {
+        await Provider.of<RecentProvider>(context, listen: false)
+            .loadDownloads();
       }
       setState(() {
         loading = false;
