@@ -37,13 +37,13 @@ class HomeAppBar extends StatelessWidget {
       children: [
         Row(
           children: [
-            if (activeScreenIndex == 1)
-              AppBarIconButton(
-                onTap: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                iconName: 'list',
-              ),
+            // if (activeScreenIndex == 1)
+            AppBarIconButton(
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+              iconName: 'list',
+            ),
             //! this will hold the progress of the loading operation if i figure a way to do so
             if (foProvider.loadingOperation)
               SizedBox(

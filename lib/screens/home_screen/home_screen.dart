@@ -8,8 +8,6 @@ import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
-import 'package:explorer/providers/recent_provider.dart';
-import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';

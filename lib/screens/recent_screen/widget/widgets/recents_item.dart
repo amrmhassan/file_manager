@@ -8,7 +8,6 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
-import 'package:explorer/global/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 
 class RecentItem extends StatefulWidget {

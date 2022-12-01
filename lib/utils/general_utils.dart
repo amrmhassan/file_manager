@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/colors.dart';
@@ -134,4 +136,18 @@ Future<LocalFolderInfo?> getFolderSizeFromDb(String path) async {
     return localFolderInfo;
   }
   return null;
+}
+
+Directory? getWhatsAppDir() {
+  Directory dir1 = Directory('sdcard/WhatsApp/Media');
+  Directory dir2 =
+      Directory('sdcard/Android/media/com.whatsapp/WhatsApp/Media/');
+
+  if (dir1.existsSync()) {
+    return dir1;
+  } else if (dir2.existsSync()) {
+    return dir2;
+  } else {
+    return null;
+  }
 }

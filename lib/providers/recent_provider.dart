@@ -1,5 +1,5 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
-import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyser_v4.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
