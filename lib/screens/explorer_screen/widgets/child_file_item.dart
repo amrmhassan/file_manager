@@ -117,7 +117,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           widget.sizesExplorer
-                              ? FileSizeWithDateModifed(
+                              ? FileSizeWithDateModified(
                                   fileSize: handleConvertSize(
                                     widget.storageItemModel.size ?? 0,
                                   ),
@@ -131,7 +131,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                                     if (snapshot.hasData) {
                                       String fileSize = handleConvertSize(
                                           snapshot.data?.size ?? 0);
-                                      return FileSizeWithDateModifed(
+                                      return FileSizeWithDateModified(
                                         fileSize: fileSize,
                                         hasData: snapshot.data != null,
                                         modified: snapshot.data!.modified,

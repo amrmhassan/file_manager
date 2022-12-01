@@ -209,7 +209,7 @@ class ExplorerProvider extends ChangeNotifier {
           FileStat fileStat = await File(child.path).stat();
           entitySize = fileStat.size;
         }
-        StorageItemModel updatedStoraItemModel = StorageItemModel(
+        StorageItemModel updatedStorageItemModel = StorageItemModel(
           parentPath: child.parentPath,
           path: child.path,
           modified: child.modified,
@@ -218,7 +218,7 @@ class ExplorerProvider extends ChangeNotifier {
           entityType: child.entityType,
           size: entitySize,
         );
-        items.add(updatedStoraItemModel);
+        items.add(updatedStorageItemModel);
       }
       items.sort(
         (a, b) => (b.size ?? 0).compareTo(a.size ?? 0),
@@ -307,7 +307,7 @@ class ExplorerProvider extends ChangeNotifier {
       if (message is SendPort) {
         globalSendPort = message;
       } else if (message is LoadChildrenMessagesData) {
-        if (message.flag == LoadChildrenMessagesFlags.childrenChunck) {
+        if (message.flag == LoadChildrenMessagesFlags.childrenChunk) {
           _children.addAll(message.data);
           notifyListeners();
         } else if (message.flag == LoadChildrenMessagesFlags.done) {

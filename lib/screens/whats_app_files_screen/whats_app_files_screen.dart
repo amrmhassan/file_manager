@@ -1,11 +1,23 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:async';
+import 'dart:io';
+
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/explorer_screen/widgets/entity_operations/entity_operations.dart';
+import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WhatsappFilesScreen extends StatefulWidget {
   static const String routeName = '/WhatsappFilesScreen';
@@ -16,6 +28,35 @@ class WhatsappFilesScreen extends StatefulWidget {
 }
 
 class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
+  List<StorageItemModel> children = [];
+  StreamSubscription? streamSubscription;
+  //? to get the folder path
+  String? get path {
+    String? whatsAppPath = getWhatsAppDir()?.path;
+    if (whatsAppPath == null) {
+      return null;
+    }
+    MediaType mediaType =
+        ModalRoute.of(context)!.settings.arguments as MediaType;
+    String folderPath = '';
+    if (mediaType == MediaType.image) {
+      folderPath = 'WhatsApp Images';
+    } else if (mediaType == MediaType.video) {
+      folderPath = 'WhatsApp Video';
+    } else if (mediaType == MediaType.audio) {
+      folderPath = 'WhatsApp Audio';
+    } else if (mediaType == MediaType.voiceNote) {
+      folderPath = 'WhatsApp Voice Notes';
+    } else if (mediaType == MediaType.statusImages ||
+        mediaType == MediaType.statusVideo) {
+      folderPath = '.Statuses';
+    } else {
+      return null;
+    }
+    return whatsAppPath + folderPath;
+  }
+
+//? to get the app bar title
   String get title {
     MediaType mediaType =
         ModalRoute.of(context)!.settings.arguments as MediaType;
@@ -36,8 +77,75 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
     }
   }
 
+  void fetchFilesList() {
+    String? folderPath = path;
+    MediaType mediaType =
+        ModalRoute.of(context)!.settings.arguments as MediaType;
+    if (path == null) return;
+    Directory directory = Directory(folderPath!);
+    Stream<FileSystemEntity> stream = directory.list();
+    streamSubscription = stream.listen((event) {
+      if (mediaType == MediaType.statusImages) {
+        String ext = getFileExtension(event.path);
+        FileType fileType = getFileType(ext);
+        if (fileType == FileType.image) {
+          addFileToChildren(event);
+        }
+      } else if (mediaType == MediaType.statusVideo) {
+        String ext = getFileExtension(event.path);
+        FileType fileType = getFileType(ext);
+        if (fileType == FileType.video) {
+          addFileToChildren(event);
+        }
+      } else {
+        addFileToChildren(event);
+      }
+    });
+  }
+
+  void addFileToChildren(FileSystemEntity fileSystemEntity) {
+    FileStat fileStat = fileSystemEntity.statSync();
+    if (fileStat.type == FileSystemEntityType.file) {
+      StorageItemModel storageItemModel = StorageItemModel(
+        parentPath: fileSystemEntity.parent.path,
+        path: fileSystemEntity.path,
+        modified: fileStat.modified,
+        accessed: fileStat.accessed,
+        changed: fileStat.changed,
+        entityType: EntityType.file,
+        size: fileStat.size,
+      );
+      setState(() {
+        children.add(storageItemModel);
+        children.sort(
+          (a, b) => b.modified.compareTo(a.modified),
+        );
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    streamSubscription?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then(
+      (value) {
+        fetchFilesList();
+      },
+    );
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var foProvider = Provider.of<FilesOperationsProvider>(context);
+
+    printOnDebug(path);
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
@@ -50,6 +158,25 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
               ),
             ),
           ),
+          Expanded(
+            child: children.isEmpty
+                ? Center(
+                    child: Text(
+                      'No Files Here',
+                      style: h4TextStyleInactive,
+                    ),
+                  )
+                : ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: children.length,
+                    itemBuilder: (context, index) => StorageItem(
+                        storageItemModel: children[index],
+                        onDirTapped: (path) {},
+                        sizesExplorer: false,
+                        parentSize: 0),
+                  ),
+          ),
+          if (!foProvider.loadingOperation) EntityOperations(),
         ],
       ),
     );

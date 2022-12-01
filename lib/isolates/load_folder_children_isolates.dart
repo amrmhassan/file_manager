@@ -23,7 +23,7 @@ enum LoadChildrenMessagesFlags {
   done,
   error,
   sendPort,
-  childrenChunck,
+  childrenChunk,
 }
 
 //? this should run in the home screen init state
@@ -55,7 +55,7 @@ void _listingDirChildren(String path, SendPort sendPort) {
       sendPort.send(
         LoadChildrenMessagesData(
             data: cachedChildren,
-            flag: LoadChildrenMessagesFlags.childrenChunck),
+            flag: LoadChildrenMessagesFlags.childrenChunk),
       );
       cachedChildren.clear();
     } else {

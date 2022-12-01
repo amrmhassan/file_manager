@@ -3,8 +3,8 @@ import 'package:explorer/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class FileSizeWithDateModifed extends StatelessWidget {
-  const FileSizeWithDateModifed({
+class FileSizeWithDateModified extends StatelessWidget {
+  const FileSizeWithDateModified({
     Key? key,
     required this.fileSize,
     required this.hasData,

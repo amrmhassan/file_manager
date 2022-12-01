@@ -139,7 +139,7 @@ Future<LocalFolderInfo?> getFolderSizeFromDb(String path) async {
 }
 
 Directory? getWhatsAppDir() {
-  Directory dir1 = Directory('sdcard/WhatsApp/Media');
+  Directory dir1 = Directory('sdcard/WhatsApp/Media/');
   Directory dir2 =
       Directory('sdcard/Android/media/com.whatsapp/WhatsApp/Media/');
 
