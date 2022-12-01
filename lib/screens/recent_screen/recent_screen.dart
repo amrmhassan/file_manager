@@ -7,6 +7,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/recent_screen/widget/recent_item_type.dart';
 import 'package:explorer/screens/recent_screen/widget/recents_widget.dart';

@@ -6,6 +6,8 @@ const double mediumPadding = 5;
 const double largePadding = 10;
 const double ultraLargePadding = 15;
 
+const double kAppBarHeight = largeIconSize + kVPad;
+
 //? Text Sizes
 const double h1TextSize = 20;
 const double h2TextSize = 18;

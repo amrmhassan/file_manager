@@ -101,7 +101,7 @@ class AnalyzerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//? to start anayzing storage
+//? to start analyzing storage
   Future<void> handleAnalyzeEvent(RecentProvider recentProvider) async {
     // _loading = true;
     ReceivePort receivePort = ReceivePort();

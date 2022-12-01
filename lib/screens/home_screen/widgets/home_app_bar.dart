@@ -7,11 +7,10 @@ import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
-import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart';
+import 'package:explorer/screens/home_screen/widgets/rescan_button.dart';
 import 'package:explorer/screens/home_screen/widgets/selected_item_number.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,16 +40,6 @@ class HomeAppBar extends StatelessWidget {
             if (activeScreenIndex == 1)
               AppBarIconButton(
                 onTap: () {
-                  // var foProviderFalse = Provider.of<FilesOperationsProvider>(
-                  //   context,
-                  //   listen: false,
-                  // );
-                  // Provider.of<ExplorerProvider>(context, listen: false).goBack(
-                  //   sizesExplorer: sizesExplorer,
-                  //   analyzerProvider:
-                  //       Provider.of<AnalyzerProvider>(context, listen: false),
-                  //   filesOperationsProvider: foProviderFalse,
-                  // );
                   Scaffold.of(context).openDrawer();
                 },
                 iconName: 'list',
@@ -67,7 +56,6 @@ class HomeAppBar extends StatelessWidget {
               )
             else if (foProvider.selectedItems.isNotEmpty)
               SelectedItemNumber(foProvider: foProvider),
-            Spacer(),
             Spacer(),
             if (expProvider.loadingChildren ||
                 analyzerProvider.savingInfoToSqlite)
@@ -87,18 +75,7 @@ class HomeAppBar extends StatelessWidget {
                     iconName: 'dots',
                     color: Colors.white,
                   )
-                : AppBarIconButton(
-                    onTap: () {
-                      showSnackBar(context: context, message: 'Rescanning');
-                      var recentProvider =
-                          Provider.of<RecentProvider>(context, listen: false);
-                      Provider.of<AnalyzerProvider>(context, listen: false)
-                          .clearAllData();
-                      Provider.of<AnalyzerProvider>(context, listen: false)
-                          .handleAnalyzeEvent(recentProvider);
-                    },
-                    iconName: 'reload',
-                  ),
+                : RescanButton(),
           ],
         ),
         !sizesExplorer

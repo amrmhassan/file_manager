@@ -2,6 +2,8 @@
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
@@ -106,6 +108,28 @@ class _RecentItemsViewerScreenState extends State<RecentItemsViewerScreen> {
     });
   }
 
+  String get title {
+    RecentType recentType =
+        ModalRoute.of(context)!.settings.arguments as RecentType;
+    if (recentType == RecentType.image) {
+      return 'Images';
+    } else if (recentType == RecentType.video) {
+      return 'Videos';
+    } else if (recentType == RecentType.apk) {
+      return 'APKs';
+    } else if (recentType == RecentType.archives) {
+      return 'Archives';
+    } else if (recentType == RecentType.doc) {
+      return 'Docs';
+    } else if (recentType == RecentType.download) {
+      return 'Downloads';
+    } else if (recentType == RecentType.music) {
+      return 'Music';
+    } else {
+      return '';
+    }
+  }
+
   @override
   void initState() {
     loadData();
@@ -115,13 +139,20 @@ class _RecentItemsViewerScreenState extends State<RecentItemsViewerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var recentProvider = Provider.of<RecentProvider>(context);
     var foProvider = Provider.of<FilesOperationsProvider>(context);
 
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
         children: [
+          CustomAppBar(
+            title: Text(
+              'Recent $title',
+              style: h2TextStyle.copyWith(
+                color: Colors.white,
+              ),
+            ),
+          ),
           loading
               ? Center(
                   child: CircularProgressIndicator(),

@@ -4,7 +4,6 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/helpers/db_helper.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 int recentItemsLimit = 100;
@@ -13,6 +12,12 @@ bool skipWhatsAppStatusFolder = true;
 bool skipWhatsAppRecordsFolder = true;
 
 class RecentProvider extends ChangeNotifier {
+  bool loading = false;
+  void setLoading(bool b) {
+    loading = b;
+    notifyListeners();
+  }
+
   late StorageAnalyzerV4 _storageAnalyzerV4;
 
   List<LocalFileInfo> imagesFiles = [];
@@ -34,7 +39,6 @@ class RecentProvider extends ChangeNotifier {
     await _saveResultsToSqlite();
   }
 
-//! new method
   //? get all types of files in this loop
   void _concludeRecentCategories(List<LocalFileInfo> allFiles) {
     // clearing lists first before adding to them
@@ -81,7 +85,6 @@ class RecentProvider extends ChangeNotifier {
     if (skipWhatsAppStatusFolder && path.contains('/.Statuses')) {
       return false;
     }
-
     if (fileType == FileType.image) {
       return true;
     }
@@ -93,7 +96,6 @@ class RecentProvider extends ChangeNotifier {
     if (skipWhatsAppStatusFolder && path.contains('/.Statuses')) {
       return false;
     }
-
     if (fileType == FileType.video) {
       return true;
     }
@@ -105,7 +107,6 @@ class RecentProvider extends ChangeNotifier {
     if (skipWhatsAppRecordsFolder && path.contains('/WhatsApp Voice Notes')) {
       return false;
     }
-
     if (fileType == FileType.audio) {
       return true;
     }
@@ -144,121 +145,10 @@ class RecentProvider extends ChangeNotifier {
     return false;
   }
 
-//! end of new method
-
-// //? to start analyzing data
-//   void analyzeData(List<LocalFileInfo> allFiles) {
-//     getRecentImages(allFiles);
-//     getRecentVideos(allFiles);
-//     getRecentMusic(allFiles);
-//     getRecentApk(allFiles);
-//     getRecentArchives(allFiles);
-//     getRecentDocs(allFiles);
-//   }
-
-// //# get data
-// //? to get recent 100 images
-//   void getRecentImages(List<LocalFileInfo> allFiles) {
-//     imagesFiles.clear();
-//     for (var file in allFiles) {
-//       // this means that this is a hidden folder
-//       if (skipWhatsAppStatusFolder && file.path.contains('/.Statuses')) {
-//         continue;
-//       }
-//       if (imagesFiles.length >= recentItemsLimit) {
-//         break;
-//       }
-//       String ext = getFileExtension(file.path);
-//       FileType fileType = getFileType(ext);
-//       if (fileType == FileType.image) {
-//         imagesFiles.add(file);
-//       }
-//     }
-//   }
-
-// //? to get recent 100 videos
-//   void getRecentVideos(List<LocalFileInfo> allFiles) {
-//     videosFiles.clear();
-//     for (var file in allFiles) {
-//       if (skipWhatsAppStatusFolder && file.path.contains('/.Statuses')) {
-//         continue;
-//       }
-//       if (videosFiles.length >= recentItemsLimit) {
-//         break;
-//       }
-//       String ext = getFileExtension(file.path);
-//       FileType fileType = getFileType(ext);
-//       if (fileType == FileType.video) {
-//         videosFiles.add(file);
-//       }
-//     }
-//   }
-
-// //? to get recent 100 music
-//   void getRecentMusic(List<LocalFileInfo> allFiles) {
-//     musicFiles.clear();
-//     for (var file in allFiles) {
-//       if (skipWhatsAppRecordsFolder &&
-//           file.path.contains('/WhatsApp Voice Notes')) continue;
-//       if (musicFiles.length >= recentItemsLimit) {
-//         break;
-//       }
-//       String ext = getFileExtension(file.path);
-//       FileType fileType = getFileType(ext);
-//       if (fileType == FileType.audio) {
-//         musicFiles.add(file);
-//       }
-//     }
-//   }
-
-// //? to get recent 100 apk
-//   void getRecentApk(List<LocalFileInfo> allFiles) {
-//     apkFiles.clear();
-//     for (var file in allFiles) {
-//       if (apkFiles.length >= recentItemsLimit) {
-//         break;
-//       }
-//       String ext = getFileExtension(file.path);
-//       FileType fileType = getFileType(ext);
-//       if (fileType == FileType.apk) {
-//         apkFiles.add(file);
-//       }
-//     }
-//   }
-
-// //? to get recent 100 archives
-//   void getRecentArchives(List<LocalFileInfo> allFiles) {
-//     archivesFiles.clear();
-//     for (var file in allFiles) {
-//       if (archivesFiles.length >= recentItemsLimit) {
-//         break;
-//       }
-//       String ext = getFileExtension(file.path);
-//       FileType fileType = getFileType(ext);
-//       if (fileType == FileType.archive) {
-//         archivesFiles.add(file);
-//       }
-//     }
-//   }
-
-// //? to get recent 100 docs
-//   void getRecentDocs(List<LocalFileInfo> allFiles) {
-//     docsFiles.clear();
-//     for (var file in allFiles) {
-//       if (docsFiles.length >= recentItemsLimit) {
-//         break;
-//       }
-//       String ext = getFileExtension(file.path);
-//       FileType fileType = getFileType(ext);
-//       if (fileType == FileType.docs) {
-//         docsFiles.add(file);
-//       }
-//     }
-//   }
-
 //# load data from sqlite
+
   Future loadImages() async {
-    imagesFiles.clear();
+    if (imagesFiles.isNotEmpty) return;
     var data = await DBHelper.getData(imagesRecentFilesTableName);
     for (var image in data) {
       imagesFiles.add(LocalFileInfo.fromJSON(image));
@@ -266,7 +156,8 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadVideos() async {
-    videosFiles.clear();
+    if (videosFiles.isNotEmpty) return;
+
     var data = await DBHelper.getData(videosRecentFilesTableName);
     for (var video in data) {
       videosFiles.add(LocalFileInfo.fromJSON(video));
@@ -274,7 +165,8 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadMusic() async {
-    musicFiles.clear();
+    if (musicFiles.isNotEmpty) return;
+
     var data = await DBHelper.getData(musicRecentFilesTableName);
     for (var music in data) {
       musicFiles.add(LocalFileInfo.fromJSON(music));
@@ -282,7 +174,8 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadApk() async {
-    apkFiles.clear();
+    if (apkFiles.isNotEmpty) return;
+
     var data = await DBHelper.getData(apkRecentFilesTableName);
     for (var apk in data) {
       apkFiles.add(LocalFileInfo.fromJSON(apk));
@@ -290,7 +183,8 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadArchives() async {
-    archivesFiles.clear();
+    if (archivesFiles.isNotEmpty) return;
+
     var data = await DBHelper.getData(archivesRecentFilesTableName);
     for (var apk in data) {
       archivesFiles.add(LocalFileInfo.fromJSON(apk));
@@ -298,7 +192,8 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadDocs() async {
-    docsFiles.clear();
+    if (docsFiles.isNotEmpty) return;
+
     var data = await DBHelper.getData(docsRecentFilesTableName);
     for (var doc in data) {
       docsFiles.add(LocalFileInfo.fromJSON(doc));
@@ -306,7 +201,8 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadDownloads() async {
-    downloadsFiles.clear();
+    if (downloadsFiles.isNotEmpty) return;
+
     var data = await DBHelper.getData(downloadsRecentFilesTableName);
     for (var downloadFile in data) {
       downloadsFiles.add(LocalFileInfo.fromJSON(downloadFile));
