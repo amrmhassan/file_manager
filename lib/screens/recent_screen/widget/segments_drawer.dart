@@ -24,6 +24,7 @@ class SegmentsDrawer extends StatelessWidget {
       cumulative += e.percent;
       return SegmentSection(sectionElement: newSectionElement);
     }).toList();
+
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(

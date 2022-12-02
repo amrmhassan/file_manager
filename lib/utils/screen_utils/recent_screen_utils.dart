@@ -28,7 +28,6 @@ Future<void> calcSections(
 
   for (var ext in extInfo) {
     FileType fileType = getFileType(ext.ext);
-    totalSize += ext.size;
 
     if (fileType == FileType.image) {
       imageSize += ext.size;
@@ -92,5 +91,6 @@ Future<void> calcSections(
   sections.sort(
     (a, b) => b.percent.compareTo(a.percent),
   );
+
   setSections(sections);
 }

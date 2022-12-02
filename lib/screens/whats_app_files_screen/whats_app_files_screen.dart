@@ -18,6 +18,7 @@ import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as path_operations;
 
 class WhatsappFilesScreen extends StatefulWidget {
   static const String routeName = '/WhatsappFilesScreen';
@@ -83,8 +84,11 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
         ModalRoute.of(context)!.settings.arguments as MediaType;
     if (path == null) return;
     Directory directory = Directory(folderPath!);
-    Stream<FileSystemEntity> stream = directory.list();
+    Stream<FileSystemEntity> stream =
+        directory.list(recursive: mediaType == MediaType.voiceNote);
     streamSubscription = stream.listen((event) {
+      String fileName = path_operations.basename(event.path);
+      if (fileName.startsWith('.')) return;
       if (mediaType == MediaType.statusImages) {
         String ext = getFileExtension(event.path);
         FileType fileType = getFileType(ext);
@@ -145,7 +149,6 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
   Widget build(BuildContext context) {
     var foProvider = Provider.of<FilesOperationsProvider>(context);
 
-    printOnDebug(path);
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
