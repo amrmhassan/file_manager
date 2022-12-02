@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/screens/recent_screen/widget/widgets/segment_section.dart';
+import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/material.dart';
 
 class SegmentsDrawer extends StatelessWidget {

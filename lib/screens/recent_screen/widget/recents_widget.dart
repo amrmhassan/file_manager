@@ -6,7 +6,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/screens/recent_screen/widget/widgets/recents_item.dart';
+import 'package:explorer/screens/recent_screen/widget/recents_item.dart';
 import 'package:flutter/material.dart';
 
 //! this will hold the last 100 files of each type

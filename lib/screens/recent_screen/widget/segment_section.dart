@@ -50,7 +50,7 @@ class _SegmentSectionState extends State<SegmentSection> {
       widthFactor: percent,
       child: Container(
         width: double.infinity,
-        height: 50,
+        height: 45,
         color: widget.sectionElement.color,
       ),
     );
