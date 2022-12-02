@@ -18,12 +18,14 @@ class HomeAppBar extends StatelessWidget {
   final int activeScreenIndex;
   final Function(int index) setActiveScreen;
   final bool sizesExplorer;
+  final String? title;
 
   const HomeAppBar({
     super.key,
     required this.activeScreenIndex,
     required this.setActiveScreen,
     required this.sizesExplorer,
+    this.title,
   });
 
   @override
@@ -84,7 +86,7 @@ class HomeAppBar extends StatelessWidget {
                 setActiveScreen: setActiveScreen,
               )
             : Text(
-                'Sizes Explorer',
+                title ?? 'Sizes Explorer',
                 style: h2TextStyle.copyWith(color: Colors.white),
               ),
       ],

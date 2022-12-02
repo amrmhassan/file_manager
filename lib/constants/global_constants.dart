@@ -10,6 +10,7 @@ const Duration homePageViewDuration = Duration(milliseconds: 180);
 const Duration entitySizePercentageDuration = Duration(milliseconds: 200);
 const Duration bottomActionsDuration = Duration(milliseconds: 230);
 const Duration recentExpandDuration = Duration(milliseconds: 150);
+const Duration segmentsDuration = Duration(milliseconds: 400);
 
 //? animations constants
 const bool allowNormalExpAnimation = false;

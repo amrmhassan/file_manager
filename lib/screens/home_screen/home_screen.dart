@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
         clearExitCounter: () {
           exitCounter = 0;
         },
-        incrmentExitCounter: () {
+        incrementExitCounter: () {
           exitCounter++;
         },
       ),

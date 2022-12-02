@@ -2,11 +2,18 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_line.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
+import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/recent_screen/widget/recent_item_type.dart';
+import 'package:explorer/screens/recent_screen/widget/storage_segments.dart';
+import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -31,97 +38,125 @@ class _RecentScreenState extends State<RecentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: BouncingScrollPhysics(),
+    return Column(
       children: [
-        VSpace(factor: .5),
-        // RecentWidget(),
-        HLine(
-          thickness: 1,
-          color: kInactiveColor.withOpacity(.2),
-        ),
+        Expanded(
+          child: ListView(
+            physics: BouncingScrollPhysics(),
+            children: [
+              VSpace(factor: .5),
+              // RecentWidget(),
+              HLine(
+                thickness: 1,
+                color: kInactiveColor.withOpacity(.2),
+              ),
 
-        VSpace(),
-        PaddingWrapper(
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              // color: kCardBackgroundColor,
-              borderRadius: BorderRadius.circular(mediumBorderRadius),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RecentItemType(
-                      iconName: 'photo',
-                      title: 'Images',
-                      onTap: () {
-                        openRecentScreen(RecentType.image);
-                      },
-                    ),
-                    RecentItemType(
-                      iconName: 'video',
-                      title: 'Videos',
-                      onTap: () {
-                        openRecentScreen(RecentType.video);
-                      },
-                    ),
-                    RecentItemType(
-                      iconName: 'doc',
-                      onTap: () {
-                        openRecentScreen(RecentType.doc);
-                      },
-                      title: 'Docs',
-                    ),
-                    RecentItemType(
-                      iconName: 'music',
-                      onTap: () {
-                        openRecentScreen(RecentType.music);
-                      },
-                      title: 'Music',
-                    ),
-                  ],
+              VSpace(),
+              PaddingWrapper(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    // color: kCardBackgroundColor,
+                    borderRadius: BorderRadius.circular(mediumBorderRadius),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RecentItemType(
+                            iconName: 'photo',
+                            title: 'Images',
+                            onTap: () {
+                              openRecentScreen(RecentType.image);
+                            },
+                          ),
+                          RecentItemType(
+                            iconName: 'video',
+                            title: 'Videos',
+                            onTap: () {
+                              openRecentScreen(RecentType.video);
+                            },
+                          ),
+                          RecentItemType(
+                            iconName: 'doc',
+                            onTap: () {
+                              openRecentScreen(RecentType.doc);
+                            },
+                            title: 'Docs',
+                          ),
+                          RecentItemType(
+                            iconName: 'music',
+                            onTap: () {
+                              openRecentScreen(RecentType.music);
+                            },
+                            title: 'Music',
+                          ),
+                        ],
+                      ),
+                      VSpace(factor: .5),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RecentItemType(
+                            iconName: 'android',
+                            title: 'APKs',
+                            onTap: () {
+                              openRecentScreen(RecentType.apk);
+                            },
+                          ),
+                          RecentItemType(
+                            iconName: 'download2',
+                            title: 'Downloads',
+                            onTap: () {
+                              openRecentScreen(RecentType.download);
+                            },
+                          ),
+                          RecentItemType(
+                            iconName: 'archive',
+                            onTap: () {
+                              openRecentScreen(RecentType.archives);
+                            },
+                            title: 'Archives',
+                          ),
+                          RecentItemType(
+                            iconName: 'whatsapp',
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, WhatsAppScreen.routeName);
+                            },
+                            title: 'Social',
+                          ),
+                        ],
+                      ),
+                      VSpace(),
+                    ],
+                  ),
                 ),
-                VSpace(factor: .5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RecentItemType(
-                      iconName: 'android',
-                      title: 'APKs',
-                      onTap: () {
-                        openRecentScreen(RecentType.apk);
-                      },
-                    ),
-                    RecentItemType(
-                      iconName: 'download2',
-                      title: 'Downloads',
-                      onTap: () {
-                        openRecentScreen(RecentType.download);
-                      },
-                    ),
-                    RecentItemType(
-                      iconName: 'archive',
-                      onTap: () {
-                        openRecentScreen(RecentType.archives);
-                      },
-                      title: 'Archives',
-                    ),
-                    RecentItemType(
-                      iconName: 'whatsapp',
-                      onTap: () {
-                        Navigator.pushNamed(context, WhatsAppScreen.routeName);
-                      },
-                      title: 'Social',
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+              AnalyzerOptionsItem(
+                logoName: 'analyzer',
+                onTap: () {
+                  Navigator.pushNamed(context, AnalyzerScreen.routeName);
+                },
+                title: 'Storage Analyzer',
+              ),
+              VSpace(),
+              AnalyzerOptionsItem(
+                logoName: 'cleaner',
+                onTap: () {},
+                title: 'Storage Cleaner',
+              ),
+              VSpace(),
+              AnalyzerOptionsItem(
+                logoName: 'list1',
+                onTap: () {},
+                title: 'Listy',
+              ),
+            ],
           ),
-        )
+        ),
+        StorageSegments(),
       ],
     );
   }

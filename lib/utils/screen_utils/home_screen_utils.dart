@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 Future<bool> handlePressPhoneBackButton({
   required BuildContext context,
   required int exitCounter,
-  required VoidCallback incrmentExitCounter,
+  required VoidCallback incrementExitCounter,
   required VoidCallback clearExitCounter,
   required bool sizesExplorer,
 }) {
@@ -27,7 +27,7 @@ Future<bool> handlePressPhoneBackButton({
       return Future.delayed(Duration.zero).then((value) => true);
     }
     exitCounter++;
-    incrmentExitCounter();
+    incrementExitCounter();
     if (exitCounter <= 1) {
       showSnackBar(context: context, message: 'Back Again To Exit');
       exit = false;

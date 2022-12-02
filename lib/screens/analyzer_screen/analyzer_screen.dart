@@ -34,6 +34,7 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
             activeScreenIndex: 0,
             setActiveScreen: (a) {},
             sizesExplorer: true,
+            title: 'Storage Analyzer',
           ),
           HLine(
             width: 1,

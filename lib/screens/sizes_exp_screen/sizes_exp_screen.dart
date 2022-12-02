@@ -37,7 +37,7 @@ class _SizesExpScreenState extends State<SizesExpScreen> {
         clearExitCounter: () {
           exitCounter = 0;
         },
-        incrmentExitCounter: () {
+        incrementExitCounter: () {
           exitCounter++;
         },
       ),
