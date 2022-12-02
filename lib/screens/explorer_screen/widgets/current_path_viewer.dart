@@ -98,7 +98,7 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
             ),
           ),
         ),
-        if (foProvider.explorMode == ExplorMode.selection)
+        if (foProvider.exploreMode == ExploreMode.selection)
           ButtonWrapper(
             onTap: () {
               var currentDirChildren =

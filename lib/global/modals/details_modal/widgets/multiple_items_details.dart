@@ -6,7 +6,7 @@ import 'package:explorer/global/modals/widgets/detail_item.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/utils/files_operations_utiles/folder_utils.dart';
+import 'package:explorer/utils/files_operations_utils/folder_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

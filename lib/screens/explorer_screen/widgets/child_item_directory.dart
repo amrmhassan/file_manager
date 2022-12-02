@@ -242,7 +242,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                     ),
                     if (widget.sizesExplorer)
                       Text(
-                        sizePercentagleString(
+                        sizePercentageString(
                           getSizePercentage(
                             widget.storageItemModel.size ?? 0,
                             parentSize,
@@ -252,8 +252,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                           color: kInActiveTextColor.withOpacity(.7),
                         ),
                       ),
-                    foProvider.explorMode == ExplorMode.selection
-                        ? EntityCeckBox(
+                    foProvider.exploreMode == ExploreMode.selection
+                        ? EntityCheckBox(
                             isSelected: widget.isSelected,
                             storageItemModel: widget.storageItemModel,
                           )

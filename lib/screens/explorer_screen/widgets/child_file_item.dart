@@ -99,7 +99,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
               PaddingWrapper(
                 child: Row(
                   children: [
-                    FileThumnail(
+                    FileThumbnail(
                       path: widget.storageItemModel.path,
                     ),
                     HSpace(),
@@ -109,8 +109,8 @@ class _ChildFileItemState extends State<ChildFileItem> {
                         children: [
                           Text(
                             widget.sizesExplorer ||
-                                    foProvider.explorMode ==
-                                        ExplorMode.selection
+                                    foProvider.exploreMode ==
+                                        ExploreMode.selection
                                 ? path.basename(widget.storageItemModel.path)
                                 : getFileName(widget.storageItemModel.path),
                             style: h4LightTextStyle,
@@ -150,8 +150,8 @@ class _ChildFileItemState extends State<ChildFileItem> {
                       ),
                     ),
                     HSpace(),
-                    foProvider.explorMode == ExplorMode.selection
-                        ? EntityCeckBox(
+                    foProvider.exploreMode == ExploreMode.selection
+                        ? EntityCheckBox(
                             isSelected: widget.isSelected,
                             storageItemModel: widget.storageItemModel,
                           )
@@ -159,7 +159,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                             constraints: BoxConstraints(maxWidth: 50),
                             child: Text(
                               widget.sizesExplorer
-                                  ? sizePercentagleString(
+                                  ? sizePercentageString(
                                       getSizePercentage(
                                         widget.storageItemModel.size ?? 0,
                                         parentSize,

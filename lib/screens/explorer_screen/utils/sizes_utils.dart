@@ -6,6 +6,6 @@ double getSizePercentage(int size, int parentSize) {
 }
 
 //? update this to be readable
-String sizePercentagleString(double percentage) {
+String sizePercentageString(double percentage) {
   return '${doubleToString(percentage * 100)}%';
 }

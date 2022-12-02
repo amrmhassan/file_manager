@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:io';
 
 import 'package:explorer/constants/db_constants.dart';
@@ -6,7 +8,7 @@ import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/explorer_provider.dart';
-import 'package:explorer/utils/files_operations_utiles/copy_utils.dart';
+import 'package:explorer/utils/files_operations_utils/copy_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path_operations;
@@ -19,7 +21,7 @@ enum FileOperation {
   send,
 }
 
-enum ExplorMode {
+enum ExploreMode {
   selection,
   normal,
 }
@@ -186,7 +188,7 @@ class FilesOperationsProvider extends ChangeNotifier {
 
 //? apply the operation
   void applyOperation(String dest) {
-    //! here i will check for the current operaion and apply it, then delete the current operation
+    //! here i will check for the current operation and apply it, then delete the current operation
     //! copy , delete, move, send
   }
   //? to set an operation
@@ -201,10 +203,10 @@ class FilesOperationsProvider extends ChangeNotifier {
   }
 
 //? to get the selection mode if selected items isn't empty and normal if empty
-  ExplorMode get explorMode {
-    //* if the current operaion isn't null then prevent the user from selecting new elements, or removing from them
-    if (currentOperation != null) return ExplorMode.normal;
-    return _selectedItems.isEmpty ? ExplorMode.normal : ExplorMode.selection;
+  ExploreMode get exploreMode {
+    //* if the current operation isn't null then prevent the user from selecting new elements, or removing from them
+    if (currentOperation != null) return ExploreMode.normal;
+    return _selectedItems.isEmpty ? ExploreMode.normal : ExploreMode.selection;
   }
 
 //? add to selected items

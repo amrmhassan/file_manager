@@ -5,9 +5,9 @@ import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/video_
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
-class FileThumnail extends StatelessWidget {
+class FileThumbnail extends StatelessWidget {
   final String path;
-  const FileThumnail({
+  const FileThumbnail({
     Key? key,
     required this.path,
   }) : super(key: key);

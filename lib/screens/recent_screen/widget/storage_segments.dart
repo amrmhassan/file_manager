@@ -1,15 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:ffi';
-
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
-import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/main.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/recent_screen/widget/item_title.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';

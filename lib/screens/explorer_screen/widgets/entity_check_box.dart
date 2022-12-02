@@ -9,8 +9,8 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EntityCeckBox extends StatelessWidget {
-  const EntityCeckBox({
+class EntityCheckBox extends StatelessWidget {
+  const EntityCheckBox({
     Key? key,
     required this.storageItemModel,
     required this.isSelected,
