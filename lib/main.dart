@@ -6,6 +6,7 @@ import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
+import 'package:explorer/providers/theme_provider.dart';
 import 'package:explorer/providers/user_pref_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => FilesOperationsProvider()),
         ChangeNotifierProvider(create: (ctx) => UserPrefProvider()),
         ChangeNotifierProvider(create: (ctx) => RecentProvider()),
+        ChangeNotifierProvider(create: (ctx) => ThemeProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -68,7 +68,7 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
           padding: EdgeInsets.all(largePadding),
           child: Image.asset(
             'assets/icons/home.png',
-            color: Colors.white,
+            color: kMainIconColor,
             width: ultraLargeIconSize / 2,
           ),
         ),

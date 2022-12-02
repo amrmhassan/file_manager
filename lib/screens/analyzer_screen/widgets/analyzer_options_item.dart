@@ -45,14 +45,14 @@ class AnalyzerOptionsItem extends StatelessWidget {
             Text(
               title,
               style: h3TextStyle.copyWith(
-                color: Colors.white.withOpacity(.6),
+                color: kInActiveTextColor,
               ),
             ),
             Spacer(),
             Image.asset(
               'assets/icons/right-arrow.png',
               width: mediumIconSize,
-              color: Colors.white.withOpacity(.6),
+              color: kMainIconColor,
             )
           ],
         ),

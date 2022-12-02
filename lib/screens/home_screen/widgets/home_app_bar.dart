@@ -75,7 +75,7 @@ class HomeAppBar extends StatelessWidget {
                       showCurrentActiveDirOptions(context);
                     },
                     iconName: 'dots',
-                    color: Colors.white,
+                    color: kMainIconColor,
                   )
                 : RescanButton(),
           ],

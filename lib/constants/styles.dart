@@ -79,7 +79,7 @@ const TextStyle h4LiteTextStyle = TextStyle(
 const TextStyle h4LightTextStyle = TextStyle(
   fontSize: h4TextSize,
   fontFamily: 'Cairo',
-  color: Colors.white,
+  color: kActiveTextColor,
 );
 
 //@ h5 text styles

@@ -4,15 +4,12 @@ import 'dart:async';
 import 'dart:isolate';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
-import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
-import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int exitCounter = 0;
   SendPort? globalSendPort;
 
-//? set the current acitive screen
+//? set the current active screen
   void setActiveScreen(int i) {
     pageController.animateToPage(
       i,
@@ -121,21 +118,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            if (kDebugMode)
-              GestureDetector(
-                onLongPress: () async {
-                  await DBHelper.clearDb();
-                },
-                onTap: () async {
-                  Provider.of<FilesOperationsProvider>(context, listen: false)
-                      .copyDB();
-                },
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.red,
-                ),
-              )
+            // if (kDebugMode)
+            //   GestureDetector(
+            //     onLongPress: () async {
+            //       await DBHelper.clearDb();
+            //     },
+            //     onTap: () async {
+            //       Provider.of<FilesOperationsProvider>(context, listen: false)
+            //           .copyDB();
+            //     },
+            //     child: Container(
+            //       width: 50,
+            //       height: 50,
+            //       color: Colors.red,
+            //     ),
+            //   )
           ],
         ),
       ),
