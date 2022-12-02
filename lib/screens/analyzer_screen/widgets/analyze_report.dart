@@ -24,18 +24,24 @@ class AnalyzeReport extends StatefulWidget {
 }
 
 class _AnalyzeReportState extends State<AnalyzeReport> {
-  double? totalStorageSize = 0;
-  double? freeStorageSize = 0;
+  int totalStorageSize = 0;
+  int freeStorageSize = 0;
+  int appsDataSize = 0;
 
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) async {
-      double? totalSpace = await DiskSpace.getTotalDiskSpace;
-      double? freeSpace = await DiskSpace.getFreeDiskSpace;
+      var analyzerProvider =
+          Provider.of<AnalyzerProvider>(context, listen: false);
+      int totalSpace = await analyzerProvider.getTotalDiskSpace();
+      int freeSpace = await analyzerProvider.getFreeDiskSpace();
+      int appsSpace = await analyzerProvider
+          .getAppsDiskSpace(analyzerProvider.reportInfo?.totalFilesSize ?? 0);
       if (mounted) {
         setState(() {
           totalStorageSize = totalSpace;
           freeStorageSize = freeSpace;
+          appsDataSize = appsSpace;
         });
       }
     });
@@ -82,12 +88,12 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
               ),
               ReportCountItem(
                 title: 'Total Storage Size ',
-                count: (totalStorageSize ?? 0) / (1024),
+                count: totalStorageSize.toGB,
                 trailing: ' GB',
               ),
               ReportCountItem(
                 title: 'Free Storage Size ',
-                count: (freeStorageSize ?? 0) / (1024),
+                count: freeStorageSize.toGB,
                 trailing: ' GB',
               ),
               ReportCountItem(
@@ -97,9 +103,7 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
               ),
               ReportCountItem(
                 title: 'Apps Data Size ',
-                count: (totalStorageSize ?? 0) / (1024) -
-                    (freeStorageSize ?? 0) / (1024) -
-                    (analyzerProvider.reportInfo?.totalFilesSize.toGB ?? 0),
+                count: appsDataSize.toGB,
                 trailing: ' GB',
               ),
               ReportCountItem(

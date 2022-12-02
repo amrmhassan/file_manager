@@ -1,4 +1,5 @@
 import 'dart:isolate';
+import 'package:disk_space/disk_space.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
@@ -68,8 +69,8 @@ class AnalyzerProvider extends ChangeNotifier {
 
 //? load data to the app
   Future<void> loadInitialAppData() async {
-    await _loadLastAnalyzingDate();
     await _getSavedExtensionsInfo();
+    await _loadLastAnalyzingDate();
     await _getReportInfo();
   }
 
@@ -216,5 +217,23 @@ class AnalyzerProvider extends ChangeNotifier {
         printOnDebug('No report info yet');
       }
     }
+  }
+
+  //? get total storage size
+  Future<int> getTotalDiskSpace() async {
+    return ((await DiskSpace.getTotalDiskSpace ?? 0) * 1024 * 1024).toInt();
+  }
+
+  //? get free storage size
+  Future<int> getFreeDiskSpace() async {
+    return ((await DiskSpace.getFreeDiskSpace ?? 0) * 1024 * 1024).toInt();
+  }
+
+  //? get apps storage size
+  Future<int> getAppsDiskSpace(int totalFilesSize) async {
+    int total = await getTotalDiskSpace();
+    int free = await getFreeDiskSpace();
+    int files = totalFilesSize;
+    return total - free - files;
   }
 }

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 class SectionElement {
@@ -38,9 +37,6 @@ class _SegmentSectionState extends State<SegmentSection> {
     Future.delayed(Duration.zero).then((value) {
       setState(() {
         percent = widget.sectionElement.percent;
-        printOnDebug(percent);
-        printOnDebug(widget.sectionElement.title);
-        printOnDebug('-------------------------------------');
       });
     });
     super.initState();

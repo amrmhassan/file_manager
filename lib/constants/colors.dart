@@ -16,3 +16,14 @@ const Color kRedTextColor = Colors.red;
 //? icons colors
 const Color kDangerColor = Colors.red;
 const Color kGreenColor = Colors.green;
+
+//? segments colors
+const Color kAppsColor = Color(0xffFBCF31);
+const Color kImagesColor = Color(0xffFC9337);
+const Color kAudioColor = Color(0xffFA4743);
+const Color kVideoColor = Color(0xffCE3EED);
+const Color kAPKsColor = Color(0xff2E92F8);
+const Color kDocsColor = Color(0xff36DD90);
+const Color kSystemColor = Color(0xff5C6584);
+const Color kSystemCoreColor = Color(0xff989EB8);
+const Color kUnknownColor = Colors.black;
