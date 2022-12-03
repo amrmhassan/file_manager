@@ -149,6 +149,12 @@ class _RecentScreenState extends State<RecentScreen> {
                 onTap: () {},
                 title: 'Listy',
               ),
+              VSpace(),
+              AnalyzerOptionsItem(
+                logoName: 'apps',
+                onTap: () {},
+                title: 'Apps Data',
+              ),
             ],
           ),
         ),

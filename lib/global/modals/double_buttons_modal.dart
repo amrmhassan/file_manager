@@ -18,6 +18,7 @@ class DoubleButtonsModal extends StatelessWidget {
   final String? cancelText;
   final Color? okColor;
   final Color? cancelColor;
+  final bool autoPop;
 
   const DoubleButtonsModal({
     Key? key,
@@ -29,6 +30,7 @@ class DoubleButtonsModal extends StatelessWidget {
     this.cancelText,
     this.okColor,
     this.cancelColor,
+    this.autoPop = true,
   }) : super(key: key);
 
   @override
@@ -62,7 +64,9 @@ class DoubleButtonsModal extends StatelessWidget {
                 child: ButtonWrapper(
                   onTap: () {
                     if (onCancel != null) onCancel!();
-                    Navigator.pop(context);
+                    if (autoPop) {
+                      Navigator.pop(context);
+                    }
                   },
                   padding: EdgeInsets.symmetric(
                       horizontal: kHPad / 2, vertical: kVPad / 2),
@@ -76,9 +80,11 @@ class DoubleButtonsModal extends StatelessWidget {
               HSpace(),
               Expanded(
                 child: ButtonWrapper(
-                  onTap: () {
+                  onTap: () async {
                     onOk();
-                    Navigator.pop(context);
+                    if (autoPop) {
+                      Navigator.pop(context);
+                    }
                   },
                   padding: EdgeInsets.symmetric(
                       horizontal: kHPad / 2, vertical: kVPad / 2),

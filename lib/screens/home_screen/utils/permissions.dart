@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/models/types.dart';
@@ -7,8 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 //? show require permissions modal
-Future<bool> showPermissionsModal(
-    {required BuildContext context, required VoidCallback callback}) async {
+Future<bool> showPermissionsModal({
+  required BuildContext context,
+  required VoidCallback callback,
+}) async {
   if ((await Permission.storage.isGranted) &&
       (await Permission.manageExternalStorage.isGranted)) {
     return handleStoragePermissions(context: context, callback: callback);
@@ -18,9 +22,11 @@ Future<bool> showPermissionsModal(
     context: context,
     backgroundColor: Colors.transparent,
     builder: (ctx) => DoubleButtonsModal(
+      autoPop: false,
       onOk: () async {
         res = await handleStoragePermissions(
             context: context, callback: callback);
+        Navigator.pop(ctx);
       },
       onCancel: () {
         SystemNavigator.pop();
@@ -37,10 +43,11 @@ Future<bool> showPermissionsModal(
 }
 
 //? handling permissions
-Future<bool> handleStoragePermissions(
-    {required BuildContext context, required VoidCallback callback}) async {
+Future<bool> handleStoragePermissions({
+  required BuildContext context,
+  required VoidCallback callback,
+}) async {
   if (await Permission.storage.isDenied) {
-    //! show a modal first
     var readPermission = await Permission.storage.request();
     var managePermission = await Permission.manageExternalStorage.request();
 

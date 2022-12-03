@@ -16,6 +16,7 @@ import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         callback: () => handlePermissionsGrantedCallback(context),
       );
-      if (!res) return;
+      if (!res) {
+        SystemNavigator.pop();
+        return;
+      }
+      ;
       await Provider.of<ChildrenItemsProvider>(context, listen: false)
           .getAndUpdateAllSavedFolders();
     });
