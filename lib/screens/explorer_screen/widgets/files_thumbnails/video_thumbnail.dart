@@ -19,22 +19,20 @@ class MyVideoThumbnail extends StatefulWidget {
 
 class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
   late VideoPlayerController _controller;
+  double? vidWidth;
 
+  double? vidHeight;
   @override
   void initState() {
-    print(widget.path);
-    File videoFile = File(widget.path);
-    if (videoFile.existsSync()) {
-      print('Video exists---------------------');
-    }
-    _controller = VideoPlayerController.file(File(widget.path));
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.play();
+    _controller = VideoPlayerController.network(widget.path)
+      ..initialize().then((_) {
+        setState(() {
+          vidWidth = _controller.value.size.width;
+          vidHeight = _controller.value.size.height;
+          // here the video info will be available
+        });
+      });
+
     super.initState();
   }
 
@@ -46,16 +44,39 @@ class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: largeIconSize,
-      height: largeIconSize,
-      child: VideoPlayer(
-        _controller,
-      ),
-    );
-    // return Image.asset(
-    //   'assets/ext_icons/icons_1/video.png',
-    //   width: largeIconSize,
-    // );
+    return vidHeight == null && vidWidth == null
+        ? Image.asset(
+            'assets/ext_icons/icons_1/video.png',
+            width: largeIconSize,
+          )
+        : Stack(
+            alignment: Alignment.center,
+            children: [
+              Stack(
+                children: [
+                  SizedBox(
+                    width: largeIconSize,
+                    height: largeIconSize,
+                    child: VideoPlayer(
+                      _controller,
+                    ),
+                  ),
+                  Container(
+                    color: Colors.black.withOpacity(.5),
+                    width: largeIconSize,
+                    height: largeIconSize,
+                  )
+                ],
+              ),
+              Opacity(
+                opacity: .7,
+                child: Image.asset(
+                  'assets/icons/play.png',
+                  color: Colors.white,
+                  width: largeIconSize / 1.8,
+                ),
+              )
+            ],
+          );
   }
 }
