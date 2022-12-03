@@ -39,7 +39,7 @@ class _AudioPlayerButtonState extends State<AudioPlayerButton> {
         ? ButtonWrapper(
             onTap: () async {
               //
-              if (mePlaying(widget.audioPath, mpProvider.playing)) {
+              if (mePlaying(mpProvider.playingFilePath, mpProvider.playing)) {
                 // here i am playing and i want to pause
                 await mpProvider.pausePlaying();
               }
@@ -56,7 +56,7 @@ class _AudioPlayerButtonState extends State<AudioPlayerButton> {
             width: largeIconSize,
             height: largeIconSize,
             child: Image.asset(
-              mePlaying(widget.audioPath, mpProvider.playing)
+              mePlaying(mpProvider.playingFilePath, mpProvider.playing)
                   ? 'assets/icons/pause.png'
                   : 'assets/icons/play-audio.png',
               width: largeIconSize / 2,

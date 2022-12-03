@@ -32,11 +32,15 @@ class MediaPlayerProvider extends ChangeNotifier {
       fullSongDuration = await _audioPlayer.setFilePath(path);
       playing = true;
       notifyListeners();
+      _audioPlayer.playerStateStream.listen((event) {
+        if (event.processingState == ProcessingState.completed) {
+          playing = false;
+          fullSongDuration = null;
+          playingFilePath = null;
+          notifyListeners();
+        }
+      });
       await _audioPlayer.play();
-      playing = false;
-      fullSongDuration = null;
-      playingFilePath = null;
-      notifyListeners();
     } catch (e) {
       playing = false;
       fullSongDuration = null;

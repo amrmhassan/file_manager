@@ -21,11 +21,11 @@ List<StorageItemModel> getFixedEntityList({
   //? for sorting options
   if (sortOption == SortOption.nameAsc) {
     viewedChildren.sort(
-      (a, b) => a.path.compareTo(b.path),
+      (a, b) => a.path.toLowerCase().compareTo(b.path.toLowerCase()),
     );
   } else if (sortOption == SortOption.nameDes) {
     viewedChildren.sort(
-      (a, b) => b.path.compareTo(a.path),
+      (a, b) => b.path.toLowerCase().compareTo(a.path.toLowerCase()),
     );
   } else if (sortOption == SortOption.modifiedAsc) {
     viewedChildren.sort(
@@ -37,7 +37,8 @@ List<StorageItemModel> getFixedEntityList({
     );
   } else if (sortOption == SortOption.typeAsc) {
     viewedChildren.sort(
-      (a, b) => getFileExtension(a.path).compareTo(getFileExtension(b.path)),
+      (a, b) => getFileExtension(a.path.toLowerCase())
+          .compareTo(getFileExtension(b.path.toLowerCase())),
     );
   } else if (sortOption == SortOption.typeDec) {
     viewedChildren.sort(
