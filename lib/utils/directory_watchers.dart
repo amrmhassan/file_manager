@@ -7,11 +7,11 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 
 //? to watch the active dir for any changes and update the UI
-class DirecotryWatchers {
+class DirectoryWatchers {
   StreamSubscription? _createSub;
   Directory currentActiveDir;
 
-  DirecotryWatchers({
+  DirectoryWatchers({
     required this.currentActiveDir,
   });
 

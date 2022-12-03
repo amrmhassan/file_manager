@@ -13,6 +13,7 @@ import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -335,10 +336,10 @@ class ExplorerProvider extends ChangeNotifier {
 
   //? to run watchers
   void _runActiveDirWatchers() {
-    DirecotryWatchers direcotryWatchers =
-        DirecotryWatchers(currentActiveDir: currentActiveDir);
+    DirectoryWatchers directoryWatchers =
+        DirectoryWatchers(currentActiveDir: currentActiveDir);
     //* add entity watcher
-    direcotryWatchers.createWatcher(callback: (storageItemModel) {
+    directoryWatchers.createWatcher(callback: (storageItemModel) {
       bool contain = false;
       for (var entity in _children) {
         if (entity.path == storageItemModel.path) {
@@ -346,7 +347,11 @@ class ExplorerProvider extends ChangeNotifier {
           break;
         }
       }
-      if (!contain) {
+
+      bool allowAdding =
+          !contain && (currentActiveDir.path == storageItemModel.parentPath);
+      if (allowAdding) {
+        printOnDebug('Allowing adding');
         _children.add(storageItemModel);
         notifyListeners();
       }

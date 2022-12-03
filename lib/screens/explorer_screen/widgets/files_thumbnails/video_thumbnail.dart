@@ -26,11 +26,13 @@ class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
   void initState() {
     _controller = VideoPlayerController.network(widget.path)
       ..initialize().then((_) {
-        setState(() {
-          vidWidth = _controller.value.size.width;
-          vidHeight = _controller.value.size.height;
-          // here the video info will be available
-        });
+        if (mounted) {
+          setState(() {
+            vidWidth = _controller.value.size.width;
+            vidHeight = _controller.value.size.height;
+            // here the video info will be available
+          });
+        }
       });
 
     super.initState();
