@@ -1,5 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +31,6 @@ class ScreensWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mpProvider = Provider.of<MediaPlayerProvider>(context);
     return Scaffold(
       key: scfKey,
       drawer: drawer,
@@ -51,18 +56,7 @@ class ScreensWrapper extends StatelessWidget {
                   child: child,
                 ),
               ),
-              if (mpProvider.playing)
-                Container(
-                  color: kCardBackgroundColor,
-                  height: 50,
-                  alignment: Alignment.center,
-                  child: Text(
-                    '${(mpProvider.fullSongDuration?.inSeconds)} Sec',
-                    style: h2TextStyle.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+              MediaControllers(),
             ],
           ),
         ),
