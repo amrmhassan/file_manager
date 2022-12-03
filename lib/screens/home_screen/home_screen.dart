@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SystemNavigator.pop();
         return;
       }
-      ;
+
       await Provider.of<ChildrenItemsProvider>(context, listen: false)
           .getAndUpdateAllSavedFolders();
     });

@@ -51,6 +51,7 @@ dependencies:
   share_plus: ^4.5.3
   flutter_animator: ^3.2.2
   just_audio: ^0.9.30
+  video_player: ^2.4.8
 
 dev_dependencies:
   flutter_test:
