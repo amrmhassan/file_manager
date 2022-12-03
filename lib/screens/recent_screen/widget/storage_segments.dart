@@ -5,7 +5,6 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/recent_screen/widget/item_title.dart';
 import 'package:explorer/screens/recent_screen/widget/segments_drawer.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

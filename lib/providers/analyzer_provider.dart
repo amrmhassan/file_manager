@@ -133,11 +133,12 @@ class AnalyzerProvider extends ChangeNotifier {
           _foldersInfo = message.allFolderInfoWithSize;
           _allExtensionsInfo = message.allExtensionsInfo;
           _loading = false;
+          //? if we reached here this mean the storage analyzer report done successfully
+          await DBHelper.clearDb();
+          await _saveReportInfo();
           calcSections(_allExtensionsInfo, (sec) {
             recentProvider.setSections(sec);
           }, this);
-          //? if we reached here this mean the storage analyzer report done successfully
-          await DBHelper.clearDb();
           await _setLastAnalyzingDate();
           await _handleSaveRecentFiles(recentProvider);
           await _saveResultsToSqlite();
@@ -160,7 +161,6 @@ class AnalyzerProvider extends ChangeNotifier {
   Future<void> _saveResultsToSqlite() async {
     _savingInfoToSqlite = true;
     notifyListeners();
-    await _saveReportInfo();
     await _saveExtensionsInfo();
     await _saveFolderSizes();
     _savingInfoToSqlite = false;

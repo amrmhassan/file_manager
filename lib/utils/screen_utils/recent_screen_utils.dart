@@ -1,10 +1,8 @@
-import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
-import 'package:explorer/utils/general_utils.dart';
 
 //? to get sections info
 Future<void> calcSections(
@@ -22,8 +20,8 @@ Future<void> calcSections(
   if (extInfo == null) return;
   int totalSize = await analyzerProvider.getTotalDiskSpace();
   int? totalFilesSize = analyzerProvider.reportInfo?.totalFilesSize;
-  int appDataSize =
-      await analyzerProvider.getAppsDiskSpace(totalFilesSize ?? 0);
+  if (totalFilesSize == null) return;
+  int appDataSize = await analyzerProvider.getAppsDiskSpace(totalFilesSize);
 
   for (var ext in extInfo) {
     FileType fileType = getFileType(ext.ext);
