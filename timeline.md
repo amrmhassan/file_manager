@@ -1,6 +1,6 @@
 # save each folder scrolling position
 
-# listy secion in the app drawer
+# listy section in the app drawer
 
 -- this will hold the lists of files-folders that the user will create to easy access them
 -- they will support user rearranging by dragging and dropping(reorder list)
@@ -15,3 +15,5 @@
 # i will add files types like in the normal file manager
 
 then add a second section for the latest items to view any type of the recent items (with no care of it's type)
+
+# save whatsapp images, voice notes, etc, into a sqlite db, and load them from sqlite, and load the actual files in back , then update them

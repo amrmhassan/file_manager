@@ -52,6 +52,8 @@ dependencies:
   flutter_animator: ^3.2.2
   just_audio: ^0.9.30
   video_player: ^2.4.8
+  change_app_package_name: ^1.1.0
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

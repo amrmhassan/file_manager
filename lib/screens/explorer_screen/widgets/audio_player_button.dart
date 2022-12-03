@@ -2,10 +2,12 @@
 
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
 
 class AudioPlayerButton extends StatefulWidget {
   final String audioPath;
@@ -20,42 +22,41 @@ class AudioPlayerButton extends StatefulWidget {
 }
 
 class _AudioPlayerButtonState extends State<AudioPlayerButton> {
-  bool playing = false;
-  void togglePlaying() {
-    setState(() {
-      playing = !playing;
-    });
+  //? this will check if the current path is the active path in the media player or not
+  bool isMyPathActive(String? playingFilePath) {
+    bool res = playingFilePath == widget.audioPath;
+    return res;
   }
 
-  AudioPlayer audioPlayer = AudioPlayer();
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
+  bool mePlaying(String? playingFilePath, bool isPlaying) {
+    return isMyPathActive(playingFilePath) && isPlaying;
   }
 
   @override
   Widget build(BuildContext context) {
-    return (getFileExtension(widget.audioPath) == 'opus')
+    var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    return (getFileType(getFileExtension(widget.audioPath)) == FileType.audio)
         ? ButtonWrapper(
             onTap: () async {
-              try {
-                Duration? duration =
-                    await audioPlayer.setFilePath(widget.audioPath);
-                if (playing) {
-                  audioPlayer.stop();
-                } else {
-                  audioPlayer.play();
-                }
-                togglePlaying();
-              } catch (e) {
-                //
+              //
+              if (mePlaying(widget.audioPath, mpProvider.playing)) {
+                // here i am playing and i want to pause
+                await mpProvider.pausePlaying();
+              }
+              // else if (myPathActive(mpProvider.playingFilePath) &&
+              //     !mpProvider.playing) {
+              //   //! here i my path is active and i want to resume playing
+              //   await mpProvider.setPlayingFile(widget.audioPath);
+              // }
+              else {
+                // here i want to start over
+                await mpProvider.setPlayingFile(widget.audioPath);
               }
             },
             width: largeIconSize,
             height: largeIconSize,
             child: Image.asset(
-              playing
+              mePlaying(widget.audioPath, mpProvider.playing)
                   ? 'assets/icons/pause.png'
                   : 'assets/icons/play-audio.png',
               width: largeIconSize / 2,
