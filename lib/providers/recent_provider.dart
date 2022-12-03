@@ -4,6 +4,7 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/material.dart';
 
 int recentItemsLimit = 100;
@@ -27,6 +28,13 @@ class RecentProvider extends ChangeNotifier {
   List<LocalFileInfo> archivesFiles = [];
   List<LocalFileInfo> docsFiles = [];
   List<LocalFileInfo> downloadsFiles = [];
+
+//# storage sections
+  List<SectionElement> sections = [];
+  void setSections(List<SectionElement> sec) {
+    sections = sec;
+    notifyListeners();
+  }
 
 //? to start the class
   Future initialize(StorageAnalyzerV4 s) async {

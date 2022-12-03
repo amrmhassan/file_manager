@@ -4,12 +4,18 @@ import 'dart:async';
 import 'dart:isolate';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
+import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -54,10 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
       initialPage: activeViewIndex,
     );
     Future.delayed(Duration.zero).then((value) async {
+      var recentProvider = Provider.of<RecentProvider>(context, listen: false);
       await Provider.of<ExplorerProvider>(context, listen: false)
           .loadSortOptions();
       await Provider.of<AnalyzerProvider>(context, listen: false)
-          .loadInitialAppData();
+          .loadInitialAppData(recentProvider);
 
       //* getting storage permission
       bool res = await showPermissionsModal(
@@ -118,21 +125,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            // if (kDebugMode)
-            //   GestureDetector(
-            //     onLongPress: () async {
-            //       await DBHelper.clearDb();
-            //     },
-            //     onTap: () async {
-            //       Provider.of<FilesOperationsProvider>(context, listen: false)
-            //           .copyDB();
-            //     },
-            //     child: Container(
-            //       width: 50,
-            //       height: 50,
-            //       color: Colors.red,
-            //     ),
-            //   )
+            if (kDebugMode && allowRedDevBox)
+              GestureDetector(
+                onLongPress: () async {
+                  await DBHelper.clearDb();
+                  await SharedPrefHelper.removeAllSavedKeys();
+                  showSnackBar(context: context, message: 'Data Deleted');
+                },
+                onTap: () async {
+                  Provider.of<FilesOperationsProvider>(context, listen: false)
+                      .copyDB();
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.red,
+                ),
+              )
           ],
         ),
       ),

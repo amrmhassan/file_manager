@@ -1,16 +1,16 @@
+import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 
 //? to get sections info
 Future<void> calcSections(
   List<ExtensionInfo>? extInfo,
   Function(List<SectionElement> sections) setSections,
-  BuildContext context,
+  AnalyzerProvider analyzerProvider,
 ) async {
   int imageSize = 0;
   int audioSize = 0;
@@ -20,11 +20,10 @@ Future<void> calcSections(
   int unknownSize = 0;
 
   if (extInfo == null) return;
-  var analyzerProvider = Provider.of<AnalyzerProvider>(context, listen: false);
-  // int freeSize = await analyzerProvider.getFreeDiskSpace();
   int totalSize = await analyzerProvider.getTotalDiskSpace();
-  int appDataSize = await analyzerProvider
-      .getAppsDiskSpace(analyzerProvider.reportInfo?.totalFilesSize ?? 0);
+  int? totalFilesSize = analyzerProvider.reportInfo?.totalFilesSize;
+  int appDataSize =
+      await analyzerProvider.getAppsDiskSpace(totalFilesSize ?? 0);
 
   for (var ext in extInfo) {
     FileType fileType = getFileType(ext.ext);
@@ -92,5 +91,7 @@ Future<void> calcSections(
     (a, b) => b.percent.compareTo(a.percent),
   );
 
+//! fix the error with the app size doesn't change when the ext info loaded
+//! then make a loader over the storage segments
   setSections(sections);
 }

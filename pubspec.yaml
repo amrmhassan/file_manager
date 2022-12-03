@@ -43,12 +43,14 @@ dependencies:
   intl: ^0.17.0
   disk_space: ^0.2.1
   path_provider: ^2.0.11
-  thumbnailer: ^2.1.0
+  # thumbnailer: ^2.1.0
   image: ^3.2.2
   open_file: ^3.2.1
   file_picker: ^4.6.1
   uuid: ^3.0.6
   share_plus: ^4.5.3
+  flutter_animator: ^3.2.2
+  just_audio: ^0.9.30
 
 dev_dependencies:
   flutter_test:

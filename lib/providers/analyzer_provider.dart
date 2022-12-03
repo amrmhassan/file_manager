@@ -11,6 +11,7 @@ import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/screen_utils/recent_screen_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
@@ -68,10 +69,13 @@ class AnalyzerProvider extends ChangeNotifier {
   }
 
 //? load data to the app
-  Future<void> loadInitialAppData() async {
-    await _getSavedExtensionsInfo();
+  Future<void> loadInitialAppData(RecentProvider recentProvider) async {
     await _loadLastAnalyzingDate();
     await _getReportInfo();
+    await _getSavedExtensionsInfo();
+    calcSections(_allExtensionsInfo, (sec) {
+      recentProvider.setSections(sec);
+    }, this);
   }
 
 //? get dir info by path
@@ -129,13 +133,16 @@ class AnalyzerProvider extends ChangeNotifier {
           _foldersInfo = message.allFolderInfoWithSize;
           _allExtensionsInfo = message.allExtensionsInfo;
           _loading = false;
+          calcSections(_allExtensionsInfo, (sec) {
+            recentProvider.setSections(sec);
+          }, this);
           //? if we reached here this mean the storage analyzer report done successfully
           await DBHelper.clearDb();
           await _setLastAnalyzingDate();
           await _handleSaveRecentFiles(recentProvider);
           await _saveResultsToSqlite();
         } else if (message is int) {
-          printOnDebug('Time Taken: ${message / 1000} Second');
+          printOnDebug('Analyzing Time : ${message / 1000} Second');
         } else if (message is! SendPort) {
           //? here handle extensions
           // throw Exception(message);
@@ -153,6 +160,7 @@ class AnalyzerProvider extends ChangeNotifier {
   Future<void> _saveResultsToSqlite() async {
     _savingInfoToSqlite = true;
     notifyListeners();
+    await _saveReportInfo();
     await _saveExtensionsInfo();
     await _saveFolderSizes();
     _savingInfoToSqlite = false;
@@ -171,7 +179,6 @@ class AnalyzerProvider extends ChangeNotifier {
     for (var folderInfo in storageAnalyzerV4!.allFolderInfoWithSize) {
       await DBHelper.insert(localFolderInfoTableName, folderInfo.toJSON());
     }
-    await _saveReportInfo();
   }
 
   //? get saved extensions info
@@ -196,12 +203,12 @@ class AnalyzerProvider extends ChangeNotifier {
       extensionsCount: 0,
       totalFilesSize: _advancedStorageAnalyzer!.allFilesSize,
     );
+    reportInfo = analyzerReportInfoModel;
+    notifyListeners();
     await DBHelper.insert(
       analyzerReportInfoTableName,
       analyzerReportInfoModel.toJSON(),
     );
-    reportInfo = analyzerReportInfoModel;
-    notifyListeners();
   }
 
   //? load report info
