@@ -5,7 +5,9 @@ import 'dart:io';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -13,6 +15,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
+import 'package:explorer/screens/explorer_screen/widgets/audio_player_button.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_size_with_date_modified.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_thumbnail.dart';
@@ -44,6 +47,7 @@ class ChildFileItem extends StatefulWidget {
 
 class _ChildFileItemState extends State<ChildFileItem> {
   final GlobalKey key = GlobalKey();
+
   Directory? tempDir;
   double? height = 100;
   late int parentSize;
@@ -150,13 +154,18 @@ class _ChildFileItemState extends State<ChildFileItem> {
                       ),
                     ),
                     HSpace(),
+                    AudioPlayerButton(
+                      audioPath: widget.storageItemModel.path,
+                    ),
+                    HSpace(),
                     foProvider.exploreMode == ExploreMode.selection
                         ? EntityCheckBox(
                             isSelected: widget.isSelected,
                             storageItemModel: widget.storageItemModel,
                           )
                         : Container(
-                            constraints: BoxConstraints(maxWidth: 50),
+                            constraints:
+                                BoxConstraints(maxWidth: largeIconSize),
                             child: Text(
                               widget.sizesExplorer
                                   ? sizePercentageString(

@@ -351,7 +351,7 @@ class ExplorerProvider extends ChangeNotifier {
       bool allowAdding =
           !contain && (currentActiveDir.path == storageItemModel.parentPath);
       if (allowAdding) {
-        printOnDebug('Allowing adding');
+        printOnDebug('Allowing adding to the current folder');
         _children.add(storageItemModel);
         notifyListeners();
       }

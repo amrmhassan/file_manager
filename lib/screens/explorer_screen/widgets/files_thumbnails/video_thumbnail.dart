@@ -1,7 +1,5 @@
 // ignore_for_file: dead_code, prefer_const_constructors
 
-import 'dart:io';
-
 import 'package:explorer/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
