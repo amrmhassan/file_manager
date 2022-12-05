@@ -15,9 +15,12 @@ const Duration segmentsDuration = Duration(milliseconds: 400);
 //? animations constants
 const bool allowNormalExpAnimation = false;
 const bool allowSizesExpAnimation = true;
-const bool allowRedDevBox = true;
+const bool allowRedDevBox = false;
 
 //? sort options default
 const SortOption defaultSortOption = SortOption.nameAsc;
 const bool defaultShowHiddenFiles = false;
 const bool defaultPriotorizeFolders = true;
+
+//? theme constants
+bool lightTheme = false;
