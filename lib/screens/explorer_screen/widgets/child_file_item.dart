@@ -117,7 +117,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                                 ? path.basename(widget.storageItemModel.path)
                                 : getFileName(widget.storageItemModel.path),
                             style: h4LightTextStyle,
-                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                           widget.sizesExplorer
                               ? FileSizeWithDateModified(
