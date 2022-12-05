@@ -45,7 +45,7 @@ class WhatsAppScreen extends StatelessWidget {
           CustomAppBar(
             title: Text(
               'WhatsApp Media',
-              style: h2TextStyle.copyWith(color: Colors.white),
+              style: h2TextStyle,
             ),
           ),
           VSpace(),
@@ -102,7 +102,7 @@ class WhatsAppScreen extends StatelessWidget {
           HLine(
             thickness: 1,
             widthFactor: .9,
-            color: Colors.white.withOpacity(.2),
+            color: kCardBackgroundColor,
           ),
           VSpace(factor: .5),
           PaddingWrapper(

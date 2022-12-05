@@ -1,3 +1,4 @@
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class WhatsAppSectionTitle extends StatelessWidget {
         Text(
           title,
           style: h3TextStyle.copyWith(
-            color: Colors.white.withOpacity(.8),
+            color: kActiveTextColor.withOpacity(.8),
           ),
         ),
       ],

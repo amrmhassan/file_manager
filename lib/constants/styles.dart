@@ -26,6 +26,7 @@ TextStyle h2TextStyle = TextStyle(
   fontSize: h2TextSize,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
+  color: kActiveTextColor,
 );
 TextStyle h2liteTextStyle = TextStyle(
   fontSize: h2TextSize,

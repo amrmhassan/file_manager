@@ -39,7 +39,7 @@ class WhatsAppFolderCard extends StatelessWidget {
           VSpace(factor: .5),
           Text(
             title,
-            style: h3LiteTextStyle.copyWith(color: Colors.white),
+            style: h3LiteTextStyle,
           )
         ],
       ),
