@@ -57,3 +57,10 @@ const Color kUnknownColor = Colors.black;
 // const Color kSystemColor = Color(0xff5C6584);
 // const Color kSystemCoreColor = Color(0xff989EB8);
 // const Color kUnknownColor = Colors.black;
+
+//? shimmer loading colors
+
+Color shimmerContainerColor = Colors.grey.withOpacity(.5);
+Color shimmerIconsColor = Colors.grey.withOpacity(.8);
+Color shimmerBaseColor = Colors.grey.withOpacity(.8);
+Color shimmerLightColor = Colors.grey.withOpacity(.2);
