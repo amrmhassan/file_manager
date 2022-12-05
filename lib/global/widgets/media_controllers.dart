@@ -32,7 +32,7 @@ class MediaControllers extends StatelessWidget {
                     Text(
                       '${(mpProvider.fullSongDuration?.inSeconds)} Sec',
                       style: h2TextStyle.copyWith(
-                        color: Colors.white,
+                        color: kInActiveTextColor,
                       ),
                     ),
                   ],
@@ -49,7 +49,7 @@ class MediaControllers extends StatelessWidget {
                     },
                     child: Image.asset(
                       'assets/icons/pause.png',
-                      color: Colors.white,
+                      color: kMainIconColor,
                       width: largeIconSize / 2,
                     ),
                   ),

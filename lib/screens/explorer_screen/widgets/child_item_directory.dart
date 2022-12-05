@@ -197,6 +197,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                           Text(
                             widget.fileName,
                             style: h4LightTextStyle,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Row(
