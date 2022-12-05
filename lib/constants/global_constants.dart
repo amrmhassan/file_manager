@@ -23,4 +23,4 @@ const bool defaultShowHiddenFiles = false;
 const bool defaultPriotorizeFolders = true;
 
 //? theme constants
-bool lightTheme = false;
+bool lightTheme = true;

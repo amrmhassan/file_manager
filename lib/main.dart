@@ -19,12 +19,14 @@ import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
+import 'package:explorer/utils/theme_utils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await setThemeVariables();
   runApp(const MyApp());
 }
 

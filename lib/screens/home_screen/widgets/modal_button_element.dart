@@ -5,6 +5,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_line.dart';
+import 'package:explorer/screens/home_screen/widgets/custom_check_box.dart';
 import 'package:flutter/material.dart';
 
 class ModalButtonElement extends StatelessWidget {
@@ -49,28 +50,7 @@ class ModalButtonElement extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              if (checked != null)
-                Container(
-                  padding: EdgeInsets.all(smallPadding),
-                  width: smallIconSize,
-                  height: smallIconSize,
-                  decoration: BoxDecoration(
-                    color: checked! ? kBlueColor : null,
-                    borderRadius: BorderRadius.circular(smallBorderRadius),
-                    border: checked!
-                        ? null
-                        : Border.all(
-                            color: kInactiveColor,
-                            width: 2,
-                          ),
-                  ),
-                  child: checked!
-                      ? Image.asset(
-                          'assets/icons/check.png',
-                          color: Colors.white,
-                        )
-                      : null,
-                ),
+              if (checked != null) CustomCheckBox(checked: checked),
             ],
           ),
         ),

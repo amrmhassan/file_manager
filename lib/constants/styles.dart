@@ -6,99 +6,99 @@ import 'package:flutter/material.dart';
 
 //? text styles
 //@ h1 text styles
-const TextStyle h1TextStyle = TextStyle(
+TextStyle h1TextStyle = TextStyle(
   fontSize: h1TextSize,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
 );
-const TextStyle h1LiteTextStyle = TextStyle(
+TextStyle h1LiteTextStyle = TextStyle(
   fontSize: h1TextSize,
   fontFamily: 'Cairo',
 );
-const TextStyle h1LightTextStyle = TextStyle(
+TextStyle h1LightTextStyle = TextStyle(
   fontSize: h1TextSize,
   color: Colors.white,
   fontFamily: 'Cairo',
 );
 
 //@ h2 text styles
-const TextStyle h2TextStyle = TextStyle(
+TextStyle h2TextStyle = TextStyle(
   fontSize: h2TextSize,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
 );
-const TextStyle h2liteTextStyle = TextStyle(
+TextStyle h2liteTextStyle = TextStyle(
   fontSize: h2TextSize,
   fontFamily: 'Cairo',
 );
-const TextStyle h2LightTextStyle = TextStyle(
+TextStyle h2LightTextStyle = TextStyle(
   fontSize: h2TextSize,
   color: Colors.white,
   fontFamily: 'Cairo',
 );
 
 //@ h3 text styles
-const TextStyle h3TextStyle = TextStyle(
+TextStyle h3TextStyle = TextStyle(
   fontSize: h3TextSize,
   color: Colors.white,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
 );
-const TextStyle h3LiteTextStyle = TextStyle(
+TextStyle h3LiteTextStyle = TextStyle(
   color: kInactiveColor,
   fontSize: h3TextSize,
   fontFamily: 'Cairo',
 );
-const TextStyle h3InactiveTextStyle = TextStyle(
+TextStyle h3InactiveTextStyle = TextStyle(
   fontSize: h3TextSize,
   fontFamily: 'Cairo',
   color: kInActiveTextColor,
 );
-const TextStyle h3LightTextStyle = TextStyle(
+TextStyle h3LightTextStyle = TextStyle(
   fontSize: h3TextSize,
   color: Colors.white,
   fontFamily: 'Cairo',
 );
 
 //@ h4 text styles
-const TextStyle h4TextStyle = TextStyle(
+TextStyle h4TextStyle = TextStyle(
   fontSize: h4TextSize,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
 );
-const TextStyle h4TextStyleInactive = TextStyle(
+TextStyle h4TextStyleInactive = TextStyle(
   fontSize: h4TextSize,
   fontWeight: FontWeight.w400,
   color: kInActiveTextColor,
   fontFamily: 'Cairo',
 );
-const TextStyle h4LiteTextStyle = TextStyle(
+TextStyle h4LiteTextStyle = TextStyle(
   fontSize: h4TextSize,
   fontFamily: 'Cairo',
 );
-const TextStyle h4LightTextStyle = TextStyle(
+TextStyle h4LightTextStyle = TextStyle(
   fontSize: h4TextSize,
   fontFamily: 'Cairo',
   color: kActiveTextColor,
 );
 
 //@ h5 text styles
-const TextStyle h5TextStyle = TextStyle(
+TextStyle h5TextStyle = TextStyle(
   fontSize: h5TextSize,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
 );
-const TextStyle h5InactiveTextStyle = TextStyle(
+TextStyle h5InactiveTextStyle = TextStyle(
   fontSize: h5TextSize,
   color: kInActiveTextColor,
   fontFamily: 'Cairo',
 );
-const TextStyle h5LightTextStyle = TextStyle(
+TextStyle h5LightTextStyle = TextStyle(
   fontSize: h5TextSize,
   color: Colors.white,
   fontFamily: 'Cairo',
 );
-const TextStyle h5LiteTextStyle = TextStyle(
+TextStyle h5LiteTextStyle = TextStyle(
   fontSize: h5TextSize,
   fontFamily: 'Cairo',
 );

@@ -39,7 +39,7 @@ class SegmentsDrawer extends StatelessWidget {
           SegmentSection(
             sectionElement: SectionElement(
               percent: 1,
-              color: kInactiveColor.withOpacity(.1),
+              color: kInverseColor,
               animate: false,
             ),
           ),
