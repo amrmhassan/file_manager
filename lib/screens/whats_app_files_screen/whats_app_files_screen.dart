@@ -78,6 +78,7 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
     }
   }
 
+//? to fetch the files list
   void fetchFilesList() {
     String? folderPath = path;
     MediaType mediaType =
