@@ -13,7 +13,7 @@ const Color kLCardBackgroundColor = Color.fromARGB(255, 243, 243, 243);
 const Color kLLightCardBackgroundColor = Color.fromARGB(255, 213, 213, 213);
 const Color kLInactiveColor = Color(0xff9A9CA3);
 const Color kLBlueColor = Colors.blue;
-const Color kLInverseColor = Colors.white;
+const Color kLInverseColor = Color.fromARGB(255, 241, 241, 241);
 //? text colors
 const Color kLActiveTextColor = Color(0xFF362B4B);
 const Color kLInActiveTextColor = Color.fromARGB(255, 115, 122, 130);

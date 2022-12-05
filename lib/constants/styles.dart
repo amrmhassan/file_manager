@@ -40,7 +40,7 @@ TextStyle h2LightTextStyle = TextStyle(
 //@ h3 text styles
 TextStyle h3TextStyle = TextStyle(
   fontSize: h3TextSize,
-  color: Colors.white,
+  color: kActiveTextColor,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
 );
@@ -65,6 +65,7 @@ TextStyle h4TextStyle = TextStyle(
   fontSize: h4TextSize,
   fontWeight: FontWeight.bold,
   fontFamily: 'Cairo',
+  color: kActiveTextColor,
 );
 TextStyle h4TextStyleInactive = TextStyle(
   fontSize: h4TextSize,

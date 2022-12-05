@@ -72,7 +72,7 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
                   HSpace(factor: .5),
                   Text(
                     'Last Analyze Report',
-                    style: h3TextStyle.copyWith(color: Colors.white),
+                    style: h3TextStyle,
                   ),
                   Spacer(),
                   Text(

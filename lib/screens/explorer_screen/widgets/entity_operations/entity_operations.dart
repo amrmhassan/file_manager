@@ -47,7 +47,7 @@ class EntityOperations extends StatelessWidget {
       ),
       child: foProvider.currentOperation == null
           ? ChooseOperationControllers()
-          : PerformPasteOperationContoller(),
+          : PerformPasteOperationController(),
     );
   }
 }

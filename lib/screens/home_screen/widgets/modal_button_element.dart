@@ -46,7 +46,7 @@ class ModalButtonElement extends StatelessWidget {
               Text(
                 title,
                 style: h4TextStyleInactive.copyWith(
-                  color: Colors.white,
+                  color: kActiveTextColor,
                 ),
               ),
               Spacer(),

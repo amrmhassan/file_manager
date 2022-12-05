@@ -31,7 +31,7 @@ class CurrentActiveDirOptionsModal extends StatelessWidget {
         children: [
           VSpace(),
           ModalButtonElement(
-            title: 'Show Hidden Fiels',
+            title: 'Show Hidden Files',
             onTap: () {
               var expProvider =
                   Provider.of<ExplorerProvider>(context, listen: false);

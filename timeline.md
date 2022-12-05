@@ -17,3 +17,5 @@
 then add a second section for the latest items to view any type of the recent items (with no care of it's type)
 
 # save whatsapp images, voice notes, etc, into a sqlite db, and load them from sqlite, and load the actual files in back , then update them
+
+# make the themes then fix the thumbnails problem

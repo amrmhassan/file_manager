@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class OperationButton extends StatelessWidget {
         child: Image.asset(
           'assets/icons/$iconName.png',
           width: smallIconSize,
-          color: Colors.white,
+          color: kMainIconColor,
         ),
       ),
     );
