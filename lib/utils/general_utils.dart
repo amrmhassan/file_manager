@@ -113,7 +113,7 @@ void copyPathToClipboard(BuildContext context, String path,
 }
 
 //? captalize a single word
-String captlizeWord(String s) {
+String capitalizeWord(String s) {
   String firstLetter = s[0];
   String remaining = s.substring(1);
   return firstLetter.toUpperCase() + remaining;
@@ -122,7 +122,7 @@ String captlizeWord(String s) {
 //? captlize a sentence
 String captlizeSentence(String s) {
   List<String> words = s.split(' ');
-  var caps = words.map((e) => captlizeWord(e));
+  var caps = words.map((e) => capitalizeWord(e));
   String capSentence = caps.join(' ');
   return capSentence;
 }

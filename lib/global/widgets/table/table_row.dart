@@ -36,7 +36,7 @@ class CustomTableRow extends StatelessWidget {
                 child: Text(
                   entry.value.ext.isEmpty ? 'No Extension' : entry.value.ext,
                   style: h4TextStyleInactive.copyWith(
-                    color: Colors.white.withOpacity(.7),
+                    color: kActiveTextColor.withOpacity(.7),
                     fontWeight: FontWeight.bold,
                   ),
                   overflow: TextOverflow.ellipsis,
