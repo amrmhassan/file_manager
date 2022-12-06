@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
@@ -37,9 +38,9 @@ class CustomHeaderCell extends StatelessWidget {
                 : MainAxisAlignment.center,
         children: [
           Text(
-            captlizeWord(e.value.name),
+            capitalizeWord(e.value.name),
             style: h4TextStyleInactive.copyWith(
-              color: Colors.white,
+              color: kActiveTextColor,
               fontWeight: FontWeight.bold,
             ),
             overflow: TextOverflow.ellipsis,
@@ -76,7 +77,7 @@ class CustomHeaderCell extends StatelessWidget {
     return Image.asset(
       'assets/icons/arrow-$imageName.png',
       width: smallIconSize,
-      color: Colors.white.withOpacity(.6),
+      color: kMainIconColor,
     );
   }
 

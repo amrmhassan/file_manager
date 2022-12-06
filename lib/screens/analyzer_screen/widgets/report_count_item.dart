@@ -34,8 +34,8 @@ class ReportCountItem extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style:
-                    h4TextStyle.copyWith(color: Colors.white.withOpacity(.7)),
+                style: h4TextStyle.copyWith(color: kInActiveTextColor),
+                // .copyWith(color: Colors.white.withOpacity(.7))
               ),
             ),
             HSpace(factor: .5),

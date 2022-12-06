@@ -6,14 +6,14 @@ import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:flutter/material.dart';
 
 class CustomTableHeader extends StatelessWidget {
-  final Color? backgroungColor;
+  final Color? backgroundColor;
   final VoidCallback? onTap;
   final SortParameter sortParameter;
   final Function(SortParameter sp) setSortParameter;
 
   const CustomTableHeader({
     Key? key,
-    this.backgroungColor,
+    this.backgroundColor,
     this.onTap,
     required this.sortParameter,
     required this.setSortParameter,
@@ -24,7 +24,7 @@ class CustomTableHeader extends StatelessWidget {
     return ButtonWrapper(
       borderRadius: 0,
       onTap: onTap,
-      backgroundColor: backgroungColor,
+      backgroundColor: backgroundColor,
       child: Row(
         children: [
           ...HeaderItem.values.asMap().entries.map(

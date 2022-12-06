@@ -149,7 +149,7 @@ class _RecentItemsViewerScreenState extends State<RecentItemsViewerScreen> {
             title: Text(
               'Recent $title',
               style: h2TextStyle.copyWith(
-                color: Colors.white,
+                color: kActiveTextColor,
               ),
             ),
           ),

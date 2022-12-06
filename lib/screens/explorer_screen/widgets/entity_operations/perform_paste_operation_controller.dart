@@ -7,8 +7,8 @@ import 'package:explorer/screens/explorer_screen/widgets/entity_operations/opera
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PerformPasteOperationContoller extends StatelessWidget {
-  const PerformPasteOperationContoller({
+class PerformPasteOperationController extends StatelessWidget {
+  const PerformPasteOperationController({
     Key? key,
   }) : super(key: key);
 

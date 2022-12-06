@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class CustomAppBar extends StatelessWidget {
         ),
         HLine(
           thickness: 1,
-          color: Colors.white.withOpacity(.1),
+          color: kCardBackgroundColor,
         ),
       ],
     );

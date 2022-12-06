@@ -38,7 +38,7 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
           ),
           HLine(
             width: 1,
-            color: Colors.white.withOpacity(.1),
+            color: kCardBackgroundColor,
           ),
           Container(
             color: kBackgroundColor,

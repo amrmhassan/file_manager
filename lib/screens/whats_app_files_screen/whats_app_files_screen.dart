@@ -85,6 +85,9 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
         ModalRoute.of(context)!.settings.arguments as MediaType;
     if (path == null) return;
     Directory directory = Directory(folderPath!);
+    // directory.list().listen((event) {
+    //   printOnDebug(event);
+    // });
 
     Stream<FileSystemEntity> stream =
         directory.list(recursive: mediaType == MediaType.voiceNote);

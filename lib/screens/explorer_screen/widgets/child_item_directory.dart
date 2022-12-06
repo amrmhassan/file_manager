@@ -197,6 +197,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                           Text(
                             widget.fileName,
                             style: h4LightTextStyle,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Row(
@@ -207,7 +208,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                           ? '...'
                                           : '$childrenNumber Items',
                                       style: h5InactiveTextStyle.copyWith(
-                                          height: 1),
+                                        height: 1,
+                                      ),
                                       overflow: TextOverflow.ellipsis,
                                     )
                                   : Text(
@@ -260,7 +262,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                         : Image.asset(
                             'assets/icons/right-arrow.png',
                             width: mediumIconSize,
-                            color: kInactiveColor,
+                            color: kMainIconColor.withOpacity(.4),
                           )
                   ],
                 ),

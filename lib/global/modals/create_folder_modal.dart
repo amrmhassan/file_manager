@@ -175,7 +175,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
             autoFocus: true,
             color: kInactiveColor,
             textStyle: h4TextStyleInactive.copyWith(
-              color: Colors.white,
+              color: kActiveTextColor,
             ),
           ),
           PaddingWrapper(

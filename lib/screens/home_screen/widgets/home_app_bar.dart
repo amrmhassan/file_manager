@@ -87,7 +87,7 @@ class HomeAppBar extends StatelessWidget {
               )
             : Text(
                 title ?? 'Sizes Explorer',
-                style: h2TextStyle.copyWith(color: Colors.white),
+                style: h2TextStyle.copyWith(color: kActiveTextColor),
               ),
       ],
     );

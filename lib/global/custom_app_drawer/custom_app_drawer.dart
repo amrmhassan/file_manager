@@ -3,6 +3,8 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/custom_app_drawer/widgets/light_theme_check_box.dart';
+import 'package:explorer/global/custom_app_drawer/widgets/storage_analyzer_buttond.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
@@ -30,24 +32,8 @@ class CustomAppDrawer extends StatelessWidget {
               width: largeIconSize * 3,
             ),
             VSpace(factor: 2),
-            ButtonWrapper(
-              borderRadius: 0,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, AnalyzerScreen.routeName);
-              },
-              child: ListTile(
-                leading: Image.asset(
-                  'assets/icons/analyze.png',
-                  width: mediumIconSize,
-                  color: kInactiveColor,
-                ),
-                title: Text(
-                  'Storage Analyzer',
-                  style: h4TextStyle.copyWith(color: kInactiveColor),
-                ),
-              ),
-            ),
+            LightThemeCheckBox(),
+            StorageAnalyzerButton(),
           ],
         ),
       ),

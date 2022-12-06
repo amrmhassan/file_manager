@@ -3,31 +3,32 @@
 import 'package:flutter/material.dart';
 
 //? material colors
-const Color kBackgroundColor = Color(0xff212332);
-const Color kCardBackgroundColor = Color(0xff2A2D3E);
-const Color kLightCardBackgroundColor = Color(0xff474B63);
-const Color kInactiveColor = Color(0xff9A9CA3);
-const Color kBlueColor = Colors.blue;
+Color kBackgroundColor = Color(0xff212332);
+Color kCardBackgroundColor = Color(0xff2A2D3E);
+Color kLightCardBackgroundColor = Color(0xff474B63);
+Color kInactiveColor = Color(0xff9A9CA3);
+Color kBlueColor = Colors.blue;
+Color kInverseColor = Colors.white;
 
 //? text colors
-const Color kActiveTextColor = Colors.white;
-const Color kInActiveTextColor = Color(0xff9A9CA3);
+Color kActiveTextColor = Colors.white;
+Color kInActiveTextColor = Color(0xff9A9CA3);
 
 //? icons colors
-const Color kDangerColor = Colors.red;
-const Color kGreenColor = Colors.green;
-const Color kMainIconColor = Colors.white;
+Color kDangerColor = Colors.red;
+Color kGreenColor = Colors.green;
+Color kMainIconColor = Colors.white;
 
-//? segments colors
-const Color kAppsColor = Color(0xffFBCF31);
-const Color kImagesColor = Color(0xffFC9337);
-const Color kAudioColor = Color(0xffFA4743);
-const Color kVideoColor = Color(0xffCE3EED);
-const Color kAPKsColor = Color(0xff2E92F8);
-const Color kDocsColor = Color(0xff36DD90);
-const Color kSystemColor = Color(0xff5C6584);
-const Color kSystemCoreColor = Color(0xff989EB8);
-const Color kUnknownColor = Colors.black;
+// ? segments colors
+Color kAppsColor = Color(0xffFBCF31);
+Color kImagesColor = Color(0xffFC9337);
+Color kAudioColor = Color(0xffFA4743);
+Color kVideoColor = Color(0xffCE3EED);
+Color kAPKsColor = Color(0xff2E92F8);
+Color kDocsColor = Color(0xff36DD90);
+Color kSystemColor = Color(0xff5C6584);
+Color kSystemCoreColor = Color(0xff989EB8);
+Color kUnknownColor = Colors.black;
 
 //! separate between dark and light theme
 
@@ -59,7 +60,6 @@ const Color kUnknownColor = Colors.black;
 // const Color kUnknownColor = Colors.black;
 
 //? shimmer loading colors
-
 Color shimmerContainerColor = Colors.grey.withOpacity(.5);
 Color shimmerIconsColor = Colors.grey.withOpacity(.8);
 Color shimmerBaseColor = Colors.grey.withOpacity(.8);
