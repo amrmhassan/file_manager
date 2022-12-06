@@ -85,31 +85,31 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
         ModalRoute.of(context)!.settings.arguments as MediaType;
     if (path == null) return;
     Directory directory = Directory(folderPath!);
-    directory.list().listen((event) {
-      printOnDebug(event);
-    });
-
-    // Stream<FileSystemEntity> stream =
-    //     directory.list(recursive: mediaType == MediaType.voiceNote);
-    // streamSubscription = stream.listen((event) {
-    //   String fileName = path_operations.basename(event.path);
-    //   if (fileName.startsWith('.')) return;
-    //   if (mediaType == MediaType.statusImages) {
-    //     String ext = getFileExtension(event.path);
-    //     FileType fileType = getFileType(ext);
-    //     if (fileType == FileType.image) {
-    //       addFileToChildren(event);
-    //     }
-    //   } else if (mediaType == MediaType.statusVideo) {
-    //     String ext = getFileExtension(event.path);
-    //     FileType fileType = getFileType(ext);
-    //     if (fileType == FileType.video) {
-    //       addFileToChildren(event);
-    //     }
-    //   } else {
-    //     addFileToChildren(event);
-    //   }
+    // directory.list().listen((event) {
+    //   printOnDebug(event);
     // });
+
+    Stream<FileSystemEntity> stream =
+        directory.list(recursive: mediaType == MediaType.voiceNote);
+    streamSubscription = stream.listen((event) {
+      String fileName = path_operations.basename(event.path);
+      if (fileName.startsWith('.')) return;
+      if (mediaType == MediaType.statusImages) {
+        String ext = getFileExtension(event.path);
+        FileType fileType = getFileType(ext);
+        if (fileType == FileType.image) {
+          addFileToChildren(event);
+        }
+      } else if (mediaType == MediaType.statusVideo) {
+        String ext = getFileExtension(event.path);
+        FileType fileType = getFileType(ext);
+        if (fileType == FileType.video) {
+          addFileToChildren(event);
+        }
+      } else {
+        addFileToChildren(event);
+      }
+    });
   }
 
   void addFileToChildren(FileSystemEntity fileSystemEntity) {
