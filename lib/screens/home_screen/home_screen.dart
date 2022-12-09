@@ -131,23 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            if (kDebugMode && allowRedDevBox)
-              GestureDetector(
-                onLongPress: () async {
-                  await DBHelper.clearDb(dbName);
-                  await SharedPrefHelper.removeAllSavedKeys();
-                  showSnackBar(context: context, message: 'Data Deleted');
-                },
-                onTap: () async {
-                  Provider.of<FilesOperationsProvider>(context, listen: false)
-                      .copyDB();
-                },
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.red,
-                ),
-              )
           ],
         ),
       ),

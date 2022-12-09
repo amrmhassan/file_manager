@@ -1,7 +1,7 @@
 import 'package:explorer/constants/models_constants.dart';
 
 //? db name
-const String dbName = 'dbName.db';
+const String tempDbName = 'tempDbName.db';
 
 //? tables
 const String folderInfoTableName = 'folderInfo';

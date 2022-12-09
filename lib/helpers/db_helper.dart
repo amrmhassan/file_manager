@@ -7,6 +7,7 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
+import 'package:explorer/utils/db_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
@@ -27,42 +28,12 @@ class DBHelper {
   ]) async {
     final databasePathDir = await sql.getDatabasesPath();
 
-    String finalPath = path.join(databasePathDir, databaseName ?? dbName);
+    String finalPath = path.join(databasePathDir, databaseName ?? tempDbName);
 
     return sql.openDatabase(
       finalPath,
       //? this is when creating the database itself so create all your tables here
-      onCreate: (db, version) async {
-        //? create recent images table
-        await db.execute(
-            'CREATE TABLE $imagesRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
-        //? create recent downloads table
-        await db.execute(
-            'CREATE TABLE $downloadsRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
-        //? create recent images table
-        await db.execute(
-            'CREATE TABLE $docsRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
-        //? create recent images table
-        await db.execute(
-            'CREATE TABLE $archivesRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
-        //? create recent apk table
-        await db.execute(
-            'CREATE TABLE $apkRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
-        //? create recent music table
-        await db.execute(
-            'CREATE TABLE $musicRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
-        //? create recent video table
-        await db.execute(
-            'CREATE TABLE $videosRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)');
-        //? create extension info table
-        await db.execute(ExtensionInfo.toSQLString());
-        //? creating analyzer reports table
-        await db.execute(AnalyzerReportInfoModel.toSQLString());
-        //? creating info of the analyzer folders info
-        await db.execute(LocalFolderInfo.toSQLString());
-        //? creating info of the explorer folders
-        return db.execute(FolderItemInfoModel.toSQLString());
-      },
+      onCreate: onCreateDatabase,
       version: 1,
     );
   }

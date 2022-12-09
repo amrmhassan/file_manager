@@ -295,8 +295,8 @@ class FilesOperationsProvider extends ChangeNotifier {
 
   //? to copy the db to sdcard to view it
   void copyDB() async {
-    String dbPath = await DBHelper.getDbPath(dbName);
-    File oldDb = File('sdcard/$dbName');
+    String dbPath = await DBHelper.getDbPath(tempDbName);
+    File oldDb = File('sdcard/$tempDbName');
     if (oldDb.existsSync()) {
       oldDb.deleteSync();
     }

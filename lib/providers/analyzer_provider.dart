@@ -134,7 +134,7 @@ class AnalyzerProvider extends ChangeNotifier {
           _allExtensionsInfo = message.allExtensionsInfo;
           _loading = false;
           //? if we reached here this mean the storage analyzer report done successfully
-          await DBHelper.clearDb(dbName);
+          await DBHelper.clearDb(tempDbName);
           await _saveReportInfo();
           calcSections(_allExtensionsInfo, (sec) {
             recentProvider.setSections(sec);

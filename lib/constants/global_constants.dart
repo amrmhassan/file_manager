@@ -15,7 +15,7 @@ const Duration segmentsDuration = Duration(milliseconds: 400);
 //? animations constants
 const bool allowNormalExpAnimation = false;
 const bool allowSizesExpAnimation = true;
-const bool allowRedDevBox = false;
+const bool allowRedDevBox = true;
 
 //? sort options default
 const SortOption defaultSortOption = SortOption.nameAsc;
