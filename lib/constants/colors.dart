@@ -29,6 +29,9 @@ Color kDocsColor = Color(0xff36DD90);
 Color kSystemColor = Color(0xff5C6584);
 Color kSystemCoreColor = Color(0xff989EB8);
 Color kUnknownColor = Colors.black;
+//* recent colors
+Color kWhatsAppColor = Color(0xff24CC63);
+Color kArchivesColor = Color(0xff008153);
 
 //! separate between dark and light theme
 

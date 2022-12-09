@@ -82,6 +82,7 @@ flutter:
     - assets/icons/
     - assets/icons/whatsapp/
     - assets/ext_icons/icons_1/
+    - assets/icons/recent/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

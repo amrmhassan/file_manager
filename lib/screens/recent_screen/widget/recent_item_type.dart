@@ -9,12 +9,14 @@ class RecentItemType extends StatelessWidget {
   final String iconName;
   final VoidCallback onTap;
   final String title;
+  final Color color;
 
   const RecentItemType({
     Key? key,
     required this.iconName,
     required this.onTap,
     required this.title,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -28,9 +30,17 @@ class RecentItemType extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/icons/$iconName.png',
-            width: largeIconSize,
+          Container(
+            padding: EdgeInsets.all(largePadding),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(500),
+            ),
+            child: Image.asset(
+              'assets/icons/recent/$iconName.png',
+              width: mediumIconSize,
+              color: Colors.white,
+            ),
           ),
           Text(
             title,

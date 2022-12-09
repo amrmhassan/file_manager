@@ -75,8 +75,7 @@ class MyApp extends StatelessWidget {
           AnalyzerScreen.routeName: (context) => AnalyzerScreen(),
           WhatsAppScreen.routeName: (context) => WhatsAppScreen(),
           WhatsappFilesScreen.routeName: (context) => WhatsappFilesScreen(),
-          RecentItemsViewerScreen.routeName: (context) =>
-              RecentItemsViewerScreen(),
+          RecentsViewerScreen.routeName: (context) => RecentsViewerScreen(),
         },
       ),
     );

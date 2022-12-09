@@ -23,16 +23,15 @@ enum RecentType {
   social,
 }
 
-class RecentItemsViewerScreen extends StatefulWidget {
+class RecentsViewerScreen extends StatefulWidget {
   static const String routeName = '/RecentItemsViewerScreen';
-  const RecentItemsViewerScreen({super.key});
+  const RecentsViewerScreen({super.key});
 
   @override
-  State<RecentItemsViewerScreen> createState() =>
-      _RecentItemsViewerScreenState();
+  State<RecentsViewerScreen> createState() => _RecentsViewerScreenState();
 }
 
-class _RecentItemsViewerScreenState extends State<RecentItemsViewerScreen> {
+class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
   List<LocalFileInfo> viewedItems = [];
   bool loading = true;
 

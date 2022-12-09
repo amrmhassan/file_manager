@@ -30,7 +30,7 @@ class _RecentScreenState extends State<RecentScreen> {
   void openRecentScreen(RecentType recentType) {
     Navigator.pushNamed(
       context,
-      RecentItemsViewerScreen.routeName,
+      RecentsViewerScreen.routeName,
       arguments: recentType,
     );
   }
@@ -65,32 +65,36 @@ class _RecentScreenState extends State<RecentScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           RecentItemType(
-                            iconName: 'photo',
+                            iconName: 'image',
                             title: 'Images',
                             onTap: () {
                               openRecentScreen(RecentType.image);
                             },
+                            color: kImagesColor,
                           ),
                           RecentItemType(
-                            iconName: 'video',
+                            iconName: 'play-button',
                             title: 'Videos',
                             onTap: () {
                               openRecentScreen(RecentType.video);
                             },
+                            color: kVideoColor,
                           ),
                           RecentItemType(
-                            iconName: 'doc',
+                            iconName: 'google-docs',
                             onTap: () {
                               openRecentScreen(RecentType.doc);
                             },
                             title: 'Docs',
+                            color: kDocsColor,
                           ),
                           RecentItemType(
-                            iconName: 'music',
+                            iconName: 'musical-note',
                             onTap: () {
                               openRecentScreen(RecentType.music);
                             },
                             title: 'Music',
+                            color: kAudioColor,
                           ),
                         ],
                       ),
@@ -104,13 +108,15 @@ class _RecentScreenState extends State<RecentScreen> {
                             onTap: () {
                               openRecentScreen(RecentType.apk);
                             },
+                            color: kAPKsColor,
                           ),
                           RecentItemType(
-                            iconName: 'download2',
+                            iconName: 'download',
                             title: 'Downloads',
                             onTap: () {
                               openRecentScreen(RecentType.download);
                             },
+                            color: kDocsColor,
                           ),
                           RecentItemType(
                             iconName: 'archive',
@@ -118,6 +124,7 @@ class _RecentScreenState extends State<RecentScreen> {
                               openRecentScreen(RecentType.archives);
                             },
                             title: 'Archives',
+                            color: kAPKsColor,
                           ),
                           RecentItemType(
                             iconName: 'whatsapp',
@@ -126,6 +133,7 @@ class _RecentScreenState extends State<RecentScreen> {
                                   context, WhatsAppScreen.routeName);
                             },
                             title: 'Social',
+                            color: kWhatsAppColor,
                           ),
                         ],
                       ),

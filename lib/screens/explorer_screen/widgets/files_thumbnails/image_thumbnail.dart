@@ -6,7 +6,6 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/helpers/db_helper.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart' as fni;
 
@@ -22,10 +21,8 @@ Future<String> compressImage(String imagePath) async {
     File thumbFile = File(thumbnail);
     bool exists = thumbFile.existsSync();
     if (exists) {
-      printOnDebug('exists');
       return thumbnail;
     } else {
-      printOnDebug('create new');
       throw Exception('no thumb');
     }
   } catch (e) {

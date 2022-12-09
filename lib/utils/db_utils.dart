@@ -6,7 +6,6 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path_operations;
 
