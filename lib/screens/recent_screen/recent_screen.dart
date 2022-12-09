@@ -13,6 +13,7 @@ import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_
 import 'package:explorer/screens/recent_screen/widget/recent_item_type.dart';
 import 'package:explorer/screens/recent_screen/widget/storage_segments.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -152,7 +153,12 @@ class _RecentScreenState extends State<RecentScreen> {
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'cleaner',
-                onTap: () {},
+                onTap: () {
+                  showSnackBar(
+                      context: context,
+                      message:
+                          'Here will be big files, very old files, that never opened long ago');
+                },
                 title: 'Storage Cleaner',
               ),
               VSpace(),

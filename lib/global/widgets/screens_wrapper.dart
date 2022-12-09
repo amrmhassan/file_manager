@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/global/widgets/analyzer_summary.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:flutter/material.dart';
 
@@ -40,16 +41,22 @@ class ScreensWrapper extends StatelessWidget {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: SafeArea(
-          child: Column(
+          child: Stack(
+            alignment: Alignment.bottomRight,
             children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: child,
-                ),
+              Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: child,
+                    ),
+                  ),
+                  MediaControllers(),
+                ],
               ),
-              MediaControllers(),
+              AnalyzerSummary(),
             ],
           ),
         ),

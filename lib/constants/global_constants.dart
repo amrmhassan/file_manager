@@ -24,3 +24,6 @@ const bool defaultPriotorizeFolders = true;
 
 //? theme constants
 bool lightTheme = true;
+
+//? debugging constants
+const bool showAnalyzerStuff = true;

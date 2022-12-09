@@ -35,7 +35,8 @@ class AnalyzerProvider extends ChangeNotifier {
   get currentFolder => _currentFolder;
 
   AdvancedStorageAnalyzer? _advancedStorageAnalyzer;
-  get advancedStorageAnalyzer => _advancedStorageAnalyzer;
+  AdvancedStorageAnalyzer? get advancedStorageAnalyzer =>
+      _advancedStorageAnalyzer;
 
   StorageAnalyzerV4? _storageAnalyzerV4;
   StorageAnalyzerV4? get storageAnalyzerV4 => _storageAnalyzerV4;
