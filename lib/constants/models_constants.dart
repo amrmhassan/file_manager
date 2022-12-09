@@ -25,3 +25,6 @@ const String totalFilesSizeString = 'totalFilesSizeString';
 const String countString = 'countString';
 const String extString = 'extString';
 const String filesPathString = 'filesPathString';
+
+//? other keys
+const String thumbnailStringPath = 'thumbnailStringPath';

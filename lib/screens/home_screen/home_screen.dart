@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
 import 'package:explorer/helpers/db_helper.dart';
@@ -133,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (kDebugMode && allowRedDevBox)
               GestureDetector(
                 onLongPress: () async {
-                  await DBHelper.clearDb();
+                  await DBHelper.clearDb(dbName);
                   await SharedPrefHelper.removeAllSavedKeys();
                   showSnackBar(context: context, message: 'Data Deleted');
                 },

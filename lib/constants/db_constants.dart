@@ -1,10 +1,9 @@
-//? db names
 import 'package:explorer/constants/models_constants.dart';
 
+//? db name
 const String dbName = 'dbName.db';
 
 //? tables
-// this will hold the folder info like it's itmes count
 const String folderInfoTableName = 'folderInfo';
 const String localFolderInfoTableName = 'localFolderInfo';
 const String analyzerReportInfoTableName = 'analyzerReportInfo';
@@ -25,3 +24,14 @@ const String dbFalse = 'dbFalse';
 //? creating tables queries
 const String imagesTableCreation =
     'CREATE TABLE $imagesRecentFilesTableName ($pathString TEXT PRIMARY KEY, $parentPathString TEXT, $modifiedString TEXT, $accessedString TEXT, $changedString TEXT, $entityTypeString TEXT, $fileBaseNameString TEXT, $extString TEXT, $sizeString TEXT)';
+
+//# persistent data base
+//? db name
+const String persistentDbName = 'persistentDbName.db';
+
+//? tables
+const String imgThumbnailPathTableName = 'imgThumbnailPath';
+
+//? creating tables queries
+const String imagesThumbnailsTableCreation =
+    'CREATE TABLE $imgThumbnailPathTableName ($pathString TEXT PRIMARY KEY, $thumbnailStringPath TEXT)';

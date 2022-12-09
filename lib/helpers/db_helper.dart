@@ -12,17 +12,22 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 
 class DBHelper {
-  static Future<String> getDbPath() async {
+  //? to get the database path
+  static Future<String> getDbPath(String databaseName) async {
     final databasePathDir = await sql.getDatabasesPath();
 
-    String finalPath = path.join(databasePathDir, dbName);
+    String finalPath = path.join(databasePathDir, databaseName);
     return finalPath;
   }
 
-  static Future<sql.Database> database(String table) async {
+//? to return the database
+  static Future<sql.Database> database(
+    String table, [
+    String? databaseName,
+  ]) async {
     final databasePathDir = await sql.getDatabasesPath();
 
-    String finalPath = path.join(databasePathDir, dbName);
+    String finalPath = path.join(databasePathDir, databaseName ?? dbName);
 
     return sql.openDatabase(
       finalPath,
@@ -62,18 +67,23 @@ class DBHelper {
     );
   }
 
-  static Future<void> clearDb() async {
+//? to clear a database
+  static Future<void> clearDb(
+    String databaseName,
+  ) async {
     final databasePathDir = await sql.getDatabasesPath();
-    String finalPath = path.join(databasePathDir, dbName);
+    String finalPath = path.join(databasePathDir, databaseName);
 
     await sql.deleteDatabase(finalPath);
   }
 
+//? to insert to a db
   static Future<void> insert(
     String table,
-    Map<String, dynamic> data,
-  ) async {
-    final db = await DBHelper.database(table);
+    Map<String, dynamic> data, [
+    String? databaseName,
+  ]) async {
+    final db = await DBHelper.database(table, databaseName);
 
     await db.insert(
       table,
@@ -83,30 +93,49 @@ class DBHelper {
     );
   }
 
-  static Future<List<Map<String, dynamic>>> getData(String table) async {
-    final db = await DBHelper.database(table);
+//? to get all data from a table
+  static Future<List<Map<String, dynamic>>> getData(
+    String table, [
+    String? databaseName,
+  ]) async {
+    final db = await DBHelper.database(table, databaseName);
     return await db.query(table);
   }
 
+//? to get data from a table where
   static Future<List<Map<String, dynamic>>> getDataWhere(
-      String table, String key, String value) async {
-    final db = await DBHelper.database(table);
+    String table,
+    String key,
+    String value, [
+    String? databaseName,
+  ]) async {
+    final db = await DBHelper.database(table, databaseName);
     return db.query(table, where: '$key = ?', whereArgs: [value]);
   }
 
-  static Future<void> deleteDatabase(String dbName) async {
+//? to delete a database
+  static Future<void> deleteDatabase(String databaseName) async {
     final databasePathDir = await sql.getDatabasesPath();
-    String finalPath = path.join(databasePathDir, dbName);
+    String finalPath = path.join(databasePathDir, databaseName);
     return sql.deleteDatabase(finalPath);
   }
 
-  static Future<void> deleteById(String id, String table) async {
-    final db = await DBHelper.database(table);
+//? to delete a record by id
+  static Future<void> deleteById(
+    String id,
+    String table, [
+    String? databaseName,
+  ]) async {
+    final db = await DBHelper.database(table, databaseName);
     return db.execute("DELETE FROM $table WHERE $pathString='$id'");
   }
 
-  static Future<void> deleteTable(String table) async {
-    final db = await DBHelper.database(table);
+//? to delete a table
+  static Future<void> deleteTable(
+    String table, [
+    String? databaseName,
+  ]) async {
+    final db = await DBHelper.database(table, databaseName);
     return db.execute('DELETE FROM $table');
   }
 }

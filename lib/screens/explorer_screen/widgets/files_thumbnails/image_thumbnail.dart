@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:explorer/constants/sizes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart' as fni;
 
@@ -45,8 +46,8 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) async {
-        // String cP = await compute(compressImage, widget.path);
-        String cP = await compressImage(widget.path);
+        String cP = await compute(compressImage, widget.path);
+        // String cP = await compressImage(widget.path);
 
         if (mounted) {
           setState(() {
