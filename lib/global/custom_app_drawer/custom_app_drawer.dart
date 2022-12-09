@@ -2,13 +2,10 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/light_theme_check_box.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/storage_analyzer_buttond.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
-import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppDrawer extends StatelessWidget {

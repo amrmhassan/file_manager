@@ -4,28 +4,28 @@ import 'dart:io';
 
 import 'package:explorer/constants/sizes.dart';
 import 'package:flutter/material.dart';
-// import 'package:image/image.dart' as adv_image;
-// import 'package:path/path.dart' as path_operations;
+import 'package:flutter_native_image/flutter_native_image.dart' as fni;
 
-// Future<File> compressImage(Map<String, String> data) async {
-//   String imagePath = data['imagePath']!;
-//   String tempDirPath = data['tempDirPath']!;
-//   String imageBaseName = path_operations.basename(imagePath);
-//   Directory tempDir = Directory(tempDirPath);
-//   String imageFinalPath = '${tempDir.path}/$imageBaseName';
-//   File testFile = File(imageFinalPath);
-//   if (testFile.existsSync()) {
-//     return testFile;
-//   } else {
-//     File imageFile = File(imagePath);
-//     var image = adv_image.decodeImage(imageFile.readAsBytesSync())!;
-//     var thumbnail = adv_image.copyResize(image, width: 120);
-//     var thumbnailFile = File.fromRawPath(thumbnail.getBytes());
-//     var finalRes = await thumbnailFile.copy(imageFinalPath);
+Future<String> compressImage(String imagePath) async {
+  fni.ImageProperties properties =
+      await fni.FlutterNativeImage.getImageProperties(imagePath);
+  int width = properties.width!;
+  int height = properties.height!;
 
-//     return finalRes;
-//   }
-// }
+  double widthHeightRatio = width / height;
+
+  int newWidth = (largeIconSize * 2).toInt();
+  int newHeight = newWidth ~/ widthHeightRatio;
+
+  File compressedFile = await fni.FlutterNativeImage.compressImage(
+    imagePath,
+    quality: 100,
+    targetWidth: newWidth,
+    targetHeight: newHeight,
+  );
+
+  return compressedFile.path;
+}
 
 class ImageThumbnail extends StatefulWidget {
   const ImageThumbnail({
@@ -40,33 +40,23 @@ class ImageThumbnail extends StatefulWidget {
 }
 
 class _ImageThumbnailState extends State<ImageThumbnail> {
-  int? imgWidth;
-  int? imgHeight;
-  void getImageInfo(String path) async {
-    File image = File(path);
-    var decodedImage = await decodeImageFromList(image.readAsBytesSync());
-    if (mounted) {
-      setState(() {
-        imgHeight = decodedImage.height;
-        imgWidth = decodedImage.width;
-      });
-    }
-  }
-
+  String? compressedPath;
   @override
   void initState() {
-    getImageInfo(widget.path);
+    Future.delayed(Duration.zero).then(
+      (value) async {
+        // String cP = await compute(compressImage, widget.path);
+        String cP = await compressImage(widget.path);
+
+        if (mounted) {
+          setState(() {
+            compressedPath = cP;
+          });
+        }
+      },
+    );
+
     super.initState();
-  }
-
-//? this is for reducing the dimensions of the image, but i don't like it , cause it enlarge the small image and tightens the large iamge
-  int reduceDimension(int dimension, String title) {
-    int width = imgWidth!;
-    int height = imgHeight!;
-    double divFactor = (width * height) / (100000 * 1.6);
-    double initDim = dimension / divFactor;
-
-    return initDim.toInt();
   }
 
   @override
@@ -77,23 +67,23 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(smallBorderRadius),
       ),
-      child: FadeInImage(
-        width: largeIconSize,
-        height: largeIconSize,
-        alignment: Alignment.topCenter,
-        placeholderFit: BoxFit.cover,
-        placeholder: AssetImage('assets/ext_icons/icons_1/image.png'),
-        fit: BoxFit.cover,
-        image: imgHeight == null && imgWidth == null
-            ? AssetImage('assets/ext_icons/icons_1/image.png')
-            : ResizeImage.resizeIfNeeded(
-                reduceDimension(imgWidth!, 'Width'),
-                reduceDimension(imgHeight!, 'Height'),
-                FileImage(
-                  File(widget.path),
-                ),
-              ),
-      ),
+      child: compressedPath == null
+          ? Image.asset(
+              'assets/ext_icons/icons_1/image.png',
+              width: largeIconSize,
+              height: largeIconSize,
+              alignment: Alignment.topCenter,
+              fit: BoxFit.cover,
+            )
+          : FadeInImage(
+              width: largeIconSize,
+              height: largeIconSize,
+              alignment: Alignment.topCenter,
+              placeholderFit: BoxFit.cover,
+              placeholder: AssetImage('assets/ext_icons/icons_1/image.png'),
+              fit: BoxFit.cover,
+              image: FileImage(File(compressedPath!)),
+            ),
     );
   }
 }

@@ -2,7 +2,6 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class CustomCheckBox extends StatelessWidget {
