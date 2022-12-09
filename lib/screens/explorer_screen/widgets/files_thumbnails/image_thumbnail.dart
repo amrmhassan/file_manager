@@ -2,30 +2,60 @@
 
 import 'dart:io';
 
+import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:flutter/foundation.dart';
+import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart' as fni;
 
 Future<String> compressImage(String imagePath) async {
-  fni.ImageProperties properties =
-      await fni.FlutterNativeImage.getImageProperties(imagePath);
-  int width = properties.width!;
-  int height = properties.height!;
+  try {
+    var data = await DBHelper.getDataWhere(
+      imgThumbnailPathTableName,
+      pathString,
+      imagePath,
+      persistentDbName,
+    );
+    String thumbnail = data.first.values.last;
+    File thumbFile = File(thumbnail);
+    bool exists = thumbFile.existsSync();
+    if (exists) {
+      printOnDebug('exists');
+      return thumbnail;
+    } else {
+      printOnDebug('create new');
+      throw Exception('no thumb');
+    }
+  } catch (e) {
+    fni.ImageProperties properties =
+        await fni.FlutterNativeImage.getImageProperties(imagePath);
+    int width = properties.width!;
+    int height = properties.height!;
 
-  double widthHeightRatio = width / height;
+    double widthHeightRatio = width / height;
 
-  int newWidth = (largeIconSize * 2).toInt();
-  int newHeight = newWidth ~/ widthHeightRatio;
+    int newWidth = (largeIconSize * 2).toInt();
+    int newHeight = newWidth ~/ widthHeightRatio;
 
-  File compressedFile = await fni.FlutterNativeImage.compressImage(
-    imagePath,
-    quality: 100,
-    targetWidth: newWidth,
-    targetHeight: newHeight,
-  );
+    File compressedFile = await fni.FlutterNativeImage.compressImage(
+      imagePath,
+      quality: 100,
+      targetWidth: newWidth,
+      targetHeight: newHeight,
+    );
+    await DBHelper.insert(
+      imgThumbnailPathTableName,
+      {
+        pathString: imagePath,
+        thumbnailStringPath: compressedFile.path,
+      },
+      persistentDbName,
+    );
 
-  return compressedFile.path;
+    return compressedFile.path;
+  }
 }
 
 class ImageThumbnail extends StatefulWidget {
@@ -46,8 +76,8 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) async {
-        String cP = await compute(compressImage, widget.path);
-        // String cP = await compressImage(widget.path);
+        // String cP = await compute(compressImage, widget.path);
+        String cP = await compressImage(widget.path);
 
         if (mounted) {
           setState(() {

@@ -30,12 +30,12 @@ Future<void> toggleLightTheme() async {
 
 //? to set the theme type
 Future<void> setLightTheme(bool b) async {
-  await SharedPrefHelper.setBool(appThemeKey, b);
+  await SharedPrefHelper.setBool(appLightThemeKey, b);
 }
 
 //? to set the theme colors
 Future<void> setThemeVariables() async {
-  isLight = await SharedPrefHelper.getBool(appThemeKey) ?? false;
+  isLight = await SharedPrefHelper.getBool(appLightThemeKey) ?? false;
   if (!isLight) return;
   kBackgroundColor = kLBackgroundColor;
   kCardBackgroundColor = kLCardBackgroundColor;
