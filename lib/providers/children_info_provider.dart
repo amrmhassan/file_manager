@@ -9,7 +9,11 @@ class ChildrenItemsProvider extends ChangeNotifier {
   List<FolderItemInfoModel> foldersInfo = [];
   Future<void> addFolderInfo(FolderItemInfoModel folderItemInfoModel) async {
     foldersInfo.add(folderItemInfoModel);
-    await DBHelper.insert(folderInfoTableName, folderItemInfoModel.toJSON());
+    await DBHelper.insert(
+      folderInfoTableName,
+      folderItemInfoModel.toJSON(),
+      persistentDbName,
+    );
     notifyListeners();
   }
 
@@ -23,7 +27,7 @@ class ChildrenItemsProvider extends ChangeNotifier {
 
   Future<void> getAndUpdateAllSavedFolders() async {
     foldersInfo.clear();
-    var data = await DBHelper.getData(folderInfoTableName);
+    var data = await DBHelper.getData(folderInfoTableName, persistentDbName);
     foldersInfo = data.map((e) => FolderItemInfoModel.fromJSON(e)).toList();
     notifyListeners();
   }

@@ -26,4 +26,4 @@ const bool defaultPriotorizeFolders = true;
 bool lightTheme = true;
 
 //? debugging constants
-const bool showAnalyzerStuff = true;
+const bool showAnalyzerStuff = false;

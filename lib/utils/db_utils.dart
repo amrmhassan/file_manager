@@ -54,8 +54,6 @@ FutureOr<void> onTempDataBase(
   await db.execute(AnalyzerReportInfoModel.toSQLString());
   //? creating info of the analyzer folders info
   await db.execute(LocalFolderInfo.toSQLString());
-  //? creating info of the explorer folders
-  await db.execute(FolderItemInfoModel.toSQLString());
 }
 
 //? on create the temp database
@@ -63,5 +61,8 @@ FutureOr<void> onPersistentDataBase(
   Database db,
   int? version,
 ) async {
+  //? creating info of the explorer folders
+  await db.execute(FolderItemInfoModel.toSQLString());
+  //? creating images thumbnails table
   await db.execute(imagesThumbnailsTableCreation);
 }

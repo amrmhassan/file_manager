@@ -31,14 +31,14 @@ class RecentItemType extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(largePadding),
+            padding: EdgeInsets.all(largePadding * 1.3),
             decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.circular(500),
             ),
             child: Image.asset(
               'assets/icons/recent/$iconName.png',
-              width: mediumIconSize,
+              width: largeIconSize / 1.5,
               color: Colors.white,
             ),
           ),

@@ -65,21 +65,21 @@ void showSnackBar({
 //? to get the size
 String handleConvertSize(int sizeInByte) {
   String unit = '';
-  double covertedSize = 0;
+  double convertedSize = 0;
   if (sizeInByte < 1024) {
-    covertedSize = sizeInByte * 1;
+    convertedSize = sizeInByte * 1;
     unit = ' Byte';
   } else if (sizeInByte < 1024 * 1024) {
-    covertedSize = sizeInByte.toKB;
+    convertedSize = sizeInByte.toKB;
     unit = ' KB';
   } else if (sizeInByte < 1024 * 1024 * 1024) {
-    covertedSize = sizeInByte.toMB;
+    convertedSize = sizeInByte.toMB;
     unit = ' MB';
   } else {
-    covertedSize = sizeInByte.toGB;
+    convertedSize = sizeInByte.toGB;
     unit = ' GB';
   }
-  return '${double.parse(covertedSize.toStringAsFixed(2))}$unit';
+  return '${double.parse(convertedSize.toStringAsFixed(2))}$unit';
 }
 
 //? get code snippet execution time
@@ -112,15 +112,15 @@ void copyPathToClipboard(BuildContext context, String path,
   if (showSnack) showSnackBar(context: context, message: 'Copied To Clipboard');
 }
 
-//? captalize a single word
+//? capitalize a single word
 String capitalizeWord(String s) {
   String firstLetter = s[0];
   String remaining = s.substring(1);
   return firstLetter.toUpperCase() + remaining;
 }
 
-//? captlize a sentence
-String captlizeSentence(String s) {
+//? capitalize a sentence
+String capitalizeSentence(String s) {
   List<String> words = s.split(' ');
   var caps = words.map((e) => capitalizeWord(e));
   String capSentence = caps.join(' ');

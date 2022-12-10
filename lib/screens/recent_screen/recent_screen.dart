@@ -46,7 +46,6 @@ class _RecentScreenState extends State<RecentScreen> {
             physics: BouncingScrollPhysics(),
             children: [
               VSpace(factor: .5),
-              // RecentWidget(),
               HLine(
                 thickness: 1,
                 color: kInactiveColor.withOpacity(.2),
