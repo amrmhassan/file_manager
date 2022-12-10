@@ -12,8 +12,8 @@ import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.d
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/recent_screen/widget/recent_item_type.dart';
 import 'package:explorer/screens/recent_screen/widget/storage_segments.dart';
+import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,7 +50,6 @@ class _RecentScreenState extends State<RecentScreen> {
                 thickness: 1,
                 color: kInactiveColor.withOpacity(.2),
               ),
-
               VSpace(),
               PaddingWrapper(
                 child: Container(
@@ -153,10 +152,7 @@ class _RecentScreenState extends State<RecentScreen> {
               AnalyzerOptionsItem(
                 logoName: 'cleaner',
                 onTap: () {
-                  showSnackBar(
-                      context: context,
-                      message:
-                          'Here will be big files, very old files, that never opened long ago');
+                  Navigator.pushNamed(context, StorageCleanerScreen.routeName);
                 },
                 title: 'Storage Cleaner',
               ),

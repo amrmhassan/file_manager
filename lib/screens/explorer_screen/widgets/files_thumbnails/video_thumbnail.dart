@@ -1,5 +1,6 @@
 // ignore_for_file: dead_code, prefer_const_constructors
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -20,31 +21,31 @@ class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
   double? vidWidth;
 
   double? vidHeight;
-  @override
-  void initState() {
-    _controller = VideoPlayerController.network(widget.path)
-      ..initialize().then((_) {
-        if (mounted) {
-          setState(() {
-            vidWidth = _controller.value.size.width;
-            vidHeight = _controller.value.size.height;
-            // here the video info will be available
-          });
-        }
-      });
+  // @override
+  // void initState() {
+  //   _controller = VideoPlayerController.network(widget.path)
+  //     ..initialize().then((_) {
+  //       if (mounted) {
+  //         setState(() {
+  //           vidWidth = _controller.value.size.width;
+  //           vidHeight = _controller.value.size.height;
+  //           // here the video info will be available
+  //         });
+  //       }
+  //     });
 
-    super.initState();
-  }
+  //   super.initState();
+  // }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return vidHeight == null && vidWidth == null
+    return (vidHeight == null && vidWidth == null) || !allowVideoThumbnail
         ? Image.asset(
             'assets/ext_icons/icons_1/video.png',
             width: largeIconSize,
@@ -62,14 +63,14 @@ class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
                     ),
                   ),
                   Container(
-                    color: Colors.black.withOpacity(.5),
+                    color: Colors.black.withOpacity(.1),
                     width: largeIconSize,
                     height: largeIconSize,
                   )
                 ],
               ),
               Opacity(
-                opacity: .7,
+                opacity: .5,
                 child: Image.asset(
                   'assets/icons/play.png',
                   color: Colors.white,

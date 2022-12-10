@@ -32,7 +32,7 @@ class AnalyzerProvider extends ChangeNotifier {
   bool get savingInfoToSqlite => _savingInfoToSqlite;
 
   String _currentFolder = '';
-  get currentFolder => _currentFolder;
+  String get currentFolder => _currentFolder;
 
   AdvancedStorageAnalyzer? _advancedStorageAnalyzer;
   AdvancedStorageAnalyzer? get advancedStorageAnalyzer =>

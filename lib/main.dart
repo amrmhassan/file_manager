@@ -10,12 +10,14 @@ import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/theme_provider.dart';
 import 'package:explorer/providers/user_pref_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
+import 'package:explorer/screens/cleaner_items_screen/cleaner_items_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
+import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
@@ -76,6 +78,8 @@ class MyApp extends StatelessWidget {
           WhatsAppScreen.routeName: (context) => WhatsAppScreen(),
           WhatsappFilesScreen.routeName: (context) => WhatsappFilesScreen(),
           RecentsViewerScreen.routeName: (context) => RecentsViewerScreen(),
+          StorageCleanerScreen.routeName: (context) => StorageCleanerScreen(),
+          CleanerItemsScreen.routeName: (context) => CleanerItemsScreen(),
         },
       ),
     );

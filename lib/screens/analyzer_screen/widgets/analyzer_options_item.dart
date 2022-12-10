@@ -12,12 +12,14 @@ class AnalyzerOptionsItem extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
   final String logoName;
+  final Color? color;
 
   const AnalyzerOptionsItem({
     Key? key,
     required this.onTap,
     required this.title,
     required this.logoName,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -40,6 +42,7 @@ class AnalyzerOptionsItem extends StatelessWidget {
             Image.asset(
               'assets/icons/$logoName.png',
               width: mediumIconSize,
+              color: color,
             ),
             HSpace(),
             Text(

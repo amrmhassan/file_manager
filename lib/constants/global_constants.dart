@@ -27,3 +27,4 @@ bool lightTheme = true;
 
 //? debugging constants
 const bool showAnalyzerStuff = false;
+const bool allowVideoThumbnail = false;

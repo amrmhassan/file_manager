@@ -28,10 +28,9 @@ class _ExtFilesScreenState extends State<ExtFilesScreen> {
     Future.delayed(Duration.zero).then((value) async {
       Map<String, dynamic> data =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      // String extName = data['ext'];
       int extSize = data['size'];
-      List<String> filesPathes = data['files'];
-      var futures = filesPathes.map(
+      List<String> filesPaths = data['files'];
+      var futures = filesPaths.map(
         (e) async {
           File file = File(e);
           FileStat fileStat = await file.stat();
