@@ -63,7 +63,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                     ),
                     VSpace(factor: .5),
                     AnalyzerOptionsItem(
-                      logoName: 'big-file',
+                      logoName: 'clock',
                       onTap: () {
                         Navigator.pushNamed(
                           context,
@@ -72,6 +72,19 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                         );
                       },
                       title: 'Old Files',
+                      color: kInverseColor,
+                    ),
+                    VSpace(factor: .5),
+                    AnalyzerOptionsItem(
+                      logoName: 'clock',
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          CleanerItemsScreen.routeName,
+                          arguments: CleanerItem.modifiedFiles,
+                        );
+                      },
+                      title: 'Modified Files',
                       color: kInverseColor,
                     ),
                   ],

@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 enum CleanerItem {
   bigFiles,
   oldFiles,
+  modifiedFiles,
 }
 
 class CleanerItemsScreen extends StatefulWidget {
@@ -28,44 +29,6 @@ class CleanerItemsScreen extends StatefulWidget {
 }
 
 class _CleanerItemsScreenState extends State<CleanerItemsScreen> {
-  // bool loading = true;
-  // List<StorageItemModel> children = [];
-  // int? parentSize;
-  // @override
-  // void initState() {
-  //   Future.delayed(Duration.zero).then((value) async {
-  //     Map<String, dynamic> data =
-  //         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-  //     int extSize = data['size'];
-  //     List<String> filesPaths = data['files'];
-  //     var futures = filesPaths.map(
-  //       (e) async {
-  //         File file = File(e);
-  //         FileStat fileStat = await file.stat();
-  //         return StorageItemModel(
-  //           parentPath: file.parent.path,
-  //           path: file.path,
-  //           modified: fileStat.modified,
-  //           accessed: fileStat.accessed,
-  //           changed: fileStat.changed,
-  //           entityType: EntityType.file,
-  //           size: fileStat.size,
-  //         );
-  //       },
-  //     ).toList();
-  //     var storageModels = await Future.wait(futures);
-  //     storageModels.sort((a, b) => b.size!.compareTo(a.size!));
-  //     if (mounted) {
-  //       setState(() {
-  //         children = storageModels;
-  //         parentSize = extSize;
-  //         loading = false;
-  //       });
-  //     }
-  //   });
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     CleanerItem cleanerItem =
@@ -78,12 +41,17 @@ class _CleanerItemsScreenState extends State<CleanerItemsScreen> {
       allFilesInfo.sort(
         (a, b) => b.size.compareTo(a.size),
       );
-      allFilesInfo = allFilesInfo.sublist(0, 100);
+      allFilesInfo = allFilesInfo.sublist(0, 200);
     } else if (cleanerItem == CleanerItem.oldFiles) {
       allFilesInfo.sort(
         (a, b) => a.accessed.compareTo(b.accessed),
       );
-      allFilesInfo = allFilesInfo.sublist(0, 100);
+      allFilesInfo = allFilesInfo.sublist(0, 200);
+    } else if (cleanerItem == CleanerItem.modifiedFiles) {
+      allFilesInfo.sort(
+        (a, b) => a.modified.compareTo(b.modified),
+      );
+      allFilesInfo = allFilesInfo.sublist(0, 200);
     }
 
     return ScreensWrapper(
