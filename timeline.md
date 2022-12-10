@@ -12,10 +12,6 @@
 
 -- or collect them in a social media apps link
 
-# i will add files types like in the normal file manager
-
-then add a second section for the latest items to view any type of the recent items (with no care of it's type)
-
 # save whatsapp images, voice notes, etc, into a sqlite db, and load them from sqlite, and load the actual files in back , then update them
 
-# move the folder info like items count to the persistent db
+# add storage cleaner(This will have a separate scanner object) which will view very big files, very old files
