@@ -58,6 +58,7 @@ class StorageItem extends StatelessWidget {
             } else {
               //* here perform open the file
               await OpenFile.open(storageItemModel.path);
+              await foProviderFalse.addToRecentlyOpened(storageItemModel.path);
             }
           },
           onLongPress: () {

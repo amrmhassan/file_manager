@@ -14,6 +14,7 @@ import 'package:explorer/screens/recent_screen/widget/recent_item_type.dart';
 import 'package:explorer/screens/recent_screen/widget/storage_segments.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -141,6 +142,18 @@ class _RecentScreenState extends State<RecentScreen> {
                   ),
                 ),
               ),
+              AnalyzerOptionsItem(
+                logoName: 'clock',
+                onTap: () {
+                  showSnackBar(
+                    context: context,
+                    message: 'This will view recently open 100 files',
+                  );
+                },
+                title: 'Recently Opened',
+                color: Colors.white,
+              ),
+              VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'analyzer',
                 onTap: () {

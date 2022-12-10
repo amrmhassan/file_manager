@@ -65,4 +65,6 @@ FutureOr<void> onPersistentDataBase(
   await db.execute(FolderItemInfoModel.toSQLString());
   //? creating images thumbnails table
   await db.execute(imagesThumbnailsTableCreation);
+  //? creating recently opened files table
+  await db.execute(recentlyOpenedFilesTableCreation);
 }

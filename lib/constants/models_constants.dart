@@ -28,3 +28,5 @@ const String filesPathString = 'filesPathString';
 
 //? other keys
 const String thumbnailStringPath = 'thumbnailStringPath';
+const String dateFileOpenedString = 'dateFileOpenedString';
+const String idString = 'idString';
