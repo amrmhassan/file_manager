@@ -55,7 +55,6 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   FileStat? fileStat;
   double? height = 60;
   late int parentSize;
-  double marginAnimations = allowNormalExpAnimation ? 20 : 0;
 
   String? error;
 
@@ -104,7 +103,6 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
       if (mounted) {
         setState(() {
           parentSize = widget.parentSize;
-          marginAnimations = 0;
         });
       }
     });
@@ -175,102 +173,98 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
             color: kInactiveColor.withOpacity(.2),
             height: height,
           ),
-        AnimatedContainer(
-          duration: entitySizePercentageDuration,
-          margin: EdgeInsets.only(bottom: marginAnimations),
-          child: Column(
-            key: key,
-            children: [
-              VSpace(factor: .5),
-              PaddingWrapper(
-                child: Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/folder_colorful.png',
-                      width: largeIconSize,
-                    ),
-                    HSpace(),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.fileName,
-                            style: h4LightTextStyle,
-                            maxLines: 1,
-                            // overflow: TextOverflow.ellipsis,
-                          ),
-                          Row(
-                            children: [
-                              error == null
-                                  ? Text(
-                                      childrenNumber == null
-                                          ? '...'
-                                          : '$childrenNumber Items',
-                                      style: h5InactiveTextStyle.copyWith(
-                                        height: 1,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  : Text(
-                                      'System',
-                                      style: h5InactiveTextStyle.copyWith(
-                                          height: 1),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                              if (fileStat != null)
-                                Row(
-                                  children: [
-                                    Text(
-                                      ' | ',
-                                      style: h5InactiveTextStyle.copyWith(
-                                          height: 1),
-                                    ),
-                                    Text(
-                                      widget.sizesExplorer
-                                          ? handleConvertSize(
-                                              widget.storageItemModel.size ?? 0)
-                                          : DateFormat('yyyy-MM-dd')
-                                              .format(fileStat!.changed),
-                                      style: h5InactiveTextStyle.copyWith(
-                                          height: 1),
-                                    )
-                                  ],
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (widget.sizesExplorer)
-                      Text(
-                        sizePercentageString(
-                          getSizePercentage(
-                            widget.storageItemModel.size ?? 0,
-                            parentSize,
-                          ),
+        Column(
+          key: key,
+          children: [
+            VSpace(factor: .5),
+            PaddingWrapper(
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/icons/folder_colorful.png',
+                    width: largeIconSize,
+                  ),
+                  HSpace(),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.fileName,
+                          style: h4LightTextStyle,
+                          maxLines: 1,
+                          // overflow: TextOverflow.ellipsis,
                         ),
-                        style: h4TextStyleInactive.copyWith(
-                          color: kInActiveTextColor.withOpacity(.7),
+                        Row(
+                          children: [
+                            error == null
+                                ? Text(
+                                    childrenNumber == null
+                                        ? '...'
+                                        : '$childrenNumber Items',
+                                    style: h5InactiveTextStyle.copyWith(
+                                      height: 1,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                : Text(
+                                    'System',
+                                    style:
+                                        h5InactiveTextStyle.copyWith(height: 1),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                            if (fileStat != null)
+                              Row(
+                                children: [
+                                  Text(
+                                    ' | ',
+                                    style:
+                                        h5InactiveTextStyle.copyWith(height: 1),
+                                  ),
+                                  Text(
+                                    widget.sizesExplorer
+                                        ? handleConvertSize(
+                                            widget.storageItemModel.size ?? 0)
+                                        : DateFormat('yyyy-MM-dd')
+                                            .format(fileStat!.changed),
+                                    style:
+                                        h5InactiveTextStyle.copyWith(height: 1),
+                                  )
+                                ],
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (widget.sizesExplorer)
+                    Text(
+                      sizePercentageString(
+                        getSizePercentage(
+                          widget.storageItemModel.size ?? 0,
+                          parentSize,
                         ),
                       ),
-                    foProvider.exploreMode == ExploreMode.selection
-                        ? EntityCheckBox(
-                            isSelected: widget.isSelected,
-                            storageItemModel: widget.storageItemModel,
-                          )
-                        : Image.asset(
-                            'assets/icons/right-arrow.png',
-                            width: mediumIconSize,
-                            color: kMainIconColor.withOpacity(.4),
-                          )
-                  ],
-                ),
+                      style: h4TextStyleInactive.copyWith(
+                        color: kInActiveTextColor.withOpacity(.7),
+                      ),
+                    ),
+                  foProvider.exploreMode == ExploreMode.selection
+                      ? EntityCheckBox(
+                          isSelected: widget.isSelected,
+                          storageItemModel: widget.storageItemModel,
+                        )
+                      : Image.asset(
+                          'assets/icons/right-arrow.png',
+                          width: mediumIconSize,
+                          color: kMainIconColor.withOpacity(.4),
+                        )
+                ],
               ),
-              VSpace(factor: .5),
-              HomeItemHLine(),
-            ],
-          ),
+            ),
+            VSpace(factor: .5),
+            HomeItemHLine(),
+          ],
         ),
       ],
     );

@@ -60,14 +60,6 @@ class StorageItem extends StatelessWidget {
               await OpenFile.open(storageItemModel.path);
             }
           },
-          //* this will delay the normal tap response
-          // onDoubleTapped: () {
-          //   if (isDir(storageItemModel.path)) {
-          //     //? view the folder details screen here
-          //   } else {
-          //     //? fast open file (audio, video, text)
-          //   }
-          // },
           onLongPress: () {
             var expProvider =
                 Provider.of<ExplorerProvider>(context, listen: false);

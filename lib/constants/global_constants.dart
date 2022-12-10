@@ -13,7 +13,6 @@ const Duration recentExpandDuration = Duration(milliseconds: 150);
 const Duration segmentsDuration = Duration(milliseconds: 400);
 
 //? animations constants
-const bool allowNormalExpAnimation = false;
 const bool allowSizesExpAnimation = true;
 const bool allowDevBoxes = true;
 

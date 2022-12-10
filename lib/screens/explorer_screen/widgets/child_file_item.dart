@@ -50,7 +50,6 @@ class _ChildFileItemState extends State<ChildFileItem> {
   Directory? tempDir;
   double? height = 100;
   late int parentSize;
-  double marginAnimations = allowNormalExpAnimation ? 20 : 0;
   @override
   void initState() {
     parentSize = allowSizesExpAnimation ? 0 : widget.parentSize;
@@ -58,7 +57,6 @@ class _ChildFileItemState extends State<ChildFileItem> {
       if (mounted) {
         setState(() {
           parentSize = widget.parentSize < 0 ? 0 : widget.parentSize;
-          marginAnimations = 0;
         });
       }
     });
@@ -92,104 +90,99 @@ class _ChildFileItemState extends State<ChildFileItem> {
             color: kInactiveColor.withOpacity(.2),
             height: height,
           ),
-        AnimatedContainer(
-          duration: entitySizePercentageDuration,
-          margin: EdgeInsets.only(bottom: marginAnimations),
-          child: Column(
-            key: key,
-            children: [
-              VSpace(factor: .5),
-              PaddingWrapper(
-                child: Row(
-                  children: [
-                    FileThumbnail(
-                      path: widget.storageItemModel.path,
-                    ),
-                    HSpace(),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.sizesExplorer ||
-                                    foProvider.exploreMode ==
-                                        ExploreMode.selection
-                                ? path.basename(widget.storageItemModel.path)
-                                : getFileName(widget.storageItemModel.path),
-                            style: h4LightTextStyle,
-                            //! fix the file name
-                            maxLines: 1,
-                            // overflow: TextOverflow.ellipsis,
-                          ),
-                          widget.sizesExplorer
-                              ? FileSizeWithDateModified(
-                                  fileSize: handleConvertSize(
-                                    widget.storageItemModel.size ?? 0,
-                                  ),
-                                  hasData: true,
-                                  modified: widget.storageItemModel.modified,
-                                )
-                              : FutureBuilder<FileStat>(
-                                  future:
-                                      File(widget.storageItemModel.path).stat(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      String fileSize = handleConvertSize(
-                                          snapshot.data?.size ?? 0);
-                                      return FileSizeWithDateModified(
-                                        fileSize: fileSize,
-                                        hasData: snapshot.data != null,
-                                        modified: snapshot.data!.modified,
-                                      );
-                                    } else {
-                                      return Text(
-                                        '...',
-                                        style: h4TextStyleInactive.copyWith(
-                                          color: kInactiveColor,
-                                          height: 1,
-                                        ),
-                                      );
-                                    }
-                                  }),
-                        ],
-                      ),
-                    ),
-                    HSpace(),
-                    AudioPlayerButton(
-                      audioPath: widget.storageItemModel.path,
-                    ),
-                    HSpace(),
-                    foProvider.exploreMode == ExploreMode.selection
-                        ? EntityCheckBox(
-                            isSelected: widget.isSelected,
-                            storageItemModel: widget.storageItemModel,
-                          )
-                        : Container(
-                            constraints:
-                                BoxConstraints(maxWidth: largeIconSize),
-                            child: Text(
-                              widget.sizesExplorer
-                                  ? sizePercentageString(
-                                      getSizePercentage(
-                                        widget.storageItemModel.size ?? 0,
-                                        parentSize,
+        Column(
+          key: key,
+          children: [
+            VSpace(factor: .5),
+            PaddingWrapper(
+              child: Row(
+                children: [
+                  FileThumbnail(
+                    path: widget.storageItemModel.path,
+                  ),
+                  HSpace(),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.sizesExplorer ||
+                                  foProvider.exploreMode ==
+                                      ExploreMode.selection
+                              ? path.basename(widget.storageItemModel.path)
+                              : getFileName(widget.storageItemModel.path),
+                          style: h4LightTextStyle,
+                          //! fix the file name
+                          maxLines: 1,
+                          // overflow: TextOverflow.ellipsis,
+                        ),
+                        widget.sizesExplorer
+                            ? FileSizeWithDateModified(
+                                fileSize: handleConvertSize(
+                                  widget.storageItemModel.size ?? 0,
+                                ),
+                                hasData: true,
+                                modified: widget.storageItemModel.modified,
+                              )
+                            : FutureBuilder<FileStat>(
+                                future:
+                                    File(widget.storageItemModel.path).stat(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    String fileSize = handleConvertSize(
+                                        snapshot.data?.size ?? 0);
+                                    return FileSizeWithDateModified(
+                                      fileSize: fileSize,
+                                      hasData: snapshot.data != null,
+                                      modified: snapshot.data!.modified,
+                                    );
+                                  } else {
+                                    return Text(
+                                      '...',
+                                      style: h4TextStyleInactive.copyWith(
+                                        color: kInactiveColor,
+                                        height: 1,
                                       ),
-                                    )
-                                  : getFileExtension(
-                                      widget.storageItemModel.path),
-                              style: h4TextStyleInactive.copyWith(
-                                color: kInActiveTextColor.withOpacity(.7),
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                                    );
+                                  }
+                                }),
+                      ],
+                    ),
+                  ),
+                  HSpace(),
+                  AudioPlayerButton(
+                    audioPath: widget.storageItemModel.path,
+                  ),
+                  HSpace(),
+                  foProvider.exploreMode == ExploreMode.selection
+                      ? EntityCheckBox(
+                          isSelected: widget.isSelected,
+                          storageItemModel: widget.storageItemModel,
+                        )
+                      : Container(
+                          constraints: BoxConstraints(maxWidth: largeIconSize),
+                          child: Text(
+                            widget.sizesExplorer
+                                ? sizePercentageString(
+                                    getSizePercentage(
+                                      widget.storageItemModel.size ?? 0,
+                                      parentSize,
+                                    ),
+                                  )
+                                : getFileExtension(
+                                    widget.storageItemModel.path),
+                            style: h4TextStyleInactive.copyWith(
+                              color: kInActiveTextColor.withOpacity(.7),
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                  ],
-                ),
+                        ),
+                ],
               ),
-              VSpace(factor: .5),
-              HomeItemHLine(),
-            ],
-          ),
+            ),
+            VSpace(factor: .5),
+            HomeItemHLine(),
+          ],
         ),
       ],
     );

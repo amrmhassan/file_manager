@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -42,8 +42,23 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
             color: kCardBackgroundColor,
           ),
           analyzerProvider.loading
-              ? Center(
-                  child: CircularProgressIndicator(),
+              ? Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(
+                          color: kInverseColor,
+                          strokeWidth: 2,
+                        ),
+                        VSpace(),
+                        Text(
+                          'Loading',
+                          style: h4TextStyleInactive,
+                        ),
+                      ],
+                    ),
+                  ),
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
