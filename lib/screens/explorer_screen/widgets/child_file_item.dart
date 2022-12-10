@@ -76,115 +76,124 @@ class _ChildFileItemState extends State<ChildFileItem> {
   @override
   Widget build(BuildContext context) {
     var foProvider = Provider.of<FilesOperationsProvider>(context);
+    // this code took 200 micro second which is very small amount of time
+    File file = File(widget.storageItemModel.path);
+    bool exists = file.existsSync();
 
-    return Stack(
-      children: [
-        if (widget.sizesExplorer)
-          AnimatedContainer(
-            curve: true ? Curves.elasticOut : Curves.easeInSine,
-            duration: entitySizePercentageDuration,
-            width: Responsive.getWidthPercentage(
-              context,
-              getSizePercentage(widget.storageItemModel.size ?? 0, parentSize),
-            ),
-            color: kInactiveColor.withOpacity(.2),
-            height: height,
-          ),
-        Column(
-          key: key,
-          children: [
-            VSpace(factor: .5),
-            PaddingWrapper(
-              child: Row(
-                children: [
-                  FileThumbnail(
-                    path: widget.storageItemModel.path,
+    return !exists
+        ? SizedBox()
+        : Stack(
+            children: [
+              if (widget.sizesExplorer)
+                AnimatedContainer(
+                  curve: true ? Curves.elasticOut : Curves.easeInSine,
+                  duration: entitySizePercentageDuration,
+                  width: Responsive.getWidthPercentage(
+                    context,
+                    getSizePercentage(
+                        widget.storageItemModel.size ?? 0, parentSize),
                   ),
-                  HSpace(),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  color: kInactiveColor.withOpacity(.2),
+                  height: height,
+                ),
+              Column(
+                key: key,
+                children: [
+                  VSpace(factor: .5),
+                  PaddingWrapper(
+                    child: Row(
                       children: [
-                        Text(
-                          widget.sizesExplorer ||
-                                  foProvider.exploreMode ==
-                                      ExploreMode.selection
-                              ? path.basename(widget.storageItemModel.path)
-                              : getFileName(widget.storageItemModel.path),
-                          style: h4LightTextStyle,
-                          //! fix the file name
-                          maxLines: 1,
-                          // overflow: TextOverflow.ellipsis,
+                        FileThumbnail(
+                          path: widget.storageItemModel.path,
                         ),
-                        widget.sizesExplorer
-                            ? FileSizeWithDateModified(
-                                fileSize: handleConvertSize(
-                                  widget.storageItemModel.size ?? 0,
-                                ),
-                                hasData: true,
-                                modified: widget.storageItemModel.modified,
-                              )
-                            : FutureBuilder<FileStat>(
-                                future:
-                                    File(widget.storageItemModel.path).stat(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    String fileSize = handleConvertSize(
-                                        snapshot.data?.size ?? 0);
-                                    return FileSizeWithDateModified(
-                                      fileSize: fileSize,
-                                      hasData: snapshot.data != null,
-                                      modified: snapshot.data!.modified,
-                                    );
-                                  } else {
-                                    return Text(
-                                      '...',
-                                      style: h4TextStyleInactive.copyWith(
-                                        color: kInactiveColor,
-                                        height: 1,
+                        HSpace(),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.sizesExplorer ||
+                                        foProvider.exploreMode ==
+                                            ExploreMode.selection
+                                    ? path
+                                        .basename(widget.storageItemModel.path)
+                                    : getFileName(widget.storageItemModel.path),
+                                style: h4LightTextStyle,
+                                //! fix the file name
+                                maxLines: 1,
+                                // overflow: TextOverflow.ellipsis,
+                              ),
+                              widget.sizesExplorer
+                                  ? FileSizeWithDateModified(
+                                      fileSize: handleConvertSize(
+                                        widget.storageItemModel.size ?? 0,
                                       ),
-                                    );
-                                  }
-                                }),
+                                      hasData: true,
+                                      modified:
+                                          widget.storageItemModel.modified,
+                                    )
+                                  : FutureBuilder<FileStat>(
+                                      future: File(widget.storageItemModel.path)
+                                          .stat(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          String fileSize = handleConvertSize(
+                                              snapshot.data?.size ?? 0);
+                                          return FileSizeWithDateModified(
+                                            fileSize: fileSize,
+                                            hasData: snapshot.data != null,
+                                            modified: snapshot.data!.modified,
+                                          );
+                                        } else {
+                                          return Text(
+                                            '...',
+                                            style: h4TextStyleInactive.copyWith(
+                                              color: kInactiveColor,
+                                              height: 1,
+                                            ),
+                                          );
+                                        }
+                                      }),
+                            ],
+                          ),
+                        ),
+                        HSpace(),
+                        AudioPlayerButton(
+                          audioPath: widget.storageItemModel.path,
+                        ),
+                        HSpace(),
+                        foProvider.exploreMode == ExploreMode.selection
+                            ? EntityCheckBox(
+                                isSelected: widget.isSelected,
+                                storageItemModel: widget.storageItemModel,
+                              )
+                            : Container(
+                                constraints:
+                                    BoxConstraints(maxWidth: largeIconSize),
+                                child: Text(
+                                  widget.sizesExplorer
+                                      ? sizePercentageString(
+                                          getSizePercentage(
+                                            widget.storageItemModel.size ?? 0,
+                                            parentSize,
+                                          ),
+                                        )
+                                      : getFileExtension(
+                                          widget.storageItemModel.path),
+                                  style: h4TextStyleInactive.copyWith(
+                                    color: kInActiveTextColor.withOpacity(.7),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                       ],
                     ),
                   ),
-                  HSpace(),
-                  AudioPlayerButton(
-                    audioPath: widget.storageItemModel.path,
-                  ),
-                  HSpace(),
-                  foProvider.exploreMode == ExploreMode.selection
-                      ? EntityCheckBox(
-                          isSelected: widget.isSelected,
-                          storageItemModel: widget.storageItemModel,
-                        )
-                      : Container(
-                          constraints: BoxConstraints(maxWidth: largeIconSize),
-                          child: Text(
-                            widget.sizesExplorer
-                                ? sizePercentageString(
-                                    getSizePercentage(
-                                      widget.storageItemModel.size ?? 0,
-                                      parentSize,
-                                    ),
-                                  )
-                                : getFileExtension(
-                                    widget.storageItemModel.path),
-                            style: h4TextStyleInactive.copyWith(
-                              color: kInActiveTextColor.withOpacity(.7),
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
+                  VSpace(factor: .5),
+                  HomeItemHLine(),
                 ],
               ),
-            ),
-            VSpace(factor: .5),
-            HomeItemHLine(),
-          ],
-        ),
-      ],
-    );
+            ],
+          );
   }
 }
