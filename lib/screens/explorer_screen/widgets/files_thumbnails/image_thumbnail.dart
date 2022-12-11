@@ -6,10 +6,30 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart' as fni;
 
-// String compressImageIsolate(String path) {}
+Future<String> compressImageIsolate(String path) async {
+  fni.ImageProperties properties =
+      await fni.FlutterNativeImage.getImageProperties(path);
+  int width = properties.width!;
+  int height = properties.height!;
+
+  double widthHeightRatio = width / height;
+
+  int newWidth = (largeIconSize * 2).toInt();
+  int newHeight = newWidth ~/ widthHeightRatio;
+
+  File compressedFile = await fni.FlutterNativeImage.compressImage(
+    path,
+    quality: 100,
+    targetWidth: newWidth,
+    targetHeight: newHeight,
+  );
+  return compressedFile.path;
+}
+
 //? this will compress an image and check for it in sqlite
 Future<String> compressImage(String imagePath) async {
   try {
@@ -28,32 +48,17 @@ Future<String> compressImage(String imagePath) async {
       throw Exception('no thumb');
     }
   } catch (e) {
-    fni.ImageProperties properties =
-        await fni.FlutterNativeImage.getImageProperties(imagePath);
-    int width = properties.width!;
-    int height = properties.height!;
-
-    double widthHeightRatio = width / height;
-
-    int newWidth = (largeIconSize * 2).toInt();
-    int newHeight = newWidth ~/ widthHeightRatio;
-
-    File compressedFile = await fni.FlutterNativeImage.compressImage(
-      imagePath,
-      quality: 100,
-      targetWidth: newWidth,
-      targetHeight: newHeight,
-    );
+    String compressedFilePath = await compute(compressImageIsolate, imagePath);
     await DBHelper.insert(
       imgThumbnailPathTableName,
       {
         pathString: imagePath,
-        thumbnailStringPath: compressedFile.path,
+        thumbnailStringPath: compressedFilePath,
       },
       persistentDbName,
     );
 
-    return compressedFile.path;
+    return compressedFilePath;
   }
 }
 
