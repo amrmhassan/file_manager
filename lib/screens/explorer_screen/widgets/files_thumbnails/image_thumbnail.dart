@@ -10,10 +10,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart' as fni;
 
-Future<String> compressImageIsolate(String path) async {
-  return Future.delayed(Duration(seconds: 1)).then((value) => path);
-}
-
 //? this will compress an image and check for it in sqlite
 Future<String> compressImage(String imagePath) async {
   try {
@@ -32,8 +28,6 @@ Future<String> compressImage(String imagePath) async {
       throw Exception('no thumb');
     }
   } catch (e) {
-    String test = await compute(compressImageIsolate, imagePath);
-    print(test);
     fni.ImageProperties properties =
         await fni.FlutterNativeImage.getImageProperties(imagePath);
     int width = properties.width!;
