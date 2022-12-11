@@ -37,4 +37,4 @@ const String recentlyOpenedFilesTableName = 'recentlyOpenedFiles';
 const String imagesThumbnailsTableCreation =
     'CREATE TABLE $imgThumbnailPathTableName ($pathString TEXT PRIMARY KEY, $thumbnailStringPath TEXT)';
 const String recentlyOpenedFilesTableCreation =
-    'CREATE TABLE $recentlyOpenedFilesTableName ($idString TEXT PRIMARY KEY, $pathString TEXT, $dateFileOpenedString TEXT)';
+    'CREATE TABLE $recentlyOpenedFilesTableName ($pathString TEXT PRIMARY KEY, $dateFileOpenedString TEXT)';

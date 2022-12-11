@@ -73,6 +73,27 @@ class DBHelper {
     return await db.query(table);
   }
 
+//? to get all data with limit from a table
+  static Future<List<Map<String, dynamic>>> getDataLimit({
+    required String table,
+    required int limit,
+    String? orderProp,
+    bool orderASC = true,
+    String? databaseName,
+  }) async {
+    final db = await DBHelper.database(table, databaseName);
+    String orderQuery = orderProp == null
+        ? ''
+        : 'ORDER BY $orderProp ${orderASC ? "ASC" : "DESC"}';
+    return db.rawQuery("""
+SELECT * 
+FROM $table
+$orderQuery
+LIMIT $limit
+""");
+    // return await db.query(table);
+  }
+
 //? to get data from a table where
   static Future<List<Map<String, dynamic>>> getDataWhere(
     String table,

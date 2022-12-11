@@ -1,4 +1,7 @@
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/models/types.dart';
+import 'package:path/path.dart' as path_operations;
 
 //? this will hold the data of a folder or a file to be viewed in the explorer
 class StorageItemModel {
@@ -19,6 +22,20 @@ class StorageItemModel {
     required this.entityType,
     required this.size,
   });
+
+  LocalFileInfo toLocalFileInfo() {
+    return LocalFileInfo(
+      size: size!,
+      parentPath: parentPath,
+      path: path,
+      modified: modified,
+      accessed: accessed,
+      changed: changed,
+      entityType: entityType,
+      fileBaseName: path_operations.basename(path),
+      ext: getFileExtension(path),
+    );
+  }
 
   // Map<String, String> toJSON() {
   //   return {

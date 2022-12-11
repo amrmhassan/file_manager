@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:explorer/constants/db_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/recent_opened_file_model.dart';
@@ -15,7 +14,6 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:share_plus/share_plus.dart' as share_plus;
-import 'package:uuid/uuid.dart';
 
 enum FileOperation {
   delete,
@@ -310,12 +308,11 @@ class FilesOperationsProvider extends ChangeNotifier {
   //? to add a file to recently opened files
   Future<void> addToRecentlyOpened(String path) async {
     DateTime now = DateTime.now();
-    String id = const Uuid().v4();
     RecentOpenedFileModel recentOpenedFileModel = RecentOpenedFileModel(
-      id: id,
       dateOpened: now,
       path: path,
     );
+
     await DBHelper.insert(
       recentlyOpenedFilesTableName,
       recentOpenedFileModel.toJSON(),
