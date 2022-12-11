@@ -13,5 +13,3 @@
 -- or collect them in a social media apps link
 
 # save whatsapp images, voice notes, etc, into a sqlite db, and load them from sqlite, and load the actual files in back , then update them
-
-# add storage cleaner(This will have a separate scanner object) which will view very big files, very old files

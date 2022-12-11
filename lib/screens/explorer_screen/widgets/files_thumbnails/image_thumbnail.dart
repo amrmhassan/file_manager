@@ -9,6 +9,8 @@ import 'package:explorer/helpers/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart' as fni;
 
+// String compressImageIsolate(String path) {}
+//? this will compress an image and check for it in sqlite
 Future<String> compressImage(String imagePath) async {
   try {
     var data = await DBHelper.getDataWhere(
