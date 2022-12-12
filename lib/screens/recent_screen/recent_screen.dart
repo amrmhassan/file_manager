@@ -182,6 +182,7 @@ class _RecentScreenState extends State<RecentScreen> {
                 onTap: () {},
                 title: 'Apps Data',
               ),
+              VSpace(),
             ],
           ),
         ),
