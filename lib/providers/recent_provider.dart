@@ -3,8 +3,10 @@ import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyze
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 int recentItemsLimit = 100;
@@ -61,6 +63,14 @@ class RecentProvider extends ChangeNotifier {
       String path = file.path;
       String ext = getFileExtension(file.path);
       FileType fileType = getFileType(ext);
+
+      if (path.contains('/cache')) {
+        continue;
+      }
+      if (allowRecentItemsFromHiddenFiles && path.contains('/.')) {
+        continue;
+      }
+
       if (_addImage(path, fileType) && imagesFiles.length < recentItemsLimit) {
         imagesFiles.add(file);
       } else if (_addVideo(path, fileType) &&
