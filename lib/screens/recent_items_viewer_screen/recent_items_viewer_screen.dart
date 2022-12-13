@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
@@ -156,22 +156,34 @@ class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : Expanded(
-                  child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    itemCount: getListLength(),
-                    itemBuilder: (context, index) {
-                      LocalFileInfo localFileInfo = getFileInfo(index);
+              : getListLength() < 1
+                  ? Expanded(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No Recent Items Yet',
+                          style: h4TextStyleInactive,
+                        ),
+                      ],
+                    ))
+                  : Expanded(
+                      child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: getListLength(),
+                        itemBuilder: (context, index) {
+                          LocalFileInfo localFileInfo = getFileInfo(index);
 
-                      return StorageItem(
-                        storageItemModel: localFileInfo.toStorageItemModel(),
-                        sizesExplorer: false,
-                        parentSize: 0,
-                        onDirTapped: (path) {},
-                      );
-                    },
-                  ),
-                ),
+                          return StorageItem(
+                            storageItemModel:
+                                localFileInfo.toStorageItemModel(),
+                            sizesExplorer: false,
+                            parentSize: 0,
+                            onDirTapped: (path) {},
+                          );
+                        },
+                      ),
+                    ),
           if (!foProvider.loadingOperation) EntityOperations(),
         ],
       ),

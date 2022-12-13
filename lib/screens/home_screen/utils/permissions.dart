@@ -27,6 +27,7 @@ Future<bool> isGranted() async {
       (await Permission.manageExternalStorage.isGranted);
 }
 
+//? to check if to show the dialog
 Future<bool> doShowDialog() async {
   bool granted = await isGranted();
   bool savedGranted = await getGrantedPermissionsSharedPrefs();

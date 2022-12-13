@@ -42,7 +42,6 @@ class RecentProvider extends ChangeNotifier {
     List<LocalFileInfo> allFiles = _storageAnalyzerV4.allFilesInfo;
     allFiles.sort((a, b) => b.modified.compareTo(a.modified));
 
-    // analyzeData(allFiles);
     _concludeRecentCategories(allFiles);
     await _saveResultsToSqlite();
   }
@@ -90,6 +89,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check image
   bool _addImage(String path, FileType fileType) {
+    if (imagesFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (skipWhatsAppStatusFolder && path.contains('/.Statuses')) {
       return false;
     }
@@ -101,6 +103,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check video
   bool _addVideo(String path, FileType fileType) {
+    if (videosFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (skipWhatsAppStatusFolder && path.contains('/.Statuses')) {
       return false;
     }
@@ -112,6 +117,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check music
   bool _addMusic(String path, FileType fileType) {
+    if (musicFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (skipWhatsAppRecordsFolder && path.contains('/WhatsApp Voice Notes')) {
       return false;
     }
@@ -123,6 +131,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check apk
   bool _addApk(String path, FileType fileType) {
+    if (apkFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (fileType == FileType.apk) {
       return true;
     }
@@ -131,6 +142,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check archives
   bool _addArchives(String path, FileType fileType) {
+    if (archivesFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (fileType == FileType.archive) {
       return true;
     }
@@ -139,6 +153,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check docs
   bool _addDocs(String path, FileType fileType) {
+    if (docsFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (fileType == FileType.docs) {
       return true;
     }
@@ -147,6 +164,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check downloads
   bool _addDownloads(String path) {
+    if (downloadsFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (path.toLowerCase().contains('download')) {
       return true;
     }
