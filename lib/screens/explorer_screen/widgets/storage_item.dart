@@ -6,9 +6,10 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/explorer_screen/widgets/animation_wrapper.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_file/open_file.dart' as open_file;
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,39 +51,42 @@ class StorageItem extends StatelessWidget {
             style: h4TextStyleInactive,
           ),
         ),
-        ButtonWrapper(
-          onTap: () async {
-            if (isDir(storageItemModel.path)) {
-              //* here open the folder
-              onDirTapped(storageItemModel.path);
-            } else {
-              //* here perform open the file
-              await OpenFile.open(storageItemModel.path);
-              await foProviderFalse.addToRecentlyOpened(storageItemModel.path);
-            }
-          },
-          onLongPress: () {
-            var expProvider =
-                Provider.of<ExplorerProvider>(context, listen: false);
+        AnimationWrapper(
+          child: ButtonWrapper(
+            onTap: () async {
+              if (isDir(storageItemModel.path)) {
+                //* here open the folder
+                onDirTapped(storageItemModel.path);
+              } else {
+                //* here perform open the file
+                await open_file.OpenFile.open(storageItemModel.path);
+                await foProviderFalse
+                    .addToRecentlyOpened(storageItemModel.path);
+              }
+            },
+            onLongPress: () {
+              var expProvider =
+                  Provider.of<ExplorerProvider>(context, listen: false);
 
-            foProviderFalse.toggleFromSelectedItems(
-                storageItemModel, expProvider);
-          },
-          borderRadius: 0,
-          child: isDir(storageItemModel.path)
-              ? ChildDirectoryItem(
-                  fileName: path.basename(storageItemModel.path),
-                  storageItemModel: storageItemModel,
-                  parentSize: parentSize,
-                  sizesExplorer: sizesExplorer,
-                  isSelected: isSelected(context),
-                )
-              : ChildFileItem(
-                  storageItemModel: storageItemModel,
-                  parentSize: parentSize,
-                  sizesExplorer: sizesExplorer,
-                  isSelected: isSelected(context),
-                ),
+              foProviderFalse.toggleFromSelectedItems(
+                  storageItemModel, expProvider);
+            },
+            borderRadius: 0,
+            child: isDir(storageItemModel.path)
+                ? ChildDirectoryItem(
+                    fileName: path.basename(storageItemModel.path),
+                    storageItemModel: storageItemModel,
+                    parentSize: parentSize,
+                    sizesExplorer: sizesExplorer,
+                    isSelected: isSelected(context),
+                  )
+                : ChildFileItem(
+                    storageItemModel: storageItemModel,
+                    parentSize: parentSize,
+                    sizesExplorer: sizesExplorer,
+                    isSelected: isSelected(context),
+                  ),
+          ),
         ),
       ],
     );

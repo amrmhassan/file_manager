@@ -6,7 +6,6 @@ import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 int recentItemsLimit = 100;
