@@ -117,7 +117,7 @@ LIMIT $limit
     final db = await DBHelper.database(table, databaseName);
     String whereQuery = '';
     for (int i = 0; i < keys.length; i++) {
-      whereQuery += '${keys[i]}=${values[i]}';
+      whereQuery += "${keys[i]}='${values[i]}'";
       if (i < (keys.length - 1)) {
         whereQuery += ' AND ';
       }
@@ -128,9 +128,6 @@ SELECT *
 FROM $table
 WHERE $whereQuery;
 """;
-    print('-------------------------');
-    print(query);
-    print('-------------------------');
     return db.rawQuery(query);
   }
 
