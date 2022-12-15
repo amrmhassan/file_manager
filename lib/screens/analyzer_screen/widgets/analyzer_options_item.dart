@@ -13,6 +13,7 @@ class AnalyzerOptionsItem extends StatelessWidget {
   final String title;
   final String logoName;
   final Color? color;
+  final String? iconPath;
 
   const AnalyzerOptionsItem({
     Key? key,
@@ -20,6 +21,7 @@ class AnalyzerOptionsItem extends StatelessWidget {
     required this.title,
     required this.logoName,
     this.color,
+    this.iconPath,
   }) : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class AnalyzerOptionsItem extends StatelessWidget {
         child: Row(
           children: [
             Image.asset(
-              'assets/icons/$logoName.png',
+              iconPath ?? 'assets/icons/$logoName.png',
               width: mediumIconSize,
               color: color,
             ),

@@ -3,19 +3,19 @@ import 'package:explorer/constants/models_constants.dart';
 
 class ListyModel {
   final String title;
-  final String? icon;
+  final String icon;
   final DateTime createdAt;
 
   const ListyModel({
     required this.title,
-    this.icon,
+    required this.icon,
     required this.createdAt,
   });
 
   Map<String, String?> toJSON() {
     return {
       titleString: title,
-      iconString: icon ?? dbNull,
+      iconString: icon,
       createdAtString: createdAt.toIso8601String(),
     };
   }

@@ -4,7 +4,7 @@ import 'package:explorer/models/listy_model.dart';
 List<ListyModel> defaultListyList = [
   ListyModel(
     title: 'Favorite',
-    icon: 'icon',
+    icon: 'assets/icons/favorite.png',
     createdAt: DateTime.now(),
   ),
 ];

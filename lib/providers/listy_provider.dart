@@ -5,7 +5,6 @@ import 'package:explorer/constants/defaults_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/models/listy_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:uuid/uuid.dart';
 
 class ListyProvider extends ChangeNotifier {
   List<ListyModel> _listy = [];
@@ -20,6 +19,11 @@ class ListyProvider extends ChangeNotifier {
     if (data.isEmpty) {
       _listy = [...defaultListyList];
       notifyListeners();
+      await DBHelper.insert(
+        listyListTableName,
+        defaultListyList.first.toJSON(),
+        persistentDbName,
+      );
       return;
     }
     for (var listy in data) {

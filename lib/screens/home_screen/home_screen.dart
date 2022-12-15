@@ -6,6 +6,7 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
@@ -61,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .loadSortOptions();
       await Provider.of<AnalyzerProvider>(context, listen: false)
           .loadInitialAppData(recentProvider);
+      await Provider.of<ListyProvider>(context, listen: false).loadListyLists();
 
       //* getting storage permission
       bool res = await showPermissionsModal(
