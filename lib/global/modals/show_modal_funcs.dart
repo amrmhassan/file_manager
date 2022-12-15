@@ -2,7 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
-import 'package:explorer/global/modals/create_folder_modal.dart';
+import 'package:explorer/global/modals/entity_info_modal.dart';
 import 'package:explorer/global/modals/current_active_dir_options_modal.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/details_modal/details_modal.dart';
@@ -111,15 +111,16 @@ void showCurrentActiveDirOptions(BuildContext context) {
 }
 
 //? create new folder modal
-void createNewFolderModal(BuildContext context) {
-  //? Add a new folder after showing a modal
-
+void createNewFolderModal(BuildContext context, [bool createListy = false]) {
   showModalBottomSheet(
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (ctx) {
-        return EntityInfoEditingModal();
-      });
+    backgroundColor: Colors.transparent,
+    context: context,
+    builder: (ctx) {
+      return EntityInfoEditingModal(
+        createListy: createListy,
+      );
+    },
+  );
 }
 
 //? sort by modal

@@ -74,9 +74,7 @@ class _ItemsViewerScreenState extends State<ItemsViewerScreen> {
           CustomAppBar(
             title: Text(
               title,
-              style: h2TextStyle.copyWith(
-                color: Colors.white,
-              ),
+              style: h2TextStyle,
             ),
           ),
           Expanded(

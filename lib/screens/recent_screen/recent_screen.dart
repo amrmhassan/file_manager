@@ -10,6 +10,7 @@ import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
+import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/recent_screen/widget/recent_item_type.dart';
 import 'package:explorer/screens/recent_screen/widget/storage_segments.dart';
@@ -152,7 +153,7 @@ class _RecentScreenState extends State<RecentScreen> {
                   );
                 },
                 title: 'Recently Opened',
-                color: Colors.white,
+                color: kMainIconColor,
               ),
               VSpace(),
               AnalyzerOptionsItem(
@@ -173,7 +174,9 @@ class _RecentScreenState extends State<RecentScreen> {
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'list1',
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, ListyScreen.routeName);
+                },
                 title: 'Listy',
               ),
               VSpace(),

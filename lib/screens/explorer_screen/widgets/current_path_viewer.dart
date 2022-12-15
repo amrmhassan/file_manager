@@ -42,7 +42,11 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToRight());
+    try {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToRight());
+    } catch (e) {
+      printOnDebug(e);
+    }
 
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);

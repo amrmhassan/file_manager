@@ -1,5 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:flutter_animator/flutter_animator.dart';
+// import 'package:flutter_animator/flutter_animator.dart';
 
 enum AnimationType {
   bounce,
@@ -43,6 +45,6 @@ class AnimationWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FadeInDownBig(child: child);
+    return child;
   }
 }
