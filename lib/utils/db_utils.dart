@@ -67,6 +67,8 @@ FutureOr<void> onPersistentDataBase(
   await db.execute(imagesThumbnailsTableCreation);
   //? creating recently opened files table
   await db.execute(recentlyOpenedFilesTableCreation);
+  //? creating listy items table
+  await db.execute(listyItemsTableCreation);
   //? creating listy list table
   await db.execute(listyListTableCreation);
 }

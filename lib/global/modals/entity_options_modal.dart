@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/global/modals/show_modal_funcs.dart';
+import 'package:explorer/global/modals/widgets/add_to_favorite_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:explorer/constants/colors.dart';
@@ -32,6 +33,7 @@ class EntityOptionsModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VSpace(),
+          AddToFavoriteButton(foProviderFalse: foProviderFalse),
           ModalButtonElement(
             inactiveColor: Colors.transparent,
             opacity: foProviderFalse.selectedItems.length == 1 ? 1 : .5,

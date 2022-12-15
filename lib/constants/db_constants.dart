@@ -33,6 +33,7 @@ const String persistentDbName = 'persistentDbName.db';
 const String imgThumbnailPathTableName = 'imgThumbnailPath';
 const String recentlyOpenedFilesTableName = 'recentlyOpenedFiles';
 const String listyListTableName = 'listyList';
+const String listyItemsTableName = 'listyItems';
 
 //? creating tables queries
 const String imagesThumbnailsTableCreation =
@@ -41,3 +42,5 @@ const String recentlyOpenedFilesTableCreation =
     'CREATE TABLE $recentlyOpenedFilesTableName ($pathString TEXT PRIMARY KEY, $dateFileOpenedString TEXT)';
 const String listyListTableCreation =
     'CREATE TABLE $listyListTableName ($titleString TEXT PRIMARY KEY, $iconString TEXT, $createdAtString TEXT)';
+const String listyItemsTableCreation =
+    'CREATE TABLE $listyItemsTableName ($idString TEXT PRIMARY KEY, $pathString TEXT, $listyTitleString TEXT, $createdAtString TEXT, $entityTypeString TEXT)';

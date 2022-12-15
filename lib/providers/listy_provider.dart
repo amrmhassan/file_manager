@@ -2,9 +2,14 @@
 
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/defaults_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class ListyProvider extends ChangeNotifier {
   List<ListyModel> _listy = [];
@@ -33,11 +38,19 @@ class ListyProvider extends ChangeNotifier {
   }
 
 //? to create a new listy
-  Future addListy({required String title, String? icon}) async {
+  Future addListy({
+    required String title,
+    String? icon,
+    bool throwError = true,
+  }) async {
     DateTime createdAt = DateTime.now();
     String iconPath = icon ?? 'assets/icons/listy.png';
     bool titleExists = _listy.any((element) => element.title == title);
-    if (titleExists) throw Exception('This list already exist');
+    if (titleExists && throwError) {
+      throw Exception('This list already exist');
+    } else if (titleExists) {
+      return;
+    }
     ListyModel listyModel = ListyModel(
       title: title,
       createdAt: createdAt,
@@ -51,4 +64,46 @@ class ListyProvider extends ChangeNotifier {
       persistentDbName,
     );
   }
+
+  //? to check if an entity is in a list
+  Future<bool> itemExistInAListy({
+    required String path,
+    required String listTitle,
+  }) async {
+    //! the error happens here
+    var data = await DBHelper.getDataWhereMultiple(
+      listyItemsTableName,
+      [listyTitleString, pathString],
+      [listTitle, path],
+      persistentDbName,
+    );
+
+    return data.isNotEmpty;
+  }
+
+  //? add item to listy
+  Future<void> addItemToListy({
+    required String path,
+    required String listyTitle,
+    required EntityType entityType,
+  }) async {
+    ListyItemModel listyItemModel = ListyItemModel(
+      id: Uuid().v4(),
+      path: path,
+      listyTitle: listyTitle,
+      createdAt: DateTime.now(),
+      entityType: entityType,
+    );
+
+    await DBHelper.insert(
+      listyItemsTableName,
+      listyItemModel.toJSON(),
+      persistentDbName,
+    );
+  }
+
+  Future<void> removeItemFromListy({
+    required String path,
+    required String listyTitle,
+  }) async {}
 }

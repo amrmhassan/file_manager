@@ -32,6 +32,9 @@ const String titleString = 'titleString';
 const String iconString = 'iconString';
 const String createdAtString = 'createdAtString';
 
+//? listy item model
+const String listyTitleString = 'listyTitleString';
+
 //? other keys
 const String thumbnailStringPath = 'thumbnailStringPath';
 const String dateFileOpenedString = 'dateFileOpenedString';
