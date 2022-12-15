@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/models/listy_model.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,13 @@ class ListyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var listyProvider = Provider.of<ListyProvider>(context);
+    List<ListyModel> lists = [
+      listyProvider.listyList.first,
+      ...listyProvider.listyList
+          .getRange(1, listyProvider.listyList.length)
+          .toList()
+          .reversed,
+    ];
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
@@ -50,19 +58,26 @@ class ListyScreen extends StatelessWidget {
           ),
           VSpace(),
           Expanded(
-              child: ListView(
-            children: listyProvider.listyList
-                .map(
-                  (e) => AnalyzerOptionsItem(
-                    onTap: () {},
-                    title: e.title,
-                    iconPath: e.icon,
-                    logoName: '',
-                    // color: kMainIconColor,
-                  ),
-                )
-                .toList(),
-          ))
+            child: ListView(
+              physics: BouncingScrollPhysics(),
+              children: lists
+                  .map(
+                    (e) => Column(
+                      children: [
+                        AnalyzerOptionsItem(
+                          onTap: () {},
+                          title: e.title,
+                          iconPath: e.icon,
+                          logoName: '',
+                          // color: kMainIconColor,
+                        ),
+                        VSpace(),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
         ],
       ),
     );
