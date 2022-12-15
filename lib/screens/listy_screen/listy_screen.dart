@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
@@ -65,7 +66,13 @@ class ListyScreen extends StatelessWidget {
                     (e) => Column(
                       children: [
                         AnalyzerOptionsItem(
-                          onTap: () {},
+                          onTap: () async {
+                            List<ListyItemModel> items =
+                                await Provider.of<ListyProvider>(context,
+                                        listen: false)
+                                    .getListyItems(e.title);
+                            print(items.length);
+                          },
                           title: e.title,
                           iconPath: e.icon,
                           logoName: '',

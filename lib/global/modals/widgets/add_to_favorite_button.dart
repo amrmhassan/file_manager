@@ -23,7 +23,7 @@ class AddToFavoriteButton extends StatelessWidget {
         : FutureBuilder(
             future: listyProviderFalse.itemExistInAListy(
               path: foProviderFalse.selectedItems.first.path,
-              listTitle: defaultListyList.first.title,
+              listyTitle: defaultListyList.first.title,
             ),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -46,6 +46,11 @@ class AddToFavoriteButton extends StatelessWidget {
                   inactiveColor: Colors.transparent,
                   title: 'Remove from favorite',
                   onTap: () async {
+                    await Provider.of<ListyProvider>(context, listen: false)
+                        .removeItemFromListy(
+                      path: foProviderFalse.selectedItems.first.path,
+                      listyTitle: defaultListyList.first.title,
+                    );
                     Navigator.pop(context);
                   },
                 );

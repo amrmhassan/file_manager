@@ -131,6 +131,33 @@ WHERE $whereQuery;
     return db.rawQuery(query);
   }
 
+//? to delete data from a table where multiple keys apply
+  static Future<List<Map<String, dynamic>>> deleteDataWhereMultiple(
+    String table,
+    List<String> keys,
+    List<String> values, [
+    String? databaseName,
+  ]) async {
+    if (keys.length != values.length) {
+      throw Exception('key length must be the same as value length');
+    }
+    final db = await DBHelper.database(table, databaseName);
+    String whereQuery = '';
+    for (int i = 0; i < keys.length; i++) {
+      whereQuery += "${keys[i]}='${values[i]}'";
+      if (i < (keys.length - 1)) {
+        whereQuery += ' AND ';
+      }
+    }
+
+    String query = """
+DELETE
+FROM $table
+WHERE $whereQuery;
+""";
+    return db.rawQuery(query);
+  }
+
 //? to delete a database
   static Future<void> deleteDatabase(String databaseName) async {
     final databasePathDir = await sql.getDatabasesPath();

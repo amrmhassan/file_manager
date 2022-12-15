@@ -28,11 +28,15 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
   final ScrollController _scrollController = ScrollController();
 
   _scrollToRight() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: Duration(milliseconds: 200),
-      curve: Curves.easeOut,
-    );
+    try {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+      );
+    } catch (e) {
+      printOnDebug(e);
+    }
   }
 
   @override

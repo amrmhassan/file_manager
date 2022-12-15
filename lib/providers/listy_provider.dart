@@ -68,13 +68,13 @@ class ListyProvider extends ChangeNotifier {
   //? to check if an entity is in a list
   Future<bool> itemExistInAListy({
     required String path,
-    required String listTitle,
+    required String listyTitle,
   }) async {
     //! the error happens here
     var data = await DBHelper.getDataWhereMultiple(
       listyItemsTableName,
       [listyTitleString, pathString],
-      [listTitle, path],
+      [listyTitle, path],
       persistentDbName,
     );
 
@@ -102,8 +102,27 @@ class ListyProvider extends ChangeNotifier {
     );
   }
 
+//? to delete item from listy
   Future<void> removeItemFromListy({
     required String path,
     required String listyTitle,
-  }) async {}
+  }) async {
+    await DBHelper.deleteDataWhereMultiple(
+      listyItemsTableName,
+      [listyTitleString, pathString],
+      [listyTitle, path],
+      persistentDbName,
+    );
+  }
+
+  //? get listy items
+  Future<List<ListyItemModel>> getListyItems(String listyTitle) async {
+    var data = await DBHelper.getDataWhereMultiple(
+      listyItemsTableName,
+      [listyTitleString],
+      [listyTitle],
+      persistentDbName,
+    );
+    return data.map((e) => ListyItemModel.fromJSON(e)).toList();
+  }
 }
