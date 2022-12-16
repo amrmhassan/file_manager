@@ -45,9 +45,9 @@ class ExplorerProvider extends ChangeNotifier {
   }
 
   final List<TabModel> _tabs = [
-    TabModel(path: 'sdcard', title: 'sdcard'),
-    TabModel(path: 'sdcard/Android', title: 'Android'),
-    TabModel(path: 'sdcard/DCIM', title: 'images'),
+    TabModel(path: 'sdcard'),
+    TabModel(path: 'sdcard/Android'),
+    TabModel(path: 'sdcard/DCIM'),
   ];
   List<TabModel> get tabs => [..._tabs];
 
@@ -298,6 +298,15 @@ class ExplorerProvider extends ChangeNotifier {
     bool sizesExplorer = false,
     required FilesOperationsProvider filesOperationsProvider,
   }) {
+    //* update the current active tab
+    //! update the current active tab to be the same as the new open directory
+    // _activeTabPath = path;
+    // int index = _tabs.indexWhere((element) => element.path == path);
+    // TabModel activeTab = _tabs[index];
+    // activeTab.path = path;
+    // _tabs[index] = activeTab;
+    updateCurrentActiveTab(path);
+    //* updating the current active tab
     currentActiveDir = Directory(path);
     //* run folder watchers
     _runActiveDirWatchers();
@@ -378,12 +387,11 @@ class ExplorerProvider extends ChangeNotifier {
 
   //? add a new tab
   void addTab(String path, FilesOperationsProvider filesOperationsProvider) {
-    String baseName = path_operations.basename(path);
     bool exists = _tabs.any((element) => element.path == path);
     if (exists) {
       throw Exception('Tab is already open');
     }
-    TabModel newTab = TabModel(path: path, title: baseName);
+    TabModel newTab = TabModel(path: path);
 
     _tabs.add(newTab);
     if (_activeTabPath == null) {
@@ -408,8 +416,30 @@ class ExplorerProvider extends ChangeNotifier {
 
   //? open tab
   void openTab(String path, FilesOperationsProvider filesOperationsProvider) {
+    if (!_tabs.any((element) => element.path == path)) {
+      addTab(path, filesOperationsProvider);
+    }
     _activeTabPath = path;
     setActiveDir(path: path, filesOperationsProvider: filesOperationsProvider);
+    notifyListeners();
+  }
+
+  //? to update the current active tab when opening new one
+  void updateCurrentActiveTab(String path) {
+    //* if the path already exists in a tab just activate that tab
+    bool exists = _tabs.any((element) => element.path == path);
+    if (exists) {
+      _activeTabPath = path;
+      notifyListeners();
+      return;
+    }
+    //* if not just update the current active tab to be equal to the path, and update the current active tab path
+    //* to return if there is no active tab
+    if (_activeTabPath == null) return;
+    int index = _tabs.indexWhere((element) => _activeTabPath == element.path);
+    TabModel tabModel = TabModel(path: path);
+    _tabs[index] = tabModel;
+    _activeTabPath = path;
     notifyListeners();
   }
 }

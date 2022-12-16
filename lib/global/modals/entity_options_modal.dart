@@ -3,6 +3,8 @@
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/modals/widgets/add_to_favorite_button.dart';
 import 'package:explorer/global/modals/widgets/add_to_other_listy_button.dart';
+import 'package:explorer/global/modals/widgets/open_in_new_tab_button.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:explorer/constants/colors.dart';
@@ -34,6 +36,7 @@ class EntityOptionsModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VSpace(),
+          OpenInNewTabButton(),
           AddToFavoriteButton(foProviderFalse: foProviderFalse),
           AddToOtherListyButton(foProviderFalse: foProviderFalse),
           ModalButtonElement(

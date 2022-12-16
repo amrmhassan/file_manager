@@ -1,9 +1,12 @@
+import 'package:path/path.dart' as path_operations;
+
 class TabModel {
-  final String path;
-  final String title;
+  String path;
+  late String title;
 
   TabModel({
     required this.path,
-    required this.title,
-  });
+  }) {
+    title = path_operations.basename(path);
+  }
 }

@@ -14,20 +14,24 @@ class ExplorerTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var expProvider = Provider.of<ExplorerProvider>(context);
-    return Container(
-      width: double.infinity,
-      // height: kVPad * 2,
-      decoration: BoxDecoration(
-        color: kCardBackgroundColor,
-        border: Border.symmetric(
-          horizontal: BorderSide(
-            color: kBackgroundColor,
-          ),
-        ),
-      ),
-      child: Row(
-        children: [...expProvider.tabs.map((e) => SingleTab(tabModel: e))],
-      ),
-    );
+    return expProvider.tabs.isEmpty
+        ? SizedBox()
+        : Container(
+            width: double.infinity,
+            // height: kVPad * 2,
+            decoration: BoxDecoration(
+              color: kCardBackgroundColor,
+              border: Border.symmetric(
+                horizontal: BorderSide(
+                  color: kBackgroundColor,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                ...expProvider.tabs.map((e) => SingleTab(tabModel: e))
+              ],
+            ),
+          );
   }
 }
