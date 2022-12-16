@@ -13,6 +13,7 @@ import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
+import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -67,11 +68,11 @@ class ListyScreen extends StatelessWidget {
                       children: [
                         AnalyzerOptionsItem(
                           onTap: () async {
-                            List<ListyItemModel> items =
-                                await Provider.of<ListyProvider>(context,
-                                        listen: false)
-                                    .getListyItems(e.title);
-                            print(items.length);
+                            Navigator.pushNamed(
+                              context,
+                              ListyItemViewerScreen.routeName,
+                              arguments: e.title,
+                            );
                           },
                           title: e.title,
                           iconPath: e.icon,
