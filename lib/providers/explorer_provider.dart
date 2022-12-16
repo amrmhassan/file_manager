@@ -8,6 +8,7 @@ import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/models/tab_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -16,7 +17,9 @@ import 'package:explorer/utils/directory_watchers.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as path_operations;
 
 //? asc means the smallest first or from A to Z or oldest to earliest
 //? desc means the largest first
@@ -33,8 +36,23 @@ enum SortOption {
 }
 
 class ExplorerProvider extends ChangeNotifier {
+  String? _activeTabPath;
+  String? get activeTabPath {
+    if (_tabs.isNotEmpty && _activeTabPath == null) {
+      return _tabs.first.path;
+    }
+    return _activeTabPath;
+  }
+
+  final List<TabModel> _tabs = [
+    TabModel(path: 'sdcard', title: 'sdcard'),
+    TabModel(path: 'sdcard/Android', title: 'Android'),
+    TabModel(path: 'sdcard/DCIM', title: 'images'),
+  ];
+  List<TabModel> get tabs => [..._tabs];
+
   final List<StorageItemModel> _children = [];
-  List<StorageItemModel> get children => _children;
+  List<StorageItemModel> get children => [..._children];
   SendPort? globalSendPort;
 
   bool loadingChildren = false;
@@ -356,5 +374,42 @@ class ExplorerProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  //? add a new tab
+  void addTab(String path, FilesOperationsProvider filesOperationsProvider) {
+    String baseName = path_operations.basename(path);
+    bool exists = _tabs.any((element) => element.path == path);
+    if (exists) {
+      throw Exception('Tab is already open');
+    }
+    TabModel newTab = TabModel(path: path, title: baseName);
+
+    _tabs.add(newTab);
+    if (_activeTabPath == null) {
+      openTab(_tabs.first.path, filesOperationsProvider);
+    }
+    notifyListeners();
+  }
+
+//? close tab
+  void closeTab(String path, FilesOperationsProvider filesOperationsProvider) {
+    int index = _tabs.indexWhere((element) => element.path == path);
+    int length = _tabs.length;
+    bool activeTab = path == activeTabPath;
+
+    if (activeTab && length > 1) {
+      _activeTabPath = _tabs[index - 1 < 0 ? index + 1 : index - 1].path;
+      openTab(_activeTabPath!, filesOperationsProvider);
+    }
+    _tabs.removeAt(index);
+    notifyListeners();
+  }
+
+  //? open tab
+  void openTab(String path, FilesOperationsProvider filesOperationsProvider) {
+    _activeTabPath = path;
+    setActiveDir(path: path, filesOperationsProvider: filesOperationsProvider);
+    notifyListeners();
   }
 }

@@ -106,7 +106,7 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
                                         });
                                       },
                                       okText: 'Remove',
-                                      title: 'Remove This list?',
+                                      title: 'Remove This item?',
                                     ),
                                   );
                                   return returnValue;
