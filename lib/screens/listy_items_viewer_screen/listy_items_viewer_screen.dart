@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/styles.dart';
@@ -44,7 +46,10 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
       setState(() {
         loading = false;
         listyItems = i;
-        storageItems = pathsToStorageItems(i.map((e) => e.path));
+        storageItems = pathsToStorageItemsWithType(
+                i.map((e) => {'path': e.path, 'type': e.entityType}))
+            .reversed
+            .toList();
       });
     });
     super.initState();
@@ -61,18 +66,32 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
             style: h2TextStyle,
           ),
         ),
-        Expanded(
-          child: ListView(
-            children: storageItems
-                .map((e) => StorageItem(
-                      storageItemModel: e,
-                      onDirTapped: (path) {},
-                      sizesExplorer: false,
-                      parentSize: 0,
-                    ))
-                .toList(),
-          ),
-        )
+        loading
+            ? CircularProgressIndicator()
+            : storageItems.isEmpty
+                ? Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No Items Here',
+                          style: h4TextStyleInactive,
+                        ),
+                      ],
+                    ),
+                  )
+                : Expanded(
+                    child: ListView(
+                      children: storageItems
+                          .map((e) => StorageItem(
+                                storageItemModel: e,
+                                onDirTapped: (path) {},
+                                sizesExplorer: false,
+                                parentSize: 0,
+                              ))
+                          .toList(),
+                    ),
+                  )
       ]),
     );
   }
