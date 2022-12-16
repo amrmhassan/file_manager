@@ -19,6 +19,7 @@ class StorageItem extends StatelessWidget {
   final Function(String path) onDirTapped;
   final bool sizesExplorer;
   final int parentSize;
+  final bool allowSelect;
 
   const StorageItem({
     super.key,
@@ -26,6 +27,7 @@ class StorageItem extends StatelessWidget {
     required this.onDirTapped,
     required this.sizesExplorer,
     required this.parentSize,
+    this.allowSelect = true,
   });
 
   bool isSelected(BuildContext context) {
@@ -64,13 +66,15 @@ class StorageItem extends StatelessWidget {
                     .addToRecentlyOpened(storageItemModel.path);
               }
             },
-            onLongPress: () {
-              var expProvider =
-                  Provider.of<ExplorerProvider>(context, listen: false);
+            onLongPress: allowSelect
+                ? () {
+                    var expProvider =
+                        Provider.of<ExplorerProvider>(context, listen: false);
 
-              foProviderFalse.toggleFromSelectedItems(
-                  storageItemModel, expProvider);
-            },
+                    foProviderFalse.toggleFromSelectedItems(
+                        storageItemModel, expProvider);
+                  }
+                : null,
             borderRadius: 0,
             child: isDir(storageItemModel.path)
                 ? ChildDirectoryItem(

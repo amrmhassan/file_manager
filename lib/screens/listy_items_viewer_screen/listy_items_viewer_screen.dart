@@ -82,8 +82,10 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
                   )
                 : Expanded(
                     child: ListView(
+                      physics: BouncingScrollPhysics(),
                       children: storageItems
                           .map((e) => StorageItem(
+                                allowSelect: false,
                                 storageItemModel: e,
                                 onDirTapped: (path) {},
                                 sizesExplorer: false,

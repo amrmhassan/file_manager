@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:explorer/constants/defaults_constants.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
@@ -38,6 +39,8 @@ class AddToFavoriteButton extends StatelessWidget {
                       entityType:
                           foProviderFalse.selectedItems.first.entityType,
                     );
+                    foProviderFalse.clearAllSelectedItems(
+                        Provider.of<ExplorerProvider>(context, listen: false));
                     Navigator.pop(context);
                   },
                 );
@@ -51,6 +54,8 @@ class AddToFavoriteButton extends StatelessWidget {
                       path: foProviderFalse.selectedItems.first.path,
                       listyTitle: defaultListyList.first.title,
                     );
+                    foProviderFalse.clearAllSelectedItems(
+                        Provider.of<ExplorerProvider>(context, listen: false));
                     Navigator.pop(context);
                   },
                 );
@@ -66,6 +71,8 @@ class AddToFavoriteButton extends StatelessWidget {
                       entityType:
                           foProviderFalse.selectedItems.first.entityType,
                     );
+                    foProviderFalse.clearAllSelectedItems(
+                        Provider.of<ExplorerProvider>(context, listen: false));
                     Navigator.pop(context);
                   },
                 );
