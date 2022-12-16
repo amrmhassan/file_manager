@@ -14,6 +14,7 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,11 +47,20 @@ class _ListyScreenState extends State<ListyScreen> {
 
   //? add item to custom listy other than favorite
   Future addToOtherListy(String listyTitle, String p, EntityType e) async {
-    await Provider.of<ListyProvider>(context, listen: false).addItemToListy(
-      path: p,
-      listyTitle: listyTitle,
-      entityType: e,
-    );
+    try {
+      await Provider.of<ListyProvider>(context, listen: false).addItemToListy(
+        path: p,
+        listyTitle: listyTitle,
+        entityType: e,
+      );
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        message: e.toString(),
+        snackBarType: SnackBarType.error,
+      );
+    }
+
     Navigator.pop(context);
   }
 

@@ -87,6 +87,11 @@ class ListyProvider extends ChangeNotifier {
     required String listyTitle,
     required EntityType entityType,
   }) async {
+    //* checking if the item already exists in the list
+    bool exist = await itemExistInAListy(path: path, listyTitle: listyTitle);
+    if (exist) {
+      throw Exception('Item already exist in that list');
+    }
     ListyItemModel listyItemModel = ListyItemModel(
       id: Uuid().v4(),
       path: path,
