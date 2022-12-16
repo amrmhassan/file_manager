@@ -16,6 +16,30 @@ class AddToFavoriteButton extends StatelessWidget {
 
   final FilesOperationsProvider foProviderFalse;
 
+//? add to favorite
+  Future addToFavorite(BuildContext context) async {
+    await Provider.of<ListyProvider>(context, listen: false).addItemToListy(
+      path: foProviderFalse.selectedItems.first.path,
+      listyTitle: defaultListyList.first.title,
+      entityType: foProviderFalse.selectedItems.first.entityType,
+    );
+    foProviderFalse.clearAllSelectedItems(
+        Provider.of<ExplorerProvider>(context, listen: false));
+    Navigator.pop(context);
+  }
+
+//? remove from favorite
+  Future removeFromFavorite(BuildContext context) async {
+    await Provider.of<ListyProvider>(context, listen: false)
+        .removeItemFromListy(
+      path: foProviderFalse.selectedItems.first.path,
+      listyTitle: defaultListyList.first.title,
+    );
+    foProviderFalse.clearAllSelectedItems(
+        Provider.of<ExplorerProvider>(context, listen: false));
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     var listyProviderFalse = Provider.of<ListyProvider>(context, listen: false);
@@ -31,50 +55,19 @@ class AddToFavoriteButton extends StatelessWidget {
                 return ModalButtonElement(
                   inactiveColor: Colors.transparent,
                   title: 'Add to favorite',
-                  onTap: () async {
-                    await Provider.of<ListyProvider>(context, listen: false)
-                        .addItemToListy(
-                      path: foProviderFalse.selectedItems.first.path,
-                      listyTitle: defaultListyList.first.title,
-                      entityType:
-                          foProviderFalse.selectedItems.first.entityType,
-                    );
-                    foProviderFalse.clearAllSelectedItems(
-                        Provider.of<ExplorerProvider>(context, listen: false));
-                    Navigator.pop(context);
-                  },
+                  onTap: () => addToFavorite(context),
                 );
               } else if (snapshot.data == true) {
                 return ModalButtonElement(
                   inactiveColor: Colors.transparent,
                   title: 'Remove from favorite',
-                  onTap: () async {
-                    await Provider.of<ListyProvider>(context, listen: false)
-                        .removeItemFromListy(
-                      path: foProviderFalse.selectedItems.first.path,
-                      listyTitle: defaultListyList.first.title,
-                    );
-                    foProviderFalse.clearAllSelectedItems(
-                        Provider.of<ExplorerProvider>(context, listen: false));
-                    Navigator.pop(context);
-                  },
+                  onTap: () => removeFromFavorite(context),
                 );
               } else {
                 return ModalButtonElement(
                   inactiveColor: Colors.transparent,
                   title: 'Add to favorite',
-                  onTap: () async {
-                    await Provider.of<ListyProvider>(context, listen: false)
-                        .addItemToListy(
-                      path: foProviderFalse.selectedItems.first.path,
-                      listyTitle: defaultListyList.first.title,
-                      entityType:
-                          foProviderFalse.selectedItems.first.entityType,
-                    );
-                    foProviderFalse.clearAllSelectedItems(
-                        Provider.of<ExplorerProvider>(context, listen: false));
-                    Navigator.pop(context);
-                  },
+                  onTap: () => addToFavorite(context),
                 );
               }
             });

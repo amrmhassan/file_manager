@@ -2,6 +2,7 @@
 
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/modals/widgets/add_to_favorite_button.dart';
+import 'package:explorer/global/modals/widgets/add_to_other_listy_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:explorer/constants/colors.dart';
@@ -34,6 +35,7 @@ class EntityOptionsModal extends StatelessWidget {
         children: [
           VSpace(),
           AddToFavoriteButton(foProviderFalse: foProviderFalse),
+          AddToOtherListyButton(foProviderFalse: foProviderFalse),
           ModalButtonElement(
             inactiveColor: Colors.transparent,
             opacity: foProviderFalse.selectedItems.length == 1 ? 1 : .5,
