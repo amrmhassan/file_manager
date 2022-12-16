@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/models/listy_item_model.dart';
@@ -82,12 +83,41 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
                     child: ListView(
                       physics: BouncingScrollPhysics(),
                       children: storageItems
-                          .map((e) => StorageItem(
-                                allowSelect: false,
-                                storageItemModel: e,
-                                onDirTapped: (path) {},
-                                sizesExplorer: false,
-                                parentSize: 0,
+                          .map((e) => Dismissible(
+                                key: Key(e.path),
+                                confirmDismiss: (direction) async {
+                                  bool returnValue = false;
+                                  await showModalBottomSheet(
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (ctx) => DoubleButtonsModal(
+                                      onOk: () async {
+                                        returnValue = true;
+                                        await Provider.of<ListyProvider>(
+                                                context,
+                                                listen: false)
+                                            .removeItemFromListy(
+                                          path: e.path,
+                                          listyTitle: listyTitle,
+                                        );
+                                        setState(() {
+                                          storageItems.removeWhere((element) =>
+                                              element.path == e.path);
+                                        });
+                                      },
+                                      okText: 'Remove',
+                                      title: 'Remove This list?',
+                                    ),
+                                  );
+                                  return returnValue;
+                                },
+                                child: StorageItem(
+                                  allowSelect: false,
+                                  storageItemModel: e,
+                                  onDirTapped: (path) {},
+                                  sizesExplorer: false,
+                                  parentSize: 0,
+                                ),
                               ))
                           .toList(),
                     ),

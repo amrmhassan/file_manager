@@ -131,6 +131,7 @@ class ListyProvider extends ChangeNotifier {
     return data.map((e) => ListyItemModel.fromJSON(e)).toList();
   }
 
+//? remove a whole listy
   Future removeListy(String listyTitle) async {
     await DBHelper.deleteDataWhereMultiple(
       listyListTableName,
