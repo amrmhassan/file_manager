@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/explorer_tabs/widgets/single_tab.dart';
 import 'package:flutter/material.dart';
@@ -27,10 +28,14 @@ class ExplorerTabs extends StatelessWidget {
                 ),
               ),
             ),
-            child: Row(
-              children: [
-                ...expProvider.tabs.map((e) => SingleTab(tabModel: e))
-              ],
+            child: SizedBox(
+              height: kVPad * 1.5,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ...expProvider.tabs.map((e) => SingleTab(tabModel: e))
+                ],
+              ),
             ),
           );
   }

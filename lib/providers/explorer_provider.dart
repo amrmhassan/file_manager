@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
@@ -16,10 +19,6 @@ import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:path/path.dart' as path_operations;
 
 //? asc means the smallest first or from A to Z or oldest to earliest
 //? desc means the largest first
@@ -44,11 +43,7 @@ class ExplorerProvider extends ChangeNotifier {
     return _activeTabPath;
   }
 
-  final List<TabModel> _tabs = [
-    TabModel(path: 'sdcard'),
-    TabModel(path: 'sdcard/Android'),
-    TabModel(path: 'sdcard/DCIM'),
-  ];
+  final List<TabModel> _tabs = [];
   List<TabModel> get tabs => [..._tabs];
 
   final List<StorageItemModel> _children = [];
@@ -391,11 +386,14 @@ class ExplorerProvider extends ChangeNotifier {
     if (exists) {
       throw Exception('Tab is already open');
     }
+    if (_tabs.isEmpty) {
+      TabModel oldTab = TabModel(path: currentActiveDir.path);
+      _tabs.add(oldTab);
+    }
     TabModel newTab = TabModel(path: path);
-
     _tabs.add(newTab);
     if (_activeTabPath == null) {
-      openTab(_tabs.first.path, filesOperationsProvider);
+      openTab(path, filesOperationsProvider);
     }
     notifyListeners();
   }
@@ -426,6 +424,7 @@ class ExplorerProvider extends ChangeNotifier {
 
   //? to update the current active tab when opening new one
   void updateCurrentActiveTab(String path) {
+    if (_tabs.isEmpty) return;
     //* if the path already exists in a tab just activate that tab
     bool exists = _tabs.any((element) => element.path == path);
     if (exists) {

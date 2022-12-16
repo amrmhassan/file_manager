@@ -39,11 +39,18 @@ class SingleTab extends StatelessWidget {
       child: Row(
         children: [
           HSpace(factor: .5),
-          Text(
-            tabModel.title,
-            style: h5InactiveTextStyle.copyWith(
-              height: 1.4,
-              fontWeight: active ? FontWeight.bold : null,
+          SizedBox(
+            width: kHPad * 2,
+            child: Flexible(
+              fit: FlexFit.tight,
+              child: Text(
+                tabModel.title,
+                style: h5InactiveTextStyle.copyWith(
+                  height: 1.4,
+                  fontWeight: active ? FontWeight.bold : null,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
           HSpace(factor: .5),
