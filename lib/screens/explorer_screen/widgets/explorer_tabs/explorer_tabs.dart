@@ -31,7 +31,7 @@ class ExplorerTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     _scrollToRight();
     var expProvider = Provider.of<ExplorerProvider>(context);
-    return expProvider.tabs.isEmpty
+    return expProvider.tabs.length < 2
         ? SizedBox()
         : Container(
             width: double.infinity,

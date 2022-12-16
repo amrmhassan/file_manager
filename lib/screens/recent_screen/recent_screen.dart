@@ -179,12 +179,12 @@ class _RecentScreenState extends State<RecentScreen> {
                 },
                 title: 'Listy',
               ),
-              VSpace(),
-              AnalyzerOptionsItem(
-                logoName: 'apps',
-                onTap: () {},
-                title: 'Apps Data',
-              ),
+              // VSpace(),
+              // AnalyzerOptionsItem(
+              //   logoName: 'apps',
+              //   onTap: () {},
+              //   title: 'Apps Data',
+              // ),
               VSpace(),
             ],
           ),
