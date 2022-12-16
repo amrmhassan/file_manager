@@ -40,11 +40,6 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
   }
 
   @override
-  void didUpdateWidget(covariant CurrentPathViewer oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   Widget build(BuildContext context) {
     try {
       WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToRight());
