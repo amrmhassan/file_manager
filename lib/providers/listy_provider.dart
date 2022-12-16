@@ -130,4 +130,15 @@ class ListyProvider extends ChangeNotifier {
     );
     return data.map((e) => ListyItemModel.fromJSON(e)).toList();
   }
+
+  Future removeListy(String listyTitle) async {
+    await DBHelper.deleteDataWhereMultiple(
+      listyListTableName,
+      [titleString],
+      [listyTitle],
+      persistentDbName,
+    );
+    _listy.removeWhere((element) => element.title == listyTitle);
+    notifyListeners();
+  }
 }

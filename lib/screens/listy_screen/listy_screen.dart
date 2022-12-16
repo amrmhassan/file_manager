@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_unnecessary_containers, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/defaults_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -62,6 +65,10 @@ class _ListyScreenState extends State<ListyScreen> {
     }
 
     Navigator.pop(context);
+  }
+
+  Future removeAListy(String listyTitle) async {
+    Provider.of<ListyProvider>(context, listen: false).removeListy(listyTitle);
   }
 
   @override
@@ -126,26 +133,54 @@ class _ListyScreenState extends State<ListyScreen> {
               physics: BouncingScrollPhysics(),
               children: lists
                   .map(
-                    (e) => Column(
-                      children: [
-                        AnalyzerOptionsItem(
-                          onTap: openMode == OpenMode.normal
-                              ? () async {
-                                  Navigator.pushNamed(
-                                    context,
-                                    ListyItemViewerScreen.routeName,
-                                    arguments: e.title,
-                                  );
-                                }
-                              : () =>
-                                  addToOtherListy(e.title, path!, entityType!),
-                          title: e.title,
-                          iconPath: e.icon,
-                          logoName: '',
-                          // color: kMainIconColor,
-                        ),
-                        VSpace(),
-                      ],
+                    (e) => Dismissible(
+                      key: Key(e.title),
+                      direction: e.title == defaultListyList.first.title
+                          ? DismissDirection.none
+                          : DismissDirection.endToStart,
+                      confirmDismiss: (direction) async {
+                        bool returnValue = false;
+                        await showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (ctx) => DoubleButtonsModal(
+                            onOk: () async {
+                              returnValue = true;
+                              await removeAListy(e.title);
+                            },
+                            okText: 'Remove',
+                            title: 'Remove This list?',
+                          ),
+                        );
+                        return returnValue;
+                      },
+                      child: Column(
+                        children: [
+                          AnalyzerOptionsItem(
+                            onTap: openMode == OpenMode.normal
+                                ? () async {
+                                    Navigator.pushNamed(
+                                      context,
+                                      ListyItemViewerScreen.routeName,
+                                      arguments: e.title,
+                                    );
+                                  }
+                                : () => addToOtherListy(
+                                    e.title, path!, entityType!),
+                            title: e.title,
+                            iconPath: e.icon,
+                            logoName: '',
+                            // color: kMainIconColor,
+                          ),
+                          VSpace(factor: .5),
+                          if (e.title == defaultListyList.first.title)
+                            HLine(
+                              color: kCardBackgroundColor,
+                              thickness: 1,
+                            ),
+                          VSpace(factor: .5),
+                        ],
+                      ),
                     ),
                   )
                   .toList(),
