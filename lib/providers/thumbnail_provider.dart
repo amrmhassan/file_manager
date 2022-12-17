@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-int maximumCompressingAtATime = 10;
+int maximumCompressingAtATime = 5;
 
 class ThumbnailProvider extends ChangeNotifier {
   //? the currently compressing thumbnails
