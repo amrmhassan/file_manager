@@ -14,7 +14,7 @@ class MediaControllers extends StatelessWidget {
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
 
-    return mpProvider.playing && !mpProvider.playerHidden
+    return mpProvider.audioPlaying && !mpProvider.playerHidden
         ? NormalMediaPlayer()
         : SizedBox();
   }

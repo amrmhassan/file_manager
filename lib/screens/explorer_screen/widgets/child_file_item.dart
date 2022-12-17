@@ -14,7 +14,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
-import 'package:explorer/screens/explorer_screen/widgets/audio_player_button.dart';
+import 'package:explorer/screens/explorer_screen/widgets/media_player_button.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_size_with_date_modified.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_thumbnail.dart';
@@ -158,8 +158,8 @@ class _ChildFileItemState extends State<ChildFileItem> {
                           ),
                         ),
                         HSpace(),
-                        AudioPlayerButton(
-                          audioPath: widget.storageItemModel.path,
+                        MediaPlayerButton(
+                          mediaPath: widget.storageItemModel.path,
                         ),
                         HSpace(),
                         foProvider.exploreMode == ExploreMode.selection

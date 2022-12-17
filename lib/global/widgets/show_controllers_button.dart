@@ -16,7 +16,7 @@ class ShowControllersButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
-    return mpProvider.playerHidden && mpProvider.playing
+    return mpProvider.playerHidden && mpProvider.audioPlaying
         ? FadeInUp(
             preferences: AnimationPreferences(
               duration: Duration(milliseconds: 200),

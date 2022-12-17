@@ -9,22 +9,22 @@ import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AudioPlayerButton extends StatefulWidget {
-  final String audioPath;
+class MediaPlayerButton extends StatefulWidget {
+  final String mediaPath;
 
-  const AudioPlayerButton({
+  const MediaPlayerButton({
     Key? key,
-    required this.audioPath,
+    required this.mediaPath,
   }) : super(key: key);
 
   @override
-  State<AudioPlayerButton> createState() => _AudioPlayerButtonState();
+  State<MediaPlayerButton> createState() => _MediaPlayerButtonState();
 }
 
-class _AudioPlayerButtonState extends State<AudioPlayerButton> {
+class _MediaPlayerButtonState extends State<MediaPlayerButton> {
   //? this will check if the current path is the active path in the media player or not
   bool isMyPathActive(String? playingFilePath) {
-    bool res = playingFilePath == widget.audioPath;
+    bool res = playingFilePath == widget.mediaPath;
     return res;
   }
 
@@ -35,11 +35,14 @@ class _AudioPlayerButtonState extends State<AudioPlayerButton> {
   @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
-    return (getFileType(getFileExtension(widget.audioPath)) == FileType.audio)
+    FileType fileType = getFileType(getFileExtension(widget.mediaPath));
+
+    return fileType == FileType.audio
         ? ButtonWrapper(
             onTap: () async {
               //
-              if (mePlaying(mpProvider.playingFilePath, mpProvider.playing)) {
+              if (mePlaying(
+                  mpProvider.playingAudioFilePath, mpProvider.audioPlaying)) {
                 // here i am playing and i want to pause
                 await mpProvider.pausePlaying();
               }
@@ -50,19 +53,35 @@ class _AudioPlayerButtonState extends State<AudioPlayerButton> {
               // }
               else {
                 // here i want to start over
-                await mpProvider.setPlayingFile(widget.audioPath);
+                await mpProvider.setPlayingFile(widget.mediaPath);
               }
             },
             width: largeIconSize,
             height: largeIconSize,
             child: Image.asset(
-              mePlaying(mpProvider.playingFilePath, mpProvider.playing)
+              mePlaying(
+                      mpProvider.playingAudioFilePath, mpProvider.audioPlaying)
                   ? 'assets/icons/pause.png'
                   : 'assets/icons/play-audio.png',
               width: largeIconSize / 2,
               color: kInactiveColor,
             ),
           )
-        : SizedBox();
+        : fileType == FileType.video
+            ? ButtonWrapper(
+                onTap: () async {
+                  mpProvider.playVideo(widget.mediaPath);
+                  if (1 == 1) {
+                  } else {}
+                },
+                width: largeIconSize,
+                height: largeIconSize,
+                child: Image.asset(
+                  'assets/icons/view.png',
+                  width: largeIconSize / 1.5,
+                  color: kInactiveColor,
+                ),
+              )
+            : SizedBox();
   }
 }

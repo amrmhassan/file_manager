@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 class MediaPlayerProvider extends ChangeNotifier {
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -18,12 +19,12 @@ class MediaPlayerProvider extends ChangeNotifier {
   StreamSubscription? durationStreamSub;
 
 //? check playing
-  bool playing = false;
+  bool audioPlaying = false;
 
 //? playing audio file path
-  String? playingFilePath;
+  String? playingAudioFilePath;
   Future<void> setPlayingFile(String path) async {
-    playingFilePath = path;
+    playingAudioFilePath = path;
     notifyListeners();
     await _playAudio(path);
   }
@@ -32,7 +33,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   Future<void> pausePlaying() async {
     await _audioPlayer.pause();
 
-    playing = false;
+    audioPlaying = false;
     notifyListeners();
   }
 
@@ -44,12 +45,12 @@ class MediaPlayerProvider extends ChangeNotifier {
       }
       await _audioPlayer.setSourceDeviceFile(path);
       fullSongDuration = await _audioPlayer.getDuration();
-      playing = true;
+      audioPlaying = true;
       notifyListeners();
       _audioPlayer.onPlayerComplete.listen((event) {
-        playing = false;
+        audioPlaying = false;
         fullSongDuration = null;
-        playingFilePath = null;
+        playingAudioFilePath = null;
         currentDuration = null;
         notifyListeners();
       });
@@ -60,7 +61,7 @@ class MediaPlayerProvider extends ChangeNotifier {
 
       await _audioPlayer.play(DeviceFileSource(path), position: Duration.zero);
     } catch (e) {
-      playing = false;
+      audioPlaying = false;
       fullSongDuration = null;
       notifyListeners();
       printOnDebug(e);
@@ -82,5 +83,43 @@ class MediaPlayerProvider extends ChangeNotifier {
   //? seek to
   void seekTo(int millisecond) {
     _audioPlayer.seek(Duration(milliseconds: millisecond));
+  }
+
+  //# video controllers
+  VideoPlayerController? videoPlayerController;
+  double? videoHeight;
+  double? videoWidth;
+  double? videoAspectRatio;
+  double? videoVolume;
+
+  //? play video
+  void playVideo(String path) {
+    videoPlayerController = VideoPlayerController.network(path)
+      ..initialize().then((value) {
+        videoHeight = videoPlayerController?.value.size.height;
+        videoWidth = videoPlayerController?.value.size.width;
+        videoAspectRatio = videoPlayerController?.value.aspectRatio;
+        videoVolume = videoPlayerController?.value.volume;
+        notifyListeners();
+      })
+      ..play();
+
+    notifyListeners();
+  }
+
+  //? close video
+  void closeVideo() {
+    videoPlayerController?.dispose();
+    videoPlayerController = null;
+    notifyListeners();
+  }
+
+  //? add to video volume
+  void addToVolume(double v) async {
+    double originalVolume = videoPlayerController?.value.volume ?? 0;
+    videoVolume = originalVolume + v;
+    await videoPlayerController?.setVolume(videoVolume!);
+    // printOnDebug(videoVolume);
+    notifyListeners();
   }
 }
