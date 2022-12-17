@@ -17,6 +17,8 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
+import 'package:explorer/screens/listy_screen/widgets/add_listy_button.dart';
+import 'package:explorer/screens/listy_screen/widgets/listy_item.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,29 +48,6 @@ class _ListyScreenState extends State<ListyScreen> {
       entityType = arguments['type'] as EntityType;
       openMode = OpenMode.choose;
     });
-  }
-
-  //? add item to custom listy other than favorite
-  Future addToOtherListy(String listyTitle, String p, EntityType e) async {
-    try {
-      await Provider.of<ListyProvider>(context, listen: false).addItemToListy(
-        path: p,
-        listyTitle: listyTitle,
-        entityType: e,
-      );
-    } catch (e) {
-      showSnackBar(
-        context: context,
-        message: e.toString(),
-        snackBarType: SnackBarType.error,
-      );
-    }
-
-    Navigator.pop(context);
-  }
-
-  Future removeAListy(String listyTitle) async {
-    Provider.of<ListyProvider>(context, listen: false).removeListy(listyTitle);
   }
 
   @override
@@ -111,18 +90,7 @@ class _ListyScreenState extends State<ListyScreen> {
             ),
             rightIcon: Row(
               children: [
-                ButtonWrapper(
-                  width: largeIconSize,
-                  height: largeIconSize,
-                  onTap: () {
-                    createNewFolderModal(context, true);
-                  },
-                  child: Image.asset(
-                    'assets/icons/plus.png',
-                    color: kMainIconColor,
-                    width: largeIconSize / 2,
-                  ),
-                ),
+                AddListyButton(),
                 HSpace(),
               ],
             ),
@@ -133,54 +101,11 @@ class _ListyScreenState extends State<ListyScreen> {
               physics: BouncingScrollPhysics(),
               children: lists
                   .map(
-                    (e) => Dismissible(
-                      key: Key(e.title),
-                      direction: e.title == defaultListyList.first.title
-                          ? DismissDirection.none
-                          : DismissDirection.endToStart,
-                      confirmDismiss: (direction) async {
-                        bool returnValue = false;
-                        await showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (ctx) => DoubleButtonsModal(
-                            onOk: () async {
-                              returnValue = true;
-                              await removeAListy(e.title);
-                            },
-                            okText: 'Remove',
-                            title: 'Remove This list?',
-                          ),
-                        );
-                        return returnValue;
-                      },
-                      child: Column(
-                        children: [
-                          AnalyzerOptionsItem(
-                            onTap: openMode == OpenMode.normal
-                                ? () async {
-                                    Navigator.pushNamed(
-                                      context,
-                                      ListyItemViewerScreen.routeName,
-                                      arguments: e.title,
-                                    );
-                                  }
-                                : () => addToOtherListy(
-                                    e.title, path!, entityType!),
-                            title: e.title,
-                            iconPath: e.icon,
-                            logoName: '',
-                            // color: kMainIconColor,
-                          ),
-                          VSpace(factor: .5),
-                          if (e.title == defaultListyList.first.title)
-                            HLine(
-                              color: kCardBackgroundColor,
-                              thickness: 1,
-                            ),
-                          VSpace(factor: .5),
-                        ],
-                      ),
+                    (e) => ListyItem(
+                      e: e,
+                      openMode: openMode,
+                      entityType: entityType,
+                      path: path,
                     ),
                   )
                   .toList(),
