@@ -7,9 +7,10 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/helpers/db_helper.dart';
-import 'package:flutter/foundation.dart';
+import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart' as fni;
+import 'package:provider/provider.dart';
 
 //? to run the compress image isolate and send messages
 void runCompressIsolate(SendPort sendPort) {
@@ -80,15 +81,19 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
       Isolate.spawn(runCompressIsolate, sendPort);
       sendPort.send(imagePath);
       receivePort.listen((compressedFilePath) async {
-        await DBHelper.insert(
-          imgThumbnailPathTableName,
-          {
-            pathString: imagePath,
-            thumbnailStringPath: compressedFilePath,
-          },
-          persistentDbName,
-        );
-        setThumbnail(compressedFilePath);
+        try {
+          await DBHelper.insert(
+            imgThumbnailPathTableName,
+            {
+              pathString: imagePath,
+              thumbnailStringPath: compressedFilePath,
+            },
+            persistentDbName,
+          );
+          setThumbnail(compressedFilePath);
+        } catch (e) {
+          // printOnDebug(e);
+        }
       });
     }
   }
@@ -102,14 +107,30 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
     }
   }
 
-  @override
-  void initState() {
+//? to run the compress process if the limit doesn't exceeded else wait a 500ms then try again
+  void runCompress() async {
     Future.delayed(Duration.zero).then(
       (value) async {
-        await compressImage(widget.path);
+        if (!mounted) return;
+        var thumbProvider =
+            Provider.of<ThumbnailProvider>(context, listen: false);
+        bool allow = thumbProvider.allowMeToCompress;
+        if (allow) {
+          thumbProvider.incrementCompressing();
+          await compressImage(widget.path);
+          thumbProvider.decrementCompressing();
+        } else {
+          Future.delayed(Duration(milliseconds: 500)).then((value) {
+            runCompress();
+          });
+        }
       },
     );
+  }
 
+  @override
+  void initState() {
+    runCompress();
     super.initState();
   }
 

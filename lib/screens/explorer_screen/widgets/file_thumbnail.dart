@@ -5,15 +5,21 @@ import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/video_
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
-class FileThumbnail extends StatelessWidget {
+class FileThumbnail extends StatefulWidget {
   final String path;
   const FileThumbnail({
     Key? key,
     required this.path,
   }) : super(key: key);
 
+  @override
+  State<FileThumbnail> createState() => _FileThumbnailState();
+}
+
+class _FileThumbnailState extends State<FileThumbnail> {
+//? to get the file extension
   String getFileExt() {
-    return path_operations.extension(path);
+    return path_operations.extension(widget.path);
   }
 
   @override
@@ -23,9 +29,11 @@ class FileThumbnail extends StatelessWidget {
     return Builder(
       builder: (context) {
         return fileType == FileType.image
-            ? ImageThumbnail(path: path)
+            ? ImageThumbnail(
+                path: widget.path,
+              )
             : fileType == FileType.video
-                ? MyVideoThumbnail(path: path)
+                ? MyVideoThumbnail(path: widget.path)
                 : Image.asset(
                     getFileTypeIcon(getFileExt()),
                     width: largeIconSize,

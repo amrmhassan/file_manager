@@ -9,6 +9,7 @@ import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/theme_provider.dart';
+import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/providers/user_pref_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => ThemeProvider()),
         ChangeNotifierProvider(create: (ctx) => MediaPlayerProvider()),
         ChangeNotifierProvider(create: (ctx) => ListyProvider()),
+        ChangeNotifierProvider(create: (ctx) => ThumbnailProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
