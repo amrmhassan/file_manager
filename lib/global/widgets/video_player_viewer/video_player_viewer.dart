@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/global/widgets/video_player_viewer/widgets/volume_viewer.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ class VideoPlayerViewer extends StatelessWidget {
     return mpProvider.videoPlayerController == null
         ? SizedBox()
         : Stack(
+            alignment: Alignment.center,
             children: [
               Container(
                 alignment: Alignment.center,
@@ -46,23 +48,18 @@ class VideoPlayerViewer extends StatelessWidget {
                         //? volume controller
                         GestureDetector(
                           onPanUpdate: (details) {
-                            // Swiping in right direction.
-                            if (details.delta.dx > 0) {
-                              print(details.delta.dx);
-                              mpProviderFalse.addToVolume(details.delta.dx);
-                            }
-
-                            // Swiping in left direction.
-                            if (details.delta.dx < 0) {}
+                            mpProviderFalse.addToVolume(
+                              -(details.delta.dy / 100),
+                            );
                           },
                           onPanDown: (details) {
-                            // print(details.globalPosition);
+                            mpProvider.setVolumeTouched(true);
                           },
                           onPanEnd: (details) {
-                            // print(details.velocity);
+                            mpProvider.setVolumeTouched(false);
                           },
                           onPanCancel: () {
-                            // print('End');
+                            mpProvider.setVolumeTouched(false);
                           },
                           child: Opacity(
                             opacity: 0,
@@ -90,7 +87,8 @@ class VideoPlayerViewer extends StatelessWidget {
                     ),
                   )
                 ],
-              )
+              ),
+              VolumeViewer(),
             ],
           );
   }

@@ -6,25 +6,6 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:flutter/material.dart';
 
-class IsolateData {
-  final int end;
-  final int start;
-  const IsolateData(this.start, this.end);
-}
-
-void heavyWork(SendPort sendPort) {
-  ReceivePort receivePort = ReceivePort();
-  sendPort.send(receivePort.sendPort);
-  receivePort.listen((message) {
-    IsolateData isolateData = message;
-    int sum = 0;
-    for (var i = isolateData.start; i <= isolateData.end; i++) {
-      sum += i;
-    }
-    sendPort.send(sum);
-  });
-}
-
 class TestScreen extends StatefulWidget {
   static const String routeName = '/testing-screen';
   const TestScreen({super.key});
@@ -34,38 +15,57 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  Isolate? myIsolate;
-
+  double height = 20;
+  bool touched = false;
   @override
   Widget build(BuildContext context) {
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(width: double.infinity),
-          TextButton(
-            onPressed: () async {
-              ReceivePort receivePort = ReceivePort();
-              SendPort sendPort = receivePort.sendPort;
-              myIsolate = await Isolate.spawn(heavyWork, sendPort);
-              receivePort.listen((message) {
-                if (message is int) {
-                } else {
-                  SendPort sendPort = message as SendPort;
-                  sendPort.send(IsolateData(0, 1000000));
+          Expanded(
+            child: Container(
+              height: height,
+              color: Colors.red,
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onPanDown: (details) {
+                setState(() {
+                  touched = true;
+                });
+              },
+              onPanCancel: () {
+                setState(() {
+                  touched = false;
+                });
+              },
+              onPanEnd: (d) {
+                setState(() {
+                  touched = false;
+                });
+              },
+              onPanUpdate: (details) {
+                // Swiping in right direction.
+                if (details.delta.dx > 0) {
+                  setState(() {
+                    height = details.delta.direction.isNegative
+                        ? height + details.delta.distance
+                        : height - details.delta.distance;
+                  });
                 }
-              });
-            },
-            child: Text('Start Isolate'),
+
+                // Swiping in left direction.
+                if (details.delta.dx < 0) {}
+              },
+              child: Container(
+                height: double.infinity,
+                color: touched ? Colors.black : Colors.blue,
+              ),
+            ),
           ),
-          TextButton(
-            onPressed: () async {
-              myIsolate!.kill();
-            },
-            child: Text('Kill Isolate'),
-          ),
-          CircularProgressIndicator(),
         ],
       ),
     );

@@ -90,7 +90,14 @@ class MediaPlayerProvider extends ChangeNotifier {
   double? videoHeight;
   double? videoWidth;
   double? videoAspectRatio;
-  double? videoVolume;
+  double videoVolume = 0;
+  bool volumeTouched = false;
+
+  //? set volume touched
+  void setVolumeTouched(bool t) {
+    volumeTouched = t;
+    notifyListeners();
+  }
 
   //? play video
   void playVideo(String path) {
@@ -99,7 +106,7 @@ class MediaPlayerProvider extends ChangeNotifier {
         videoHeight = videoPlayerController?.value.size.height;
         videoWidth = videoPlayerController?.value.size.width;
         videoAspectRatio = videoPlayerController?.value.aspectRatio;
-        videoVolume = videoPlayerController?.value.volume;
+        videoVolume = videoPlayerController?.value.volume ?? 0;
         notifyListeners();
       })
       ..play();
@@ -116,10 +123,10 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //? add to video volume
   void addToVolume(double v) async {
-    double originalVolume = videoPlayerController?.value.volume ?? 0;
-    videoVolume = originalVolume + v;
-    await videoPlayerController?.setVolume(videoVolume!);
-    // printOnDebug(videoVolume);
+    videoVolume += v;
+    if (videoVolume < 0) videoVolume = 0;
+    if (videoVolume > 1) videoVolume = 1;
+    await videoPlayerController?.setVolume(videoVolume);
     notifyListeners();
   }
 }
