@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, dead_code
 
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
@@ -10,6 +11,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart' as fni;
 
+//? to run the compress image isolate and send messages
+void runCompressIsolate(SendPort sendPort) {
+  ReceivePort receivePort = ReceivePort();
+  sendPort.send(receivePort.sendPort);
+  receivePort.listen((path) async {
+    String compressedPath = await compressImageIsolate(path);
+    sendPort.send(compressedPath);
+  });
+}
+
+//? to compress image in isolate
 Future<String> compressImageIsolate(String path) async {
   fni.ImageProperties properties =
       await fni.FlutterNativeImage.getImageProperties(path);
@@ -30,38 +42,6 @@ Future<String> compressImageIsolate(String path) async {
   return compressedFile.path;
 }
 
-//? this will compress an image and check for it in sqlite
-Future<String> compressImage(String imagePath) async {
-  try {
-    var data = await DBHelper.getDataWhere(
-      imgThumbnailPathTableName,
-      pathString,
-      imagePath,
-      persistentDbName,
-    );
-    String thumbnail = data.first.values.last;
-    File thumbFile = File(thumbnail);
-    bool exists = thumbFile.existsSync();
-    if (exists) {
-      return thumbnail;
-    } else {
-      throw Exception('no thumb');
-    }
-  } catch (e) {
-    String compressedFilePath = await compute(compressImageIsolate, imagePath);
-    await DBHelper.insert(
-      imgThumbnailPathTableName,
-      {
-        pathString: imagePath,
-        thumbnailStringPath: compressedFilePath,
-      },
-      persistentDbName,
-    );
-
-    return compressedFilePath;
-  }
-}
-
 class ImageThumbnail extends StatefulWidget {
   const ImageThumbnail({
     Key? key,
@@ -76,18 +56,57 @@ class ImageThumbnail extends StatefulWidget {
 
 class _ImageThumbnailState extends State<ImageThumbnail> {
   String? compressedPath;
+
+//? this will compress an image and check for it in sqlite
+  Future<void> compressImage(String imagePath) async {
+    try {
+      var data = await DBHelper.getDataWhere(
+        imgThumbnailPathTableName,
+        pathString,
+        imagePath,
+        persistentDbName,
+      );
+      String thumbnail = data.first.values.last;
+      File thumbFile = File(thumbnail);
+      bool exists = thumbFile.existsSync();
+      if (exists) {
+        setThumbnail(thumbnail);
+      } else {
+        throw Exception('no thumb');
+      }
+    } catch (e) {
+      ReceivePort receivePort = ReceivePort();
+      SendPort sendPort = receivePort.sendPort;
+      Isolate.spawn(runCompressIsolate, sendPort);
+      sendPort.send(imagePath);
+      receivePort.listen((compressedFilePath) async {
+        await DBHelper.insert(
+          imgThumbnailPathTableName,
+          {
+            pathString: imagePath,
+            thumbnailStringPath: compressedFilePath,
+          },
+          persistentDbName,
+        );
+        setThumbnail(compressedFilePath);
+      });
+    }
+  }
+
+//? to set the state for the image thumbnail
+  void setThumbnail(String path) {
+    if (mounted) {
+      setState(() {
+        compressedPath = path;
+      });
+    }
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) async {
-        // String cP = await compute(compressImage, widget.path);
-        String cP = await compressImage(widget.path);
-
-        if (mounted) {
-          setState(() {
-            compressedPath = cP;
-          });
-        }
+        await compressImage(widget.path);
       },
     );
 
