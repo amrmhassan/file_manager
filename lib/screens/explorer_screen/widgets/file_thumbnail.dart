@@ -26,19 +26,15 @@ class _FileThumbnailState extends State<FileThumbnail> {
   Widget build(BuildContext context) {
     FileType fileType = getFileType(getFileExt());
 
-    return Builder(
-      builder: (context) {
-        return fileType == FileType.image
-            ? ImageThumbnail(
-                path: widget.path,
-              )
-            : fileType == FileType.video
-                ? MyVideoThumbnail(path: widget.path)
-                : Image.asset(
-                    getFileTypeIcon(getFileExt()),
-                    width: largeIconSize,
-                  );
-      },
-    );
+    return fileType == FileType.image
+        ? ImageThumbnail(
+            path: widget.path,
+          )
+        : fileType == FileType.video
+            ? MyVideoThumbnail(path: widget.path)
+            : Image.asset(
+                getFileTypeIcon(getFileExt()),
+                width: largeIconSize,
+              );
   }
 }

@@ -39,16 +39,6 @@ class _ExplorerScreenState extends State<ExplorerScreen> {
         ),
         HomeItemHLine(),
         VSpace(factor: .5),
-        // if (widget.sizesExplorer && parentSize == null)
-        //   Expanded(
-        //     child: Center(
-        //       child: Text(
-        //         'Loading',
-        //         style: h4TextStyleInactive,
-        //       ),
-        //     ),
-        //   )
-        // else
         Expanded(
           child: ChildrenViewList(
             //! remove this , it is only for testing UI
