@@ -110,7 +110,8 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //? play video
   void playVideo(String path) {
-    videoPlayerController = VideoPlayerController.network(path)
+    videoPlayerController = VideoPlayerController.network(path,
+        videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true))
       ..initialize().then((value) {
         videoHeight = videoPlayerController?.value.size.height;
         videoWidth = videoPlayerController?.value.size.width;
@@ -121,6 +122,14 @@ class MediaPlayerProvider extends ChangeNotifier {
         notifyListeners();
       })
       ..play();
+    // ..addListener(() async {
+    //   videoPosition =
+    //       (await videoPlayerController?.position) ?? Duration.zero;
+    //   printOnDebug(videoPosition.inMilliseconds);
+    //   if (videoPosition.inMilliseconds >= videoDuration!.inMilliseconds) {
+    //     closeVideo();
+    //   }
+    // });
     isVideoPlaying = true;
 
     notifyListeners();

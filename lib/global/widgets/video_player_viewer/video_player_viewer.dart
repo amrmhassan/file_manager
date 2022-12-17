@@ -112,6 +112,21 @@ class VideoPlayerViewer extends StatelessWidget {
               ),
               VolumeViewer(),
               VideoPositionViewer(),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      mpProvider.closeVideo();
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      color: Colors.red,
+                    ),
+                  )
+                ],
+              ),
             ],
           );
   }
