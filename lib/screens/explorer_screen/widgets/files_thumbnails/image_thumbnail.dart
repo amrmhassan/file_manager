@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';

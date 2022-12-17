@@ -146,7 +146,7 @@ class AnalyzerProvider extends ChangeNotifier {
           await _setLastAnalyzingDate();
           await _handleSaveRecentFiles(recentProvider);
           await _saveResultsToSqlite();
-          // isolate.kill();
+          isolate.kill();
         } else if (message is int) {
           printOnDebug('Analyzing Time : ${message / 1000} Second');
         } else if (message is! SendPort) {

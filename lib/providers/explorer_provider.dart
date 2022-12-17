@@ -17,7 +17,6 @@ import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 
 //? asc means the smallest first or from A to Z or oldest to earliest
