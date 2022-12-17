@@ -9,6 +9,12 @@ class MediaPlayerProvider extends ChangeNotifier {
   Duration? fullSongDuration;
   Duration? currentDuration;
 
+  bool playerHidden = false;
+  void togglePlayerHidden() {
+    playerHidden = !playerHidden;
+    notifyListeners();
+  }
+
   StreamSubscription? durationStreamSub;
 
 //? check playing
@@ -44,6 +50,7 @@ class MediaPlayerProvider extends ChangeNotifier {
         playing = false;
         fullSongDuration = null;
         playingFilePath = null;
+        currentDuration = null;
         notifyListeners();
       });
       durationStreamSub = _audioPlayer.onPositionChanged.listen((event) {

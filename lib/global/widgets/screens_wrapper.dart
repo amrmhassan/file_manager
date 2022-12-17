@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:explorer/global/widgets/analyzer_summary.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
+import 'package:explorer/global/widgets/show_controllers_button.dart';
 import 'package:flutter/material.dart';
 
 class ScreensWrapper extends StatelessWidget {
@@ -56,7 +57,16 @@ class ScreensWrapper extends StatelessWidget {
                   MediaControllers(),
                 ],
               ),
-              AnalyzerSummary(),
+              Positioned(
+                bottom: -1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ShowControllersButton(),
+                    HSpace(),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
