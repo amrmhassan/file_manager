@@ -41,87 +41,87 @@ class MediaControllers extends StatelessWidget {
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
 
-    return
-        //  mpProvider.playing
-        //     ?
-        Container(
-      color: kCardBackgroundColor,
-      padding: EdgeInsets.symmetric(
-        horizontal: kHPad / 2,
-        vertical: kVPad / 2,
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                formatDuration(
-                    mpProvider.currentDuration ?? Duration(seconds: 30)),
-                style: h4TextStyleInactive,
-              ),
-              Expanded(
-                child: Slider(
-                  onChanged: (double value) {
-                    mpProvider.seekTo(value.toInt());
-                  },
-                  value: (mpProvider.currentDuration?.inMilliseconds ?? 0) * 1,
-                  min: 0,
-                  max: (mpProvider.fullSongDuration?.inMilliseconds ?? 100000) *
-                      1,
+    return mpProvider.playing
+        ? Container(
+            color: kCardBackgroundColor,
+            padding: EdgeInsets.symmetric(
+              horizontal: kHPad / 2,
+              vertical: kVPad / 2,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      formatDuration(
+                          mpProvider.currentDuration ?? Duration(seconds: 30)),
+                      style: h4TextStyleInactive,
+                    ),
+                    Expanded(
+                      child: Slider(
+                        onChanged: (double value) {
+                          mpProvider.seekTo(value.toInt());
+                        },
+                        value:
+                            (mpProvider.currentDuration?.inMilliseconds ?? 0) *
+                                1,
+                        min: 0,
+                        max: (mpProvider.fullSongDuration?.inMilliseconds ??
+                                100000) *
+                            1,
+                      ),
+                    ),
+                    Text(
+                      formatDuration(mpProvider.fullSongDuration ??
+                          Duration(seconds: 200)),
+                      style: h4TextStyleInactive,
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                formatDuration(
-                    mpProvider.fullSongDuration ?? Duration(seconds: 200)),
-                style: h4TextStyleInactive,
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ButtonWrapper(
-                width: largeIconSize,
-                height: largeIconSize,
-                onTap: () {
-                  mpProvider.backward10();
-                },
-                child: Image.asset(
-                  'assets/icons/back_ten.png',
-                  color: kMainIconColor,
-                  width: largeIconSize / 2,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ButtonWrapper(
+                      width: largeIconSize,
+                      height: largeIconSize,
+                      onTap: () {
+                        mpProvider.backward10();
+                      },
+                      child: Image.asset(
+                        'assets/icons/back_ten.png',
+                        color: kMainIconColor,
+                        width: largeIconSize / 2,
+                      ),
+                    ),
+                    ButtonWrapper(
+                      width: largeIconSize,
+                      height: largeIconSize,
+                      onTap: () {
+                        mpProvider.pausePlaying();
+                      },
+                      child: Image.asset(
+                        'assets/icons/pause.png',
+                        color: kMainIconColor,
+                        width: largeIconSize / 2,
+                      ),
+                    ),
+                    ButtonWrapper(
+                      width: largeIconSize,
+                      height: largeIconSize,
+                      onTap: () {
+                        mpProvider.forward10();
+                      },
+                      child: Image.asset(
+                        'assets/icons/ten.png',
+                        color: kMainIconColor,
+                        width: largeIconSize / 2,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              ButtonWrapper(
-                width: largeIconSize,
-                height: largeIconSize,
-                onTap: () {
-                  mpProvider.pausePlaying();
-                },
-                child: Image.asset(
-                  'assets/icons/pause.png',
-                  color: kMainIconColor,
-                  width: largeIconSize / 2,
-                ),
-              ),
-              ButtonWrapper(
-                width: largeIconSize,
-                height: largeIconSize,
-                onTap: () {
-                  mpProvider.forward10();
-                },
-                child: Image.asset(
-                  'assets/icons/ten.png',
-                  color: kMainIconColor,
-                  width: largeIconSize / 2,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    )
-        // : SizedBox()
-        ;
+              ],
+            ),
+          )
+        : SizedBox();
   }
 }
