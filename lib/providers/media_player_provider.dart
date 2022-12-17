@@ -64,7 +64,6 @@ class MediaPlayerProvider extends ChangeNotifier {
       audioPlaying = false;
       fullSongDuration = null;
       notifyListeners();
-      printOnDebug(e);
     }
   }
 
@@ -92,10 +91,20 @@ class MediaPlayerProvider extends ChangeNotifier {
   double? videoAspectRatio;
   double videoVolume = 0;
   bool volumeTouched = false;
+  bool seekerTouched = false;
+  Duration? videoDuration;
+  bool isVideoPlaying = false;
+  Duration videoPosition = Duration.zero;
 
   //? set volume touched
   void setVolumeTouched(bool t) {
     volumeTouched = t;
+    notifyListeners();
+  }
+
+  //? set seeker touched
+  void setSeekerTouched(bool t) {
+    seekerTouched = t;
     notifyListeners();
   }
 
@@ -107,9 +116,12 @@ class MediaPlayerProvider extends ChangeNotifier {
         videoWidth = videoPlayerController?.value.size.width;
         videoAspectRatio = videoPlayerController?.value.aspectRatio;
         videoVolume = videoPlayerController?.value.volume ?? 0;
+        videoDuration = videoPlayerController?.value.duration;
+
         notifyListeners();
       })
       ..play();
+    isVideoPlaying = true;
 
     notifyListeners();
   }
@@ -118,6 +130,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   void closeVideo() {
     videoPlayerController?.dispose();
     videoPlayerController = null;
+    isVideoPlaying = false;
     notifyListeners();
   }
 
@@ -128,5 +141,29 @@ class MediaPlayerProvider extends ChangeNotifier {
     if (videoVolume > 1) videoVolume = 1;
     await videoPlayerController?.setVolume(videoVolume);
     notifyListeners();
+  }
+
+  //? toggle video play
+  void toggleVideoPlay() {
+    if (isVideoPlaying) {
+      videoPlayerController?.pause();
+    } else {
+      videoPlayerController?.play();
+    }
+    isVideoPlaying = !isVideoPlaying;
+    notifyListeners();
+  }
+
+  //? add to current position
+  void addToPosition(double p) async {
+    printOnDebug(p);
+    Duration? currentPosition = await videoPlayerController?.position;
+    if (currentPosition == null) return;
+    videoPosition = Duration(
+      microseconds: currentPosition.inMicroseconds,
+      milliseconds: (p * 1000).toInt(),
+    );
+    notifyListeners();
+    await videoPlayerController?.seekTo(videoPosition);
   }
 }

@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:isolate';
-
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:explorer/global/widgets/video_player_viewer/widgets/video_position_viewer.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/volume_viewer.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
@@ -44,12 +45,22 @@ class VideoPlayerViewer extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        Spacer(),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              mpProviderFalse.toggleVideoPlay();
+                            },
+                            child: Opacity(
+                              opacity: 0,
+                              child: Container(color: Colors.green),
+                            ),
+                          ),
+                        ),
                         //? volume controller
                         GestureDetector(
                           onPanUpdate: (details) {
                             mpProviderFalse.addToVolume(
-                              -(details.delta.dy / 100),
+                              -(details.delta.dy / 800),
                             );
                           },
                           onPanDown: (details) {
@@ -64,7 +75,7 @@ class VideoPlayerViewer extends StatelessWidget {
                           child: Opacity(
                             opacity: 0,
                             child: Container(
-                              width: 100,
+                              width: 70,
                               color: Colors.blue,
                             ),
                           ),
@@ -74,8 +85,19 @@ class VideoPlayerViewer extends StatelessWidget {
                   ),
                   //? seeker controller
                   GestureDetector(
-                    onTap: () {
-                      print('seeker controller');
+                    onPanUpdate: (details) {
+                      mpProviderFalse.addToPosition(
+                        (details.delta.dx),
+                      );
+                    },
+                    onPanDown: (details) {
+                      mpProvider.setSeekerTouched(true);
+                    },
+                    onPanEnd: (details) {
+                      mpProvider.setSeekerTouched(false);
+                    },
+                    onPanCancel: () {
+                      mpProvider.setSeekerTouched(false);
                     },
                     child: Opacity(
                       opacity: 0,
@@ -89,6 +111,7 @@ class VideoPlayerViewer extends StatelessWidget {
                 ],
               ),
               VolumeViewer(),
+              VideoPositionViewer(),
             ],
           );
   }
