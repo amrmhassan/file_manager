@@ -16,14 +16,12 @@ class ExplorerTabs extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
 
   _scrollToRight() {
-    try {
+    if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: Duration(milliseconds: 200),
         curve: Curves.easeOut,
       );
-    } catch (e) {
-      printOnDebug(e);
     }
   }
 

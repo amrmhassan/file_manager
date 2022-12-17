@@ -118,7 +118,7 @@ class AnalyzerProvider extends ChangeNotifier {
     _loading = true;
     _currentFolder = 'Starting...';
     notifyListeners();
-    Isolate.spawn(runAnalyzeStorageIsolate, sendPort);
+    Isolate isolate = await Isolate.spawn(runAnalyzeStorageIsolate, sendPort);
     receivePort.listen(
       (message) async {
         if (message is AdvancedStorageAnalyzer) {
@@ -146,6 +146,7 @@ class AnalyzerProvider extends ChangeNotifier {
           await _setLastAnalyzingDate();
           await _handleSaveRecentFiles(recentProvider);
           await _saveResultsToSqlite();
+          // isolate.kill();
         } else if (message is int) {
           printOnDebug('Analyzing Time : ${message / 1000} Second');
         } else if (message is! SendPort) {

@@ -321,7 +321,6 @@ class ExplorerProvider extends ChangeNotifier {
   }
 
   //? trying isolates with the provider
-
   void runTheIsolate() {
     var receivePort = ReceivePort();
     var sendPort = receivePort.sendPort;
@@ -373,7 +372,6 @@ class ExplorerProvider extends ChangeNotifier {
       bool allowAdding =
           !contain && (currentActiveDir.path == storageItemModel.parentPath);
       if (allowAdding) {
-        printOnDebug('Allowing adding to the current folder');
         _children.add(storageItemModel);
         notifyListeners();
       }
