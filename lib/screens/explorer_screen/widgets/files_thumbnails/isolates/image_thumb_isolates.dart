@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
@@ -37,9 +36,8 @@ Future<String> compressImageIsolateActualCode(String rawImagePath) async {
   File compressedFile = await FlutterImageCompress.compressAndGetFile(
     rawImagePath,
     targetPath,
-    quality: 10,
+    quality: 4,
   ) as File;
-  print(compressedFile.statSync().size.toKB);
   return compressedFile.path;
 }
 
@@ -48,20 +46,20 @@ Future<void> compressImage(
   String rawImagePath,
   Function(String path) setThumbnail,
 ) async {
-  // var data = await DBHelper.getDataWhere(
-  //   imgThumbnailPathTableName,
-  //   pathString,
-  //   rawImagePath,
-  //   persistentDbName,
-  // );
+  var data = await DBHelper.getDataWhere(
+    imgThumbnailPathTableName,
+    pathString,
+    rawImagePath,
+    persistentDbName,
+  );
 
-  // if (!(data.isEmpty || data.first.values.isEmpty)) {
-  //   String thumbnail = data.first.values.last;
-  //   File thumbFile = File(thumbnail);
-  //   bool exists = thumbFile.existsSync();
+  if (!(data.isEmpty || data.first.values.isEmpty)) {
+    String thumbnail = data.first.values.last;
+    File thumbFile = File(thumbnail);
+    bool exists = thumbFile.existsSync();
 
-  //   if (exists) return setThumbnail(thumbnail);
-  // }
+    if (exists) return setThumbnail(thumbnail);
+  }
 
   String compressedImagePath =
       await flutterCompute(compressImageIsolateActualCode, rawImagePath);

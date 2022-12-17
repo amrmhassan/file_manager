@@ -13,6 +13,7 @@ class MediaControllers extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+//? to format the duration
   String formatDuration(Duration d) {
     var seconds = d.inSeconds;
     final days = seconds ~/ Duration.secondsPerDay;
@@ -24,15 +25,15 @@ class MediaControllers extends StatelessWidget {
 
     final List<String> tokens = [];
     if (days != 0) {
-      tokens.add('${days}d');
+      tokens.add('$days');
     }
     if (tokens.isNotEmpty || hours != 0) {
-      tokens.add('${hours}h');
+      tokens.add('$hours');
     }
     if (tokens.isNotEmpty || minutes != 0) {
-      tokens.add('${minutes}m');
+      tokens.add('$minutes');
     }
-    tokens.add('${seconds}s');
+    tokens.add('${seconds < 10 ? '0$seconds' : seconds}');
 
     return tokens.join(':');
   }
@@ -59,6 +60,9 @@ class MediaControllers extends StatelessWidget {
                     ),
                     Expanded(
                       child: Slider(
+                        thumbColor: kAudioColor,
+                        activeColor: kAudioColor,
+                        inactiveColor: kAudioColor.withOpacity(.4),
                         onChanged: (double value) {
                           mpProvider.seekTo(value.toInt());
                         },
