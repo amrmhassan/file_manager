@@ -56,7 +56,7 @@ FutureOr<void> onTempDataBase(
   await db.execute(LocalFolderInfo.toSQLString());
 }
 
-//? on create the temp database
+//? on create the persistent database
 FutureOr<void> onPersistentDataBase(
   Database db,
   int? version,
@@ -67,4 +67,8 @@ FutureOr<void> onPersistentDataBase(
   await db.execute(imagesThumbnailsTableCreation);
   //? creating recently opened files table
   await db.execute(recentlyOpenedFilesTableCreation);
+  //? creating listy list table
+  await db.execute(listyListTableCreation);
+  //? creating listy items table
+  await db.execute(listyItemsTableCreation);
 }

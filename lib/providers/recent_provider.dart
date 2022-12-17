@@ -3,6 +3,7 @@ import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyze
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,6 @@ class RecentProvider extends ChangeNotifier {
     List<LocalFileInfo> allFiles = _storageAnalyzerV4.allFilesInfo;
     allFiles.sort((a, b) => b.modified.compareTo(a.modified));
 
-    // analyzeData(allFiles);
     _concludeRecentCategories(allFiles);
     await _saveResultsToSqlite();
   }
@@ -62,6 +62,14 @@ class RecentProvider extends ChangeNotifier {
       String path = file.path;
       String ext = getFileExtension(file.path);
       FileType fileType = getFileType(ext);
+
+      if (path.contains('/cache')) {
+        continue;
+      }
+      if (allowRecentItemsFromHiddenFiles && path.contains('/.')) {
+        continue;
+      }
+
       if (_addImage(path, fileType) && imagesFiles.length < recentItemsLimit) {
         imagesFiles.add(file);
       } else if (_addVideo(path, fileType) &&
@@ -90,6 +98,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check image
   bool _addImage(String path, FileType fileType) {
+    if (imagesFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (skipWhatsAppStatusFolder && path.contains('/.Statuses')) {
       return false;
     }
@@ -101,6 +112,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check video
   bool _addVideo(String path, FileType fileType) {
+    if (videosFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (skipWhatsAppStatusFolder && path.contains('/.Statuses')) {
       return false;
     }
@@ -112,6 +126,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check music
   bool _addMusic(String path, FileType fileType) {
+    if (musicFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (skipWhatsAppRecordsFolder && path.contains('/WhatsApp Voice Notes')) {
       return false;
     }
@@ -123,6 +140,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check apk
   bool _addApk(String path, FileType fileType) {
+    if (apkFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (fileType == FileType.apk) {
       return true;
     }
@@ -131,6 +151,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check archives
   bool _addArchives(String path, FileType fileType) {
+    if (archivesFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (fileType == FileType.archive) {
       return true;
     }
@@ -139,6 +162,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check docs
   bool _addDocs(String path, FileType fileType) {
+    if (docsFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (fileType == FileType.docs) {
       return true;
     }
@@ -147,6 +173,9 @@ class RecentProvider extends ChangeNotifier {
 
   //? check downloads
   bool _addDownloads(String path) {
+    if (downloadsFiles.any((element) => element.path == path)) {
+      return false;
+    }
     if (path.toLowerCase().contains('download')) {
       return true;
     }

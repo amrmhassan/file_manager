@@ -5,6 +5,7 @@ const String sortOptionKey = 'sortOptionKey';
 const String priotorizeFoldersKey = 'priotorizeFoldersKey';
 const String showHiddenFilesKey = 'showHiddenFilesKey';
 const String appLightThemeKey = 'appLightThemeKey';
+const String permissionsGrantedKey = 'permissionsGrantedKey';
 
 //? props keys
 const String activeWishlistIdKey = 'activeWishlistIdKey';

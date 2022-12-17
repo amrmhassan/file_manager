@@ -74,29 +74,37 @@ class _ItemsViewerScreenState extends State<ItemsViewerScreen> {
           CustomAppBar(
             title: Text(
               title,
-              style: h2TextStyle.copyWith(
-                color: Colors.white,
-              ),
+              style: h2TextStyle,
             ),
           ),
           Expanded(
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: allFilesInfo.map((e) {
-                return ButtonWrapper(
-                  borderRadius: 0,
-                  onTap: () async {
-                    await OpenFile.open(e.path);
-                  },
-                  child: StorageItem(
-                    onDirTapped: ((path) {}),
-                    storageItemModel: e.toStorageItemModel(),
-                    sizesExplorer: false,
-                    parentSize: 0,
+            child: allFilesInfo.isEmpty
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "No Files Yet",
+                        style: h4TextStyleInactive,
+                      ),
+                    ],
+                  )
+                : ListView(
+                    physics: BouncingScrollPhysics(),
+                    children: allFilesInfo.map((e) {
+                      return ButtonWrapper(
+                        borderRadius: 0,
+                        onTap: () async {
+                          await OpenFile.open(e.path);
+                        },
+                        child: StorageItem(
+                          onDirTapped: ((path) {}),
+                          storageItemModel: e.toStorageItemModel(),
+                          sizesExplorer: false,
+                          parentSize: 0,
+                        ),
+                      );
+                    }).toList(),
                   ),
-                );
-              }).toList(),
-            ),
           ),
           if (!foProvider.loadingOperation) EntityOperations(),
         ],

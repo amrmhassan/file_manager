@@ -91,7 +91,6 @@ FROM $table
 $orderQuery
 LIMIT $limit
 """);
-    // return await db.query(table);
   }
 
 //? to get data from a table where
@@ -103,6 +102,60 @@ LIMIT $limit
   ]) async {
     final db = await DBHelper.database(table, databaseName);
     return db.query(table, where: '$key = ?', whereArgs: [value]);
+  }
+
+//? to get data from a table where multiple keys apply
+  static Future<List<Map<String, dynamic>>> getDataWhereMultiple(
+    String table,
+    List<String> keys,
+    List<String> values, [
+    String? databaseName,
+  ]) async {
+    if (keys.length != values.length) {
+      throw Exception('key length must be the same as value length');
+    }
+    final db = await DBHelper.database(table, databaseName);
+    String whereQuery = '';
+    for (int i = 0; i < keys.length; i++) {
+      whereQuery += "${keys[i]}='${values[i]}'";
+      if (i < (keys.length - 1)) {
+        whereQuery += ' AND ';
+      }
+    }
+
+    String query = """
+SELECT *
+FROM $table
+WHERE $whereQuery;
+""";
+    return db.rawQuery(query);
+  }
+
+//? to delete data from a table where multiple keys apply
+  static Future<List<Map<String, dynamic>>> deleteDataWhereMultiple(
+    String table,
+    List<String> keys,
+    List<String> values, [
+    String? databaseName,
+  ]) async {
+    if (keys.length != values.length) {
+      throw Exception('key length must be the same as value length');
+    }
+    final db = await DBHelper.database(table, databaseName);
+    String whereQuery = '';
+    for (int i = 0; i < keys.length; i++) {
+      whereQuery += "${keys[i]}='${values[i]}'";
+      if (i < (keys.length - 1)) {
+        whereQuery += ' AND ';
+      }
+    }
+
+    String query = """
+DELETE
+FROM $table
+WHERE $whereQuery;
+""";
+    return db.rawQuery(query);
   }
 
 //? to delete a database

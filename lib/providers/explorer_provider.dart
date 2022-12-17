@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
@@ -8,6 +11,7 @@ import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/models/tab_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -15,8 +19,6 @@ import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 //? asc means the smallest first or from A to Z or oldest to earliest
 //? desc means the largest first
@@ -33,8 +35,19 @@ enum SortOption {
 }
 
 class ExplorerProvider extends ChangeNotifier {
+  String? _activeTabPath;
+  String? get activeTabPath {
+    if (_tabs.isNotEmpty && _activeTabPath == null) {
+      return _tabs.first.path;
+    }
+    return _activeTabPath;
+  }
+
+  final List<TabModel> _tabs = [];
+  List<TabModel> get tabs => [..._tabs];
+
   final List<StorageItemModel> _children = [];
-  List<StorageItemModel> get children => _children;
+  List<StorageItemModel> get children => [..._children];
   SendPort? globalSendPort;
 
   bool loadingChildren = false;
@@ -280,6 +293,15 @@ class ExplorerProvider extends ChangeNotifier {
     bool sizesExplorer = false,
     required FilesOperationsProvider filesOperationsProvider,
   }) {
+    //* update the current active tab
+    //! update the current active tab to be the same as the new open directory
+    // _activeTabPath = path;
+    // int index = _tabs.indexWhere((element) => element.path == path);
+    // TabModel activeTab = _tabs[index];
+    // activeTab.path = path;
+    // _tabs[index] = activeTab;
+    updateCurrentActiveTab(path);
+    //* updating the current active tab
     currentActiveDir = Directory(path);
     //* run folder watchers
     _runActiveDirWatchers();
@@ -356,5 +378,67 @@ class ExplorerProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  //? add a new tab
+  void addTab(String path, FilesOperationsProvider filesOperationsProvider) {
+    bool exists = _tabs.any((element) => element.path == path);
+    if (exists) {
+      throw Exception('Tab is already open');
+    }
+    if (_tabs.isEmpty) {
+      TabModel oldTab = TabModel(path: currentActiveDir.path);
+      _tabs.add(oldTab);
+    }
+    TabModel newTab = TabModel(path: path);
+    _tabs.add(newTab);
+    if (_activeTabPath == null) {
+      openTab(path, filesOperationsProvider);
+    }
+    notifyListeners();
+  }
+
+//? close tab
+  void closeTab(String path, FilesOperationsProvider filesOperationsProvider) {
+    int index = _tabs.indexWhere((element) => element.path == path);
+    int length = _tabs.length;
+    bool activeTab = path == activeTabPath;
+
+    if (activeTab && length > 1) {
+      _activeTabPath = _tabs[index - 1 < 0 ? index + 1 : index - 1].path;
+      openTab(_activeTabPath!, filesOperationsProvider);
+    }
+    _tabs.removeAt(index);
+    notifyListeners();
+  }
+
+  //? open tab
+  void openTab(String path, FilesOperationsProvider filesOperationsProvider) {
+    if (!_tabs.any((element) => element.path == path)) {
+      addTab(path, filesOperationsProvider);
+    }
+    _activeTabPath = path;
+    setActiveDir(path: path, filesOperationsProvider: filesOperationsProvider);
+    notifyListeners();
+  }
+
+  //? to update the current active tab when opening new one
+  void updateCurrentActiveTab(String path) {
+    if (_tabs.isEmpty) return;
+    //* if the path already exists in a tab just activate that tab
+    bool exists = _tabs.any((element) => element.path == path);
+    if (exists) {
+      _activeTabPath = path;
+      notifyListeners();
+      return;
+    }
+    //* if not just update the current active tab to be equal to the path, and update the current active tab path
+    //* to return if there is no active tab
+    if (_activeTabPath == null) return;
+    int index = _tabs.indexWhere((element) => _activeTabPath == element.path);
+    TabModel tabModel = TabModel(path: path);
+    _tabs[index] = tabModel;
+    _activeTabPath = path;
+    notifyListeners();
   }
 }

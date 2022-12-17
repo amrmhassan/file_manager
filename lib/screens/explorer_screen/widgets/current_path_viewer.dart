@@ -28,21 +28,24 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
   final ScrollController _scrollController = ScrollController();
 
   _scrollToRight() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: Duration(milliseconds: 200),
-      curve: Curves.easeOut,
-    );
-  }
-
-  @override
-  void didUpdateWidget(covariant CurrentPathViewer oldWidget) {
-    super.didUpdateWidget(oldWidget);
+    try {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+      );
+    } catch (e) {
+      printOnDebug(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToRight());
+    try {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToRight());
+    } catch (e) {
+      printOnDebug(e);
+    }
 
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);

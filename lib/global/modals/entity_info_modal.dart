@@ -14,16 +14,19 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EntityInfoEditingModal extends StatefulWidget {
   final String? oldName;
+  final bool createListy;
 
   const EntityInfoEditingModal({
     Key? key,
     this.oldName,
+    this.createListy = false,
   }) : super(key: key);
 
   @override
@@ -37,7 +40,9 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
   String? orgFileName;
 
 //? handle apply modal
-  void handleApplyModal(BuildContext context) async {
+  Future<void> handleApplyModal(BuildContext context) async {
+    if (nameController.text.isEmpty) return;
+    if (widget.createListy) return createList();
     try {
       if (rename) {
         if (orgFileName == nameController.text) {
@@ -68,6 +73,21 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
     if (mounted) {
       Navigator.pop(context);
     }
+  }
+
+  //? create new listy
+  Future createList() async {
+    try {
+      await Provider.of<ListyProvider>(context, listen: false)
+          .addListy(title: nameController.text);
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        message: e.toString(),
+        snackBarType: SnackBarType.error,
+      );
+    }
+    Navigator.pop(context);
   }
 
   //? create new folder
@@ -138,7 +158,8 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
 
   @override
   void initState() {
-    nameController.text = widget.oldName ?? 'New Folder';
+    nameController.text =
+        widget.oldName ?? (widget.createListy ? 'New List' : 'New Folder');
     if (widget.oldName != null) {
       rename = true;
       String ext = '.${getFileExtension(widget.oldName!)}';

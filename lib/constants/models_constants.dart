@@ -26,7 +26,15 @@ const String countString = 'countString';
 const String extString = 'extString';
 const String filesPathString = 'filesPathString';
 
+//? listy model
+const String idString = 'idString';
+const String titleString = 'titleString';
+const String iconString = 'iconString';
+const String createdAtString = 'createdAtString';
+
+//? listy item model
+const String listyTitleString = 'listyTitleString';
+
 //? other keys
 const String thumbnailStringPath = 'thumbnailStringPath';
 const String dateFileOpenedString = 'dateFileOpenedString';
-const String idString = 'idString';

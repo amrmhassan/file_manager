@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/light_theme_check_box.dart';
@@ -42,40 +43,54 @@ class CustomAppDrawer extends StatelessWidget {
             VSpace(factor: 2),
             LightThemeCheckBox(),
             StorageAnalyzerButton(),
-            AppDrawerItem(
-              title: 'Clear Temp DB & Keys',
-              onTap: () async {
-                await DBHelper.clearDb(tempDbName);
-                await SharedPrefHelper.removeAllSavedKeys();
-                showSnackBar(context: context, message: 'Deleted');
-                Navigator.pop(context);
-              },
-              onlyDebug: true,
-            ),
-            AppDrawerItem(
-              title: 'Clear Persist DB',
-              onTap: () async {
-                await DBHelper.clearDb(persistentDbName);
-                showSnackBar(context: context, message: 'Deleted');
-                Navigator.pop(context);
-              },
-              onlyDebug: true,
-            ),
-            AppDrawerItem(
-              title: 'App Data Explorer',
-              onTap: () async {
-                Directory tempDir = await getTemporaryDirectory();
-                tempDir = tempDir.parent;
-                //
-                var expProvider =
-                    Provider.of<ExplorerProvider>(context, listen: false);
-                expProvider.setActiveDir(
-                  path: tempDir.path,
-                  filesOperationsProvider: Provider.of<FilesOperationsProvider>(
-                    context,
-                    listen: false,
+            if (allowDebuggingDrawerElements)
+              Column(
+                children: [
+                  AppDrawerItem(
+                    title: 'Clear Temp DB & Keys',
+                    onTap: () async {
+                      await DBHelper.clearDb(tempDbName);
+                      await SharedPrefHelper.removeAllSavedKeys();
+                      showSnackBar(context: context, message: 'Deleted');
+                      Navigator.pop(context);
+                    },
+                    onlyDebug: true,
                   ),
-                );
+                  AppDrawerItem(
+                    title: 'Clear Persist DB',
+                    onTap: () async {
+                      await DBHelper.clearDb(persistentDbName);
+                      showSnackBar(context: context, message: 'Deleted');
+                      Navigator.pop(context);
+                    },
+                    onlyDebug: true,
+                  ),
+                  AppDrawerItem(
+                    title: 'App Data Explorer',
+                    onTap: () async {
+                      Directory tempDir = await getTemporaryDirectory();
+                      tempDir = tempDir.parent;
+                      //
+                      var expProvider =
+                          Provider.of<ExplorerProvider>(context, listen: false);
+                      expProvider.setActiveDir(
+                        path: tempDir.path,
+                        filesOperationsProvider:
+                            Provider.of<FilesOperationsProvider>(
+                          context,
+                          listen: false,
+                        ),
+                      );
+                      Navigator.pop(context);
+                    },
+                    onlyDebug: true,
+                  ),
+                ],
+              ),
+            AppDrawerItem(
+              title: 'Settings',
+              onTap: () async {
+                showSnackBar(context: context, message: 'Soon');
                 Navigator.pop(context);
               },
               onlyDebug: true,

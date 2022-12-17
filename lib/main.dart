@@ -5,6 +5,7 @@ import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/theme_provider.dart';
@@ -15,6 +16,8 @@ import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.dart';
+import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
+import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
@@ -28,7 +31,9 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  // print(androidInfo.version.sdkInt);
   await setThemeVariables();
   runApp(const MyApp());
 }
@@ -50,6 +55,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => RecentProvider()),
         ChangeNotifierProvider(create: (ctx) => ThemeProvider()),
         ChangeNotifierProvider(create: (ctx) => MediaPlayerProvider()),
+        ChangeNotifierProvider(create: (ctx) => ListyProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -80,6 +86,8 @@ class MyApp extends StatelessWidget {
           RecentsViewerScreen.routeName: (context) => RecentsViewerScreen(),
           StorageCleanerScreen.routeName: (context) => StorageCleanerScreen(),
           ItemsViewerScreen.routeName: (context) => ItemsViewerScreen(),
+          ListyScreen.routeName: (context) => ListyScreen(),
+          ListyItemViewerScreen.routeName: (context) => ListyItemViewerScreen(),
         },
       ),
     );
