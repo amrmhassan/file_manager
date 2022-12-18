@@ -95,6 +95,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   Duration? videoDuration;
   bool isVideoPlaying = false;
   Duration videoPosition = Duration.zero;
+  bool videoHidden = false;
 
   //? set volume touched
   void setVolumeTouched(bool t) {
@@ -174,5 +175,11 @@ class MediaPlayerProvider extends ChangeNotifier {
     );
     notifyListeners();
     await videoPlayerController?.seekTo(videoPosition);
+  }
+
+  //? toggle hide video
+  void toggleHideVideo() {
+    videoHidden = !videoHidden;
+    notifyListeners();
   }
 }
