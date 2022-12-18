@@ -36,8 +36,6 @@ class _CustomVolumeControllersState extends State<CustomVolumeControllers> {
 
   @override
   Widget build(BuildContext context) {
-    var mpProviderFalse =
-        Provider.of<MediaPlayerProvider>(context, listen: false);
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
 
     return Positioned(

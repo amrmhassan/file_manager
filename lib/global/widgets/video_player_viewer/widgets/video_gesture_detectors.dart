@@ -39,7 +39,7 @@ class VolumeGestureDetector extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onPanUpdate: (details) {
-        mpProviderFalse.addToVolume(
+        mpProviderFalse.addToDeviceVolume(
           -(details.delta.dy / 800),
         );
       },

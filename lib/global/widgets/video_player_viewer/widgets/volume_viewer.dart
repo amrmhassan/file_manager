@@ -36,7 +36,7 @@ class VolumeViewer extends StatelessWidget {
                 ),
                 VSpace(factor: .5),
                 Text(
-                  ((mpProvider.videoVolume) * 100).ceil().toString(),
+                  ((mpProvider.deviceVolume) * 100).ceil().toString(),
                   style: h2TextStyle.copyWith(height: 1),
                 )
               ],

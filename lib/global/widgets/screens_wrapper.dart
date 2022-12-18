@@ -5,7 +5,6 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/show_controllers_button.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player_show_button.dart';
-import 'package:explorer/global/widgets/custom_volume_controllers.dart';
 import 'package:flutter/material.dart';
 
 class ScreensWrapper extends StatelessWidget {
@@ -81,7 +80,7 @@ class ScreensWrapper extends StatelessWidget {
                 ),
               ),
               VideoPlayerViewer(),
-              CustomVolumeControllers(),
+              // CustomVolumeControllers(),
             ],
           ),
         ),

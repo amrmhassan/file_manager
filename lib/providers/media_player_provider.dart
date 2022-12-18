@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
@@ -90,7 +89,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   double? videoHeight;
   double? videoWidth;
   double? videoAspectRatio;
-  double videoVolume = 0;
+  // double videoVolume = 0;
   bool volumeTouched = false;
   bool seekerTouched = false;
   Duration? videoDuration;
@@ -118,7 +117,7 @@ class MediaPlayerProvider extends ChangeNotifier {
         videoHeight = videoPlayerController?.value.size.height;
         videoWidth = videoPlayerController?.value.size.width;
         videoAspectRatio = videoPlayerController?.value.aspectRatio;
-        videoVolume = videoPlayerController?.value.volume ?? 0;
+        // videoVolume = videoPlayerController?.value.volume ?? 0;
         videoDuration = videoPlayerController?.value.duration;
 
         notifyListeners();
@@ -147,14 +146,27 @@ class MediaPlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //? add to video volume
-  void addToVolume(double v) async {
-    videoVolume += v;
-    if (videoVolume < 0) videoVolume = 0;
-    if (videoVolume > 1) videoVolume = 1;
-    await videoPlayerController?.setVolume(videoVolume);
-    notifyListeners();
-  }
+// //? update video volume
+//   void updateVideoVolume() async {
+//     await updateDeviceVolume();
+//     await setVideoVolume(deviceVolume, false);
+//   }
+
+//   //? add to video volume
+//   void addToVolume(double v) async {
+//     videoVolume += v;
+//     if (videoVolume < 0) videoVolume = 0;
+//     if (videoVolume > 1) videoVolume = 1;
+//     await setVideoVolume(videoVolume);
+
+//     // notifyListeners();
+//   }
+
+//   //? set video volume
+//   Future<void> setVideoVolume(double v, [bool updateDeviceV = true]) async {
+//     await videoPlayerController?.setVolume(videoVolume);
+//     if (updateDeviceV) setDeviceVolume(videoVolume);
+//   }
 
   //? toggle video play
   void toggleVideoPlay() {
@@ -195,7 +207,6 @@ class MediaPlayerProvider extends ChangeNotifier {
 //? to change device volume with a slider
   void addToDeviceVolume(double v) {
     deviceVolume += v;
-    videoVolume += v;
     if (deviceVolume < 0) deviceVolume = 0;
     if (deviceVolume > 1) deviceVolume = 1;
     setDeviceVolume(deviceVolume);
@@ -206,7 +217,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   Future updateDeviceVolume() async {
     deviceVolume = await volume_controllers.VolumeController().getVolume();
     volume_controllers.VolumeController().listener(
-      (p0) {
+      (p0) async {
         deviceVolume = p0;
         notifyListeners();
       },

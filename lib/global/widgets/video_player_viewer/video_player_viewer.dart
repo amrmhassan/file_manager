@@ -10,10 +10,24 @@ import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class VideoPlayerViewer extends StatelessWidget {
+class VideoPlayerViewer extends StatefulWidget {
   const VideoPlayerViewer({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<VideoPlayerViewer> createState() => _VideoPlayerViewerState();
+}
+
+class _VideoPlayerViewerState extends State<VideoPlayerViewer> {
+  @override
+  void initState() {
+    Future.delayed(Duration.zero).then((value) {
+      Provider.of<MediaPlayerProvider>(context, listen: false)
+          .updateDeviceVolume();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
