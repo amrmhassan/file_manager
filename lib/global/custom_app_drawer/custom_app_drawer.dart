@@ -87,14 +87,14 @@ class CustomAppDrawer extends StatelessWidget {
                   ),
                 ],
               ),
-            AppDrawerItem(
-              title: 'Settings',
-              onTap: () async {
-                showSnackBar(context: context, message: 'Soon');
-                Navigator.pop(context);
-              },
-              onlyDebug: true,
-            ),
+            // AppDrawerItem(
+            //   title: 'Settings',
+            //   onTap: () async {
+            //     showSnackBar(context: context, message: 'Soon');
+            //     Navigator.pop(context);
+            //   },
+            //   onlyDebug: true,
+            // ),
           ],
         ),
       ),

@@ -27,7 +27,7 @@ bool lightTheme = true;
 //? debugging constants
 const bool showAnalyzerStuff = false;
 const bool allowVideoThumbnail = false;
-const bool allowDebuggingDrawerElements = true;
+const bool allowDebuggingDrawerElements = false;
 
 //? user prefs constants
 const bool allowRecentItemsFromHiddenFiles = true;

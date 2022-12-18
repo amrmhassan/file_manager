@@ -23,4 +23,4 @@
 -- and when retrieving the data just choose from the one that has data in it
 -- or just set a variable in the global constants or in shared prefs to the database that will have the most recent data to read from it
 
-# video close, playback, close when finished
+# fix the error with gesture detector sliders of video volume, seeker when seeking fast it glitch
