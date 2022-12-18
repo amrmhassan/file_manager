@@ -1,16 +1,16 @@
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class VideoPlayGestureDetector extends StatelessWidget {
   const VideoPlayGestureDetector({
     Key? key,
-    required this.mpProviderFalse,
   }) : super(key: key);
-
-  final MediaPlayerProvider mpProviderFalse;
 
   @override
   Widget build(BuildContext context) {
+    var mpProviderFalse =
+        Provider.of<MediaPlayerProvider>(context, listen: false);
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -28,15 +28,12 @@ class VideoPlayGestureDetector extends StatelessWidget {
 class VolumeGestureDetector extends StatelessWidget {
   const VolumeGestureDetector({
     Key? key,
-    required this.mpProviderFalse,
-    required this.mpProvider,
   }) : super(key: key);
-
-  final MediaPlayerProvider mpProviderFalse;
-  final MediaPlayerProvider mpProvider;
 
   @override
   Widget build(BuildContext context) {
+    var mpProviderFalse =
+        Provider.of<MediaPlayerProvider>(context, listen: false);
     return GestureDetector(
       onPanUpdate: (details) {
         mpProviderFalse.addToDeviceVolume(
@@ -44,13 +41,13 @@ class VolumeGestureDetector extends StatelessWidget {
         );
       },
       onPanDown: (details) {
-        mpProvider.setVolumeTouched(true);
+        mpProviderFalse.setVolumeTouched(true);
       },
       onPanEnd: (details) {
-        mpProvider.setVolumeTouched(false);
+        mpProviderFalse.setVolumeTouched(false);
       },
       onPanCancel: () {
-        mpProvider.setVolumeTouched(false);
+        mpProviderFalse.setVolumeTouched(false);
       },
       child: Opacity(
         opacity: 0,
@@ -66,15 +63,12 @@ class VolumeGestureDetector extends StatelessWidget {
 class SeekerGestureDetector extends StatelessWidget {
   const SeekerGestureDetector({
     Key? key,
-    required this.mpProviderFalse,
-    required this.mpProvider,
   }) : super(key: key);
-
-  final MediaPlayerProvider mpProviderFalse;
-  final MediaPlayerProvider mpProvider;
 
   @override
   Widget build(BuildContext context) {
+    var mpProviderFalse =
+        Provider.of<MediaPlayerProvider>(context, listen: false);
     return GestureDetector(
       onPanUpdate: (details) {
         mpProviderFalse.addToPosition(

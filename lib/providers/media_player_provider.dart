@@ -170,13 +170,13 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //? toggle video play
   void toggleVideoPlay() {
-    if (isVideoPlaying) {
-      videoPlayerController?.pause();
-    } else {
-      videoPlayerController?.play();
-    }
     isVideoPlaying = !isVideoPlaying;
     notifyListeners();
+    if (isVideoPlaying) {
+      videoPlayerController?.play();
+    } else {
+      videoPlayerController?.pause();
+    }
   }
 
   //? add to current position

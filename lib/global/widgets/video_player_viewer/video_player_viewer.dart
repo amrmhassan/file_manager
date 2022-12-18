@@ -32,8 +32,6 @@ class _VideoPlayerViewerState extends State<VideoPlayerViewer> {
   @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
-    var mpProviderFalse =
-        Provider.of<MediaPlayerProvider>(context, listen: false);
 
     return mpProvider.videoPlayerController != null && (!mpProvider.videoHidden)
         ? Stack(
@@ -45,18 +43,14 @@ class _VideoPlayerViewerState extends State<VideoPlayerViewer> {
                   Expanded(
                     child: Row(
                       children: [
-                        VideoPlayGestureDetector(
-                            mpProviderFalse: mpProviderFalse),
+                        VideoPlayGestureDetector(),
                         //? volume controller
-                        VolumeGestureDetector(
-                            mpProviderFalse: mpProviderFalse,
-                            mpProvider: mpProvider)
+                        VolumeGestureDetector()
                       ],
                     ),
                   ),
                   //? seeker controller
-                  SeekerGestureDetector(
-                      mpProviderFalse: mpProviderFalse, mpProvider: mpProvider)
+                  SeekerGestureDetector()
                 ],
               ),
               VolumeViewer(),
