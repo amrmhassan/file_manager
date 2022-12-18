@@ -122,15 +122,14 @@ class MediaPlayerProvider extends ChangeNotifier {
 
         notifyListeners();
       })
-      ..play();
-    // ..addListener(() async {
-    //   videoPosition =
-    //       (await videoPlayerController?.position) ?? Duration.zero;
-    //   printOnDebug(videoPosition.inMilliseconds);
-    //   if (videoPosition.inMilliseconds >= videoDuration!.inMilliseconds) {
-    //     closeVideo();
-    //   }
-    // });
+      ..play()
+      ..addListener(() async {
+        if (isVideoPlaying &&
+            !(videoPlayerController?.value.isPlaying ?? false)) {
+          //* this means it stopped playing cause it's duration finished
+          closeVideo();
+        }
+      });
     isVideoPlaying = true;
 
     notifyListeners();

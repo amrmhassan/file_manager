@@ -82,13 +82,13 @@ class SeekerGestureDetector extends StatelessWidget {
         );
       },
       onPanDown: (details) {
-        mpProvider.setSeekerTouched(true);
+        mpProviderFalse.setSeekerTouched(true);
       },
       onPanEnd: (details) {
-        mpProvider.setSeekerTouched(false);
+        mpProviderFalse.setSeekerTouched(false);
       },
       onPanCancel: () {
-        mpProvider.setSeekerTouched(false);
+        mpProviderFalse.setSeekerTouched(false);
       },
       child: Opacity(
         opacity: 0,
