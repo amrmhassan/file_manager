@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 
 class MediaPlayerProvider extends ChangeNotifier {
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -137,6 +138,7 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //? close video
   void closeVideo() {
+    videoPlayerController?.removeListener(() {});
     videoPlayerController?.dispose();
     videoPlayerController = null;
     isVideoPlaying = false;
@@ -167,7 +169,6 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //? add to current position
   void addToPosition(double p) async {
-    printOnDebug(p);
     Duration? currentPosition = await videoPlayerController?.position;
     if (currentPosition == null) return;
     videoPosition = Duration(
@@ -181,6 +182,35 @@ class MediaPlayerProvider extends ChangeNotifier {
   //? toggle hide video
   void toggleHideVideo() {
     videoHidden = !videoHidden;
+    notifyListeners();
+  }
+
+  //# volume controllers
+  double deviceVolume = 1;
+  //? to set the device volume
+  void setDeviceVolume(double v) {
+    volume_controllers.VolumeController().setVolume(v, showSystemUI: false);
+  }
+
+//? to change device volume with a slider
+  void addToDeviceVolume(double v) {
+    deviceVolume += v;
+    videoVolume += v;
+    if (deviceVolume < 0) deviceVolume = 0;
+    if (deviceVolume > 1) deviceVolume = 1;
+    setDeviceVolume(deviceVolume);
+    notifyListeners();
+  }
+
+//? to update the device volume from the original android volume
+  Future updateDeviceVolume() async {
+    deviceVolume = await volume_controllers.VolumeController().getVolume();
+    volume_controllers.VolumeController().listener(
+      (p0) {
+        deviceVolume = p0;
+        notifyListeners();
+      },
+    );
     notifyListeners();
   }
 }
