@@ -2,8 +2,10 @@
 
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
+import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class VideoPositionViewer extends StatelessWidget {
@@ -14,6 +16,13 @@ class VideoPositionViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    var mpProviderFalse =
+        Provider.of<MediaPlayerProvider>(context, listen: false);
+    DateTime startDate = DateTime(2000, 1, 1, 0, 0, 0);
+    String fullDuration = DateFormat('HH:mm:ss')
+        .format(startDate.add(mpProviderFalse.videoDuration!));
+    String currentDuration = DateFormat('HH:mm:ss')
+        .format(startDate.add(mpProviderFalse.videoPosition));
 
     return mpProvider.seekerTouched
         ? Column(
@@ -55,6 +64,16 @@ class VideoPositionViewer extends StatelessWidget {
                         ),
                       ),
                     ),
+                    VSpace(factor: .5),
+                    PaddingWrapper(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(currentDuration),
+                          Text(fullDuration),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),

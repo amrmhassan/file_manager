@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/global/widgets/video_player_viewer/widgets/video_paused_button.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/video_position_viewer.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/volume_viewer.dart';
 import 'package:explorer/providers/media_player_provider.dart';
@@ -127,6 +130,7 @@ class VideoPlayerViewer extends StatelessWidget {
                   )
                 ],
               ),
+              VideoPausedButton(),
             ],
           );
   }
