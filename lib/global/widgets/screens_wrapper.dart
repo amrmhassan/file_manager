@@ -4,6 +4,7 @@ import 'package:explorer/global/widgets/video_player_viewer/video_player_viewer.
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/show_controllers_button.dart';
+import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player_show_button.dart';
 import 'package:flutter/material.dart';
 
 class ScreensWrapper extends StatelessWidget {
@@ -65,6 +66,16 @@ class ScreensWrapper extends StatelessWidget {
                   children: [
                     ShowControllersButton(),
                     HSpace(),
+                  ],
+                ),
+              ),
+              Positioned(
+                left: 0,
+                bottom: -1,
+                child: Row(
+                  children: [
+                    HSpace(),
+                    VideoPlayerShowButton(),
                   ],
                 ),
               ),

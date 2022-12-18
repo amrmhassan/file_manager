@@ -20,7 +20,7 @@ class VideoPositionViewer extends StatelessWidget {
         Provider.of<MediaPlayerProvider>(context, listen: false);
     DateTime startDate = DateTime(2000, 1, 1, 0, 0, 0);
     String fullDuration = DateFormat('HH:mm:ss')
-        .format(startDate.add(mpProviderFalse.videoDuration!));
+        .format(startDate.add(mpProviderFalse.videoDuration ?? Duration.zero));
     String currentDuration = DateFormat('HH:mm:ss')
         .format(startDate.add(mpProviderFalse.videoPosition));
 

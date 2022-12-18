@@ -21,9 +21,8 @@ class VideoPlayerViewer extends StatelessWidget {
     var mpProviderFalse =
         Provider.of<MediaPlayerProvider>(context, listen: false);
 
-    return mpProvider.videoPlayerController == null
-        ? SizedBox()
-        : Stack(
+    return mpProvider.videoPlayerController != null && (!mpProvider.videoHidden)
+        ? Stack(
             alignment: Alignment.center,
             children: [
               ActualVideoPlayer(mpProvider: mpProvider),
@@ -48,9 +47,10 @@ class VideoPlayerViewer extends StatelessWidget {
               ),
               VolumeViewer(),
               VideoPositionViewer(),
-              VideoControllers(),
+              BottomVideoControllers(),
               VideoPausedButton(),
             ],
-          );
+          )
+        : SizedBox();
   }
 }

@@ -141,6 +141,8 @@ class MediaPlayerProvider extends ChangeNotifier {
     videoPlayerController?.dispose();
     videoPlayerController = null;
     isVideoPlaying = false;
+    videoDuration = null;
+    videoPosition = Duration.zero;
     notifyListeners();
   }
 
