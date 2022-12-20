@@ -12,7 +12,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/providers/children_items_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';

@@ -2,6 +2,7 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/folder_scroll_model.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class ChildrenItemsProvider extends ChangeNotifier {
@@ -39,6 +40,7 @@ class ChildrenItemsProvider extends ChangeNotifier {
     FolderScrollModel folderScrollModel =
         FolderScrollModel(offset: offset, path: path);
     foldersScrolling.add(folderScrollModel);
+    printOnDebug(folderScrollModel.offset);
     notifyListeners();
   }
 

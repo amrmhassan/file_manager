@@ -1,3 +1,4 @@
+import 'package:explorer/screens/explorer_screen/widgets/children_view_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,8 @@ enum SortOption {
   typeAsc,
   typeDec,
 }
+
+//? this is the controller of the viewed children list, that view the entities
 
 class ExplorerProvider extends ChangeNotifier {
   String? _activeTabPath;
@@ -201,6 +204,7 @@ class ExplorerProvider extends ChangeNotifier {
     }
   }
 
+//? the viewed children
   Future<List<StorageItemModel>> viewedChildren(
     BuildContext context, [
     bool sizesExplorer = false,
@@ -247,6 +251,7 @@ class ExplorerProvider extends ChangeNotifier {
     }
   }
 
+//? go back
   void goBack({
     required AnalyzerProvider? analyzerProvider,
     required bool sizesExplorer,

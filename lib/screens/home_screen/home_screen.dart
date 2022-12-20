@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/providers/children_items_provider.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 

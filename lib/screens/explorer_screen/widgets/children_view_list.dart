@@ -3,7 +3,7 @@
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
-import 'package:explorer/providers/children_info_provider.dart';
+import 'package:explorer/providers/children_items_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,6 @@ class ChildrenViewList extends StatefulWidget {
 
 class _ChildrenViewListState extends State<ChildrenViewList> {
   ScrollController scrollController = ScrollController();
-  List<StorageItemModel> fixedEntityList = [];
 
 //? this will arrange the children with size if the size explorer is true
 
@@ -37,13 +36,6 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
   void initState() {
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
-    // Future.delayed(Duration.zero).then((value) async {
-    //   var test =
-    //       await expProviderFalse.viewedChildren(context, widget.sizesExplorer);
-    //   setState(() {
-    //     fixedEntityList = test;
-    //   });
-    // });
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       scrollController.removeListener(() {});
@@ -117,7 +109,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
                 if (viewedList == null) return EmptyFolder();
                 return viewedList.isNotEmpty
                     ? ListView.builder(
-                        // controller: scrollController,
+                        controller: scrollController,
                         physics: BouncingScrollPhysics(),
                         itemCount: viewedList.length,
                         itemBuilder: (context, index) {
