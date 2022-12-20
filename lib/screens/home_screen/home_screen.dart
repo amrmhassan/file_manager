@@ -34,7 +34,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int activeViewIndex = 0;
   late PageController pageController;
   int exitCounter = 0;
   SendPort? globalSendPort;
@@ -46,15 +45,14 @@ class _HomeScreenState extends State<HomeScreen> {
       duration: homePageViewDuration,
       curve: Curves.easeInOut,
     );
-    setState(() {
-      activeViewIndex = i;
-    });
+    Provider.of<ExplorerProvider>(context, listen: false).setActivePageIndex(i);
   }
 
   @override
   void initState() {
     pageController = PageController(
-      initialPage: activeViewIndex,
+      initialPage:
+          Provider.of<ExplorerProvider>(context, listen: false).activeViewIndex,
     );
     Future.delayed(Duration.zero).then((value) async {
       var recentProvider = Provider.of<RecentProvider>(context, listen: false);
@@ -83,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var expProvider = Provider.of<ExplorerProvider>(context);
     return WillPopScope(
       onWillPop: () => handlePressPhoneBackButton(
         context: context,
@@ -104,16 +103,15 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               children: [
                 HomeAppBar(
-                  activeScreenIndex: activeViewIndex,
+                  activeScreenIndex: expProvider.activeViewIndex,
                   setActiveScreen: setActiveScreen,
                   sizesExplorer: false,
                 ),
                 Expanded(
                   child: PageView(
                     onPageChanged: (value) {
-                      setState(() {
-                        activeViewIndex = value;
-                      });
+                      Provider.of<ExplorerProvider>(context, listen: false)
+                          .setActivePageIndex(value);
                     },
                     controller: pageController,
                     physics: BouncingScrollPhysics(),

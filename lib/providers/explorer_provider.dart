@@ -34,6 +34,12 @@ enum SortOption {
 }
 
 class ExplorerProvider extends ChangeNotifier {
+  int activeViewIndex = 0;
+  void setActivePageIndex(int i) {
+    activeViewIndex = i;
+    notifyListeners();
+  }
+
   String? _activeTabPath;
   String? get activeTabPath {
     if (_tabs.isNotEmpty && _activeTabPath == null) {
