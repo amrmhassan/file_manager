@@ -4,7 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:flutter/material.dart';
 
-ScrollController scrollController = ScrollController();
+PageController pageController = PageController();
 
 class TestScreen extends StatefulWidget {
   static const String routeName = '/testing-screen';
@@ -15,24 +15,71 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
+  int activeViewIndex = 0;
   bool hidden = false;
+
+  void forward() {
+    setState(() {
+      activeViewIndex++;
+    });
+    pageController.animateToPage(activeViewIndex,
+        duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
+
+  void backward() {
+    setState(() {
+      activeViewIndex--;
+    });
+    pageController.animateToPage(activeViewIndex,
+        duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
+
+  @override
+  void initState() {
+    pageController = PageController(
+      initialPage: activeViewIndex,
+    );
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
         children: [
-          if (!hidden)
-            Expanded(
-              child: TestListView(),
-            ),
-          if (hidden) Spacer(),
+          hidden
+              ? Expanded(child: SizedBox())
+              : Expanded(
+                  child: PageView(
+                    physics: BouncingScrollPhysics(),
+                    controller: pageController,
+                    onPageChanged: (value) {
+                      setState(() {
+                        activeViewIndex = value;
+                      });
+                    },
+                    children: [
+                      Container(
+                        color: Colors.red,
+                      ),
+                      Container(
+                        color: Colors.blue,
+                      ),
+                    ],
+                  ),
+                ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton(
-                onPressed: onTap,
-                child: Text('Scroll'),
+                onPressed: activeViewIndex <= 0
+                    ? null
+                    : () {
+                        backward();
+                      },
+                child: Text('Left'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -40,44 +87,20 @@ class _TestScreenState extends State<TestScreen> {
                     hidden = !hidden;
                   });
                 },
-                child: Text(!hidden ? 'Hide' : 'View'),
+                child: Text(hidden ? 'Show' : 'Hide'),
+              ),
+              ElevatedButton(
+                onPressed: activeViewIndex >= 1
+                    ? null
+                    : () {
+                        forward();
+                      },
+                child: Text('Right'),
               ),
             ],
-          ),
+          )
         ],
       ),
     );
   }
-}
-
-class TestListView extends StatelessWidget {
-  const TestListView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      controller: scrollController,
-      physics: BouncingScrollPhysics(),
-      children: [
-        ...List.generate(
-          50,
-          (index) => Container(
-            color: Colors.red,
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-            width: double.infinity,
-            margin: EdgeInsets.only(bottom: 10),
-            child: Text(index.toString()),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-onTap() {
-  if (!scrollController.hasClients) return;
-  scrollController.animateTo(500,
-      curve: Curves.bounceIn, duration: Duration(milliseconds: 500));
 }
