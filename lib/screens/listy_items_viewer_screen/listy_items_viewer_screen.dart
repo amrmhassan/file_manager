@@ -7,8 +7,12 @@ import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
+import 'package:explorer/screens/home_screen/home_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -114,7 +118,27 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
                                 child: StorageItem(
                                   allowSelect: false,
                                   storageItemModel: e,
-                                  onDirTapped: (path) {},
+                                  onDirTapped: (path) {
+                                    var expProvider =
+                                        Provider.of<ExplorerProvider>(
+                                      context,
+                                      listen: false,
+                                    );
+                                    var foProvider =
+                                        Provider.of<FilesOperationsProvider>(
+                                      context,
+                                      listen: false,
+                                    );
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    try {
+                                      expProvider.addTab(path, foProvider);
+                                    } catch (e) {
+                                      printOnDebug('This tab already exists');
+                                    }
+
+                                    setActiveScreen(context, 1);
+                                  },
                                   sizesExplorer: false,
                                   parentSize: 0,
                                 ),

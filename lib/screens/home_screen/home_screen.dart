@@ -23,6 +23,17 @@ import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 
+PageController pageController = PageController();
+//? set the current active screen
+void setActiveScreen(BuildContext context, int i) {
+  pageController.animateToPage(
+    i,
+    duration: homePageViewDuration,
+    curve: Curves.easeInOut,
+  );
+  Provider.of<ExplorerProvider>(context, listen: false).setActivePageIndex(i);
+}
+
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
 
@@ -35,19 +46,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late PageController pageController;
   int exitCounter = 0;
   SendPort? globalSendPort;
-
-//? set the current active screen
-  void setActiveScreen(int i) {
-    pageController.animateToPage(
-      i,
-      duration: homePageViewDuration,
-      curve: Curves.easeInOut,
-    );
-    Provider.of<ExplorerProvider>(context, listen: false).setActivePageIndex(i);
-  }
 
   @override
   void initState() {
@@ -96,7 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     HomeAppBar(
                       activeScreenIndex: expProvider.activeViewIndex,
-                      setActiveScreen: setActiveScreen,
+                      setActiveScreen: (index) =>
+                          setActiveScreen(context, index),
                       sizesExplorer: false,
                     ),
                     Expanded(
@@ -142,7 +143,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       HomeAppBar(
                         activeScreenIndex: expProvider.activeViewIndex,
-                        setActiveScreen: setActiveScreen,
+                        setActiveScreen: (index) =>
+                            setActiveScreen(context, index),
                         sizesExplorer: false,
                       ),
                       Expanded(
