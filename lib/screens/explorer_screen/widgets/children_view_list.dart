@@ -28,38 +28,6 @@ class ChildrenViewList extends StatefulWidget {
 }
 
 class _ChildrenViewListState extends State<ChildrenViewList> {
-  ScrollController scrollController = ScrollController();
-  List<StorageItemModel> fixedEntityList = [];
-
-//? this will arrange the children with size if the size explorer is true
-
-  @override
-  void initState() {
-    var expProviderFalse =
-        Provider.of<ExplorerProvider>(context, listen: false);
-    // Future.delayed(Duration.zero).then((value) async {
-    //   var test =
-    //       await expProviderFalse.viewedChildren(context, widget.sizesExplorer);
-    //   setState(() {
-    //     fixedEntityList = test;
-    //   });
-    // });
-
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      scrollController.removeListener(() {});
-
-      scrollController.addListener(() {
-        Provider.of<ChildrenItemsProvider>(context, listen: false)
-            .setFolderScroll(
-          expProviderFalse.currentActiveDir.path,
-          scrollController.offset,
-        );
-      });
-    });
-
-    super.initState();
-  }
-
 //? to update when path changes
   @override
   void didUpdateWidget(covariant ChildrenViewList oldWidget) {
@@ -101,12 +69,10 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
 
   @override
   Widget build(BuildContext context) {
-    bool test = false;
     var expProvider = Provider.of<ExplorerProvider>(context);
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
-    var analyzerProviderFalse =
-        Provider.of<AnalyzerProvider>(context, listen: false);
+
     return expProvider.loadingChildren && expProvider.children.isEmpty
         ? Center(child: CircularProgressIndicator())
         : FutureBuilder(
@@ -116,34 +82,9 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
                 var viewedList = snapshot.data;
                 if (viewedList == null) return EmptyFolder();
                 return viewedList.isNotEmpty
-                    ? ListView.builder(
-                        // controller: scrollController,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: viewedList.length,
-                        itemBuilder: (context, index) {
-                          StorageItemModel f = viewedList[index];
-                          return test
-                              ? TestEntity(f: f)
-                              : StorageItem(
-                                  key: Key(f.path),
-                                  storageItemModel: f,
-                                  onDirTapped: (path) {
-                                    var foProvider =
-                                        Provider.of<FilesOperationsProvider>(
-                                      context,
-                                      listen: false,
-                                    );
-                                    expProviderFalse.setActiveDir(
-                                      path: path,
-                                      sizesExplorer: widget.sizesExplorer,
-                                      analyzerProvider: analyzerProviderFalse,
-                                      filesOperationsProvider: foProvider,
-                                    );
-                                  },
-                                  sizesExplorer: widget.sizesExplorer,
-                                  parentSize: expProvider.parentSize ?? 0,
-                                );
-                        },
+                    ? EntitiesListViewBuilder(
+                        sizesExplorer: widget.sizesExplorer,
+                        viewedList: viewedList,
                       )
                     : expProviderFalse.error == null
                         ? (!expProviderFalse.loadingChildren
@@ -158,28 +99,99 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
   }
 }
 
-class TestEntity extends StatelessWidget {
-  const TestEntity({
+//? the list to control
+class EntitiesListViewBuilder extends StatefulWidget {
+  final List<StorageItemModel> viewedList;
+  final bool sizesExplorer;
+
+  const EntitiesListViewBuilder({
     Key? key,
-    required this.f,
+    required this.viewedList,
+    required this.sizesExplorer,
   }) : super(key: key);
 
-  final StorageItemModel f;
+  @override
+  State<EntitiesListViewBuilder> createState() =>
+      _EntitiesListViewBuilderState();
+}
+
+class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
+  ScrollController scrollController = ScrollController();
+
+//? this will get the scrolling position and update it
+  void updateScrollingPosition() {
+    String path = Provider.of<ExplorerProvider>(context, listen: false)
+        .currentActiveDir
+        .path;
+    double scrollPosition =
+        Provider.of<ChildrenItemsProvider>(context, listen: false)
+                .getScrollingPosition(path) ??
+            0;
+    scrollController.animateTo(scrollPosition,
+        duration: Duration(milliseconds: 500), curve: Curves.bounceIn);
+  }
+
+  @override
+  void initState() {
+    var expProviderFalse =
+        Provider.of<ExplorerProvider>(context, listen: false);
+
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      scrollController.removeListener(() {});
+
+      scrollController.addListener(() {
+        Provider.of<ChildrenItemsProvider>(context, listen: false)
+            .setFolderScroll(
+          expProviderFalse.currentActiveDir.path,
+          scrollController.offset,
+        );
+      });
+      updateScrollingPosition();
+    });
+
+    super.initState();
+  }
+
+  // @override
+  // void didUpdateWidget(covariant EntitiesListViewBuilder oldWidget) {
+  //   print('update widget');
+  //   updateScrollingPosition();
+  //   super.didUpdateWidget(oldWidget);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      margin: EdgeInsets.only(
-        bottom: 10,
-      ),
-      child: Text(
-        path_operations.basename(f.path),
-        style: h4TextStyle.copyWith(
-          color: Colors.white,
-        ),
-      ),
+    var expProvider = Provider.of<ExplorerProvider>(context);
+    var expProviderFalse =
+        Provider.of<ExplorerProvider>(context, listen: false);
+    var analyzerProviderFalse =
+        Provider.of<AnalyzerProvider>(context, listen: false);
+
+    return ListView.builder(
+      controller: scrollController,
+      physics: BouncingScrollPhysics(),
+      itemCount: widget.viewedList.length,
+      itemBuilder: (context, index) {
+        StorageItemModel f = widget.viewedList[index];
+        return StorageItem(
+          key: Key(f.path),
+          storageItemModel: f,
+          onDirTapped: (path) {
+            var foProvider = Provider.of<FilesOperationsProvider>(
+              context,
+              listen: false,
+            );
+            expProviderFalse.setActiveDir(
+              path: path,
+              sizesExplorer: widget.sizesExplorer,
+              analyzerProvider: analyzerProviderFalse,
+              filesOperationsProvider: foProvider,
+            );
+          },
+          sizesExplorer: widget.sizesExplorer,
+          parentSize: expProvider.parentSize ?? 0,
+        );
+      },
     );
   }
 }
