@@ -84,8 +84,43 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var expProvider = Provider.of<ExplorerProvider>(context);
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
-    return mpProvider.videoHidden && mpProvider.videoPlayerController != null
-        ? WillPopScope(
+
+    return !mpProvider.videoHidden && mpProvider.videoPlayerController != null
+        ? ScreensWrapper(
+            scfKey: expScreenKey,
+            drawer: CustomAppDrawer(),
+            backgroundColor: kBackgroundColor,
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    HomeAppBar(
+                      activeScreenIndex: expProvider.activeViewIndex,
+                      setActiveScreen: setActiveScreen,
+                      sizesExplorer: false,
+                    ),
+                    Expanded(
+                      child: PageView(
+                        onPageChanged: (value) {
+                          Provider.of<ExplorerProvider>(context, listen: false)
+                              .setActivePageIndex(value);
+                        },
+                        controller: pageController,
+                        physics: BouncingScrollPhysics(),
+                        children: [
+                          RecentScreen(),
+                          ExplorerScreen(
+                            sizesExplorer: false,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )
+        : WillPopScope(
             onWillPop: () => handlePressPhoneBackButton(
               context: context,
               exitCounter: exitCounter,
@@ -131,40 +166,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-            ),
-          )
-        : ScreensWrapper(
-            scfKey: expScreenKey,
-            drawer: CustomAppDrawer(),
-            backgroundColor: kBackgroundColor,
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-                    HomeAppBar(
-                      activeScreenIndex: expProvider.activeViewIndex,
-                      setActiveScreen: setActiveScreen,
-                      sizesExplorer: false,
-                    ),
-                    Expanded(
-                      child: PageView(
-                        onPageChanged: (value) {
-                          Provider.of<ExplorerProvider>(context, listen: false)
-                              .setActivePageIndex(value);
-                        },
-                        controller: pageController,
-                        physics: BouncingScrollPhysics(),
-                        children: [
-                          RecentScreen(),
-                          ExplorerScreen(
-                            sizesExplorer: false,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ),
           );
   }
