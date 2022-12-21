@@ -7,6 +7,7 @@ import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
+import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
@@ -82,52 +83,89 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var expProvider = Provider.of<ExplorerProvider>(context);
-    return WillPopScope(
-      onWillPop: () => handlePressPhoneBackButton(
-        context: context,
-        exitCounter: exitCounter,
-        sizesExplorer: false,
-        clearExitCounter: () {
-          exitCounter = 0;
-        },
-        incrementExitCounter: () {
-          exitCounter++;
-        },
-      ),
-      child: ScreensWrapper(
-        scfKey: expScreenKey,
-        drawer: CustomAppDrawer(),
-        backgroundColor: kBackgroundColor,
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                HomeAppBar(
-                  activeScreenIndex: expProvider.activeViewIndex,
-                  setActiveScreen: setActiveScreen,
-                  sizesExplorer: false,
-                ),
-                Expanded(
-                  child: PageView(
-                    onPageChanged: (value) {
-                      Provider.of<ExplorerProvider>(context, listen: false)
-                          .setActivePageIndex(value);
-                    },
-                    controller: pageController,
-                    physics: BouncingScrollPhysics(),
+    var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    return mpProvider.videoHidden && mpProvider.videoPlayerController != null
+        ? WillPopScope(
+            onWillPop: () => handlePressPhoneBackButton(
+              context: context,
+              exitCounter: exitCounter,
+              sizesExplorer: false,
+              clearExitCounter: () {
+                exitCounter = 0;
+              },
+              incrementExitCounter: () {
+                exitCounter++;
+              },
+            ),
+            child: ScreensWrapper(
+              scfKey: expScreenKey,
+              drawer: CustomAppDrawer(),
+              backgroundColor: kBackgroundColor,
+              child: Stack(
+                children: [
+                  Column(
                     children: [
-                      RecentScreen(),
-                      ExplorerScreen(
+                      HomeAppBar(
+                        activeScreenIndex: expProvider.activeViewIndex,
+                        setActiveScreen: setActiveScreen,
                         sizesExplorer: false,
+                      ),
+                      Expanded(
+                        child: PageView(
+                          onPageChanged: (value) {
+                            Provider.of<ExplorerProvider>(context,
+                                    listen: false)
+                                .setActivePageIndex(value);
+                          },
+                          controller: pageController,
+                          physics: BouncingScrollPhysics(),
+                          children: [
+                            RecentScreen(),
+                            ExplorerScreen(
+                              sizesExplorer: false,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
+                ],
+              ),
+            ),
+          )
+        : ScreensWrapper(
+            scfKey: expScreenKey,
+            drawer: CustomAppDrawer(),
+            backgroundColor: kBackgroundColor,
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    HomeAppBar(
+                      activeScreenIndex: expProvider.activeViewIndex,
+                      setActiveScreen: setActiveScreen,
+                      sizesExplorer: false,
+                    ),
+                    Expanded(
+                      child: PageView(
+                        onPageChanged: (value) {
+                          Provider.of<ExplorerProvider>(context, listen: false)
+                              .setActivePageIndex(value);
+                        },
+                        controller: pageController,
+                        physics: BouncingScrollPhysics(),
+                        children: [
+                          RecentScreen(),
+                          ExplorerScreen(
+                            sizesExplorer: false,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

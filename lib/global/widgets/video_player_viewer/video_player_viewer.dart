@@ -34,30 +34,38 @@ class _VideoPlayerViewerState extends State<VideoPlayerViewer> {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
 
     return mpProvider.videoPlayerController != null && (!mpProvider.videoHidden)
-        ? Stack(
-            alignment: Alignment.center,
-            children: [
-              ActualVideoPlayer(mpProvider: mpProvider),
-              Column(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        VideoPlayGestureDetector(),
-                        //? volume controller
-                        VolumeGestureDetector()
-                      ],
+        ? WillPopScope(
+            onWillPop: () async {
+              Provider.of<MediaPlayerProvider>(context, listen: false)
+                  .toggleHideVideo();
+
+              return false;
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                ActualVideoPlayer(mpProvider: mpProvider),
+                Column(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          VideoPlayGestureDetector(),
+                          //? volume controller
+                          VolumeGestureDetector()
+                        ],
+                      ),
                     ),
-                  ),
-                  //? seeker controller
-                  SeekerGestureDetector()
-                ],
-              ),
-              VolumeViewer(),
-              VideoPositionViewer(),
-              BottomVideoControllers(),
-              VideoPausedButton(),
-            ],
+                    //? seeker controller
+                    SeekerGestureDetector()
+                  ],
+                ),
+                VolumeViewer(),
+                VideoPositionViewer(),
+                BottomVideoControllers(),
+                VideoPausedButton(),
+              ],
+            ),
           )
         : SizedBox();
   }

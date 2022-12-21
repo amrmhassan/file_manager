@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -259,7 +260,13 @@ class ExplorerProvider extends ChangeNotifier {
     required AnalyzerProvider? analyzerProvider,
     required bool sizesExplorer,
     required FilesOperationsProvider filesOperationsProvider,
+    required MediaPlayerProvider mediaPlayerProvider,
   }) {
+    if (mediaPlayerProvider.videoPlayerController != null &&
+        !mediaPlayerProvider.videoHidden) {
+      mediaPlayerProvider.togglePlayerHidden();
+      return;
+    }
     if (currentActiveDir.parent.path == '.') return;
     setActiveDir(
       path: currentActiveDir.parent.path,
