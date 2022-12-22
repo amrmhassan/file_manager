@@ -86,6 +86,7 @@ class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
       itemBuilder: (context, index) {
         StorageItemModel f = widget.viewedList[index];
         return StorageItem(
+          allowShowingFavIcon: true,
           key: Key(f.path),
           storageItemModel: f,
           onDirTapped: (path) {

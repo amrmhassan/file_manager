@@ -20,6 +20,7 @@ class StorageItem extends StatelessWidget {
   final bool sizesExplorer;
   final int parentSize;
   final bool allowSelect;
+  final bool allowShowingFavIcon;
 
   const StorageItem({
     super.key,
@@ -28,6 +29,7 @@ class StorageItem extends StatelessWidget {
     required this.sizesExplorer,
     required this.parentSize,
     this.allowSelect = true,
+    this.allowShowingFavIcon = false,
   });
 
   bool isSelected(BuildContext context) {
@@ -83,6 +85,7 @@ class StorageItem extends StatelessWidget {
                     parentSize: parentSize,
                     sizesExplorer: sizesExplorer,
                     isSelected: isSelected(context),
+                    allowShowingFavIcon: allowShowingFavIcon,
                   )
                 : ChildFileItem(
                     storageItemModel: storageItemModel,

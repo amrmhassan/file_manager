@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/defaults_constants.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
@@ -14,6 +15,7 @@ import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
@@ -35,6 +37,7 @@ class ChildDirectoryItem extends StatefulWidget {
   final bool sizesExplorer;
   final int parentSize;
   final bool isSelected;
+  final bool allowShowingFavIcon;
 
   const ChildDirectoryItem({
     super.key,
@@ -43,6 +46,7 @@ class ChildDirectoryItem extends StatefulWidget {
     required this.sizesExplorer,
     required this.parentSize,
     required this.isSelected,
+    required this.allowShowingFavIcon,
   });
 
   @override
@@ -55,7 +59,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   FileStat? fileStat;
   double? height = 60;
   late int parentSize;
-
+  bool isFavorite = false;
   String? error;
 
 //? to add data to sqlite
@@ -82,22 +86,35 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     return update;
   }
 
-  // void updateFolderSize() {
-  //   Future.delayed(Duration.zero).then((value) async {
-  //     //? here i will update the current active dir size
-  //     LocalFolderInfo? localFolderInfo =
-  //         await Provider.of<AnalyzerProvider>(context, listen: false)
-  //             .getDirInfoByPath(widget.storageItemModel.path);
-  //     if (localFolderInfo != null && localFolderInfo.size != null) {
-  //       setState(() {
-  //         size = localFolderInfo.size;
-  //       });
-  //     }
-  //   });
-  // }
+  //? this will check if the folder is favorite
+  void updateIsFavorite() async {
+    Future.delayed(Duration.zero).then((value) async {
+      if (mounted) {
+        bool isFav = await Provider.of<ListyProvider>(context, listen: false)
+            .itemExistInAListy(
+          path: widget.storageItemModel.path,
+          listyTitle: defaultListyList.first.title,
+        );
+        if (mounted) {
+          setState(() {
+            isFavorite = isFav;
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant ChildDirectoryItem oldWidget) {
+    updateIsFavorite();
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   void initState() {
+    updateIsFavorite();
+
+    //? this will handle getting the parent size
     parentSize = allowSizesExpAnimation ? 0 : widget.parentSize;
     Future.delayed(entitySizePercentageDuration).then((value) {
       if (mounted) {
@@ -106,6 +123,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
         });
       }
     });
+    //? this is for setting the height to animate
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
@@ -158,121 +176,136 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   @override
   Widget build(BuildContext context) {
     var foProvider = Provider.of<FilesOperationsProvider>(context);
-    // Directory dir = Directory(widget.storageItemModel.path);
-    // bool exists = dir.existsSync();
-    return
-        // !exists
-        //     ? SizedBox()
-        //     :
-        Stack(
-      children: [
-        if (widget.sizesExplorer)
-          AnimatedContainer(
-            duration: entitySizePercentageDuration,
-            width: Responsive.getWidthPercentage(
-              context,
-              getSizePercentage(
-                widget.storageItemModel.size ?? 0,
-                parentSize,
-              ),
-            ),
-            color: kInactiveColor.withOpacity(.2),
-            height: height,
-          ),
-        Column(
-          key: key,
-          children: [
-            VSpace(factor: .5),
-            PaddingWrapper(
-              child: Row(
-                children: [
-                  Image.asset(
-                    'assets/icons/folder_colorful.png',
-                    width: largeIconSize,
+    Directory dir = Directory(widget.storageItemModel.path);
+    bool exists = dir.existsSync();
+
+    return !exists
+        ? SizedBox()
+        : Stack(
+            children: [
+              if (widget.sizesExplorer)
+                AnimatedContainer(
+                  duration: entitySizePercentageDuration,
+                  width: Responsive.getWidthPercentage(
+                    context,
+                    getSizePercentage(
+                      widget.storageItemModel.size ?? 0,
+                      parentSize,
+                    ),
                   ),
-                  HSpace(),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  color: kInactiveColor.withOpacity(.2),
+                  height: height,
+                ),
+              Column(
+                key: key,
+                children: [
+                  VSpace(factor: .5),
+                  PaddingWrapper(
+                    child: Row(
                       children: [
-                        Text(
-                          widget.fileName,
-                          style: h4LightTextStyle,
-                          maxLines: 1,
-                          // overflow: TextOverflow.ellipsis,
-                        ),
-                        Row(
+                        Stack(
+                          alignment: Alignment.topRight,
+                          clipBehavior: Clip.none,
                           children: [
-                            error == null
-                                ? Text(
-                                    childrenNumber == null
-                                        ? '...'
-                                        : '$childrenNumber Items',
-                                    style: h5InactiveTextStyle.copyWith(
-                                      height: 1,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                : Text(
-                                    'System',
-                                    style:
-                                        h5InactiveTextStyle.copyWith(height: 1),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                            if (fileStat != null)
-                              Row(
-                                children: [
-                                  Text(
-                                    ' | ',
-                                    style:
-                                        h5InactiveTextStyle.copyWith(height: 1),
-                                  ),
-                                  Text(
-                                    widget.sizesExplorer
-                                        ? handleConvertSize(
-                                            widget.storageItemModel.size ?? 0)
-                                        : DateFormat('yyyy-MM-dd')
-                                            .format(fileStat!.changed),
-                                    style:
-                                        h5InactiveTextStyle.copyWith(height: 1),
-                                  )
-                                ],
+                            Image.asset(
+                              'assets/icons/folder_colorful.png',
+                              width: largeIconSize,
+                            ),
+                            if (isFavorite && widget.allowShowingFavIcon)
+                              Positioned(
+                                right: -smallIconSize / 2,
+                                top: -smallIconSize / 5,
+                                child: Image.asset(
+                                  'assets/icons/heart.png',
+                                  width: smallIconSize,
+                                ),
                               ),
                           ],
                         ),
+                        HSpace(),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.fileName,
+                                style: h4LightTextStyle,
+                                maxLines: 1,
+                                // overflow: TextOverflow.ellipsis,
+                              ),
+                              Row(
+                                children: [
+                                  error == null
+                                      ? Text(
+                                          childrenNumber == null
+                                              ? '...'
+                                              : '$childrenNumber Items',
+                                          style: h5InactiveTextStyle.copyWith(
+                                            height: 1,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        )
+                                      : Text(
+                                          'System',
+                                          style: h5InactiveTextStyle.copyWith(
+                                              height: 1),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                  if (fileStat != null)
+                                    Row(
+                                      children: [
+                                        Text(
+                                          ' | ',
+                                          style: h5InactiveTextStyle.copyWith(
+                                              height: 1),
+                                        ),
+                                        Text(
+                                          widget.sizesExplorer
+                                              ? handleConvertSize(widget
+                                                      .storageItemModel.size ??
+                                                  0)
+                                              : DateFormat('yyyy-MM-dd')
+                                                  .format(fileStat!.changed),
+                                          style: h5InactiveTextStyle.copyWith(
+                                              height: 1),
+                                        )
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (widget.sizesExplorer)
+                          Text(
+                            sizePercentageString(
+                              getSizePercentage(
+                                widget.storageItemModel.size ?? 0,
+                                parentSize,
+                              ),
+                            ),
+                            style: h4TextStyleInactive.copyWith(
+                              color: kInActiveTextColor.withOpacity(.7),
+                            ),
+                          ),
+                        foProvider.exploreMode == ExploreMode.selection
+                            ? EntityCheckBox(
+                                isSelected: widget.isSelected,
+                                storageItemModel: widget.storageItemModel,
+                              )
+                            : Image.asset(
+                                'assets/icons/right-arrow.png',
+                                width: mediumIconSize,
+                                color: kMainIconColor.withOpacity(.4),
+                              )
                       ],
                     ),
                   ),
-                  if (widget.sizesExplorer)
-                    Text(
-                      sizePercentageString(
-                        getSizePercentage(
-                          widget.storageItemModel.size ?? 0,
-                          parentSize,
-                        ),
-                      ),
-                      style: h4TextStyleInactive.copyWith(
-                        color: kInActiveTextColor.withOpacity(.7),
-                      ),
-                    ),
-                  foProvider.exploreMode == ExploreMode.selection
-                      ? EntityCheckBox(
-                          isSelected: widget.isSelected,
-                          storageItemModel: widget.storageItemModel,
-                        )
-                      : Image.asset(
-                          'assets/icons/right-arrow.png',
-                          width: mediumIconSize,
-                          color: kMainIconColor.withOpacity(.4),
-                        )
+                  VSpace(factor: .5),
+                  HomeItemHLine(),
                 ],
               ),
-            ),
-            VSpace(factor: .5),
-            HomeItemHLine(),
-          ],
-        ),
-      ],
-    );
+            ],
+          );
   }
 }
