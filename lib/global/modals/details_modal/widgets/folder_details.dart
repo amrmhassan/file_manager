@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/widgets/detail_item.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
@@ -27,6 +28,7 @@ class FolderDetails extends StatefulWidget {
 
 class _FolderDetailsState extends State<FolderDetails> {
   late FolderDetailsModel folderDetailsModel;
+  bool loading = true;
 
   //? to get single item info
   void getFolderInfo() async {
@@ -46,6 +48,11 @@ class _FolderDetailsState extends State<FolderDetails> {
           });
         }
       },
+      onDone: () {
+        setState(() {
+          loading = false;
+        });
+      },
     );
   }
 
@@ -63,15 +70,40 @@ class _FolderDetailsState extends State<FolderDetails> {
       afterLinePaddingFactor: 1,
       child: Column(
         children: [
-          GestureDetector(
-            onTap: () {
-              copyPathToClipboard(context,
-                  path_operations.basename(widget.storageItemModel.path));
-            },
-            child: Text(
-              path_operations.basename(widget.storageItemModel.path),
-              style: h4TextStyle.copyWith(color: Colors.white),
-            ),
+          Stack(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      copyPathToClipboard(
+                          context,
+                          path_operations
+                              .basename(widget.storageItemModel.path));
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      path_operations.basename(widget.storageItemModel.path),
+                      style: h4TextStyle.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              if (loading)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: smallIconSize,
+                      height: smallIconSize,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  ],
+                )
+            ],
           ),
           VSpace(),
           DetailItem(

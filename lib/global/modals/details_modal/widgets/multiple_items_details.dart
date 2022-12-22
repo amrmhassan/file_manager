@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/widgets/detail_item.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -26,6 +27,7 @@ class _MultipleItemsDetailsState extends State<MultipleItemsDetails> {
   int size = 0;
   int filesCount = 0;
   int foldersCount = 0;
+  bool loading = true;
 
 //? to get multiple items info
   void getMultipleItemsDetails() {
@@ -38,16 +40,22 @@ class _MultipleItemsDetailsState extends State<MultipleItemsDetails> {
       } else {
         foldersCount++;
         getFolderDetails(
-            storageItemModel: item,
-            callAfterAvailable: (fdm, oldSize) {
-              if (mounted) {
-                setState(() {
-                  size = size + (fdm.size ?? 0) - (oldSize ?? 0);
-                  foldersCount += fdm.folderCount ?? 0;
-                  filesCount += fdm.filesCount ?? 0;
-                });
-              }
+          storageItemModel: item,
+          callAfterAvailable: (fdm, oldSize) {
+            if (mounted) {
+              setState(() {
+                size = size + (fdm.size ?? 0) - (oldSize ?? 0);
+                foldersCount += fdm.folderCount ?? 0;
+                filesCount += fdm.filesCount ?? 0;
+              });
+            }
+          },
+          onDone: () {
+            setState(() {
+              loading = false;
             });
+          },
+        );
       }
     }
   }
@@ -62,9 +70,31 @@ class _MultipleItemsDetailsState extends State<MultipleItemsDetails> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          '${widget.selectedItems.length} Items',
-          style: h4TextStyle.copyWith(color: Colors.white),
+        Stack(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${widget.selectedItems.length} Items',
+                  style: h4TextStyle.copyWith(color: Colors.white),
+                ),
+              ],
+            ),
+            if (loading)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: smallIconSize,
+                    height: smallIconSize,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                ],
+              )
+          ],
         ),
         VSpace(),
         DetailItem(

@@ -13,6 +13,7 @@ void getFolderDetails({
     int? oldSize,
   )
       callAfterAvailable,
+  required Function() onDone,
 }) async {
   String path = storageItemModel.path;
   FolderDetailsModel folderDetailsModel = FolderDetailsModel(path: path);
@@ -26,13 +27,15 @@ void getFolderDetails({
     FolderDetailsModel folderDetailsModel =
         await _getAndUpdateFolderDetails(path, storageItemModel);
     callAfterAvailable(folderDetailsModel, null);
+    onDone();
   } else {
     //? saved in db
     folderDetailsModel.size = localFolderInfo.size;
     callAfterAvailable(folderDetailsModel, null);
-    FolderDetailsModel latestFoldeDetails =
+    FolderDetailsModel latestFolderDetails =
         await _getAndUpdateFolderDetails(path, storageItemModel);
-    callAfterAvailable(latestFoldeDetails, localFolderInfo.size);
+    callAfterAvailable(latestFolderDetails, localFolderInfo.size);
+    onDone();
   }
 }
 
