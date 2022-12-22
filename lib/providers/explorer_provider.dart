@@ -172,12 +172,12 @@ class ExplorerProvider extends ChangeNotifier
 
   //? to change viewed file name
   @override
-  void changeViewedFName(String oldPath, String newPath) {
-    Directory newFile = Directory(newPath);
-    FileStat fileStat = newFile.statSync();
+  void changeViewedFolderName(String oldPath, String newPath) {
+    Directory newDir = Directory(newPath);
+    FileStat fileStat = newDir.statSync();
     StorageItemModel newItem = StorageItemModel(
-      parentPath: newFile.parent.path,
-      path: newFile.path,
+      parentPath: newDir.parent.path,
+      path: newDir.path,
       modified: fileStat.modified,
       accessed: fileStat.accessed,
       changed: fileStat.changed,
