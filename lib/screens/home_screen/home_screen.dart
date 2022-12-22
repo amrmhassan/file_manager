@@ -23,7 +23,9 @@ import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 
+//* this is the home page controller
 PageController pageController = PageController();
+
 //? set the current active screen
 void setActiveScreen(BuildContext context, int i) {
   pageController.animateToPage(

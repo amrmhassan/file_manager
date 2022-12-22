@@ -132,7 +132,7 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                     try {
-                                      expProvider.addTab(path, foProvider);
+                                      expProvider.openTab(path, foProvider);
                                     } catch (e) {
                                       printOnDebug('This tab already exists');
                                     }
