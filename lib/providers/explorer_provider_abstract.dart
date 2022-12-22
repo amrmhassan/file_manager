@@ -4,10 +4,22 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'dart:isolate';
 import 'dart:io';
 import 'dart:async';
-import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:flutter/material.dart';
+
+// asc means the smallest first or from A to Z or oldest to earliest
+// desc means the largest first
+enum SortOption {
+  nameAsc,
+  nameDes,
+  sizeAsc,
+  sizeDec,
+  modifiedAsc,
+  modifiedDec,
+  typeAsc,
+  typeDec,
+}
 
 abstract class ExplorerProviderAbstract {
   //# active page index (for the home page) explorer or the recent screen

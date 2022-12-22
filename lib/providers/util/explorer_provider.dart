@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/abstract_providers/explorer_provider_abstract.dart';
+import 'package:explorer/providers/explorer_provider_abstract.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,20 +22,6 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
-
-//? asc means the smallest first or from A to Z or oldest to earliest
-//? desc means the largest first
-
-enum SortOption {
-  nameAsc,
-  nameDes,
-  sizeAsc,
-  sizeDec,
-  modifiedAsc,
-  modifiedDec,
-  typeAsc,
-  typeDec,
-}
 
 class ExplorerProvider extends ChangeNotifier
     implements ExplorerProviderAbstract {

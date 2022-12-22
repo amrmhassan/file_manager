@@ -13,7 +13,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
-import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';

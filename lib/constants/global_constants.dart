@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/explorer_provider_abstract.dart';
 
 final Directory initialDir = Directory('sdcard');
 

@@ -3,7 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
-import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';

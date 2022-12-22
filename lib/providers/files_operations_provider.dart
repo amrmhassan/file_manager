@@ -8,7 +8,7 @@ import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/recent_opened_file_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/utils/files_operations_utils/copy_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';

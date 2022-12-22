@@ -7,7 +7,7 @@ import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/providers/explorer_provider.dart';
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
