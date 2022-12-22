@@ -1,4 +1,4 @@
-import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/utils/general_utils.dart';

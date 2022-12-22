@@ -11,7 +11,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
-//! this is good implemtaion it takes about 4 seconds on my phone
+//! this is good implementation it takes about 4 seconds on my phone
 class AdvancedStorageAnalyzer {
   String path;
   List<LocalFileInfo> filesInfo = [];

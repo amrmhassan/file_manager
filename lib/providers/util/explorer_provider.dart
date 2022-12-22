@@ -17,7 +17,7 @@ import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/tab_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';

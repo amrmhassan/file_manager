@@ -9,6 +9,7 @@ import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
+import 'package:explorer/providers/analyzer_provider_abstract.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/recent_screen_utils.dart';
@@ -23,34 +24,44 @@ import 'package:flutter/cupertino.dart';
 //! and for the folders just load the current opened folder children with their info
 //! for the sizes explorer load normal explorer list but with the sizes futures, and the children list will need a parameter of sizesExplorer (bool)
 
-class AnalyzerProvider extends ChangeNotifier {
+class AnalyzerProvider extends ChangeNotifier
+    implements AnalyzerProviderAbstract {
   //? these data will be available after running the analyzer without closing the app
   bool _loading = false;
+  @override
   get loading => _loading;
 
   bool _savingInfoToSqlite = false;
+  @override
   bool get savingInfoToSqlite => _savingInfoToSqlite;
 
   String _currentFolder = '';
-  String get currentFolder => _currentFolder;
+  @override
+  String get currentAnalyzedFolder => _currentFolder;
 
   AdvancedStorageAnalyzer? _advancedStorageAnalyzer;
+  @override
   AdvancedStorageAnalyzer? get advancedStorageAnalyzer =>
       _advancedStorageAnalyzer;
 
   StorageAnalyzerV4? _storageAnalyzerV4;
+  @override
   StorageAnalyzerV4? get storageAnalyzerV4 => _storageAnalyzerV4;
 
   //? these data will be loaded from the sqlite after reopening the app or after running the analyzer
   List<LocalFolderInfo> _foldersInfo = [];
+  @override
   List<LocalFolderInfo>? get foldersInfo => _foldersInfo;
 
   List<ExtensionInfo>? _allExtensionsInfo;
+  @override
   List<ExtensionInfo>? get allExtensionInfo => _allExtensionsInfo;
 
+  @override
   AnalyzerReportInfoModel? reportInfo;
 
   //? last date the user performed (analyzing storage)
+  @override
   DateTime? lastAnalyzingReportDate;
   Future<void> _setLastAnalyzingDate() async {
     DateTime now = DateTime.now();
@@ -60,7 +71,7 @@ class AnalyzerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//? to load the last analyzing date from the shared prefs
+  //? to load the last analyzing date from the shared prefs
   Future<void> _loadLastAnalyzingDate() async {
     String? date = await SharedPrefHelper.getString(lastAnalyzingReportDateKey);
     if (date != null) {
@@ -69,7 +80,8 @@ class AnalyzerProvider extends ChangeNotifier {
     }
   }
 
-//? load data to the app
+  //? load data to the app
+  @override
   Future<void> loadInitialAppData(RecentProvider recentProvider) async {
     await _loadLastAnalyzingDate();
     await _getReportInfo();
@@ -79,7 +91,8 @@ class AnalyzerProvider extends ChangeNotifier {
     }, this);
   }
 
-//? get dir info by path
+  //? get dir info by path
+  @override
   Future<LocalFolderInfo?> getDirInfoByPath(String path) async {
     try {
       LocalFolderInfo localFolderInfo =
@@ -102,7 +115,8 @@ class AnalyzerProvider extends ChangeNotifier {
     }
   }
 
-//? to clear all saved data from the RAM
+  //? to clear all saved data from the RAM
+  @override
   void clearAllData() {
     _currentFolder = '';
     _advancedStorageAnalyzer = null;
@@ -110,7 +124,8 @@ class AnalyzerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//? to start analyzing storage
+  //? to start analyzing storage
+  @override
   Future<void> handleAnalyzeEvent(RecentProvider recentProvider) async {
     // _loading = true;
     ReceivePort receivePort = ReceivePort();
@@ -162,7 +177,7 @@ class AnalyzerProvider extends ChangeNotifier {
     await recentProvider.initialize(_storageAnalyzerV4!);
   }
 
-//? save data to sqlite
+  //? save data to sqlite
   Future<void> _saveResultsToSqlite() async {
     _savingInfoToSqlite = true;
     notifyListeners();
@@ -235,16 +250,19 @@ class AnalyzerProvider extends ChangeNotifier {
   }
 
   //? get total storage size
+  @override
   Future<int> getTotalDiskSpace() async {
     return ((await DiskSpace.getTotalDiskSpace ?? 0) * 1024 * 1024).toInt();
   }
 
   //? get free storage size
+  @override
   Future<int> getFreeDiskSpace() async {
     return ((await DiskSpace.getFreeDiskSpace ?? 0) * 1024 * 1024).toInt();
   }
 
   //? get apps storage size
+  @override
   Future<int> getAppsDiskSpace(int totalFilesSize) async {
     int total = await getTotalDiskSpace();
     int free = await getFreeDiskSpace();

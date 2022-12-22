@@ -1,4 +1,4 @@
-import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/models/tab_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'dart:isolate';

@@ -3,7 +3,7 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/models/recent_opened_file_model.dart';
-import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:flutter/cupertino.dart';
