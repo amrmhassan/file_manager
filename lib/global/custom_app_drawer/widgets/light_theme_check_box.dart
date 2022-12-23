@@ -27,7 +27,7 @@ class LightThemeCheckBox extends StatelessWidget {
       },
       child: ListTile(
         leading: Image.asset(
-          'assets/icons/menu.png',
+          'assets/icons/theme.png',
           width: mediumIconSize,
           color: kInactiveColor,
         ),

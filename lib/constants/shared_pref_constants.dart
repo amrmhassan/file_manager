@@ -9,3 +9,6 @@ const String permissionsGrantedKey = 'permissionsGrantedKey';
 
 //? props keys
 const String activeWishlistIdKey = 'activeWishlistIdKey';
+
+//? settings keys
+const String expEntitiesAnimDurationKey = 'expEntitiesAnimDurationKey';
