@@ -74,7 +74,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                         );
                       },
                       title: 'Big Files',
-                      color: kInverseColor,
+                      color: kMainIconColor,
                     ),
                     VSpace(factor: .5),
                     AnalyzerOptionsItem(
@@ -87,7 +87,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                         );
                       },
                       title: 'Old Files',
-                      color: kInverseColor,
+                      color: kMainIconColor,
                     ),
                     VSpace(factor: .5),
                     AnalyzerOptionsItem(
@@ -100,7 +100,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                         );
                       },
                       title: 'Modified Files',
-                      color: kInverseColor,
+                      color: kMainIconColor,
                     ),
                   ],
                 ),

@@ -88,19 +88,24 @@ class _ListyScreenState extends State<ListyScreen> {
           ),
           VSpace(),
           Expanded(
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: lists
-                  .map(
-                    (e) => ListyItem(
-                      e: e,
-                      openMode: openMode,
-                      entityType: entityType,
-                      path: path,
-                    ),
+            child: lists.isEmpty
+                ? Text(
+                    'Add a listy from the add button',
+                    style: h4TextStyleInactive,
                   )
-                  .toList(),
-            ),
+                : ListView(
+                    physics: BouncingScrollPhysics(),
+                    children: lists
+                        .map(
+                          (e) => ListyItem(
+                            e: e,
+                            openMode: openMode,
+                            entityType: entityType,
+                            path: path,
+                          ),
+                        )
+                        .toList(),
+                  ),
           ),
         ],
       ),
