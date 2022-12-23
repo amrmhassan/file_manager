@@ -12,3 +12,5 @@ const String activeWishlistIdKey = 'activeWishlistIdKey';
 
 //? settings keys
 const String expEntitiesAnimDurationKey = 'expEntitiesAnimDurationKey';
+const String expEntitiesAnimeTypeKey = 'expEntitiesAnimeTypeKey';
+const String expEntitiesMagnitudeKey = 'expEntitiesMagnitudeKey';
