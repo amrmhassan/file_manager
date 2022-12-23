@@ -10,7 +10,7 @@ import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/theme_provider.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
-import 'package:explorer/providers/user_pref_provider.dart';
+import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
@@ -20,6 +20,7 @@ import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.d
 import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
+import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => AnalyzerProvider()),
         ChangeNotifierProvider(create: (ctx) => ExplorerProvider()),
         ChangeNotifierProvider(create: (ctx) => FilesOperationsProvider()),
-        ChangeNotifierProvider(create: (ctx) => UserPrefProvider()),
+        ChangeNotifierProvider(create: (ctx) => SettingsProvider()),
         ChangeNotifierProvider(create: (ctx) => RecentProvider()),
         ChangeNotifierProvider(create: (ctx) => ThemeProvider()),
         ChangeNotifierProvider(create: (ctx) => MediaPlayerProvider()),
@@ -90,6 +91,7 @@ class MyApp extends StatelessWidget {
           ItemsViewerScreen.routeName: (context) => ItemsViewerScreen(),
           ListyScreen.routeName: (context) => ListyScreen(),
           ListyItemViewerScreen.routeName: (context) => ListyItemViewerScreen(),
+          SettingsScreen.routeName: (context) => SettingsScreen(),
         },
       ),
     );

@@ -15,6 +15,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -43,6 +44,15 @@ class CustomAppDrawer extends StatelessWidget {
             VSpace(factor: 2),
             LightThemeCheckBox(),
             StorageAnalyzerButton(),
+            AppDrawerItem(
+              iconPath: 'settings',
+              title: 'Settings',
+              onTap: () async {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, SettingsScreen.routeName);
+              },
+              onlyDebug: true,
+            ),
             if (allowDebuggingDrawerElements)
               Column(
                 children: [
