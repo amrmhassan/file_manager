@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
+import 'dart:math' as math;
 
 class MediaPlayerProvider extends ChangeNotifier {
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -101,6 +102,9 @@ class MediaPlayerProvider extends ChangeNotifier {
   void setVolumeTouched(bool t) {
     volumeTouched = t;
     notifyListeners();
+    if (volumeTouched) {
+      updateDeviceVolume();
+    }
   }
 
   //? set seeker touched
@@ -146,28 +150,6 @@ class MediaPlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-// //? update video volume
-//   void updateVideoVolume() async {
-//     await updateDeviceVolume();
-//     await setVideoVolume(deviceVolume, false);
-//   }
-
-//   //? add to video volume
-//   void addToVolume(double v) async {
-//     videoVolume += v;
-//     if (videoVolume < 0) videoVolume = 0;
-//     if (videoVolume > 1) videoVolume = 1;
-//     await setVideoVolume(videoVolume);
-
-//     // notifyListeners();
-//   }
-
-//   //? set video volume
-//   Future<void> setVideoVolume(double v, [bool updateDeviceV = true]) async {
-//     await videoPlayerController?.setVolume(videoVolume);
-//     if (updateDeviceV) setDeviceVolume(videoVolume);
-//   }
-
   //? toggle video play
   void toggleVideoPlay() {
     isVideoPlaying = !isVideoPlaying;
@@ -209,19 +191,13 @@ class MediaPlayerProvider extends ChangeNotifier {
     deviceVolume += v;
     if (deviceVolume < 0) deviceVolume = 0;
     if (deviceVolume > 1) deviceVolume = 1;
-    setDeviceVolume(deviceVolume);
     notifyListeners();
+    setDeviceVolume(deviceVolume);
   }
 
 //? to update the device volume from the original android volume
   Future updateDeviceVolume() async {
     deviceVolume = await volume_controllers.VolumeController().getVolume();
-    volume_controllers.VolumeController().listener(
-      (p0) async {
-        deviceVolume = p0;
-        notifyListeners();
-      },
-    );
     notifyListeners();
   }
 }

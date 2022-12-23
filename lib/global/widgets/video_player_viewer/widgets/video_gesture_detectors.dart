@@ -34,25 +34,22 @@ class VolumeGestureDetector extends StatelessWidget {
   Widget build(BuildContext context) {
     var mpProviderFalse =
         Provider.of<MediaPlayerProvider>(context, listen: false);
-    return GestureDetector(
-      onPanUpdate: (details) {
+    return Listener(
+      onPointerMove: (details) {
         mpProviderFalse.addToDeviceVolume(
-          -(details.delta.dy / 800),
+          -(details.delta.dy / 500),
         );
       },
-      onPanDown: (details) {
+      onPointerDown: (details) {
         mpProviderFalse.setVolumeTouched(true);
       },
-      onPanEnd: (details) {
-        mpProviderFalse.setVolumeTouched(false);
-      },
-      onPanCancel: () {
+      onPointerUp: (position) {
         mpProviderFalse.setVolumeTouched(false);
       },
       child: Opacity(
         opacity: 0,
         child: Container(
-          width: 70,
+          width: 100,
           color: Colors.blue,
         ),
       ),
