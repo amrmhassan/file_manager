@@ -33,9 +33,13 @@ class SettingsProvider extends ChangeNotifier {
 
   //? animation magnitude
   double animationMagnitude = 1;
-  Future setAnimationMagnitude(double i) async {
+  Future setAnimationMagnitude(
+    double i, [
+    bool save = true,
+  ]) async {
     animationMagnitude = i;
     notifyListeners();
+    if (!save) return;
     await SharedPrefHelper.setString(
       expEntitiesMagnitudeKey,
       i.toString(),
@@ -43,9 +47,13 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   //? to set the explorer entities duration
-  Future setExpEntitiesAnimDuration(int d) async {
+  Future setExpEntitiesAnimDuration(
+    int d, [
+    bool save = true,
+  ]) async {
     animationDuration = d;
     notifyListeners();
+    if (!save) return;
     await SharedPrefHelper.setString(
       expEntitiesAnimDurationKey,
       d.toString(),

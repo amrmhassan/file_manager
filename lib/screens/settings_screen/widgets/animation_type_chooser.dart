@@ -6,17 +6,17 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/animations_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AnimationTypeChooser extends StatelessWidget {
   const AnimationTypeChooser({
     Key? key,
-    required this.settingsProvider,
   }) : super(key: key);
-
-  final SettingsProvider settingsProvider;
 
   @override
   Widget build(BuildContext context) {
+    var settingsProvider = Provider.of<SettingsProvider>(context);
+
     return PaddingWrapper(
       child: Row(
         children: [
