@@ -35,6 +35,8 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
   @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    var mpProviderFalse =
+        Provider.of<MediaPlayerProvider>(context, listen: false);
     FileType fileType = getFileType(getFileExtension(widget.mediaPath));
 
     return fileType == FileType.audio
@@ -44,16 +46,10 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
               if (mePlaying(
                   mpProvider.playingAudioFilePath, mpProvider.audioPlaying)) {
                 // here i am playing and i want to pause
-                await mpProvider.pausePlaying();
-              }
-              // else if (myPathActive(mpProvider.playingFilePath) &&
-              //     !mpProvider.playing) {
-              //   //! here i my path is active and i want to resume playing
-              //   await mpProvider.setPlayingFile(widget.audioPath);
-              // }
-              else {
+                await mpProviderFalse.pausePlaying();
+              } else {
                 // here i want to start over
-                await mpProvider.setPlayingFile(widget.mediaPath);
+                await mpProviderFalse.setPlayingFile(widget.mediaPath);
               }
             },
             width: largeIconSize,
@@ -70,9 +66,8 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
         : fileType == FileType.video
             ? ButtonWrapper(
                 onTap: () async {
-                  mpProvider.playVideo(widget.mediaPath);
-                  if (1 == 1) {
-                  } else {}
+                  mpProviderFalse.playVideo(widget.mediaPath);
+                  mpProviderFalse.setBottomVideoControllersHidden(false);
                 },
                 width: largeIconSize,
                 height: largeIconSize,

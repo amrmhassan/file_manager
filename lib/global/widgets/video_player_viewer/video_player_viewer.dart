@@ -62,7 +62,8 @@ class _VideoPlayerViewerState extends State<VideoPlayerViewer> {
                 ),
                 VolumeViewer(),
                 VideoPositionViewer(),
-                BottomVideoControllers(),
+                if (!mpProvider.bottomVideoControllersHidden)
+                  BottomVideoControllers(),
                 VideoPausedButton(),
               ],
             ),

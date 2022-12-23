@@ -4,7 +4,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
-import 'dart:math' as math;
 
 class MediaPlayerProvider extends ChangeNotifier {
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -101,6 +100,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   //? set volume touched
   void setVolumeTouched(bool t) {
     volumeTouched = t;
+    bottomVideoControllersHidden = false;
     notifyListeners();
     if (volumeTouched) {
       updateDeviceVolume();
@@ -110,6 +110,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   //? set seeker touched
   void setSeekerTouched(bool t) {
     seekerTouched = t;
+    bottomVideoControllersHidden = false;
     notifyListeners();
   }
 
@@ -128,6 +129,7 @@ class MediaPlayerProvider extends ChangeNotifier {
       })
       ..play()
       ..addListener(() async {
+        videoPosition = videoPlayerController?.value.position ?? Duration.zero;
         if (isVideoPlaying &&
             !(videoPlayerController?.value.isPlaying ?? false)) {
           //* this means it stopped playing cause it's duration finished
@@ -147,12 +149,15 @@ class MediaPlayerProvider extends ChangeNotifier {
     isVideoPlaying = false;
     videoDuration = null;
     videoPosition = Duration.zero;
+    videoHidden = false;
+    bottomVideoControllersHidden = false;
     notifyListeners();
   }
 
   //? toggle video play
   void toggleVideoPlay() {
     isVideoPlaying = !isVideoPlaying;
+    bottomVideoControllersHidden = false;
     notifyListeners();
     if (isVideoPlaying) {
       videoPlayerController?.play();
@@ -198,6 +203,18 @@ class MediaPlayerProvider extends ChangeNotifier {
 //? to update the device volume from the original android volume
   Future updateDeviceVolume() async {
     deviceVolume = await volume_controllers.VolumeController().getVolume();
+    notifyListeners();
+  }
+
+  //# bottom video controllers
+  bool bottomVideoControllersHidden = false;
+  void toggleBottomVideoControllersHidden() {
+    bottomVideoControllersHidden = !bottomVideoControllersHidden;
+    notifyListeners();
+  }
+
+  void setBottomVideoControllersHidden(bool b) {
+    bottomVideoControllersHidden = b;
     notifyListeners();
   }
 }

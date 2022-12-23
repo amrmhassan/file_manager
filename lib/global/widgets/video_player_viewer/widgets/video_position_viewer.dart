@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/media_player_provider.dart';
@@ -69,8 +70,18 @@ class VideoPositionViewer extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(currentDuration),
-                          Text(fullDuration),
+                          Text(
+                            currentDuration,
+                            style: h4TextStyleInactive.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            fullDuration,
+                            style: h4TextStyleInactive.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
                     )

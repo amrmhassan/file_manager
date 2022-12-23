@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -31,13 +30,13 @@ class VolumeViewer extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/icons/volume.png',
-                  color: kMainIconColor.withOpacity(.8),
+                  color: Colors.white.withOpacity(.8),
                   width: largeIconSize,
                 ),
                 VSpace(factor: .5),
                 Text(
                   ((mpProvider.deviceVolume) * 100).ceil().toString(),
-                  style: h2TextStyle.copyWith(height: 1),
+                  style: h2TextStyle.copyWith(height: 1, color: Colors.white),
                 )
               ],
             ),

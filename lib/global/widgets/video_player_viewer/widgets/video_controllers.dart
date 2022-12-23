@@ -10,10 +10,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:provider/provider.dart';
 
-class BottomVideoControllers extends StatelessWidget {
+class BottomVideoControllers extends StatefulWidget {
   const BottomVideoControllers({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<BottomVideoControllers> createState() => _BottomVideoControllersState();
+}
+
+class _BottomVideoControllersState extends State<BottomVideoControllers> {
+  @override
+  void initState() {
+    Future.delayed(Duration(seconds: 3)).then((value) {
+      if (mounted) {
+        Provider.of<MediaPlayerProvider>(context, listen: false)
+            .setBottomVideoControllersHidden(true);
+      }
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
