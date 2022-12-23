@@ -35,9 +35,8 @@ class AnimationDurationSetter extends StatelessWidget {
             ],
           ),
           Slider(
-            min: 100,
-            max: 5000,
-            divisions: 50,
+            min: 0,
+            max: 2000,
             value: settingsProvider.animationDuration.toDouble(),
             onChanged: (v) {
               settingsProviderFalse.setExpEntitiesAnimDuration(

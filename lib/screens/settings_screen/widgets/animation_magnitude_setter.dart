@@ -36,7 +36,7 @@ class AnimationMagnitudeSetter extends StatelessWidget {
           ),
           Slider(
             min: 0,
-            max: 5,
+            max: 3,
             value: settingsProvider.animationMagnitude,
             onChanged: (v) {
               settingsProviderFalse.setAnimationMagnitude(v, false);

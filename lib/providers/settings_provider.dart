@@ -19,7 +19,7 @@ enum AnimationType {
 class SettingsProvider extends ChangeNotifier {
   //# explorer entities duration
   //? animation duration
-  int animationDuration = 800;
+  int animationDuration = 300;
   //? animation type
   AnimationType activeAnimationType = AnimationType.fadeInLeft;
   Future setAnimationType(AnimationType animationType) async {
@@ -32,7 +32,7 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   //? animation magnitude
-  double animationMagnitude = 1;
+  double animationMagnitude = .2;
   Future setAnimationMagnitude(
     double i, [
     bool save = true,
