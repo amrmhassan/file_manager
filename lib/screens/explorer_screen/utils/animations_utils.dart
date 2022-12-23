@@ -31,7 +31,7 @@ Widget animationWrapper(Widget child, SettingsProvider settingsProvider) {
     return FadeInLeft(
       preferences: AnimationPreferences(
         magnitude: settingsProvider.animationMagnitude,
-        duration: settingsProvider.animationDuration,
+        duration: Duration(milliseconds: settingsProvider.animationDuration),
       ),
       child: child,
     );
@@ -41,7 +41,7 @@ Widget animationWrapper(Widget child, SettingsProvider settingsProvider) {
     return FadeInRight(
       preferences: AnimationPreferences(
         magnitude: settingsProvider.animationMagnitude,
-        duration: settingsProvider.animationDuration,
+        duration: Duration(milliseconds: settingsProvider.animationDuration),
       ),
       child: child,
     );
@@ -51,7 +51,7 @@ Widget animationWrapper(Widget child, SettingsProvider settingsProvider) {
     return BounceInLeft(
       preferences: AnimationPreferences(
         magnitude: settingsProvider.animationMagnitude,
-        duration: settingsProvider.animationDuration,
+        duration: Duration(milliseconds: settingsProvider.animationDuration),
       ),
       child: child,
     );
@@ -62,7 +62,7 @@ Widget animationWrapper(Widget child, SettingsProvider settingsProvider) {
     return BounceInRight(
       preferences: AnimationPreferences(
         magnitude: settingsProvider.animationMagnitude,
-        duration: settingsProvider.animationDuration,
+        duration: Duration(milliseconds: settingsProvider.animationDuration),
       ),
       child: child,
     );
@@ -72,7 +72,7 @@ Widget animationWrapper(Widget child, SettingsProvider settingsProvider) {
     return HeadShake(
       preferences: AnimationPreferences(
         magnitude: settingsProvider.animationMagnitude,
-        duration: settingsProvider.animationDuration,
+        duration: Duration(milliseconds: settingsProvider.animationDuration),
       ),
       child: child,
     );
@@ -82,7 +82,7 @@ Widget animationWrapper(Widget child, SettingsProvider settingsProvider) {
     return Pulse(
       preferences: AnimationPreferences(
         magnitude: settingsProvider.animationMagnitude,
-        duration: settingsProvider.animationDuration,
+        duration: Duration(milliseconds: settingsProvider.animationDuration),
       ),
       child: child,
     );
@@ -92,7 +92,7 @@ Widget animationWrapper(Widget child, SettingsProvider settingsProvider) {
     return HeartBeat(
       preferences: AnimationPreferences(
         magnitude: settingsProvider.animationMagnitude,
-        duration: settingsProvider.animationDuration,
+        duration: Duration(milliseconds: settingsProvider.animationDuration),
       ),
       child: child,
     );

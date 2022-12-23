@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
+import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/settings_provider.dart';
-import 'package:explorer/screens/explorer_screen/utils/animations_utils.dart';
+import 'package:explorer/screens/settings_screen/widgets/animation_type_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,41 +14,43 @@ class AnimationsSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var settingsProvider = Provider.of<SettingsProvider>(context);
+    var settingsProviderFalse =
+        Provider.of<SettingsProvider>(context, listen: false);
     return Column(
       children: [
+        AnimationTypeChooser(settingsProvider: settingsProvider),
+        VSpace(),
         PaddingWrapper(
-          child: Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Animation Type',
-                style: h3TextStyle,
-              ),
-              Spacer(),
-              DropdownButton(
-                enableFeedback: true,
-                underline: SizedBox(),
-                elevation: 1,
-                alignment: AlignmentDirectional.centerEnd,
-                value: settingsProvider.activeAnimationType,
-                dropdownColor: kCardBackgroundColor,
-                items: [
-                  ...AnimationType.values.map(
-                    (e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(
-                        animationTypeToTitle(e),
-                        style: h4LightTextStyle,
-                      ),
-                    ),
+              SizedBox(width: double.infinity),
+              Row(
+                children: [
+                  Text(
+                    'Animation Duration',
+                    style: h3TextStyle,
+                  ),
+                  Spacer(),
+                  Text(
+                    '${settingsProvider.animationDuration} ms',
+                    style: h4TextStyleInactive,
                   ),
                 ],
+              ),
+              Slider(
+                min: 100,
+                max: 5000,
+                divisions: 50,
+                value: settingsProvider.animationDuration.toDouble(),
                 onChanged: (v) {
-                  settingsProvider.setAnimationType(v ?? AnimationType.none);
+                  settingsProviderFalse.setExpEntitiesAnimDuration(v.toInt());
                 },
               )
             ],
           ),
-        )
+        ),
       ],
     );
   }

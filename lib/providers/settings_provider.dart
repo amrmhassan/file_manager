@@ -19,7 +19,7 @@ enum AnimationType {
 class SettingsProvider extends ChangeNotifier {
   //# explorer entities duration
   //? animation duration
-  Duration animationDuration = Duration(milliseconds: 800);
+  int animationDuration = 800;
   //? animation type
   AnimationType activeAnimationType = AnimationType.fadeInLeft;
   Future setAnimationType(AnimationType animationType) async {
@@ -43,12 +43,12 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   //? to set the explorer entities duration
-  Future setExpEntitiesAnimDuration(Duration d) async {
+  Future setExpEntitiesAnimDuration(int d) async {
     animationDuration = d;
     notifyListeners();
     await SharedPrefHelper.setString(
       expEntitiesAnimDurationKey,
-      d.inMilliseconds.toString(),
+      d.toString(),
     );
   }
 
@@ -56,24 +56,24 @@ class SettingsProvider extends ChangeNotifier {
 
 ////? to load all settings
   Future loadAllSettings() async {
-    await loadExpEntitiesAnimDuration();
-    await loadExpEntitiesAnimType();
-    await loadExpEntitiesAnimMagnitude();
+    await _loadExpEntitiesAnimDuration();
+    await _loadExpEntitiesAnimType();
+    await _loadExpEntitiesAnimMagnitude();
     notifyListeners();
   }
 
   //? to load the explorer entities duration
-  Future loadExpEntitiesAnimDuration() async {
+  Future _loadExpEntitiesAnimDuration() async {
     String animD =
         await SharedPrefHelper.getString(expEntitiesAnimDurationKey) ?? '';
     if (animD.isNotEmpty) {
-      Duration d = Duration(milliseconds: int.parse(animD));
+      int d = int.parse(animD);
       animationDuration = d;
     }
   }
 
   //? to load the explorer entities animation type
-  Future loadExpEntitiesAnimType() async {
+  Future _loadExpEntitiesAnimType() async {
     String animD =
         await SharedPrefHelper.getString(expEntitiesAnimeTypeKey) ?? '';
     if (animD.isNotEmpty) {
@@ -83,7 +83,7 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   //? to load the explorer entities animation magnitude
-  Future loadExpEntitiesAnimMagnitude() async {
+  Future _loadExpEntitiesAnimMagnitude() async {
     String animD =
         await SharedPrefHelper.getString(expEntitiesMagnitudeKey) ?? '';
     if (animD.isNotEmpty) {

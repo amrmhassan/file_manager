@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -59,7 +60,7 @@ Future<bool> handlePressPhoneBackButton({
 //? to handle apply permissions callback after granting permissions
 void handlePermissionsGrantedCallback(BuildContext context) async {
   var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
-
+  var settingsProvider = Provider.of<SettingsProvider>(context, listen: false);
   var foProviderFalse = Provider.of<FilesOperationsProvider>(
     context,
     listen: false,
@@ -68,6 +69,7 @@ void handlePermissionsGrantedCallback(BuildContext context) async {
     path: expProvider.currentActiveDir.path,
     filesOperationsProvider: foProviderFalse,
   );
+  settingsProvider.loadAllSettings();
   var recentProvider = Provider.of<RecentProvider>(context, listen: false);
   await Provider.of<AnalyzerProvider>(context, listen: false)
       .handleAnalyzeEvent(recentProvider);
