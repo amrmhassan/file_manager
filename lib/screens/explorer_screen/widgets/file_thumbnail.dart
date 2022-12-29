@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/apk_thumbnail.dart';
 import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/image_thumbnail.dart';
 import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/video_thumbnail.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +35,11 @@ class _FileThumbnailState extends State<FileThumbnail> {
           )
         : fileType == FileType.video
             ? MyVideoThumbnail(path: widget.path)
-            : Image.asset(
-                getFileTypeIcon(getFileExt()),
-                width: largeIconSize,
-              );
+            : fileType == FileType.apk
+                ? ApkThumbnail(filePath: widget.path)
+                : Image.asset(
+                    getFileTypeIcon(getFileExt()),
+                    width: largeIconSize,
+                  );
   }
 }

@@ -57,11 +57,11 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
     );
   }
 
-  @override
-  void initState() {
-    runCompress();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   runCompress();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
