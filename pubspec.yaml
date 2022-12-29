@@ -60,6 +60,7 @@ dependencies:
   flutter_native_image: ^0.0.6+1
   volume_controller: ^2.0.6
   video_thumbnail: ^0.5.3
+  thumbnailer: ^2.1.0
 
 dev_dependencies:
   flutter_test:
