@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:explorer/constants/sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class MyVideoThumbnail extends StatefulWidget {
   final String path;
@@ -20,19 +19,19 @@ class MyVideoThumbnail extends StatefulWidget {
 class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
   String? fileName;
 
-  @override
-  void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-      fileName = await VideoThumbnail.thumbnailFile(
-        video: widget.path,
-        imageFormat: ImageFormat.PNG,
-        maxHeight: largeIconSize.toInt(),
-        quality: 50,
-      );
-      setState(() {});
-    });
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Future.delayed(Duration.zero).then((value) async {
+  //     fileName = await VideoThumbnail.thumbnailFile(
+  //       video: widget.path,
+  //       imageFormat: ImageFormat.PNG,
+  //       maxHeight: largeIconSize.toInt(),
+  //       quality: 50,
+  //     );
+  //     setState(() {});
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
