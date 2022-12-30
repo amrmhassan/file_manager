@@ -1,11 +1,9 @@
 // ignore_for_file: dead_code, prefer_const_constructors
 
 import 'dart:io';
-import 'dart:math';
 
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
