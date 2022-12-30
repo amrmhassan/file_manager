@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/colors.dart';
@@ -10,6 +12,7 @@ import 'package:explorer/models/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart' as path_operations;
 
 void printOnDebug(Object? object) {
   if (kDebugMode) {
@@ -175,4 +178,15 @@ String formatDuration(Duration d) {
   tokens.add('${seconds < 10 ? '0$seconds' : seconds}');
 
   return tokens.join(':');
+}
+
+//? to create a new random path from a certain path
+String createNewPath(String path) {
+  String fileName = getFileName(path);
+  String randomName =
+      '${fileName}_${DateTime.now().toIso8601String()}${Random().nextInt(10000)}';
+  String fileExt = getFileExtension(path);
+  String parentName = path_operations.dirname(path);
+  String newPath = '$parentName/$randomName.$fileExt';
+  return newPath;
 }

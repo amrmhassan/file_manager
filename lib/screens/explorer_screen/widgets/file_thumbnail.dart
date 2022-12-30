@@ -4,7 +4,7 @@ import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/apk_thumbnail.dart';
 import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/image_thumbnail.dart';
-import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/video_thumbnail.dart';
+import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/my_video_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
