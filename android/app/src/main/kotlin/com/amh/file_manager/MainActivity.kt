@@ -26,14 +26,13 @@ class MainActivity : FlutterActivity() {
                 val filePath = call.argument<String>("filePath")!!
                 val time = call.argument<Long>("time")!!
                 val outputPath = call.argument<String>("output")!!
-                val thumbnail = createThumbnail(filePath, time)!!
+                val thumbnail = createVideoThumbnail(filePath, time)!!
 
                 saveBitmapToFile(thumbnail, File(outputPath))
 
                 result.success(outputPath)
               } else if (call.method == "handleAPK") {
 
-                // ? here the code to make an apk file thumbnail
                 val filePath = call.argument<String>("filePath")!!
                 val outputPath = call.argument<String>("output")!!
 
@@ -49,7 +48,8 @@ class MainActivity : FlutterActivity() {
         }
   }
 
-  fun createThumbnail(videoPath: String, time: Long): Bitmap? {
+  // ? to create a video thumbnail
+  fun createVideoThumbnail(videoPath: String, time: Long): Bitmap? {
     val retriever = MediaMetadataRetriever()
     try {
       retriever.setDataSource(videoPath)
@@ -62,21 +62,22 @@ class MainActivity : FlutterActivity() {
     }
   }
 
+  // ? to save a bitmap to a file
   fun saveBitmapToFile(bitmap: Bitmap, file: File) {
     val out = FileOutputStream(file)
     try {
-      bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out)
+      bitmap.compress(Bitmap.CompressFormat.PNG, 20, out)
     } finally {
       out.close()
     }
   }
 
+  // ? to make an apk icon
   fun makeAPKIcon(apkFilePath: String, outputFile: String): String {
-
     val pm = getPackageManager()
     val pi = pm.getPackageArchiveInfo(apkFilePath, 0)
 
-    // the secret are these two lines....
+    // to set the object to the wanted apk file
     pi!!.applicationInfo.sourceDir = apkFilePath
     pi.applicationInfo.publicSourceDir = apkFilePath
     //
@@ -87,6 +88,7 @@ class MainActivity : FlutterActivity() {
     return thumbPath
   }
 
+  // ? to convert drawble to bitmap (needed in the apk thumbnails)
   fun drawableToBitmap(drawable: Drawable, outputFile: String): String {
     val bitmap =
         Bitmap.createBitmap(
