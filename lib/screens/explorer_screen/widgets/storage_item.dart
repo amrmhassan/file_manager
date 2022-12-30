@@ -14,7 +14,7 @@ import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class StorageItem extends StatelessWidget {
+class StorageItem extends StatefulWidget {
   final StorageItemModel storageItemModel;
   final Function(String path) onDirTapped;
   final bool sizesExplorer;
@@ -32,10 +32,15 @@ class StorageItem extends StatelessWidget {
     this.allowShowingFavIcon = false,
   });
 
+  @override
+  State<StorageItem> createState() => _StorageItemState();
+}
+
+class _StorageItemState extends State<StorageItem> {
   bool isSelected(BuildContext context) {
     var foProvider =
         Provider.of<FilesOperationsProvider>(context, listen: false);
-    return foProvider.isSelected(storageItemModel.path);
+    return foProvider.isSelected(widget.storageItemModel.path);
   }
 
   @override
@@ -58,39 +63,39 @@ class StorageItem extends StatelessWidget {
         AnimationWrapper(
           child: ButtonWrapper(
             onTap: () async {
-              if (isDir(storageItemModel.path)) {
+              if (isDir(widget.storageItemModel.path)) {
                 //* here open the folder
-                onDirTapped(storageItemModel.path);
+                widget.onDirTapped(widget.storageItemModel.path);
               } else {
                 //* here perform open the file
-                await open_file.OpenFile.open(storageItemModel.path);
+                await open_file.OpenFile.open(widget.storageItemModel.path);
                 await foProviderFalse
-                    .addToRecentlyOpened(storageItemModel.path);
+                    .addToRecentlyOpened(widget.storageItemModel.path);
               }
             },
-            onLongPress: allowSelect
+            onLongPress: widget.allowSelect
                 ? () {
                     var expProvider =
                         Provider.of<ExplorerProvider>(context, listen: false);
 
                     foProviderFalse.toggleFromSelectedItems(
-                        storageItemModel, expProvider);
+                        widget.storageItemModel, expProvider);
                   }
                 : null,
             borderRadius: 0,
-            child: isDir(storageItemModel.path)
+            child: isDir(widget.storageItemModel.path)
                 ? ChildDirectoryItem(
-                    fileName: path.basename(storageItemModel.path),
-                    storageItemModel: storageItemModel,
-                    parentSize: parentSize,
-                    sizesExplorer: sizesExplorer,
+                    fileName: path.basename(widget.storageItemModel.path),
+                    storageItemModel: widget.storageItemModel,
+                    parentSize: widget.parentSize,
+                    sizesExplorer: widget.sizesExplorer,
                     isSelected: isSelected(context),
-                    allowShowingFavIcon: allowShowingFavIcon,
+                    allowShowingFavIcon: widget.allowShowingFavIcon,
                   )
                 : ChildFileItem(
-                    storageItemModel: storageItemModel,
-                    parentSize: parentSize,
-                    sizesExplorer: sizesExplorer,
+                    storageItemModel: widget.storageItemModel,
+                    parentSize: widget.parentSize,
+                    sizesExplorer: widget.sizesExplorer,
                     isSelected: isSelected(context),
                   ),
           ),

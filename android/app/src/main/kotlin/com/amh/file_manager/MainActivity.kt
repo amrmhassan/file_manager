@@ -1,6 +1,9 @@
 package com.amh.file_manager
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.media.MediaMetadataRetriever
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
@@ -16,25 +19,32 @@ class MainActivity : FlutterActivity() {
     super.configureFlutterEngine(flutterEngine)
     MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "amh.fileManager.com/video_thumbnail")
         .setMethodCallHandler { call, result ->
-          if (call.method == "handleVideo") {
-            thread {
-              try {
-                val filePath = call.argument<String>("filePath")!!
-                val time = call.argument<Long>("time")!!
-                val outputPath = call.argument<String>("output")!!
-                val thumbnail = createThumbnail(filePath, time)!!
+          thread {
+            print("message")
+            // try {
+            if (call.method == "handleVideo") {
+              val filePath = call.argument<String>("filePath")!!
+              val time = call.argument<Long>("time")!!
+              val outputPath = call.argument<String>("output")!!
+              val thumbnail = createThumbnail(filePath, time)!!
 
-                saveBitmapToFile(thumbnail, File(outputPath))
+              saveBitmapToFile(thumbnail, File(outputPath))
 
-                // Bitmap thumb = ThumbnailUtils.createVideoThumbnail(call.argument(),
-                // MediaStore.Images.Thumbnails.MINI_KIND);
-                result.success(outputPath)
-              } catch (e: Exception) {
-                print("An error occured creating video thumbnail")
-              }
+              result.success(outputPath)
+            } else if (call.method == "handleAPK") {
+
+              // ? here the code to make an apk file thumbnail
+              val filePath = call.argument<String>("filePath")!!
+              val outputPath = call.argument<String>("output")!!
+
+              val thumbnail = makeAPKIcon(filePath, outputPath)
+              result.success(thumbnail)
+            } else {
+              result.notImplemented()
             }
-          } else {
-            result.notImplemented()
+            // } catch (e: Exception) {
+            //   print("An error occured creating video thumbnail")
+            // }
           }
         }
   }
@@ -55,9 +65,42 @@ class MainActivity : FlutterActivity() {
   fun saveBitmapToFile(bitmap: Bitmap, file: File) {
     val out = FileOutputStream(file)
     try {
-      bitmap.compress(Bitmap.CompressFormat.JPEG, 10, out)
+      bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out)
     } finally {
       out.close()
     }
+  }
+
+  fun makeAPKIcon(apkFilePath: String, outputFile: String): String {
+
+    val pm = getPackageManager()
+    val pi = pm.getPackageArchiveInfo(apkFilePath, 0)
+
+    // the secret are these two lines....
+    pi!!.applicationInfo.sourceDir = apkFilePath
+    pi.applicationInfo.publicSourceDir = apkFilePath
+    //
+
+    val apkicon = pi.applicationInfo.loadIcon(pm)!!
+    // val appName = pi.applicationInfo.loadLabel(pm)
+    val thumbPath = drawableToBitmap(apkicon, outputFile)
+    return thumbPath
+  }
+
+  fun drawableToBitmap(drawable: Drawable, outputFile: String): String {
+    val bitmap =
+        Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+    bitmap.eraseColor(Color.TRANSPARENT)
+    val canvas = Canvas(bitmap)
+    drawable.setBounds(0, 0, canvas.width, canvas.height)
+    drawable.draw(canvas)
+    val file = File(outputFile)
+    saveBitmapToFile(bitmap, file)
+
+    return file.path
   }
 }
