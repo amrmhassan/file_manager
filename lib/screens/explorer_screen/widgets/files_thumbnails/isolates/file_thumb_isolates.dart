@@ -1,39 +1,43 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 import 'dart:io';
 import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:image/image.dart' as im;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 //# the error with compute method was fixed by moving getTemporaryDirectory to the main isolate before calling the compute method then passing it to the sub isolate
-//! the code worked in the test project(thumbnails flutter) so check it out , and try different approaches to fix this error
 //? the actual code to compress image
 Future<String> compressImageIsolateActualCode(
   String rawImagePath,
   String destFolder,
 ) async {
-  String compressedImagePath = await customCompressImage(
+  String compressedImagePath = await createImageThumbnail(
     sourcePath: rawImagePath,
     destFolder: destFolder,
-    compressWidthTo: (largeIconSize*2).toInt(),
+    compressWidthTo: (largeIconSize * 2).toInt(),
   );
   return compressedImagePath;
 }
 
 //? this will compress an image and check for it in sqlite
-Future<void> compressImage(
-  String rawImagePath,
+Future<void> createFileThumbnail(
+  String rawFilePath,
   Function(String path) setThumbnail,
+  FileType fileType,
 ) async {
   var data = await DBHelper.getDataWhere(
-    imgThumbnailPathTableName,
+    thumbnailPathTableName,
     pathString,
-    rawImagePath,
+    rawFilePath,
     persistentDbName,
   );
 
@@ -46,24 +50,31 @@ Future<void> compressImage(
   }
 
   Directory tempDir = await getTemporaryDirectory();
-  String compressedImagePath = await compute(
-    (msg) => compressImageIsolateActualCode(rawImagePath, tempDir.path),
-    '',
-  );
+  late String compressedImagePath;
+  if (fileType == FileType.image) {
+    //* image thumbnail
+    compressedImagePath = await compute(
+      (msg) => compressImageIsolateActualCode(rawFilePath, tempDir.path),
+      '',
+    );
+  } else if (fileType == FileType.video) {
+    //* video thumbnail
+    compressedImagePath = await createVideoThumbnail(rawFilePath);
+  }
+
   await DBHelper.insert(
-    imgThumbnailPathTableName,
+    thumbnailPathTableName,
     {
-      pathString: rawImagePath,
+      pathString: rawFilePath,
       thumbnailStringPath: compressedImagePath,
     },
     persistentDbName,
   );
-
   setThumbnail(compressedImagePath);
 }
 
 //? to compress an image and save it
-Future<String> customCompressImage({
+Future<String> createImageThumbnail({
   required String sourcePath,
   int compressWidthTo = 50,
   String destFolder = './data/output/',
@@ -81,7 +92,8 @@ Future<String> customCompressImage({
   var compressedImage =
       im.copyResize(image, height: newHeight, width: newWidth);
   String newPath = '$destFolder/${basename(sourcePath)}';
-  newPath = newPath.replaceAll('//', '/');
+  newPath = createNewPath(newPath.replaceAll('//', '/'));
+
   File(newPath).writeAsBytesSync(
     im.encodeJpg(
       compressedImage,
@@ -89,4 +101,18 @@ Future<String> customCompressImage({
     ),
   );
   return newPath;
+}
+
+//? to create  a video thumbnail
+Future<String> createVideoThumbnail(String sourcePath) async {
+  MethodChannel channel = MethodChannel('amh.fileManager.com/video_thumbnail');
+  Directory tempDir = await getTemporaryDirectory();
+  String thumbnailPath =
+      '${tempDir.path}/${basename(sourcePath).replaceAll(".mp4", ".jpg")}';
+  String thumbnail = await channel.invokeMethod('handleVideo', {
+    'filePath': sourcePath,
+    'time': 0,
+    'output': createNewPath(thumbnailPath),
+  });
+  return thumbnail;
 }

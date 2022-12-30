@@ -18,16 +18,20 @@ class MainActivity : FlutterActivity() {
         .setMethodCallHandler { call, result ->
           if (call.method == "handleVideo") {
             thread {
-              val filePath = call.argument<String>("filePath")!!
-              val time = call.argument<Long>("time")!!
-              val outputPath = call.argument<String>("output")!!
-              val thumbnail = createThumbnail(filePath, time)!!
+              try {
+                val filePath = call.argument<String>("filePath")!!
+                val time = call.argument<Long>("time")!!
+                val outputPath = call.argument<String>("output")!!
+                val thumbnail = createThumbnail(filePath, time)!!
 
-              saveBitmapToFile(thumbnail, File(outputPath))
+                saveBitmapToFile(thumbnail, File(outputPath))
 
-              // Bitmap thumb = ThumbnailUtils.createVideoThumbnail(call.argument(),
-              // MediaStore.Images.Thumbnails.MINI_KIND);
-              result.success(outputPath)
+                // Bitmap thumb = ThumbnailUtils.createVideoThumbnail(call.argument(),
+                // MediaStore.Images.Thumbnails.MINI_KIND);
+                result.success(outputPath)
+              } catch (e: Exception) {
+                print("An error occured creating video thumbnail")
+              }
             }
           } else {
             result.notImplemented()

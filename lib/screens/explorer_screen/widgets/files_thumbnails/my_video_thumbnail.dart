@@ -2,12 +2,12 @@
 
 import 'dart:io';
 
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/providers/thumbnail_provider.dart';
+import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/isolates/file_thumb_isolates.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyVideoThumbnail extends StatefulWidget {
   final String path;
@@ -22,30 +22,43 @@ class MyVideoThumbnail extends StatefulWidget {
 
 class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
   String? thumbPath;
-  Future<String> createVideoThumbnail(String sourcePath) async {
-    MethodChannel channel =
-        MethodChannel('amh.fileManager.com/video_thumbnail');
-    Directory tempDir = await getTemporaryDirectory();
-    String thumbnailPath =
-        '${tempDir.path}/${basename(sourcePath).replaceAll(".mp4", ".jpg")}';
-    String thumbnail = await channel.invokeMethod('handleVideo', {
-      'filePath': sourcePath,
-      'time': 0,
-      'output': createNewPath(thumbnailPath),
-    });
-    return thumbnail;
+
+  void setThumbnail(String thumb) {
+    if (mounted) {
+      setState(() {
+        thumbPath = thumb;
+      });
+    }
+  }
+
+  void runVideoThumbnail() async {
+    Future.delayed(Duration(milliseconds: 100)).then(
+      (value) async {
+        if (!mounted) return;
+        var thumbProvider =
+            Provider.of<ThumbnailProvider>(context, listen: false);
+        bool allow = thumbProvider.allowMeToCompress;
+        if (allow) {
+          thumbProvider.incrementCompressing();
+          await createFileThumbnail(
+            widget.path,
+            setThumbnail,
+            FileType.video,
+          );
+          thumbProvider.decrementCompressing();
+        } else {
+          Future.delayed(Duration(milliseconds: 400)).then((value) {
+            runVideoThumbnail();
+          });
+        }
+      },
+    );
   }
 
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-      String thumb = await createVideoThumbnail(widget.path);
-      if (mounted) {
-        setState(() {
-          thumbPath = thumb;
-        });
-      }
-    });
+    runVideoThumbnail();
+
     super.initState();
   }
 
@@ -56,36 +69,48 @@ class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
             'assets/ext_icons/icons_1/video.png',
             width: largeIconSize,
           )
-        : Stack(
-            alignment: Alignment.center,
-            children: [
-              Stack(
-                children: [
-                  SizedBox(
-                    width: largeIconSize,
-                    height: largeIconSize,
-                    child: Image.file(
-                      File(thumbPath!),
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+        : Container(
+            clipBehavior: Clip.hardEdge,
+            width: largeIconSize,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(smallBorderRadius),
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Stack(
+                  children: [
+                    SizedBox(
+                      width: largeIconSize,
+                      height: largeIconSize,
+                      child: FadeInImage(
+                        width: largeIconSize,
+                        height: largeIconSize,
+                        alignment: Alignment.topCenter,
+                        fit: BoxFit.cover,
+                        placeholderFit: BoxFit.cover,
+                        placeholder:
+                            AssetImage('assets/ext_icons/icons_1/video.png'),
+                        image: FileImage(File(thumbPath!)),
+                      ),
                     ),
-                  ),
-                  Container(
-                    color: Colors.black.withOpacity(.1),
-                    width: largeIconSize,
-                    height: largeIconSize,
-                  )
-                ],
-              ),
-              Opacity(
-                opacity: .5,
-                child: Image.asset(
-                  'assets/icons/play.png',
-                  color: Colors.white,
-                  width: largeIconSize / 1.8,
+                    Container(
+                      color: Colors.black.withOpacity(.1),
+                      width: largeIconSize,
+                      height: largeIconSize,
+                    )
+                  ],
                 ),
-              )
-            ],
+                Opacity(
+                  opacity: .5,
+                  child: Image.asset(
+                    'assets/icons/play.png',
+                    color: Colors.white,
+                    width: largeIconSize / 1.8,
+                  ),
+                )
+              ],
+            ),
           );
   }
 }

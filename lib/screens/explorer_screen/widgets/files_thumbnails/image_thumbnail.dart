@@ -3,9 +3,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
-import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/isolates/image_thumb_isolates.dart';
+import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/isolates/file_thumb_isolates.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +36,7 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
 
 //? to run the compress process if the limit doesn't exceeded else wait a 500ms then try again
   void runCompress() async {
-    Future.delayed(Duration(milliseconds:100)).then(
+    Future.delayed(Duration(milliseconds: 100)).then(
       (value) async {
         if (!mounted) return;
         var thumbProvider =
@@ -43,9 +44,10 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
         bool allow = thumbProvider.allowMeToCompress;
         if (allow) {
           thumbProvider.incrementCompressing();
-          await compressImage(
+          await createFileThumbnail(
             widget.path,
             setThumbnail,
+            FileType.image,
           );
           thumbProvider.decrementCompressing();
         } else {

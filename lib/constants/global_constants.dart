@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:explorer/providers/explorer_provider_abstract.dart';
 
-final Directory initialDir = Directory('sdcard/test');
+final Directory initialDir = Directory('sdcard');
 
 const Duration homePageViewDuration = Duration(milliseconds: 180);
 
