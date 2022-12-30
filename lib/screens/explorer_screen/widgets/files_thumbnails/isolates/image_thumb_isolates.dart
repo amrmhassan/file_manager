@@ -2,21 +2,25 @@ import 'dart:async';
 import 'dart:io';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/helpers/db_helper.dart';
-import 'package:flutter_isolate/flutter_isolate.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as im;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
+
+//# the error with compute method was fixed by moving getTemporaryDirectory to the main isolate before calling the compute method then passing it to the sub isolate
+//! the code worked in the test project(thumbnails flutter) so check it out , and try different approaches to fix this error
 //? the actual code to compress image
-Future<String> compressImageIsolateActualCode(String rawImagePath) async {
-  Directory tempDir = await getTemporaryDirectory();
-  print('-------------------------------');
-  print(tempDir.path);
-  print('-------------------------------');
+Future<String> compressImageIsolateActualCode(
+  String rawImagePath,
+  String destFolder,
+) async {
   String compressedImagePath = await customCompressImage(
     sourcePath: rawImagePath,
-    destFolder: tempDir.path,
+    destFolder: destFolder,
+    compressWidthTo: (largeIconSize*2).toInt(),
   );
   return compressedImagePath;
 }
@@ -41,8 +45,11 @@ Future<void> compressImage(
     if (exists) return setThumbnail(thumbnail);
   }
 
-  String compressedImagePath =
-      await flutterCompute(compressImageIsolateActualCode, rawImagePath);
+  Directory tempDir = await getTemporaryDirectory();
+  String compressedImagePath = await compute(
+    (msg) => compressImageIsolateActualCode(rawImagePath, tempDir.path),
+    '',
+  );
   await DBHelper.insert(
     imgThumbnailPathTableName,
     {

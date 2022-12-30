@@ -35,7 +35,7 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
 
 //? to run the compress process if the limit doesn't exceeded else wait a 500ms then try again
   void runCompress() async {
-    Future.delayed(Duration.zero).then(
+    Future.delayed(Duration(milliseconds:100)).then(
       (value) async {
         if (!mounted) return;
         var thumbProvider =
@@ -49,7 +49,7 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
           );
           thumbProvider.decrementCompressing();
         } else {
-          Future.delayed(Duration(milliseconds: 200)).then((value) {
+          Future.delayed(Duration(milliseconds: 400)).then((value) {
             runCompress();
           });
         }
