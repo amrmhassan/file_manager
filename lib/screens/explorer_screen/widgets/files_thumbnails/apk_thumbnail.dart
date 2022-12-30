@@ -2,12 +2,12 @@
 
 import 'dart:io';
 
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/providers/thumbnail_provider.dart';
+import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/isolates/file_thumb_isolates.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 class ApkThumbnail extends StatefulWidget {
   final String filePath;
@@ -22,25 +22,43 @@ class ApkThumbnail extends StatefulWidget {
 
 class _ApkThumbnailState extends State<ApkThumbnail> {
   String? thumbPath;
+  //? to set the state for the image thumbnail
+  void setThumbnail(String path) {
+    if (mounted) {
+      setState(() {
+        thumbPath = path;
+      });
+    }
+  }
+
+  void runCreateAPKThumbnail() async {
+    Future.delayed(Duration(milliseconds: 100)).then(
+      (value) async {
+        if (!mounted) return;
+        var thumbProvider =
+            Provider.of<ThumbnailProvider>(context, listen: false);
+        bool allow = thumbProvider.allowMeToCompress;
+        if (allow) {
+          thumbProvider.incrementCompressing();
+          await createFileThumbnail(
+            widget.filePath,
+            setThumbnail,
+            FileType.apk,
+          );
+          thumbProvider.decrementCompressing();
+        } else {
+          Future.delayed(Duration(milliseconds: 400)).then((value) {
+            runCreateAPKThumbnail();
+          });
+        }
+      },
+    );
+  }
+
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((value) async {
-      String sourcePath = widget.filePath;
-      MethodChannel channel =
-          MethodChannel('amh.fileManager.com/video_thumbnail');
-      Directory tempDir = await getTemporaryDirectory();
-      String thumbnailPath = createNewPath(
-          '${tempDir.path}/${basename(sourcePath).replaceAll(".apk", ".jpg")}');
-      String apkThumbnail = await channel.invokeMethod('handleAPK', {
-        'filePath': sourcePath,
-        'output': thumbnailPath,
-      });
-      if (mounted) {
-        setState(() {
-          thumbPath = apkThumbnail;
-        });
-      }
-    });
+    runCreateAPKThumbnail();
+
     super.initState();
   }
 

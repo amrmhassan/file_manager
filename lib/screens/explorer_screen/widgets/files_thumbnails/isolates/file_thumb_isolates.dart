@@ -60,6 +60,8 @@ Future<void> createFileThumbnail(
   } else if (fileType == FileType.video) {
     //* video thumbnail
     compressedImagePath = await createVideoThumbnail(rawFilePath);
+  } else if (fileType == FileType.apk) {
+    compressedImagePath = await createAPKThumbnail(rawFilePath);
   }
 
   await DBHelper.insert(
@@ -115,4 +117,17 @@ Future<String> createVideoThumbnail(String sourcePath) async {
     'output': createNewPath(thumbnailPath),
   });
   return thumbnail;
+}
+
+//? to create an apk thumbnail
+Future<String> createAPKThumbnail(String sourcePath) async {
+  MethodChannel channel = MethodChannel('amh.fileManager.com/video_thumbnail');
+  Directory tempDir = await getTemporaryDirectory();
+  String thumbnailPath = createNewPath(
+      '${tempDir.path}/${basename(sourcePath).replaceAll(".apk", ".jpg")}');
+  String apkThumbnail = await channel.invokeMethod('handleAPK', {
+    'filePath': sourcePath,
+    'output': thumbnailPath,
+  });
+  return apkThumbnail;
 }
