@@ -21,30 +21,30 @@ class MainActivity : FlutterActivity() {
         .setMethodCallHandler { call, result ->
           thread {
             print("message")
-            // try {
-            if (call.method == "handleVideo") {
-              val filePath = call.argument<String>("filePath")!!
-              val time = call.argument<Long>("time")!!
-              val outputPath = call.argument<String>("output")!!
-              val thumbnail = createThumbnail(filePath, time)!!
+            try {
+              if (call.method == "handleVideo") {
+                val filePath = call.argument<String>("filePath")!!
+                val time = call.argument<Long>("time")!!
+                val outputPath = call.argument<String>("output")!!
+                val thumbnail = createThumbnail(filePath, time)!!
 
-              saveBitmapToFile(thumbnail, File(outputPath))
+                saveBitmapToFile(thumbnail, File(outputPath))
 
-              result.success(outputPath)
-            } else if (call.method == "handleAPK") {
+                result.success(outputPath)
+              } else if (call.method == "handleAPK") {
 
-              // ? here the code to make an apk file thumbnail
-              val filePath = call.argument<String>("filePath")!!
-              val outputPath = call.argument<String>("output")!!
+                // ? here the code to make an apk file thumbnail
+                val filePath = call.argument<String>("filePath")!!
+                val outputPath = call.argument<String>("output")!!
 
-              val thumbnail = makeAPKIcon(filePath, outputPath)
-              result.success(thumbnail)
-            } else {
-              result.notImplemented()
+                val thumbnail = makeAPKIcon(filePath, outputPath)
+                result.success(thumbnail)
+              } else {
+                result.notImplemented()
+              }
+            } catch (e: Exception) {
+              print("An error occured creating video thumbnail")
             }
-            // } catch (e: Exception) {
-            //   print("An error occured creating video thumbnail")
-            // }
           }
         }
   }
