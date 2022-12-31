@@ -7,12 +7,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.media.MediaMetadataRetriever
-import io.flutter.embedding.android.FlutterActivity
 import java.io.File
 import java.io.FileOutputStream
 
-class ThumbnailCreator(var filePath: String, var outputPath: String, var thumbnailWidth: Int) :
-    FlutterActivity() {
+class ThumbnailCreator(var filePath: String, var outputPath: String, var thumbnailWidth: Int) {
 
   // ? to  make an image thumbnail
   fun createImageThumbnail(imagePath: String): String {

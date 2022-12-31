@@ -23,4 +23,7 @@
 -- and when retrieving the data just choose from the one that has data in it
 -- or just set a variable in the global constants or in shared prefs to the database that will have the most recent data to read from it
 
-# fix the error with gesture detector sliders of video volume, seeker when seeking fast it glitch
+
+# fix the issue of requesting to make a thumbnail twice, by calling the code in the init state of th storage item not the thumbnail itself
+
+# crop the rest of the thumbnail, just save the portion that you want to view to the user by cropping the image, then resize it, and reduce it's quality

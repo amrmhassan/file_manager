@@ -17,7 +17,6 @@ import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +53,7 @@ class CustomAppDrawer extends StatelessWidget {
               },
               onlyDebug: true,
             ),
-            if (allowDebuggingDrawerElements )
+            if (allowDebuggingDrawerElements)
               Column(
                 children: [
                   AppDrawerItem(
