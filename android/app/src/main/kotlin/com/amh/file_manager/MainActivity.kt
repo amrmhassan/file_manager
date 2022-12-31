@@ -1,6 +1,7 @@
 package com.amh.file_manager
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -38,6 +39,12 @@ class MainActivity : FlutterActivity() {
 
                 val thumbnail = makeAPKIcon(filePath, outputPath)
                 result.success(thumbnail)
+              } else if (call.method == "handleImage") {
+                // ? handling images will be here
+                val filePath = call.argument<String>("filePath")!!
+                val outputPath = call.argument<String>("output")!!
+                makeImageThumbnail(filePath, outputPath)
+                result.success(outputPath)
               } else {
                 result.notImplemented()
               }
@@ -104,5 +111,9 @@ class MainActivity : FlutterActivity() {
     saveBitmapToFile(bitmap, file)
 
     return file.path
+  }
+
+  fun makeImageThumbnail(imagePath: String, outputFile: String) {
+    saveBitmapToFile(BitmapFactory.decodeFile(imagePath), File(outputFile))
   }
 }

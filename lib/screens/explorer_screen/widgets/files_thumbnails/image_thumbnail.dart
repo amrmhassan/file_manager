@@ -67,8 +67,6 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
 
   @override
   Widget build(BuildContext context) {
-    //! the image.file is what fill the memory cause it doesn't clear after disposing, this error happens because the compress isolate returns the original image path, and the original images are very big and so many
-
     return Container(
       clipBehavior: Clip.hardEdge,
       width: largeIconSize,
@@ -83,16 +81,7 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
               alignment: Alignment.topCenter,
               fit: BoxFit.cover,
             )
-          :
-          //  Image(
-          //     image: fileImage!,
-          //     width: largeIconSize,
-          //     height: largeIconSize,
-          //     alignment: Alignment.topCenter,
-          //     fit: BoxFit.cover,
-          //   )
-          //? this fade image cause memory leaks, don't use it in a large data cause it will consume the device memory
-          FadeInImage(
+          : FadeInImage(
               width: largeIconSize,
               height: largeIconSize,
               alignment: Alignment.topCenter,
