@@ -87,7 +87,7 @@ class MainActivity : FlutterActivity() {
 
       val scaledBitmap =
           Bitmap.createScaledBitmap(bitmap, newWidthCalced.toInt(), newHeight.toInt(), false)
-      scaledBitmap.compress(Bitmap.CompressFormat.PNG, 20, out)
+      scaledBitmap.compress(Bitmap.CompressFormat.PNG, 15, out)
     } finally {
       out.close()
     }

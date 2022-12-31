@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:explorer/constants/files_types_icons.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/isolates/file_thumb_isolates.dart';
@@ -73,12 +74,14 @@ class _ApkThumbnailState extends State<ApkThumbnail> {
             fit: BoxFit.cover,
           )
         : FadeInImage(
+            fadeInDuration: thumbnailFadeDuration,
+            fadeOutDuration: thumbnailFadeDuration,
             width: largeIconSize,
             height: largeIconSize,
             alignment: Alignment.topCenter,
             fit: BoxFit.cover,
             placeholderFit: BoxFit.cover,
-            placeholder: AssetImage('assets/ext_icons/icons_1/image.png'),
+            placeholder: AssetImage('assets/ext_icons/icons_1/apk.png'),
             image: FileImage(File(thumbPath!)),
           );
   }

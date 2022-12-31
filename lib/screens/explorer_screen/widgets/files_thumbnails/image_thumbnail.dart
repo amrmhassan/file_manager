@@ -10,6 +10,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explorer/constants/files_types_icons.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
@@ -101,6 +102,8 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
               fit: BoxFit.cover,
             )
           : FadeInImage(
+              fadeInDuration: thumbnailFadeDuration,
+              fadeOutDuration: thumbnailFadeDuration,
               width: largeIconSize,
               height: largeIconSize,
               alignment: Alignment.topCenter,

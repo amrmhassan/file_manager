@@ -54,7 +54,7 @@ class CustomAppDrawer extends StatelessWidget {
               },
               onlyDebug: true,
             ),
-            if (allowDebuggingDrawerElements && kDebugMode)
+            if (allowDebuggingDrawerElements )
               Column(
                 children: [
                   AppDrawerItem(

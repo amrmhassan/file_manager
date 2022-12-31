@@ -66,7 +66,7 @@ Future<String> createImageThumbnailKotlin(String sourcePath) async {
     'filePath': sourcePath,
     'time': 0,
     'output': thumbnailPath,
-    'width': (largeIconSize * 2).toInt(),
+    'width': (largeIconSize * 1.5).toInt(),
   });
   return thumbnail;
 }
@@ -81,7 +81,7 @@ Future<String> createVideoThumbnail(String sourcePath) async {
     'filePath': sourcePath,
     'time': 0,
     'output': thumbnailPath,
-    'width': (largeIconSize * 2).toInt(),
+    'width': (largeIconSize * 1.5).toInt(),
   });
   return thumbnail;
 }
@@ -95,7 +95,7 @@ Future<String> createAPKThumbnail(String sourcePath) async {
   String apkThumbnail = await channel.invokeMethod('handleAPK', {
     'filePath': sourcePath,
     'output': thumbnailPath,
-    'width': (largeIconSize * 2).toInt(),
+    'width': (largeIconSize * 1.5).toInt(),
   });
   return apkThumbnail;
 }
