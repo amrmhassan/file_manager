@@ -40,7 +40,7 @@ class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
         bool allow = thumbProvider.allowMeToCompress;
         if (allow) {
           thumbProvider.incrementCompressing();
-          await createFileThumbnail(
+          await getFileThumbnail(
             widget.path,
             setThumbnail,
             FileType.video,

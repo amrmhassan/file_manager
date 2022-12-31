@@ -18,38 +18,43 @@ class MainActivity : FlutterActivity() {
 
   override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
     super.configureFlutterEngine(flutterEngine)
-    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "amh.fileManager.com/video_thumbnail")
+    MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            "amh.fileManager.com/create_thumbnail"
+        )
         .setMethodCallHandler { call, result ->
           thread {
             print("message")
             try {
               if (call.method == "handleVideo") {
+
                 val filePath = call.argument<String>("filePath")!!
                 val time = call.argument<Long>("time")!!
                 val outputPath = call.argument<String>("output")!!
+                val thumbnailWidth = call.argument<Int>("width")!!
                 val thumbnail = createVideoThumbnail(filePath, time)!!
-
-                saveBitmapToFile(thumbnail, File(outputPath))
-
+                saveBitmapToFile(thumbnail, File(outputPath), thumbnailWidth)
                 result.success(outputPath)
               } else if (call.method == "handleAPK") {
 
                 val filePath = call.argument<String>("filePath")!!
                 val outputPath = call.argument<String>("output")!!
-
-                val thumbnail = makeAPKIcon(filePath, outputPath)
+                val thumbnailWidth = call.argument<Int>("width")!!
+                val thumbnail = makeAPKIcon(filePath, outputPath, thumbnailWidth)
                 result.success(thumbnail)
               } else if (call.method == "handleImage") {
-                // ? handling images will be here
+
                 val filePath = call.argument<String>("filePath")!!
                 val outputPath = call.argument<String>("output")!!
-                makeImageThumbnail(filePath, outputPath)
+                val thumbnailWidth = call.argument<Int>("width")!!
+
+                makeImageThumbnail(filePath, outputPath, thumbnailWidth)
                 result.success(outputPath)
               } else {
                 result.notImplemented()
               }
             } catch (e: Exception) {
-              print("An error occured creating video thumbnail")
+              print("An error occured creating a thumbnail")
             }
           }
         }
@@ -70,17 +75,26 @@ class MainActivity : FlutterActivity() {
   }
 
   // ? to save a bitmap to a file
-  fun saveBitmapToFile(bitmap: Bitmap, file: File) {
+  fun saveBitmapToFile(bitmap: Bitmap, file: File, newWidth: Int) {
     val out = FileOutputStream(file)
     try {
-      bitmap.compress(Bitmap.CompressFormat.PNG, 20, out)
+
+      val originalWidth = bitmap.width
+      val originalHeight = bitmap.height
+      val compressFactor = (originalWidth * 1.0) / (newWidth * 1.0)
+      val newHeight = originalHeight / compressFactor
+      val newWidthCalced = originalWidth / compressFactor
+
+      val scaledBitmap =
+          Bitmap.createScaledBitmap(bitmap, newWidthCalced.toInt(), newHeight.toInt(), false)
+      scaledBitmap.compress(Bitmap.CompressFormat.PNG, 20, out)
     } finally {
       out.close()
     }
   }
 
   // ? to make an apk icon
-  fun makeAPKIcon(apkFilePath: String, outputFile: String): String {
+  fun makeAPKIcon(apkFilePath: String, outputFile: String, width: Int): String {
     val pm = getPackageManager()
     val pi = pm.getPackageArchiveInfo(apkFilePath, 0)
 
@@ -91,12 +105,12 @@ class MainActivity : FlutterActivity() {
 
     val apkicon = pi.applicationInfo.loadIcon(pm)!!
     // val appName = pi.applicationInfo.loadLabel(pm)
-    val thumbPath = drawableToBitmap(apkicon, outputFile)
+    val thumbPath = drawableToBitmap(apkicon, outputFile, width)
     return thumbPath
   }
 
   // ? to convert drawble to bitmap (needed in the apk thumbnails)
-  fun drawableToBitmap(drawable: Drawable, outputFile: String): String {
+  fun drawableToBitmap(drawable: Drawable, outputFile: String, width: Int): String {
     val bitmap =
         Bitmap.createBitmap(
             drawable.intrinsicWidth,
@@ -108,12 +122,13 @@ class MainActivity : FlutterActivity() {
     drawable.setBounds(0, 0, canvas.width, canvas.height)
     drawable.draw(canvas)
     val file = File(outputFile)
-    saveBitmapToFile(bitmap, file)
+    saveBitmapToFile(bitmap, file, width)
 
     return file.path
   }
 
-  fun makeImageThumbnail(imagePath: String, outputFile: String) {
-    saveBitmapToFile(BitmapFactory.decodeFile(imagePath), File(outputFile))
+  // ? to  make an image thumbnail
+  fun makeImageThumbnail(imagePath: String, outputFile: String, width: Int) {
+    saveBitmapToFile(BitmapFactory.decodeFile(imagePath), File(outputFile), width)
   }
 }

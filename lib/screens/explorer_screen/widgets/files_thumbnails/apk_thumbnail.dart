@@ -40,7 +40,7 @@ class _ApkThumbnailState extends State<ApkThumbnail> {
         bool allow = thumbProvider.allowMeToCompress;
         if (allow) {
           thumbProvider.incrementCompressing();
-          await createFileThumbnail(
+          await getFileThumbnail(
             widget.filePath,
             setThumbnail,
             FileType.apk,
