@@ -132,6 +132,12 @@ class _FolderDetailsState extends State<FolderDetails> {
                 .format(widget.storageItemModel.modified),
             valueColor: kInActiveTextColor,
           ),
+          DetailItem(
+            title: 'Accessed: ',
+            value: DateFormat('yyyy-MM-dd   hh:mmaa')
+                .format(widget.storageItemModel.accessed),
+            valueColor: kInActiveTextColor,
+          ),
         ],
       ),
     );

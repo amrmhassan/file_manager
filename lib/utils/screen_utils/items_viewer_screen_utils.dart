@@ -20,18 +20,20 @@ Future<List<LocalFileInfo>> fetchData(
   List<LocalFileInfo> allFilesInfo =
       analyzerProvider.advancedStorageAnalyzer?.filesInfo ?? [];
   if (itemsType == ItemsType.bigFiles) {
+    // called "Big Files"
     allFilesInfo.sort(
       (a, b) => b.size.compareTo(a.size),
     );
     allFilesInfo = allFilesInfo.sublist(0, 200);
     return allFilesInfo;
-  } else if (itemsType == ItemsType.oldFiles) {
+  } else if (itemsType == ItemsType.inactiveFiles) {
+    // called ''
     allFilesInfo.sort(
       (a, b) => a.accessed.compareTo(b.accessed),
     );
     allFilesInfo = allFilesInfo.sublist(0, 200);
     return allFilesInfo;
-  } else if (itemsType == ItemsType.modifiedFiles) {
+  } else if (itemsType == ItemsType.oldFiles) {
     allFilesInfo.sort(
       (a, b) => a.modified.compareTo(b.modified),
     );

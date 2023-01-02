@@ -83,10 +83,10 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                         Navigator.pushNamed(
                           context,
                           ItemsViewerScreen.routeName,
-                          arguments: ItemsType.oldFiles,
+                          arguments: ItemsType.inactiveFiles,
                         );
                       },
-                      title: 'Old Files',
+                      title: 'Inactive Files',
                       color: kMainIconColor,
                     ),
                     VSpace(factor: .5),
@@ -96,10 +96,10 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                         Navigator.pushNamed(
                           context,
                           ItemsViewerScreen.routeName,
-                          arguments: ItemsType.modifiedFiles,
+                          arguments: ItemsType.oldFiles,
                         );
                       },
-                      title: 'Modified Files',
+                      title: 'Old Files',
                       color: kMainIconColor,
                     ),
                   ],

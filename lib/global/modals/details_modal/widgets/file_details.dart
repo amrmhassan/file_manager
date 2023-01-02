@@ -53,6 +53,12 @@ class FileDetails extends StatelessWidget {
                 .format(storageItemModel.modified),
             valueColor: kInActiveTextColor,
           ),
+          DetailItem(
+            title: 'Accessed: ',
+            value: DateFormat('yyyy-MM-dd   hh:mmaa')
+                .format(storageItemModel.accessed),
+            valueColor: kInActiveTextColor,
+          ),
         ],
       ),
     );

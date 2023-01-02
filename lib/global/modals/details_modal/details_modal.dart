@@ -27,6 +27,7 @@ class SingleItemDetailsModal extends StatelessWidget {
       color: kCardBackgroundColor,
       showTopLine: false,
       afterLinePaddingFactor: 1,
+      bottomPaddingFactor: 0,
       child: singleItem
           ? selectedItems[0].entityType == EntityType.file
               ? FileDetails(storageItemModel: selectedItems[0])

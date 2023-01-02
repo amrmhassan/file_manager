@@ -16,8 +16,8 @@ import 'package:provider/provider.dart';
 
 enum ItemsType {
   bigFiles,
+  inactiveFiles,
   oldFiles,
-  modifiedFiles,
   recentOpenedFiles,
 }
 
@@ -54,10 +54,10 @@ class _ItemsViewerScreenState extends State<ItemsViewerScreen> {
     switch (itemsType) {
       case ItemsType.bigFiles:
         return 'Big Files';
+      case ItemsType.inactiveFiles:
+        return 'Inactive Files';
       case ItemsType.oldFiles:
         return 'Old Files';
-      case ItemsType.modifiedFiles:
-        return 'Modified Files';
       case ItemsType.recentOpenedFiles:
         return 'Recent Opened Files';
     }
