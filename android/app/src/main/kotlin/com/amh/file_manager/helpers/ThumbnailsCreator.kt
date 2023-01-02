@@ -62,7 +62,8 @@ class ThumbnailCreator(var filePath: String, var outputPath: String, var thumbna
 
       val scaledBitmap =
           Bitmap.createScaledBitmap(bitmap, newWidthCalced.toInt(), newHeight.toInt(), false)
-      scaledBitmap.compress(Bitmap.CompressFormat.PNG, 15, out)
+      // val croppedBitMap = Bitmap.createBitmap(scaledBitmap, 0, 0, newWidth, newWidth)
+      scaledBitmap.compress(Bitmap.CompressFormat.PNG, 20, out)
     } finally {
       out.close()
     }
