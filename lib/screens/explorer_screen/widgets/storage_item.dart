@@ -3,6 +3,7 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/global/widgets/custom_volume_controllers.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -21,6 +22,7 @@ class StorageItem extends StatefulWidget {
   final int parentSize;
   final bool allowSelect;
   final bool allowShowingFavIcon;
+  final bool allowClick;
 
   const StorageItem({
     super.key,
@@ -28,6 +30,7 @@ class StorageItem extends StatefulWidget {
     required this.onDirTapped,
     required this.sizesExplorer,
     required this.parentSize,
+    this.allowClick = true,
     this.allowSelect = true,
     this.allowShowingFavIcon = false,
   });
@@ -62,17 +65,20 @@ class _StorageItemState extends State<StorageItem> {
         ),
         AnimationWrapper(
           child: ButtonWrapper(
-            onTap: () async {
-              if (isDir(widget.storageItemModel.path)) {
-                //* here open the folder
-                widget.onDirTapped(widget.storageItemModel.path);
-              } else {
-                //* here perform open the file
-                await open_file.OpenFile.open(widget.storageItemModel.path);
-                await foProviderFalse
-                    .addToRecentlyOpened(widget.storageItemModel.path);
-              }
-            },
+            onTap: widget.allowClick
+                ? () async {
+                    if (isDir(widget.storageItemModel.path)) {
+                      //* here open the folder
+                      widget.onDirTapped(widget.storageItemModel.path);
+                    } else {
+                      //* here perform open the file
+                      await open_file.OpenFile.open(
+                          widget.storageItemModel.path);
+                      await foProviderFalse
+                          .addToRecentlyOpened(widget.storageItemModel.path);
+                    }
+                  }
+                : null,
             onLongPress: widget.allowSelect
                 ? () {
                     var expProvider =

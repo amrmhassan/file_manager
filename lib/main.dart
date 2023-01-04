@@ -20,6 +20,7 @@ import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.d
 import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
+import 'package:explorer/screens/selected_tems_screen/selected_tems_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
@@ -92,6 +93,7 @@ class MyApp extends StatelessWidget {
           ListyScreen.routeName: (context) => ListyScreen(),
           ListyItemViewerScreen.routeName: (context) => ListyItemViewerScreen(),
           SettingsScreen.routeName: (context) => SettingsScreen(),
+          SelectedItemsScreen.routeName: (context) => SelectedItemsScreen(),
         },
       ),
     );

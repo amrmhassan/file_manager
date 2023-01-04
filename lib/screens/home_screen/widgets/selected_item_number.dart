@@ -3,6 +3,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/selected_tems_screen/selected_tems_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +19,7 @@ class SelectedItemNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return ButtonWrapper(
       onTap: () {
-        showSnackBar(
-          context: context,
-          message: 'I will show a modal of selected items here',
-        );
+        Navigator.pushNamed(context, SelectedItemsScreen.routeName);
       },
       alignment: Alignment.center,
       width: mediumIconSize,
