@@ -200,11 +200,13 @@ FileType getFileType(String extension) {
   }
 }
 
+//! investigate about svg file extension
+
 //? this is only to get file icon path
-String getFileTypeIcon(String extension) {
+String getFileTypeIcon(String fileExtension) {
   // here you need to check the specific file extensions first before the general ones,
   // for example check the word, excel, text extensions before the docs ones
-  String ext = extension.toLowerCase().replaceAll('.', '');
+  String ext = fileExtension.toLowerCase().replaceAll('.', '');
   String iconPackFolder = 'assets/ext_icons/icons_1/';
   String extImage = 'unknown';
   //* checking audio
@@ -234,6 +236,61 @@ String getFileTypeIcon(String extension) {
     extImage = 'exec';
   } else if (archivesExt.contains(ext)) {
     extImage = 'tar';
+  } else {
+    String? programmingLanguageExtension = getProgrammingFileIcon(ext);
+    if (programmingLanguageExtension != null) {
+      extImage = programmingLanguageExtension;
+    }
   }
   return '$iconPackFolder$extImage.png';
 }
+
+//? to recognize extensions for programming languages
+String? getProgrammingFileIcon(String ext) {
+  // i will use this function in the above method for abstraction
+  // it will be used just before returning that it is unknown because not many people will be interested in programming languages files
+  String? extImage;
+  if (ext == 'py') {
+    extImage = 'text-x-py';
+  } else if (ext == 'java') {
+    extImage = 'text-x-java';
+  } else if (ext == 'c') {
+    extImage = 'text-x-c';
+  } else if (ext == 'cpp' || ext == 'cc' || ext == 'cxx') {
+    extImage = 'text-x-cpp';
+  } else if (ext == 'js') {
+    extImage = 'text-x-js';
+  } else if (ext == 'php') {
+    extImage = 'text-x-php';
+  } else if (ext == 'ts') {
+    extImage = 'text-x-ts';
+  } else if (ext == 'html' || ext == 'htm') {
+    extImage = 'text-x-html';
+  } else if (ext == 'xml') {
+    extImage = 'text-x-xml';
+  } else if (ext == 'css') {
+    extImage = 'text-x-css';
+  }
+  return extImage;
+}
+
+
+// C: .c
+// C++: .cpp, .cc, .cxx
+// C#: .cs
+// Java: .java
+// Python: .py
+// Ruby: .rb
+// Swift: .swift
+// JavaScript: .js
+// PHP: .php
+// Go: .go
+// Rust: .rs
+// Kotlin: .kt
+// TypeScript: .ts
+// Lua: .lua
+
+
+// XML: xml
+// HTML: html, htm
+// CSS: css,
