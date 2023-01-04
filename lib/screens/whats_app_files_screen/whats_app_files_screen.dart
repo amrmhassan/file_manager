@@ -30,6 +30,8 @@ class WhatsappFilesScreen extends StatefulWidget {
 
 class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
   List<StorageItemModel> children = [];
+  bool loading = true;
+
   StreamSubscription? streamSubscription;
   //? to get the folder path
   String? get path {
@@ -111,6 +113,12 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
         addFileToChildren(event);
       }
     });
+
+    streamSubscription?.onDone(() {
+      setState(() {
+        loading = false;
+      });
+    });
   }
 
 //? to convert file system entity to storage item model and add it to the children list
@@ -176,15 +184,23 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
                       style: h4TextStyleInactive,
                     ),
                   )
-                : ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    itemCount: children.length,
-                    itemBuilder: (context, index) => StorageItem(
-                        storageItemModel: children[index],
-                        onDirTapped: (path) {},
-                        sizesExplorer: false,
-                        parentSize: 0),
-                  ),
+                : loading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                          backgroundColor: kBlueColor,
+                        ),
+                      )
+                    : ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: children.length,
+                        itemBuilder: (context, index) => StorageItem(
+                            storageItemModel: children[index],
+                            onDirTapped: (path) {},
+                            sizesExplorer: false,
+                            parentSize: 0),
+                      ),
           ),
           if (!foProvider.loadingOperation) EntityOperations(),
         ],
