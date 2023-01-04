@@ -51,6 +51,8 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
     } else if (mediaType == MediaType.statusImages ||
         mediaType == MediaType.statusVideo) {
       folderPath = '.Statuses';
+    } else if (mediaType == MediaType.documents) {
+      folderPath = 'WhatsApp Documents';
     } else {
       return null;
     }
@@ -73,6 +75,8 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
       return 'Images Statuses';
     } else if (mediaType == MediaType.statusVideo) {
       return 'Videos Statuses';
+    } else if (mediaType == MediaType.documents) {
+      return 'Documents';
     } else {
       return '';
     }
@@ -85,9 +89,6 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
         ModalRoute.of(context)!.settings.arguments as MediaType;
     if (path == null) return;
     Directory directory = Directory(folderPath!);
-    // directory.list().listen((event) {
-    //   printOnDebug(event);
-    // });
 
     Stream<FileSystemEntity> stream =
         directory.list(recursive: mediaType == MediaType.voiceNote);
@@ -112,6 +113,7 @@ class _WhatsappFilesScreenState extends State<WhatsappFilesScreen> {
     });
   }
 
+//? to convert file system entity to storage item model and add it to the children list
   void addFileToChildren(FileSystemEntity fileSystemEntity) {
     FileStat fileStat = fileSystemEntity.statSync();
     if (fileStat.type == FileSystemEntityType.file) {

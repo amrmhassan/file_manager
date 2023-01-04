@@ -20,6 +20,7 @@ enum MediaType {
   video,
   audio,
   voiceNote,
+  documents,
   statusImages,
   statusVideo,
 }
@@ -92,6 +93,13 @@ class WhatsAppScreen extends StatelessWidget {
                     title: 'Voice Notes',
                     onTap: () {
                       openFilesScreen(MediaType.voiceNote, context);
+                    },
+                  ),
+                  WhatsAppFolderCard(
+                    iconName: 'documents',
+                    title: 'Documents',
+                    onTap: () {
+                      openFilesScreen(MediaType.documents, context);
                     },
                   ),
                 ],

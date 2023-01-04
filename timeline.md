@@ -23,3 +23,15 @@
 -- and when retrieving the data just choose from the one that has data in it
 -- or just set a variable in the global constants or in shared prefs to the database that will have the most recent data to read from it
 
+
+# fix the error with loading multiple whatsapp images, voice notes , etc...
+-- by creating a system to handle files loading batch by batch
+-- for example: you can create a list that hold current position with a key, a data list with a the same key
+-- this state will hold data as object(key, data) and object(key, currentPosition)
+
+
+# use the data valve project to handle data loading in this project, for whatsapp images, voice notes, etc
+# because you won't delete the tempDB again you should make the storage model delete that file from database if it doesn't exist when checking in it's build method
+# add the documents to the whatsapp section
+# add notifications for songs, videos players
+# add the page for controlling selected items
