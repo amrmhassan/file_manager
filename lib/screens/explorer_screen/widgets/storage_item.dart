@@ -3,7 +3,6 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/global/widgets/custom_volume_controllers.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';

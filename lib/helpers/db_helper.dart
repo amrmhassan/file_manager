@@ -21,7 +21,7 @@ class DBHelper {
     return finalPath;
   }
 
-//? to return the database
+  //? to return the database
   static Future<sql.Database> database(
     String table, [
     String? databaseName,
@@ -38,7 +38,7 @@ class DBHelper {
     );
   }
 
-//? to clear a database
+  //? to clear a database
   static Future<void> clearDb(
     String databaseName,
   ) async {
@@ -48,7 +48,7 @@ class DBHelper {
     await sql.deleteDatabase(finalPath);
   }
 
-//? to insert to a db
+  //? to insert to a db
   static Future<void> insert(
     String table,
     Map<String, dynamic> data, [
@@ -64,7 +64,7 @@ class DBHelper {
     );
   }
 
-//? to get all data from a table
+  //? to get all data from a table
   static Future<List<Map<String, dynamic>>> getData(
     String table, [
     String? databaseName,
@@ -73,10 +73,10 @@ class DBHelper {
     return await db.query(table);
   }
 
-//? to get all data with limit from a table
+  //? to get all data with limit from a table
   static Future<List<Map<String, dynamic>>> getDataLimit({
     required String table,
-    required int limit,
+    int? limit,
     String? orderProp,
     bool orderASC = true,
     String? databaseName,
@@ -85,15 +85,16 @@ class DBHelper {
     String orderQuery = orderProp == null
         ? ''
         : 'ORDER BY $orderProp ${orderASC ? "ASC" : "DESC"}';
+    String limitQuery = limit == null ? '' : 'LIMIT $limit';
     return db.rawQuery("""
-SELECT * 
-FROM $table
-$orderQuery
-LIMIT $limit
-""");
+                    SELECT * 
+                    FROM $table
+                    $orderQuery
+                    $limitQuery
+                    """);
   }
 
-//? to get data from a table where
+  //? to get data from a table where
   static Future<List<Map<String, dynamic>>> getDataWhere(
     String table,
     String key,
@@ -104,7 +105,7 @@ LIMIT $limit
     return db.query(table, where: '$key = ?', whereArgs: [value]);
   }
 
-//? to get data from a table where multiple keys apply
+  //? to get data from a table where multiple keys apply
   static Future<List<Map<String, dynamic>>> getDataWhereMultiple(
     String table,
     List<String> keys,
@@ -124,14 +125,14 @@ LIMIT $limit
     }
 
     String query = """
-SELECT *
-FROM $table
-WHERE $whereQuery;
-""";
+                    SELECT *
+                    FROM $table
+                    WHERE $whereQuery;
+                    """;
     return db.rawQuery(query);
   }
 
-//? to delete data from a table where multiple keys apply
+  //? to delete data from a table where multiple keys apply
   static Future<List<Map<String, dynamic>>> deleteDataWhereMultiple(
     String table,
     List<String> keys,
@@ -151,21 +152,21 @@ WHERE $whereQuery;
     }
 
     String query = """
-DELETE
-FROM $table
-WHERE $whereQuery;
-""";
+                    DELETE
+                    FROM $table
+                    WHERE $whereQuery;
+                    """;
     return db.rawQuery(query);
   }
 
-//? to delete a database
+  //? to delete a database
   static Future<void> deleteDatabase(String databaseName) async {
     final databasePathDir = await sql.getDatabasesPath();
     String finalPath = path.join(databasePathDir, databaseName);
     return sql.deleteDatabase(finalPath);
   }
 
-//? to delete a record by id
+  //? to delete a record by id
   static Future<void> deleteById(
     String id,
     String table, [
@@ -175,7 +176,7 @@ WHERE $whereQuery;
     return db.execute("DELETE FROM $table WHERE $pathString='$id'");
   }
 
-//? to delete a table
+  //? to delete a table
   static Future<void> deleteTable(
     String table, [
     String? databaseName,

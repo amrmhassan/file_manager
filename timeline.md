@@ -32,6 +32,7 @@
 
 # use the data valve project to handle data loading in this project, for whatsapp images, voice notes, etc
 # because you won't delete the tempDB again you should make the storage model delete that file from database if it doesn't exist when checking in it's build method
-# add the documents to the whatsapp section
 # add notifications for songs, videos players
 # add the page for controlling selected items
+# make loading whatsapp files to be in an isolate 
+# add analyzer for each folder to analyze, coding projects and return project report, videos and return their full time, some stuff about files sizes, etc...
