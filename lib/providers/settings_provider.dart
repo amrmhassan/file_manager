@@ -21,7 +21,7 @@ class SettingsProvider extends ChangeNotifier {
   //? animation duration
   int animationDuration = 300;
   //? animation type
-  AnimationType activeAnimationType = AnimationType.fadeInLeft;
+  AnimationType activeAnimationType = AnimationType.none;
   Future setAnimationType(AnimationType animationType) async {
     activeAnimationType = animationType;
     notifyListeners();
