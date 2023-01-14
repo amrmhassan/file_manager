@@ -417,7 +417,8 @@ class ExplorerProvider extends ChangeNotifier
 
   //? add a new tab
   @override
-  void addTab(String path, FilesOperationsProvider filesOperationsProvider) {
+  void addTab(String path, FilesOperationsProvider filesOperationsProvider,
+      [bool doOpenTab = true]) {
     bool exists = _tabs.any((element) => element.path == path);
     if (exists) {
       throw Exception('Tab is already open');
@@ -428,9 +429,20 @@ class ExplorerProvider extends ChangeNotifier
     }
     TabModel newTab = TabModel(path: path);
     _tabs.add(newTab);
-    if (_activeTabPath == null) {
+    if (_activeTabPath == null && doOpenTab) {
       openTab(path, filesOperationsProvider);
     }
+    notifyListeners();
+  }
+
+  //? open tab
+  @override
+  void openTab(String path, FilesOperationsProvider filesOperationsProvider) {
+    if (!_tabs.any((element) => element.path == path)) {
+      addTab(path, filesOperationsProvider, false);
+    }
+    _activeTabPath = path;
+    setActiveDir(path: path, filesOperationsProvider: filesOperationsProvider);
     notifyListeners();
   }
 
@@ -446,17 +458,6 @@ class ExplorerProvider extends ChangeNotifier
       openTab(_activeTabPath!, filesOperationsProvider);
     }
     _tabs.removeAt(index);
-    notifyListeners();
-  }
-
-  //? open tab
-  @override
-  void openTab(String path, FilesOperationsProvider filesOperationsProvider) {
-    if (!_tabs.any((element) => element.path == path)) {
-      addTab(path, filesOperationsProvider);
-    }
-    _activeTabPath = path;
-    setActiveDir(path: path, filesOperationsProvider: filesOperationsProvider);
     notifyListeners();
   }
 
