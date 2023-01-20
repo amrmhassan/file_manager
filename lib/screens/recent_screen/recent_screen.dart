@@ -14,6 +14,7 @@ import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/recent_screen/widget/recent_item_type.dart';
 import 'package:explorer/screens/recent_screen/widget/storage_segments.dart';
+import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:flutter/material.dart';
@@ -179,12 +180,15 @@ class _RecentScreenState extends State<RecentScreen> {
                 },
                 title: 'Listy',
               ),
-              // VSpace(),
-              // AnalyzerOptionsItem(
-              //   logoName: 'apps',
-              //   onTap: () {},
-              //   title: 'Apps Data',
-              // ),
+              VSpace(),
+              AnalyzerOptionsItem(
+                logoName: 'menu',
+                onTap: () {
+                  Navigator.pushNamed(context, ShareScreen.routeName);
+                },
+                title: 'Share',
+                color: Colors.white,
+              ),
               VSpace(),
             ],
           ),

@@ -134,6 +134,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
   disk_space:
     dependency: "direct main"
     description:
@@ -141,6 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
+  event_bus:
+    dependency: transitive
+    description:
+      name: event_bus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -268,6 +282,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  mqtt_client:
+    dependency: "direct main"
+    description:
+      name: mqtt_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.7.4"
   nested:
     dependency: transitive
     description:
@@ -415,6 +436,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.5"
+  qr_code_scanner:
+    dependency: "direct main"
+    description:
+      name: qr_code_scanner
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   share_plus:
     dependency: "direct main"
     description:
