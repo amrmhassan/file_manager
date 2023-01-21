@@ -4,6 +4,9 @@ import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/modals/widgets/add_to_favorite_button.dart';
 import 'package:explorer/global/modals/widgets/add_to_other_listy_button.dart';
 import 'package:explorer/global/modals/widgets/open_in_new_tab_button.dart';
+import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:explorer/constants/colors.dart';
@@ -35,6 +38,21 @@ class EntityOptionsModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           VSpace(),
+          if (foProviderFalse.selectedItems.length == 1 &&
+              foProviderFalse.selectedItems.first.entityType == EntityType.file)
+            ModalButtonElement(
+              inactiveColor: Colors.transparent,
+              opacity: foProviderFalse.selectedItems.length == 1 ? 1 : .5,
+              active: foProviderFalse.selectedItems.length == 1,
+              title: 'Add To Share Space',
+              onTap: () async {
+                Provider.of<ShareProvider>(context, listen: false)
+                    .addToShareSpace(foProviderFalse.selectedItems.first.path);
+                foProviderFalse.clearAllSelectedItems(
+                    Provider.of<ExplorerProvider>(context, listen: false));
+                Navigator.pop(context);
+              },
+            ),
           OpenInNewTabButton(),
           AddToFavoriteButton(foProviderFalse: foProviderFalse),
           AddToOtherListyButton(foProviderFalse: foProviderFalse),
