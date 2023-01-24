@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:isolate';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
+import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
@@ -64,6 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
       await Provider.of<AnalyzerProvider>(context, listen: false)
           .loadInitialAppData(recentProvider);
       await Provider.of<ListyProvider>(context, listen: false).loadListyLists();
+      //? to set the device id
+      await Provider.of<ShareProvider>(context, listen: false).giveDeviceAnId();
 
       //* getting storage permission
       bool res = await showPermissionsModal(

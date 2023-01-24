@@ -34,6 +34,7 @@ const String thumbnailPathTableName = 'thumbnailPath';
 const String recentlyOpenedFilesTableName = 'recentlyOpenedFiles';
 const String listyListTableName = 'listyList';
 const String listyItemsTableName = 'listyItems';
+const String shareSpaceItemsTableName = 'shareSpaceItems';
 
 //? creating tables queries
 const String imagesThumbnailsTableCreation =
@@ -44,3 +45,5 @@ const String listyListTableCreation =
     'CREATE TABLE $listyListTableName ($titleString TEXT PRIMARY KEY, $iconString TEXT, $createdAtString TEXT)';
 const String listyItemsTableCreation =
     'CREATE TABLE $listyItemsTableName ($idString TEXT PRIMARY KEY, $pathString TEXT, $listyTitleString TEXT, $createdAtString TEXT, $entityTypeString TEXT)';
+const String shareSpaceItemsTableCreation =
+    'CREATE TABLE $shareSpaceItemsTableName ($pathString TEXT PRIMARY KEY, $entityTypeString TEXT, $blockedAtString TEXT, $ownerIDString TEXT, $addedAtString TEXT)';

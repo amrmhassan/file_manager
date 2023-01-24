@@ -36,9 +36,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  // AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-  // print(androidInfo.version.sdkInt);
+
   await setThemeVariables();
   runApp(const MyApp());
 }

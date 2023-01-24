@@ -35,6 +35,11 @@ const String createdAtString = 'createdAtString';
 //? listy item model
 const String listyTitleString = 'listyTitleString';
 
+//? share space item model
+const String blockedAtString = 'blockedAtString';
+const String ownerIDString = 'ownerIDString';
+const String addedAtString = 'addedAtString';
+
 //? other keys
 const String thumbnailStringPath = 'thumbnailStringPath';
 const String dateFileOpenedString = 'dateFileOpenedString';

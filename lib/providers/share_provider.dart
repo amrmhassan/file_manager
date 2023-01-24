@@ -1,8 +1,19 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/constants/shared_pref_constants.dart';
+import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
+import 'package:explorer/models/share_space_item_model.dart';
+import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 
 enum MemberType {
   host, // who have the hotspot
@@ -10,18 +21,19 @@ enum MemberType {
 }
 
 class ShareProvider extends ChangeNotifier {
+  String? myDeviceId;
   String speedText = '0Mb/s';
   double percentSent = 0;
   int serverPort = 3000;
   String? myConnLink;
   int myServerOpenPort = 0;
-  List<String> sharedLinks = [];
+  List<ShareSpaceItemModel> sharedLinks = [];
   bool sharing = false;
   Uint8List? sharedFile;
   String? fileName;
   MemberType? memberType;
 
-//? to start the host who have the hotspot
+  //? to start the host who have the hotspot
   void startHost() {
     memberType = MemberType.host;
     notifyListeners();
@@ -73,13 +85,82 @@ class ShareProvider extends ChangeNotifier {
     );
   }
 
-  //? add file to
-  void addToShareSpace(String path) async {
-    sharedLinks.clear();
-    sharedLinks.add(path);
-    fileName = sharedLinks.first.split('/').last;
-    sharedFile = await File(sharedLinks.first).readAsBytes();
+  //? i will give this device an id in the first run of the app
+  //? and if it is there just don't change it
+  Future<void> giveDeviceAnId() async {
+    String? savedId = await SharedPrefHelper.getString(deviceIdKey);
+
+    if (savedId == null) {
+      myDeviceId = Uuid().v4();
+      notifyListeners();
+      await SharedPrefHelper.setString(deviceIdKey, myDeviceId!);
+      return;
+    }
+    myDeviceId = savedId;
     notifyListeners();
+  }
+
+  //? to remove multiple items from share space
+  Future removeMultipleItemsFromShareSpace(List<StorageItemModel> items) async {
+    for (var item in items) {
+      await _removeItemFromShareSpace(item.path);
+    }
+  }
+
+  //? to remove an item from share space
+  Future _removeItemFromShareSpace(String path) async {
+    sharedLinks.removeWhere((element) => element.path == path);
+    notifyListeners();
+    await DBHelper.deleteById(path, shareSpaceItemsTableName, persistentDbName);
+  }
+
+  //? add multiple files to share space
+  Future addMultipleFilesToShareSpace(List<StorageItemModel> items) async {
+    for (var item in items) {
+      await _addToShareSpace(item);
+    }
+  }
+
+  //? add file to share space
+  Future _addToShareSpace(StorageItemModel storageItemModel) async {
+    ShareSpaceItemModel shareSpaceItemModel = ShareSpaceItemModel(
+      blockedAt: [],
+      entityType: storageItemModel.entityType,
+      path: storageItemModel.path,
+      ownerID: myDeviceId!,
+      addedAt: DateTime.now(),
+    );
+    sharedLinks.add(shareSpaceItemModel);
+    notifyListeners();
+    await DBHelper.insert(
+      shareSpaceItemsTableName,
+      shareSpaceItemModel.toJSON(),
+      persistentDbName,
+    );
+  }
+
+  //? to check if multiple items are at share space
+  Future<bool> areAllItemsAtShareSpace(List<StorageItemModel> items) async {
+    bool allItemsExist = true;
+    for (var item in items) {
+      bool atShareSpace = await _isItemAtShareSpace(item.path);
+      if (!atShareSpace) {
+        allItemsExist = false;
+        break;
+      }
+    }
+    return allItemsExist;
+  }
+
+  //? to check if an item is at share space
+  Future<bool> _isItemAtShareSpace(String path) async {
+    var data = await DBHelper.getDataWhere(
+      shareSpaceItemsTableName,
+      pathString,
+      path,
+      persistentDbName,
+    );
+    return data.isNotEmpty;
   }
 
   //? send file

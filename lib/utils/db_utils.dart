@@ -71,4 +71,6 @@ FutureOr<void> onPersistentDataBase(
   await db.execute(listyListTableCreation);
   //? creating listy items table
   await db.execute(listyItemsTableCreation);
+  //? creating share space items table
+  await db.execute(shareSpaceItemsTableCreation);
 }
