@@ -1,12 +1,17 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/share_provider.dart';
-import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/screens/share_screen/widgets/empty_share_items.dart';
+import 'package:explorer/screens/share_screen/widgets/shading_background.dart';
+import 'package:explorer/screens/share_screen/widgets/share_screen_navbar.dart';
+import 'package:explorer/screens/share_screen/widgets/shared_items.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class ShareScreen extends StatelessWidget {
   static const String routeName = '/ShareScreen';
@@ -15,53 +20,32 @@ class ShareScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var shareProvider = Provider.of<ShareProvider>(context);
-    var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  shareProviderFalse.startHost();
-                },
-                child: Text('Host'),
+          CustomAppBar(
+            title: Text(
+              'Share Space',
+              style: h2TextStyle.copyWith(
+                color: kActiveTextColor,
               ),
-              Spacer(),
-              ElevatedButton(
-                onPressed: () async {},
-                child: Text('Join'),
-              ),
-            ],
+            ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(width: double.infinity),
-              if (shareProvider.myConnLink != null)
-                GestureDetector(
-                  onTap: () {
-                    copyPathToClipboard(context, shareProvider.myConnLink!);
-                  },
-                  child: Column(
-                    children: [
-                      QrImage(
-                        data: shareProvider.myConnLink!,
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.white,
-                        version: QrVersions.auto,
-                        size: 200,
-                      ),
-                      Text(shareProvider.myConnLink!)
-                    ],
-                  ),
-                ),
-              Text('Host must open his hotspot'),
-            ],
-          )
+          VSpace(),
+          Expanded(
+            child: Stack(
+              children: [
+                if (shareProvider.sharedItems.isNotEmpty)
+                  SharedItems()
+                else
+                  EmptyShareItems(),
+                ShadingBackground(),
+              ],
+            ),
+          ),
+          ShareScreenNavBar(),
         ],
       ),
     );

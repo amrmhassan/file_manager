@@ -182,7 +182,7 @@ class _RecentScreenState extends State<RecentScreen> {
               ),
               VSpace(),
               AnalyzerOptionsItem(
-                logoName: 'menu',
+                logoName: 'management',
                 onTap: () {
                   Navigator.pushNamed(context, ShareScreen.routeName);
                 },

@@ -11,9 +11,12 @@ import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/models/types.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
+
+//! when adding a folder to share space all of it's children will be added to it too
+//! and when exploring inside this folder check if the file is a child of a shared folder then make the "add to share space" button to be remove from share space
+//! and if it is a child of a folder that is excluded from share space just make the opposite
 
 enum MemberType {
   host, // who have the hotspot
@@ -21,17 +24,133 @@ enum MemberType {
 }
 
 class ShareProvider extends ChangeNotifier {
+  //# shared space items properties
   String? myDeviceId;
+  List<ShareSpaceItemModel> sharedItems = [];
+
+  //# connection parameters
   String speedText = '0Mb/s';
   double percentSent = 0;
   int serverPort = 3000;
   String? myConnLink;
   int myServerOpenPort = 0;
-  List<ShareSpaceItemModel> sharedLinks = [];
   bool sharing = false;
   Uint8List? sharedFile;
   String? fileName;
   MemberType? memberType;
+
+  //? i will give this device an id in the first run of the app
+  //? and if it is there just don't change it
+  Future<void> giveDeviceAnId() async {
+    String? savedId = await SharedPrefHelper.getString(deviceIdKey);
+
+    if (savedId == null) {
+      myDeviceId = Uuid().v4();
+      notifyListeners();
+      await SharedPrefHelper.setString(deviceIdKey, myDeviceId!);
+      return;
+    }
+    myDeviceId = savedId;
+    notifyListeners();
+  }
+
+  //? to remove multiple items from share space
+  Future removeMultipleItemsFromShareSpace(List<StorageItemModel> items) async {
+    for (var item in items) {
+      await _removeItemFromShareSpace(item.path);
+    }
+  }
+
+  //? to remove an item from share space
+  Future _removeItemFromShareSpace(String path) async {
+    sharedItems.removeWhere((element) => element.path == path);
+    notifyListeners();
+    await DBHelper.deleteById(path, shareSpaceItemsTableName, persistentDbName);
+  }
+
+  //? add multiple files to share space
+  Future addMultipleFilesToShareSpace(List<StorageItemModel> items) async {
+    for (var item in items) {
+      await _addToShareSpace(item);
+    }
+  }
+
+  //? add file to share space
+  Future _addToShareSpace(StorageItemModel storageItemModel) async {
+    ShareSpaceItemModel shareSpaceItemModel = ShareSpaceItemModel(
+      blockedAt: [],
+      entityType: storageItemModel.entityType,
+      path: storageItemModel.path,
+      ownerID: myDeviceId!,
+      addedAt: DateTime.now(),
+    );
+    sharedItems.add(shareSpaceItemModel);
+    notifyListeners();
+    await DBHelper.insert(
+      shareSpaceItemsTableName,
+      shareSpaceItemModel.toJSON(),
+      persistentDbName,
+    );
+  }
+
+  //? to check if multiple items are at share space
+  Future<bool> areAllItemsAtShareSpace(List<StorageItemModel> items) async {
+    bool allItemsExist = true;
+    for (var item in items) {
+      bool atShareSpace = await _isItemAtShareSpace(item.path);
+      if (!atShareSpace) {
+        allItemsExist = false;
+        break;
+      }
+    }
+    return allItemsExist;
+  }
+
+  //? to check if an item is at share space
+  Future<bool> _isItemAtShareSpace(String path) async {
+    var data = await DBHelper.getDataWhere(
+      shareSpaceItemsTableName,
+      pathString,
+      path,
+      persistentDbName,
+    );
+    return data.isNotEmpty;
+  }
+
+  //! the following code need some checks and some more thinking
+
+  //? send file
+  Future openServer([bool wifi = true]) async {
+    HttpServer httpServer =
+        await HttpServer.bind(InternetAddress.anyIPv4, myServerOpenPort);
+    myServerOpenPort = httpServer.port;
+    String? myWifiIp = await getMyIpAddress(wifi);
+    if (myWifiIp == null) {
+      throw Exception('Ip is null');
+    }
+    myConnLink = 'http://$myWifiIp:$myServerOpenPort';
+    sharing = true;
+    notifyListeners();
+
+    httpServer.listen((HttpRequest request) async {
+      if (request.uri.path == '/') {
+        request.response
+          ..headers.contentType = ContentType('application', 'octet-stream')
+          ..headers.add('content-disposition', 'attachment; filename=$fileName')
+          ..headers.add('Content-Length', sharedFile!.length)
+          ..headers.add('fileName', fileName!)
+          ..add(sharedFile!)
+          ..close();
+      } else if (request.uri.path == '/done') {
+        request.response.close();
+        httpServer.close();
+      } else if (request.uri.path == '/filename') {
+        request.response
+          ..write(fileName)
+          ..close();
+      }
+    });
+  }
 
   //? to start the host who have the hotspot
   void startHost() {
@@ -83,117 +202,6 @@ class ShareProvider extends ChangeNotifier {
         }
       },
     );
-  }
-
-  //? i will give this device an id in the first run of the app
-  //? and if it is there just don't change it
-  Future<void> giveDeviceAnId() async {
-    String? savedId = await SharedPrefHelper.getString(deviceIdKey);
-
-    if (savedId == null) {
-      myDeviceId = Uuid().v4();
-      notifyListeners();
-      await SharedPrefHelper.setString(deviceIdKey, myDeviceId!);
-      return;
-    }
-    myDeviceId = savedId;
-    notifyListeners();
-  }
-
-  //? to remove multiple items from share space
-  Future removeMultipleItemsFromShareSpace(List<StorageItemModel> items) async {
-    for (var item in items) {
-      await _removeItemFromShareSpace(item.path);
-    }
-  }
-
-  //? to remove an item from share space
-  Future _removeItemFromShareSpace(String path) async {
-    sharedLinks.removeWhere((element) => element.path == path);
-    notifyListeners();
-    await DBHelper.deleteById(path, shareSpaceItemsTableName, persistentDbName);
-  }
-
-  //? add multiple files to share space
-  Future addMultipleFilesToShareSpace(List<StorageItemModel> items) async {
-    for (var item in items) {
-      await _addToShareSpace(item);
-    }
-  }
-
-  //? add file to share space
-  Future _addToShareSpace(StorageItemModel storageItemModel) async {
-    ShareSpaceItemModel shareSpaceItemModel = ShareSpaceItemModel(
-      blockedAt: [],
-      entityType: storageItemModel.entityType,
-      path: storageItemModel.path,
-      ownerID: myDeviceId!,
-      addedAt: DateTime.now(),
-    );
-    sharedLinks.add(shareSpaceItemModel);
-    notifyListeners();
-    await DBHelper.insert(
-      shareSpaceItemsTableName,
-      shareSpaceItemModel.toJSON(),
-      persistentDbName,
-    );
-  }
-
-  //? to check if multiple items are at share space
-  Future<bool> areAllItemsAtShareSpace(List<StorageItemModel> items) async {
-    bool allItemsExist = true;
-    for (var item in items) {
-      bool atShareSpace = await _isItemAtShareSpace(item.path);
-      if (!atShareSpace) {
-        allItemsExist = false;
-        break;
-      }
-    }
-    return allItemsExist;
-  }
-
-  //? to check if an item is at share space
-  Future<bool> _isItemAtShareSpace(String path) async {
-    var data = await DBHelper.getDataWhere(
-      shareSpaceItemsTableName,
-      pathString,
-      path,
-      persistentDbName,
-    );
-    return data.isNotEmpty;
-  }
-
-  //? send file
-  Future openServer([bool wifi = true]) async {
-    HttpServer httpServer =
-        await HttpServer.bind(InternetAddress.anyIPv4, myServerOpenPort);
-    myServerOpenPort = httpServer.port;
-    String? myWifiIp = await getMyIpAddress(wifi);
-    if (myWifiIp == null) {
-      throw Exception('Ip is null');
-    }
-    myConnLink = 'http://$myWifiIp:$myServerOpenPort';
-    sharing = true;
-    notifyListeners();
-
-    httpServer.listen((HttpRequest request) async {
-      if (request.uri.path == '/') {
-        request.response
-          ..headers.contentType = ContentType('application', 'octet-stream')
-          ..headers.add('content-disposition', 'attachment; filename=$fileName')
-          ..headers.add('Content-Length', sharedFile!.length)
-          ..headers.add('fileName', fileName!)
-          ..add(sharedFile!)
-          ..close();
-      } else if (request.uri.path == '/done') {
-        request.response.close();
-        httpServer.close();
-      } else if (request.uri.path == '/filename') {
-        request.response
-          ..write(fileName)
-          ..close();
-      }
-    });
   }
 
   //? get my wifi address
