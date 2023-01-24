@@ -3,7 +3,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
-import 'package:explorer/screens/selected_tems_screen/selected_tems_screen.dart';
+import 'package:explorer/screens/selected_items_screen/selected_items_screen.dart';
 import 'package:flutter/material.dart';
 
 class SelectedItemNumber extends StatelessWidget {

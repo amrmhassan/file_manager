@@ -57,6 +57,7 @@ dependencies:
   mqtt_client: ^9.7.4
   dio: ^4.0.6
   qr_flutter: ^4.0.0
+  wifi_iot: ^0.3.18
 
 dev_dependencies:
   flutter_test:

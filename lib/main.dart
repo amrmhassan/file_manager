@@ -21,7 +21,7 @@ import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.d
 import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
-import 'package:explorer/screens/selected_tems_screen/selected_tems_screen.dart';
+import 'package:explorer/screens/selected_items_screen/selected_items_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';

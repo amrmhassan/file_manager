@@ -87,7 +87,6 @@ class ShareProvider extends ChangeNotifier {
     HttpServer httpServer =
         await HttpServer.bind(InternetAddress.anyIPv4, myServerOpenPort);
     myServerOpenPort = httpServer.port;
-    print('I am using $myServerOpenPort as a port');
     String? myWifiIp = await getMyIpAddress(wifi);
     if (myWifiIp == null) {
       throw Exception('Ip is null');
@@ -96,10 +95,8 @@ class ShareProvider extends ChangeNotifier {
     sharing = true;
     notifyListeners();
 
-    print('Waiting for the client to connect');
     httpServer.listen((HttpRequest request) async {
       if (request.uri.path == '/') {
-        print('Client connected');
         request.response
           ..headers.contentType = ContentType('application', 'octet-stream')
           ..headers.add('content-disposition', 'attachment; filename=$fileName')
@@ -108,12 +105,9 @@ class ShareProvider extends ChangeNotifier {
           ..add(sharedFile!)
           ..close();
       } else if (request.uri.path == '/done') {
-        String data = request.headers['speed']?.first ?? 'null';
-        print('File sent with speed $data Mb/s');
         request.response.close();
         httpServer.close();
       } else if (request.uri.path == '/filename') {
-        print('Sending file $fileName');
         request.response
           ..write(fileName)
           ..close();
@@ -128,7 +122,6 @@ class ShareProvider extends ChangeNotifier {
     // 192.168.118.237 => wlan1 == mostly hotspot
     try {
       var interfaces = await NetworkInterface.list();
-      print(int);
       var wifiInterface = interfaces.firstWhere((element) =>
           element.name.contains(wifi ? 'wlan0' : 'wlan1') ||
           element.name.contains('wifi'));
