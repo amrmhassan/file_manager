@@ -42,7 +42,7 @@ class MainActivity : FlutterActivity() {
                 result.notImplemented()
               }
             } catch (e: Exception) {
-              result.success(e.toString())
+              result.success(e.toString())  
               print("An error occured creating a thumbnail")
             }
           }
