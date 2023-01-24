@@ -79,6 +79,7 @@ class _ExtFilesScreenState extends State<ExtFilesScreen> {
                     storageItemModel: e,
                     sizesExplorer: true,
                     parentSize: parentSize ?? 0,
+                    allowSelect: false,
                   ),
                 );
               }).toList(),

@@ -45,6 +45,7 @@ class SharedItems extends StatelessWidget {
                 return SizedBox();
               }
               return StorageItem(
+                allowSelect: false,
                 storageItemModel: storageItemModel,
                 onDirTapped: (e) {},
                 sizesExplorer: false,

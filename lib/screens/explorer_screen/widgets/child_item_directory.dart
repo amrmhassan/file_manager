@@ -38,7 +38,7 @@ class ChildDirectoryItem extends StatefulWidget {
   final int parentSize;
   final bool isSelected;
   final bool allowShowingFavIcon;
-
+  final bool allowSelect;
   const ChildDirectoryItem({
     super.key,
     required this.fileName,
@@ -47,6 +47,7 @@ class ChildDirectoryItem extends StatefulWidget {
     required this.parentSize,
     required this.isSelected,
     required this.allowShowingFavIcon,
+    required this.allowSelect,
   });
 
   @override
@@ -288,7 +289,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                               color: kInActiveTextColor.withOpacity(.7),
                             ),
                           ),
-                        foProvider.exploreMode == ExploreMode.selection
+                        foProvider.exploreMode == ExploreMode.selection &&
+                                widget.allowSelect
                             ? EntityCheckBox(
                                 isSelected: widget.isSelected,
                                 storageItemModel: widget.storageItemModel,

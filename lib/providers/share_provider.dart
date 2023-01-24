@@ -117,6 +117,15 @@ class ShareProvider extends ChangeNotifier {
     return data.isNotEmpty;
   }
 
+//? loading shared items from sqlite
+  Future<void> loadSharedItems() async {
+    var data =
+        await DBHelper.getData(shareSpaceItemsTableName, persistentDbName);
+    for (var item in data) {
+      sharedItems.add(ShareSpaceItemModel.fromJSON(item));
+    }
+    notifyListeners();
+  }
   //! the following code need some checks and some more thinking
 
   //? send file

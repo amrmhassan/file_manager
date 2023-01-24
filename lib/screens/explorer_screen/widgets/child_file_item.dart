@@ -31,6 +31,7 @@ class ChildFileItem extends StatefulWidget {
   final bool sizesExplorer;
   final int parentSize;
   final bool isSelected;
+  final bool allowSelect;
 
   const ChildFileItem({
     super.key,
@@ -38,6 +39,7 @@ class ChildFileItem extends StatefulWidget {
     required this.sizesExplorer,
     required this.parentSize,
     required this.isSelected,
+    required this.allowSelect,
   });
 
   @override
@@ -162,7 +164,8 @@ class _ChildFileItemState extends State<ChildFileItem> {
                           mediaPath: widget.storageItemModel.path,
                         ),
                         HSpace(),
-                        foProvider.exploreMode == ExploreMode.selection
+                        foProvider.exploreMode == ExploreMode.selection &&
+                                widget.allowSelect
                             ? EntityCheckBox(
                                 isSelected: widget.isSelected,
                                 storageItemModel: widget.storageItemModel,

@@ -65,6 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
       await Provider.of<AnalyzerProvider>(context, listen: false)
           .loadInitialAppData(recentProvider);
       await Provider.of<ListyProvider>(context, listen: false).loadListyLists();
+      //? to load the shared space items
+      await Provider.of<ShareProvider>(context, listen: false)
+          .loadSharedItems();
       //? to set the device id
       await Provider.of<ShareProvider>(context, listen: false).giveDeviceAnId();
 

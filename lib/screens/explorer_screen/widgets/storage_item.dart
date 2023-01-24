@@ -96,12 +96,14 @@ class _StorageItemState extends State<StorageItem> {
                     sizesExplorer: widget.sizesExplorer,
                     isSelected: isSelected(context),
                     allowShowingFavIcon: widget.allowShowingFavIcon,
+                    allowSelect: widget.allowSelect,
                   )
                 : ChildFileItem(
                     storageItemModel: widget.storageItemModel,
                     parentSize: widget.parentSize,
                     sizesExplorer: widget.sizesExplorer,
                     isSelected: isSelected(context),
+                    allowSelect: widget.allowSelect,
                   ),
           ),
         ),
