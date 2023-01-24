@@ -46,3 +46,4 @@ app.*.map.json
 key.properties
 /android/key.properties
 freearea.md
+sharing.md

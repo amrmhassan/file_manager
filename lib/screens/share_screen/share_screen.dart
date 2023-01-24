@@ -25,9 +25,14 @@ class ShareScreen extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () async {
-                  shareProviderFalse.openServer();
+                  shareProviderFalse.startHost();
                 },
-                child: Text('Share'),
+                child: Text('Host'),
+              ),
+              Spacer(),
+              ElevatedButton(
+                onPressed: () async {},
+                child: Text('Join'),
               ),
             ],
           ),
@@ -54,73 +59,11 @@ class ShareScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+              Text('Host must open his hotspot'),
             ],
           )
         ],
       ),
-    );
-  }
-}
-
-class ReceivingWidgetStatus extends StatelessWidget {
-  const ReceivingWidgetStatus({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: double.infinity,
-        ),
-        Text(
-          'ppp',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          '${(0.5 * 100).toStringAsFixed(2)}%',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(
-          height: 50,
-        ),
-        Container(
-          clipBehavior: Clip.hardEdge,
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          width: 300,
-          child: AnimatedFractionallySizedBox(
-            widthFactor: 05,
-            duration: Duration(
-              milliseconds: 200,
-            ),
-            child: Container(
-              width: double.infinity,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-          ),
-        )
-      ],
     );
   }
 }

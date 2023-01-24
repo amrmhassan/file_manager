@@ -5,8 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 enum MemberType {
-  server,
-  client,
+  host, // who have the hotspot
+  client, // who is connected to the host with wifi
 }
 
 class ShareProvider extends ChangeNotifier {
@@ -19,8 +19,23 @@ class ShareProvider extends ChangeNotifier {
   bool sharing = false;
   Uint8List? sharedFile;
   String? fileName;
+  MemberType? memberType;
 
-//? receive file
+//? to start the host who have the hotspot
+  void startHost() {
+    memberType = MemberType.host;
+    notifyListeners();
+    openServer(false);
+  }
+
+  //? to start a client and connect it to the host
+  void startClient(String ip) {
+    memberType = MemberType.client;
+    notifyListeners();
+    connectToServer(ip);
+  }
+
+  //? receive file
   Future connectToServer(String ip) async {
     String fileName =
         (await Dio().get('http://$ip:$serverPort/filename')).data as String;
@@ -58,7 +73,7 @@ class ShareProvider extends ChangeNotifier {
     );
   }
 
-//? add file to
+  //? add file to
   void addToShareSpace(String path) async {
     sharedLinks.clear();
     sharedLinks.add(path);
@@ -67,13 +82,16 @@ class ShareProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//? send file
-  Future openServer() async {
+  //? send file
+  Future openServer([bool wifi = true]) async {
     HttpServer httpServer =
         await HttpServer.bind(InternetAddress.anyIPv4, myServerOpenPort);
     myServerOpenPort = httpServer.port;
     print('I am using $myServerOpenPort as a port');
-    String? myWifiIp = await getMyIpAddress();
+    String? myWifiIp = await getMyIpAddress(wifi);
+    if (myWifiIp == null) {
+      throw Exception('Ip is null');
+    }
     myConnLink = 'http://$myWifiIp:$myServerOpenPort';
     sharing = true;
     notifyListeners();
@@ -103,12 +121,18 @@ class ShareProvider extends ChangeNotifier {
     });
   }
 
-//? get my wifi address
-  Future<String?> getMyIpAddress() async {
+  //? get my wifi address
+  Future<String?> getMyIpAddress([bool wifi = true]) async {
+    //! this might change for other devices
+    // 192.168.43.99   => wlan0 == mostly wifi
+    // 192.168.118.237 => wlan1 == mostly hotspot
     try {
       var interfaces = await NetworkInterface.list();
+      print(int);
       var wifiInterface = interfaces.firstWhere((element) =>
-          element.name.contains('wlan') || element.name.contains('wifi'));
+          element.name.contains(wifi ? 'wlan0' : 'wlan1') ||
+          element.name.contains('wifi'));
+      // return null;
       return wifiInterface.addresses.first.address;
     } catch (e) {
       return null;
