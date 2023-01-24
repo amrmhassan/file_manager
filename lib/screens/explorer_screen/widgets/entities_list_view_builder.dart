@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, dead_code
 
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
@@ -79,32 +81,36 @@ class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
     var analyzerProviderFalse =
         Provider.of<AnalyzerProvider>(context, listen: false);
 
-    return ListView.builder(
+    return DraggableScrollbar.semicircle(
+      backgroundColor: kCardBackgroundColor,
       controller: scrollController,
-      physics: BouncingScrollPhysics(),
-      itemCount: widget.viewedList.length,
-      itemBuilder: (context, index) {
-        StorageItemModel f = widget.viewedList[index];
-        return StorageItem(
-          allowShowingFavIcon: true,
-          key: Key(f.path),
-          storageItemModel: f,
-          onDirTapped: (path) {
-            var foProvider = Provider.of<FilesOperationsProvider>(
-              context,
-              listen: false,
-            );
-            expProviderFalse.setActiveDir(
-              path: path,
-              sizesExplorer: widget.sizesExplorer,
-              analyzerProvider: analyzerProviderFalse,
-              filesOperationsProvider: foProvider,
-            );
-          },
-          sizesExplorer: widget.sizesExplorer,
-          parentSize: expProvider.parentSize ?? 0,
-        );
-      },
+      child: ListView.builder(
+        controller: scrollController,
+        physics: BouncingScrollPhysics(),
+        itemCount: widget.viewedList.length,
+        itemBuilder: (context, index) {
+          StorageItemModel f = widget.viewedList[index];
+          return StorageItem(
+            allowShowingFavIcon: true,
+            key: Key(f.path),
+            storageItemModel: f,
+            onDirTapped: (path) {
+              var foProvider = Provider.of<FilesOperationsProvider>(
+                context,
+                listen: false,
+              );
+              expProviderFalse.setActiveDir(
+                path: path,
+                sizesExplorer: widget.sizesExplorer,
+                analyzerProvider: analyzerProviderFalse,
+                filesOperationsProvider: foProvider,
+              );
+            },
+            sizesExplorer: widget.sizesExplorer,
+            parentSize: expProvider.parentSize ?? 0,
+          );
+        },
+      ),
     );
   }
 }
