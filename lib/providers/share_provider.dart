@@ -22,7 +22,7 @@ enum MemberType {
 
 class ShareProvider extends ChangeNotifier {
   //# shared space items properties
-  String? myDeviceId;
+  late String myDeviceId;
   List<ShareSpaceItemModel> sharedItems = [];
 
   //# connection parameters
@@ -39,7 +39,7 @@ class ShareProvider extends ChangeNotifier {
     if (savedId == null) {
       myDeviceId = Uuid().v4();
       notifyListeners();
-      await SharedPrefHelper.setString(deviceIdKey, myDeviceId!);
+      await SharedPrefHelper.setString(deviceIdKey, myDeviceId);
       return;
     }
     myDeviceId = savedId;
@@ -73,7 +73,7 @@ class ShareProvider extends ChangeNotifier {
       blockedAt: [],
       entityType: storageItemModel.entityType,
       path: storageItemModel.path,
-      ownerID: myDeviceId!,
+      ownerID: myDeviceId,
       addedAt: DateTime.now(),
     );
     sharedItems.add(shareSpaceItemModel);
