@@ -25,9 +25,9 @@ class ShareScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var serverProvider = Provider.of<ServerProvider>(context);
-    var serverProviderFalse =
-        Provider.of<ServerProvider>(context, listen: false);
+
     var shareProvider = Provider.of<ShareProvider>(context);
+    var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
@@ -67,18 +67,25 @@ class ShareScreen extends StatelessWidget {
                         padding: EdgeInsets.all(largePadding),
                         borderRadius: 0,
                         onTap: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => DoubleButtonsModal(
-                              onOk: () {
-                                serverProviderFalse.closeServer();
-                              },
-                              okText: 'Close',
-                              cancelText: 'Cancel',
-                              title: 'Close server?',
-                            ),
-                          );
+                          // showModalBottomSheet(
+                          //   backgroundColor: Colors.transparent,
+                          //   context: context,
+                          //   builder: (context) => DoubleButtonsModal(
+                          //     onOk: () {
+                          //       serverProviderFalse.closeServer();
+                          //     },
+                          //     okText: 'Close',
+                          //     cancelText: 'Cancel',
+                          //     title: 'Close server?',
+                          //   ),
+                          // );
+                          //! this is just temporary
+                          Provider.of<ServerProvider>(context, listen: false)
+                              .restartServer(
+                                  Provider.of<ShareProvider>(context,
+                                          listen: false)
+                                      .myDeviceId,
+                                  shareProviderFalse);
                         },
                         child: Image.asset(
                           'assets/icons/info.png',

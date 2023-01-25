@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:explorer/utils/server_utils/server_requests_utils.dart';
@@ -16,10 +17,12 @@ class ServerProvider extends ChangeNotifier {
   List<PeerModel> peers = [];
 
   //? send file
-  Future openServer(String deviceID, [bool wifi = true]) async {
+  Future openServer(String deviceID, ShareProvider shareProvider,
+      [bool wifi = true]) async {
     //? opening the server port and setting end points
     httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
-    CustomRouterSystem customRouterSystem = addServerRouters();
+    CustomRouterSystem customRouterSystem =
+        addServerRouters(this, shareProvider);
     httpServer!.listen(customRouterSystem.handleListen);
 //? when above code is success then set the needed stuff like port, other things
     myPort = httpServer!.port;
@@ -40,6 +43,7 @@ class ServerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+//? to close the server
   Future closeServer() async {
     await httpServer!.close();
     httpServer = null;
@@ -47,5 +51,38 @@ class ServerProvider extends ChangeNotifier {
     myConnLink = null;
     myIp = null;
     notifyListeners();
+  }
+
+  //? to restart the server
+  Future restartServer(String deviceID, ShareProvider shareProvider) async {
+    await closeServer();
+    await openServer(deviceID, shareProvider);
+  }
+
+  //# server functions
+  void addClient(String clientId, String name) {
+    // if the peer is already registered
+    // this might mean that he disconnected
+    // so i will replace the current session with the new one
+    bool exists = peers.any((element) => element.deviceID == clientId);
+    PeerModel peerModel = PeerModel(
+      deviceID: clientId,
+      joinedAt: DateTime.now(),
+      name: name,
+      memberType: MemberType.client,
+    );
+    if (exists) {
+      printOnDebug(
+          'This device is already registered, replacing the existing one');
+      int index = peers.indexWhere((element) => element.deviceID == clientId);
+
+      peers[index] = peerModel;
+      notifyListeners();
+      return;
+    }
+    peers.add(peerModel);
+    notifyListeners();
+
+    return;
   }
 }
