@@ -28,7 +28,7 @@ class PathRow extends StatelessWidget {
 
     return GestureDetector(
       onLongPress: () =>
-          copyPathToClipboard(context, expProviderFalse.currentActiveDir.path),
+          copyToClipboard(context, expProviderFalse.currentActiveDir.path),
       child: Row(
         children: [
           ...folders.asMap().entries.map(
@@ -53,7 +53,7 @@ class PathRow extends StatelessWidget {
                           filesOperationsProvider: foProviderFalse,
                         );
                       } else {
-                        copyPathToClipboard(
+                        copyToClipboard(
                             context, expProviderFalse.currentActiveDir.path);
                       }
                     },

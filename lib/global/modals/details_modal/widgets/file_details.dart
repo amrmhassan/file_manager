@@ -28,7 +28,7 @@ class FileDetails extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              copyPathToClipboard(
+              copyToClipboard(
                   context, path_operations.basename(storageItemModel.path));
             },
             child: Text(

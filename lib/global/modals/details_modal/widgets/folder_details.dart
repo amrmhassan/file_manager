@@ -77,7 +77,7 @@ class _FolderDetailsState extends State<FolderDetails> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      copyPathToClipboard(
+                      copyToClipboard(
                           context,
                           path_operations
                               .basename(widget.storageItemModel.path));

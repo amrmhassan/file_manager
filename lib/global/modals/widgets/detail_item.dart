@@ -38,7 +38,7 @@ class DetailItem extends StatelessWidget {
               child: GestureDetector(
                 onTap: allowCopy
                     ? () {
-                        copyPathToClipboard(context, value);
+                        copyToClipboard(context, value);
                         showSnackBar(
                             context: context, message: 'Copied To Clipboard');
                         Navigator.pop(context);

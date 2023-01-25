@@ -77,7 +77,7 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
         ),
         Expanded(
           child: GestureDetector(
-            onTap: () => copyPathToClipboard(
+            onTap: () => copyToClipboard(
                 context, expProviderFalse.currentActiveDir.path),
             child: Container(
               width: double.infinity,

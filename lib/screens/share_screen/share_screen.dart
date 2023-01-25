@@ -11,6 +11,7 @@ import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/screens/share_screen/widgets/empty_share_items.dart';
 import 'package:explorer/screens/share_screen/widgets/shading_background.dart';
 import 'package:explorer/screens/share_screen/widgets/share_screen_navbar.dart';
@@ -47,7 +48,10 @@ class ShareScreen extends StatelessWidget {
                         padding: EdgeInsets.all(largePadding),
                         borderRadius: 0,
                         onTap: () {
-                          showQrCodeModal(context);
+                          Navigator.pushNamed(
+                            context,
+                            QrCodeViewerScreen.routeName,
+                          );
                         },
                         child: Image.asset(
                           'assets/icons/qr-code.png',

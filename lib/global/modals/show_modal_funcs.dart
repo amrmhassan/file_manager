@@ -151,7 +151,7 @@ Future showQrCodeModal(BuildContext context) async {
       child: GestureDetector(
         onTap: () {
           Navigator.pop(context);
-          copyPathToClipboard(context, connLink);
+          copyToClipboard(context, connLink);
         },
         child: SizedBox(
           child: Column(
