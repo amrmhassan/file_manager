@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
+import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
 
 //? used
 enum HttpMethod {
@@ -39,23 +40,30 @@ CustomRouterSystem addServerRouters(
 ) {
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
   customRouterSystem
-    ..addRouter('/addClient', HttpMethod.GET, (request, response) {
+    //? a new client added
+    ..addRouter('/addClient', HttpMethod.GET, (request, response) async {
       var headers = request.headers;
       String name = headers.value('name') as String;
       String deviceID = headers.value('deviceID') as String;
       String ip = headers.value('ip') as String;
       int port = int.parse(headers.value('port') as String);
-      String sessionsID = serverProvider.addPeer(deviceID, name, ip, port);
+      String sessionID = serverProvider.addPeer(deviceID, name, ip, port);
       response
         ..headers.contentType = ContentType.json
-        ..write(jsonify({
-          'sessionsID': sessionsID,
-          'deviceID': deviceID,
-          'name': name,
-          'ip': ip,
-          'port': port,
-        }));
+        ..write(
+          jsonify(
+            {
+              'sessionID': sessionID,
+              'deviceID': deviceID,
+              'name': name,
+              'ip': ip,
+              'port': port,
+            },
+          ),
+        );
+      await peerAdded(serverProvider);
     })
+    //? to get the share space
     ..addRouter('/getShareSpace', HttpMethod.GET, (request, response) {
       List<Map<String, String>> sharedItemsMap = shareProvider.sharedItems
           .map((e) => {

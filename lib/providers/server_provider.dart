@@ -75,7 +75,7 @@ class ServerProvider extends ChangeNotifier {
     // this might mean that he disconnected
     // so i will replace the current session with the new one
     bool exists = peers.any((element) => element.deviceID == clientId);
-    String sessionsID = Uuid().v4();
+    String sessionID = Uuid().v4();
     PeerModel peerModel = PeerModel(
       deviceID: clientId,
       joinedAt: DateTime.now(),
@@ -83,7 +83,7 @@ class ServerProvider extends ChangeNotifier {
       memberType: MemberType.client,
       ip: ip,
       port: port,
-      sessionID: sessionsID,
+      sessionID: sessionID,
     );
     if (exists) {
       printOnDebug(
@@ -92,12 +92,12 @@ class ServerProvider extends ChangeNotifier {
 
       peers[index] = peerModel;
       notifyListeners();
-      return sessionsID;
+      return sessionID;
     }
     peers.add(peerModel);
     notifyListeners();
 
-    return sessionsID;
+    return sessionID;
   }
 
 //? this will be used when a new device is connected
