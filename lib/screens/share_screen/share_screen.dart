@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/share_screen/widgets/empty_share_items.dart';
 import 'package:explorer/screens/share_screen/widgets/shading_background.dart';
@@ -23,6 +24,9 @@ class ShareScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var serverProvider = Provider.of<ServerProvider>(context);
+    var serverProviderFalse =
+        Provider.of<ServerProvider>(context, listen: false);
     var shareProvider = Provider.of<ShareProvider>(context);
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
@@ -36,7 +40,7 @@ class ShareScreen extends StatelessWidget {
                 color: kActiveTextColor,
               ),
             ),
-            rightIcon: shareProvider.httpServer != null
+            rightIcon: serverProvider.httpServer != null
                 ? Row(
                     children: [
                       ButtonWrapper(
@@ -55,7 +59,7 @@ class ShareScreen extends StatelessWidget {
                     ],
                   )
                 : null,
-            leftIcon: shareProvider.httpServer != null
+            leftIcon: serverProvider.httpServer != null
                 ? Row(
                     children: [
                       SizedBox(width: kHPad / 2),
@@ -68,9 +72,7 @@ class ShareScreen extends StatelessWidget {
                             context: context,
                             builder: (context) => DoubleButtonsModal(
                               onOk: () {
-                                Provider.of<ShareProvider>(context,
-                                        listen: false)
-                                    .closeServer();
+                                serverProviderFalse.closeServer();
                               },
                               okText: 'Close',
                               cancelText: 'Cancel',
@@ -96,7 +98,7 @@ class ShareScreen extends StatelessWidget {
                   SharedItems()
                 else
                   EmptyShareItems(),
-                if (shareProvider.httpServer == null) ShadingBackground(),
+                if (serverProvider.httpServer == null) ShadingBackground(),
               ],
             ),
           ),

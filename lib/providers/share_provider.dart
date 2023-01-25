@@ -1,8 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
@@ -32,7 +29,6 @@ class ShareProvider extends ChangeNotifier {
   String speedText = '0Mb/s';
   double percentSent = 0;
   int serverPort = 3000;
-  String? myConnLink;
   MemberType? memberType;
 
   //? i will give this device an id in the first run of the app
@@ -124,50 +120,12 @@ class ShareProvider extends ChangeNotifier {
   }
   //! the following code need some checks and some more thinking
 
-  int myPort = 0;
-  String? myIp;
-  HttpServer? httpServer;
-  //? send file
-  Future openServer([bool wifi = true]) async {
-    httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
-    myPort = httpServer!.port;
-    String? myWifiIp = await getMyIpAddress(wifi);
-    if (myWifiIp == null) {
-      throw Exception('Ip is null');
-    }
-    myIp = myWifiIp;
-    myConnLink = 'http://$myWifiIp:$myPort';
-    notifyListeners();
-
-    httpServer!.listen((HttpRequest request) async {
-      if (request.uri.path == '/') {
-        request.response
-          ..headers.contentType = ContentType('application', 'octet-stream')
-          ..write('this is testing respons')
-          ..close();
-      } else if (request.uri.path == '/done') {
-        request.response.close();
-        httpServer!.close();
-      } else if (request.uri.path == '/filename') {
-        request.response
-          ..write('this is supposed to send the file name')
-          ..close();
-      }
-    });
-  }
-
-  Future closeServer() async {
-    await httpServer!.close();
-    httpServer = null;
-    notifyListeners();
-  }
-
-  //? to start the host who have the hotspot
-  void startHost() {
-    memberType = MemberType.host;
-    notifyListeners();
-    openServer(false);
-  }
+  // //? to start the host who have the hotspot
+  // void startHost() {
+  //   memberType = MemberType.host;
+  //   notifyListeners();
+  //   openServer(false);
+  // }
 
   //? to start a client and connect it to the host
   void startClient(String ip) {
@@ -212,22 +170,5 @@ class ShareProvider extends ChangeNotifier {
         }
       },
     );
-  }
-
-  //? get my wifi address
-  Future<String?> getMyIpAddress([bool wifi = true]) async {
-    //! this might change for other devices
-    // 192.168.43.99   => wlan0 == mostly wifi
-    // 192.168.118.237 => wlan1 == mostly hotspot
-    try {
-      var interfaces = await NetworkInterface.list();
-      var wifiInterface = interfaces.firstWhere((element) =>
-          element.name.contains(wifi ? 'wlan0' : 'wlan1') ||
-          element.name.contains('wifi'));
-      // return null;
-      return wifiInterface.addresses.first.address;
-    } catch (e) {
-      return null;
-    }
   }
 }

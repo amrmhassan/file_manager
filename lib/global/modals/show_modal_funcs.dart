@@ -9,6 +9,7 @@ import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/modals/entity_options_modal.dart';
 import 'package:explorer/global/modals/sort_by_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
+import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -137,9 +138,9 @@ void sortByModal(BuildContext context) {
 }
 
 Future showQrCodeModal(BuildContext context) async {
-  var shareProvider = Provider.of<ShareProvider>(context, listen: false);
+  var serverProvider = Provider.of<ServerProvider>(context, listen: false);
 
-  String connLink = shareProvider.myConnLink!;
+  String connLink = serverProvider.myConnLink!;
 
   await showModalBottomSheet(
     backgroundColor: Colors.transparent,
