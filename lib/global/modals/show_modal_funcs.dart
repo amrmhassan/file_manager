@@ -8,11 +8,15 @@ import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/modals/entity_options_modal.dart';
 import 'package:explorer/global/modals/sort_by_modal.dart';
+import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
+import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
+import 'package:qr_flutter/qr_flutter.dart';
 
 //? show rename modal
 Future<void> showRenameModal(BuildContext context) async {
@@ -129,5 +133,38 @@ void sortByModal(BuildContext context) {
     context: context,
     backgroundColor: Colors.transparent,
     builder: (ctx) => SortByModal(),
+  );
+}
+
+Future showQrCodeModal(BuildContext context) async {
+  var shareProvider = Provider.of<ShareProvider>(context, listen: false);
+
+  String connLink = shareProvider.myConnLink!;
+
+  await showModalBottomSheet(
+    backgroundColor: Colors.transparent,
+    context: context,
+    builder: (ctx) => ModalWrapper(
+      color: kBackgroundColor,
+      showTopLine: false,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+          copyPathToClipboard(context, connLink);
+        },
+        child: SizedBox(
+          child: Column(
+            children: [
+              QrImage(
+                backgroundColor: Colors.white,
+                data: connLink,
+                size: 150,
+              ),
+              Text(connLink),
+            ],
+          ),
+        ),
+      ),
+    ),
   );
 }

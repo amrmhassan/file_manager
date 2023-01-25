@@ -33,10 +33,6 @@ class ShareProvider extends ChangeNotifier {
   double percentSent = 0;
   int serverPort = 3000;
   String? myConnLink;
-  int myServerOpenPort = 0;
-  bool sharing = false;
-  Uint8List? sharedFile;
-  String? fileName;
   MemberType? memberType;
 
   //? i will give this device an id in the first run of the app
@@ -128,37 +124,42 @@ class ShareProvider extends ChangeNotifier {
   }
   //! the following code need some checks and some more thinking
 
+  int myPort = 0;
+  String? myIp;
+  HttpServer? httpServer;
   //? send file
   Future openServer([bool wifi = true]) async {
-    HttpServer httpServer =
-        await HttpServer.bind(InternetAddress.anyIPv4, myServerOpenPort);
-    myServerOpenPort = httpServer.port;
+    httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
+    myPort = httpServer!.port;
     String? myWifiIp = await getMyIpAddress(wifi);
     if (myWifiIp == null) {
       throw Exception('Ip is null');
     }
-    myConnLink = 'http://$myWifiIp:$myServerOpenPort';
-    sharing = true;
+    myIp = myWifiIp;
+    myConnLink = 'http://$myWifiIp:$myPort';
     notifyListeners();
 
-    httpServer.listen((HttpRequest request) async {
+    httpServer!.listen((HttpRequest request) async {
       if (request.uri.path == '/') {
         request.response
           ..headers.contentType = ContentType('application', 'octet-stream')
-          ..headers.add('content-disposition', 'attachment; filename=$fileName')
-          ..headers.add('Content-Length', sharedFile!.length)
-          ..headers.add('fileName', fileName!)
-          ..add(sharedFile!)
+          ..write('this is testing respons')
           ..close();
       } else if (request.uri.path == '/done') {
         request.response.close();
-        httpServer.close();
+        httpServer!.close();
       } else if (request.uri.path == '/filename') {
         request.response
-          ..write(fileName)
+          ..write('this is supposed to send the file name')
           ..close();
       }
     });
+  }
+
+  Future closeServer() async {
+    await httpServer!.close();
+    httpServer = null;
+    notifyListeners();
   }
 
   //? to start the host who have the hotspot
