@@ -12,37 +12,44 @@ class ShadingBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+    return Stack(
+      // mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        ShaderMask(
-          shaderCallback: (rect) {
-            return LinearGradient(
-              end: Alignment.topCenter,
-              begin: Alignment.bottomCenter,
-              colors: [Colors.black, Colors.transparent],
-            ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
-          },
-          blendMode: BlendMode.dstIn,
-          child: Container(
-            width: double.infinity,
-            height: 100,
-            color: kBackgroundColor,
-          ),
-        ),
-        Stack(
-          clipBehavior: Clip.none,
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            ShaderMask(
+              shaderCallback: (rect) {
+                return LinearGradient(
+                  end: Alignment.topCenter,
+                  begin: Alignment.bottomCenter,
+                  colors: [Colors.black, Colors.transparent],
+                ).createShader(
+                  Rect.fromLTRB(
+                    0,
+                    0,
+                    rect.width,
+                    rect.height,
+                  ),
+                );
+              },
+              blendMode: BlendMode.dstIn,
+              child: Container(
+                width: double.infinity,
+                height: 100,
+                color: kBackgroundColor,
+              ),
+            ),
             Container(
               width: double.infinity,
               height: 40,
               color: kBackgroundColor,
             ),
-            Positioned(
-              top: -30,
-              child: ShareControllersButtons(),
-            )
           ],
+        ),
+        Positioned(
+          bottom: 30,
+          child: ShareControllersButtons(),
         ),
       ],
     );
