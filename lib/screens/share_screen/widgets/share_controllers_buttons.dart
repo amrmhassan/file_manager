@@ -12,7 +12,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
-import 'package:explorer/screens/share_screen/widgets/qr_scanner_box.dart';
+import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -28,12 +28,11 @@ class ShareControllersButtons extends StatefulWidget {
 }
 
 class _ShareControllersButtonsState extends State<ShareControllersButtons> {
-  // Future showServerInfoQrCode() async {
-  //   var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
-  //   var serverProvider = Provider.of<ServerProvider>(context, listen: false);
-  //   await serverProvider.openServer(shareProviderFalse);
-  //   await showQrCodeModal(context);
-  // }
+  Future openServer() async {
+    var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
+    var serverProvider = Provider.of<ServerProvider>(context, listen: false);
+    await serverProvider.openServer(shareProviderFalse);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +50,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
               onTap: () async {
                 ConnectivityResult connRes =
                     await Connectivity().checkConnectivity();
-                // showServerInfoQrCode();
+                await openServer();
                 Navigator.pushNamed(context, QrCodeViewerScreen.routeName);
                 // if (connRes == ConnectivityResult.wifi) {
                 //   showModalBottomSheet(
@@ -99,26 +98,11 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                 //? or if we are connected through wifi, i will use the
                 //? ::ip:port
                 //? this will tell the other device that we are using the same wifi network
-                var data = await showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  builder: (context) => ModalWrapper(
-                    showTopLine: false,
-                    color: kCardBackgroundColor,
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 200,
-                          height: 200,
-                          color: Colors.red,
-                          child: QrScannerBox(),
-                        ),
-                      ],
-                    ),
-                  ),
+                var qrCode = await Navigator.pushNamed(
+                  context,
+                  ScanQRCodeScreen.routeName,
                 );
-                print('Received Qr Code is : $data');
-                print('-----------------------------------');
+                print('ReceivedQrCode is:$qrCode');
               },
               backgroundColor: kBlueColor,
               child: Text(

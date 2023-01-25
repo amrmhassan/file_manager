@@ -24,6 +24,7 @@ import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_sc
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
+import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/selected_items_screen/selected_items_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
           SelectedItemsScreen.routeName: (context) => SelectedItemsScreen(),
           ShareScreen.routeName: (context) => ShareScreen(),
           QrCodeViewerScreen.routeName: (context) => QrCodeViewerScreen(),
+          ScanQRCodeScreen.routeName: (context) => ScanQRCodeScreen(),
         },
       ),
     );
