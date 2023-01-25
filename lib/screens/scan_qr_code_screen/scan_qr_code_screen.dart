@@ -25,8 +25,12 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
     await c.resumeCamera();
     c.scannedDataStream.listen((scanData) async {
       if ((scanData.code ?? '').endsWith(dummyEndPoint) &&
-          (scanData.code ?? '').startsWith('http://')) {
-        Navigator.pop(context, scanData.code);
+          (scanData.code ?? '').startsWith('http://') &&
+          (scanData.code ?? '').length >=
+              ('http://1.1.1.1:0$dummyEndPoint').length &&
+          (scanData.code ?? '').length <=
+              ('http://999.999.999.999:65000$dummyEndPoint').length) {
+        Navigator.pop(context, scanData.code?.replaceAll(dummyEndPoint, ''));
         await c.stopCamera();
       }
       setState(() {

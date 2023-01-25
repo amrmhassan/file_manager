@@ -1,21 +1,18 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ShareControllersButtons extends StatefulWidget {
   const ShareControllersButtons({
@@ -48,8 +45,8 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                 vertical: kVPad / 2,
               ),
               onTap: () async {
-                ConnectivityResult connRes =
-                    await Connectivity().checkConnectivity();
+                // ConnectivityResult connRes =
+                //     await Connectivity().checkConnectivity();
                 await openServer();
                 Navigator.pushNamed(context, QrCodeViewerScreen.routeName);
                 // if (connRes == ConnectivityResult.wifi) {
@@ -102,7 +99,8 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                   context,
                   ScanQRCodeScreen.routeName,
                 );
-                print('ReceivedQrCode is:$qrCode');
+
+                printOnDebug('ReceivedQrCode is:$qrCode');
               },
               backgroundColor: kBlueColor,
               child: Text(
