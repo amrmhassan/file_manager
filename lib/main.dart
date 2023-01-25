@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/providers/client_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => ThumbnailProvider()),
         ChangeNotifierProvider(create: (ctx) => ShareProvider()),
         ChangeNotifierProvider(create: (ctx) => ServerProvider()),
+        ChangeNotifierProvider(create: (ctx) => ClientProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

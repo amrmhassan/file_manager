@@ -27,8 +27,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
   Future showServerInfoQrCode() async {
     var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
     var serverProvider = Provider.of<ServerProvider>(context, listen: false);
-    await serverProvider.openServer(
-        shareProviderFalse.myDeviceId, shareProviderFalse);
+    await serverProvider.openServer(shareProviderFalse);
     await showQrCodeModal(context);
   }
 

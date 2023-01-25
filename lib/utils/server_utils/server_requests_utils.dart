@@ -28,6 +28,10 @@ HttpMethod stringToHttpMethod(String m) {
   }
 }
 
+String jsonify(Map<String, dynamic> obj) {
+  return json.encode(obj);
+}
+
 //? this will add the server routers(end points)
 CustomRouterSystem addServerRouters(
   ServerProvider serverProvider,
@@ -39,7 +43,18 @@ CustomRouterSystem addServerRouters(
       var headers = request.headers;
       String name = headers.value('name') as String;
       String deviceID = headers.value('deviceID') as String;
-      serverProvider.addClient(deviceID, name);
+      String ip = headers.value('ip') as String;
+      int port = int.parse(headers.value('port') as String);
+      String sessionsID = serverProvider.addPeer(deviceID, name, ip, port);
+      response
+        ..headers.contentType = ContentType.json
+        ..write(jsonify({
+          'sessionsID': sessionsID,
+          'deviceID': deviceID,
+          'name': name,
+          'ip': ip,
+          'port': port,
+        }));
     })
     ..addRouter('/getShareSpace', HttpMethod.GET, (request, response) {
       List<Map<String, String>> sharedItemsMap = shareProvider.sharedItems

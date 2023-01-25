@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:dio/dio.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
@@ -24,12 +23,6 @@ class ShareProvider extends ChangeNotifier {
   //# shared space items properties
   late String myDeviceId;
   List<ShareSpaceItemModel> sharedItems = [];
-
-  //# connection parameters
-  String speedText = '0Mb/s';
-  double percentSent = 0;
-  int serverPort = 3000;
-  MemberType? memberType;
 
   //? i will give this device an id in the first run of the app
   //? and if it is there just don't change it
@@ -117,58 +110,5 @@ class ShareProvider extends ChangeNotifier {
       sharedItems.add(ShareSpaceItemModel.fromJSON(item));
     }
     notifyListeners();
-  }
-  //! the following code need some checks and some more thinking
-
-  // //? to start the host who have the hotspot
-  // void startHost() {
-  //   memberType = MemberType.host;
-  //   notifyListeners();
-  //   openServer(false);
-  // }
-
-  //? to start a client and connect it to the host
-  void startClient(String ip) {
-    memberType = MemberType.client;
-    notifyListeners();
-    connectToServer(ip);
-  }
-
-  //? receive file
-  Future connectToServer(String ip) async {
-    String fileName =
-        (await Dio().get('http://$ip:$serverPort/filename')).data as String;
-    int? t;
-    DateTime before = DateTime.now();
-    await Dio().download(
-      'http://$ip:$serverPort',
-      '/sdcard/$fileName',
-      onReceiveProgress: (count, total) {
-        DateTime after = DateTime.now();
-
-        t ??= total;
-        double percent = (count / total) * 100;
-        double instantTime = after.difference(before).inMicroseconds / 1000000;
-        String realTimeSpeed =
-            '${((count / (1024 * 1024)) / instantTime).toStringAsFixed(2)}Mb/s';
-        speedText = realTimeSpeed;
-        percentSent = percent / 100;
-        notifyListeners();
-
-        // stdout.write('Progress: ${percent.toStringAsFixed(2)}%\r');
-        if (count == total) {
-          double time = after.difference(before).inMicroseconds / 1000000;
-          double size = t! / (1024 * 1024);
-          String speed = (size / time).toStringAsFixed(2);
-
-          Dio().post('http://$ip:$serverPort/done',
-              options: Options(
-                headers: {
-                  'speed': speed,
-                },
-              ));
-        }
-      },
-    );
   }
 }

@@ -81,11 +81,7 @@ class ShareScreen extends StatelessWidget {
                           // );
                           //! this is just temporary
                           Provider.of<ServerProvider>(context, listen: false)
-                              .restartServer(
-                                  Provider.of<ShareProvider>(context,
-                                          listen: false)
-                                      .myDeviceId,
-                                  shareProviderFalse);
+                              .restartServer(shareProviderFalse);
                         },
                         child: Image.asset(
                           'assets/icons/info.png',

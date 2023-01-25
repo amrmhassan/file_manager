@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:explorer/providers/share_provider.dart';
@@ -6,8 +8,13 @@ import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:explorer/utils/server_utils/server_requests_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/peer_model.dart';
+
+//? when adding a new client the client can be added by any of the other clients and the adding client will send a broadcast to all other devices in the network about the new client
+//? for example, adding a new client will be at /addclient and when the client is added in one of the connected devices that device will send a message to every other device in the network with /clientadded with the new list of the clients in the network
+//? including the new device which will add the clients list to his state to be used later
 
 class ServerProvider extends ChangeNotifier {
   String? myConnLink;
@@ -17,7 +24,7 @@ class ServerProvider extends ChangeNotifier {
   List<PeerModel> peers = [];
 
   //? send file
-  Future openServer(String deviceID, ShareProvider shareProvider,
+  Future<void> openServer(ShareProvider shareProvider,
       [bool wifi = true]) async {
     //? opening the server port and setting end points
     httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
@@ -34,10 +41,13 @@ class ServerProvider extends ChangeNotifier {
     myConnLink = 'http://$myWifiIp:$myPort';
 
     PeerModel meHost = PeerModel(
-      deviceID: deviceID,
+      deviceID: shareProvider.myDeviceId,
       joinedAt: DateTime.now(),
       name: 'peer name will be here',
       memberType: MemberType.host,
+      ip: myIp!,
+      port: myPort,
+      sessionID: Uuid().v4(),
     );
     peers.add(meHost);
     notifyListeners();
@@ -54,22 +64,26 @@ class ServerProvider extends ChangeNotifier {
   }
 
   //? to restart the server
-  Future restartServer(String deviceID, ShareProvider shareProvider) async {
+  Future restartServer(ShareProvider shareProvider) async {
     await closeServer();
-    await openServer(deviceID, shareProvider);
+    await openServer(shareProvider);
   }
 
   //# server functions
-  void addClient(String clientId, String name) {
+  String addPeer(String clientId, String name, String ip, int port) {
     // if the peer is already registered
     // this might mean that he disconnected
     // so i will replace the current session with the new one
     bool exists = peers.any((element) => element.deviceID == clientId);
+    String sessionsID = Uuid().v4();
     PeerModel peerModel = PeerModel(
       deviceID: clientId,
       joinedAt: DateTime.now(),
       name: name,
       memberType: MemberType.client,
+      ip: ip,
+      port: port,
+      sessionID: sessionsID,
     );
     if (exists) {
       printOnDebug(
@@ -78,11 +92,19 @@ class ServerProvider extends ChangeNotifier {
 
       peers[index] = peerModel;
       notifyListeners();
-      return;
+      return sessionsID;
     }
     peers.add(peerModel);
     notifyListeners();
 
-    return;
+    return sessionsID;
   }
+
+//? this will be used when a new device is connected
+  void broadcastToAllClients() {
+    //? here i will send a normal http request to all clients from the peers except me of course
+    //? this should run only from the server(hotspot) device and it will be only one such a device in the network
+  }
+
+  //? when an item is added to share space the adding device will send a message to all connected devices to him
 }
