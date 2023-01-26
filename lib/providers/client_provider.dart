@@ -3,7 +3,6 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class ClientProvider extends ChangeNotifier {
