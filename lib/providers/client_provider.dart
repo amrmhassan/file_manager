@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -17,7 +18,7 @@ class ClientProvider extends ChangeNotifier {
     String myIp = serverProvider.myIp!;
     int myPort = serverProvider.myPort;
     var response = await Dio().get(
-      '$connLink/addClient',
+      '$connLink$addClientEndPoint',
       options: Options(
         headers: {
           nameString: name,

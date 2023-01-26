@@ -43,7 +43,7 @@ class PeerModel {
       name: obj[nameString],
       memberType: stringToEnum(obj[memberTypeString], MemberType.values),
       ip: obj[ipString],
-      port: obj[portString],
+      port: int.parse(obj[portString]),
       sessionID: obj[sessionIDString],
     );
   }

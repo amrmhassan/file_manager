@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
@@ -42,37 +44,27 @@ CustomRouterSystem addServerRouters(
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
   customRouterSystem
     //? a new client added
-    ..addRouter('/addClient', HttpMethod.GET, (request, response) async {
+    ..addRouter(addClientEndPoint, HttpMethod.GET, (request, response) async {
       var headers = request.headers;
-      String name = headers.value('name') as String;
-      String deviceID = headers.value('deviceID') as String;
-      String ip = headers.value('ip') as String;
-      int port = int.parse(headers.value('port') as String);
+      String name = headers.value(nameString) as String;
+      String deviceID = headers.value(deviceIDString) as String;
+      String ip = headers.value(ipString) as String;
+      int port = int.parse(headers.value(portString) as String);
       PeerModel peerModel = serverProvider.addPeer(deviceID, name, ip, port);
       response
         ..headers.contentType = ContentType.json
         ..write(
-          jsonify(
-            {
-              'sessionID': peerModel.sessionID,
-              'deviceID': deviceID,
-              'name': name,
-              'ip': ip,
-              'port': port,
-              'joinedAt': peerModel.joinedAt.toIso8601String(),
-              'memberType': peerModel.memberType.name,
-            },
-          ),
+          jsonify(peerModel.toJSON()),
         );
       await peerAdded(serverProvider);
     })
     //? to get the share space
-    ..addRouter('/getShareSpace', HttpMethod.GET, (request, response) {
+    ..addRouter(getShareSpaceEndPoint, HttpMethod.GET, (request, response) {
       List<Map<String, String>> sharedItemsMap = shareProvider.sharedItems
           .map((e) => {
-                'path': e.path,
-                'entityType': e.entityType.toString(),
-                'ownerID': e.ownerID,
+                pathHeaderKey: e.path,
+                entityTypeHeaderKey: e.entityType.toString(),
+                ownerIDHeaderKey: e.ownerID,
               })
           .toList();
       String jsonResponse = json.encode(sharedItemsMap);
@@ -80,8 +72,8 @@ CustomRouterSystem addServerRouters(
         ..headers.contentType = ContentType.json
         ..write(jsonResponse);
     })
-    ..addRouter('/clientAdded', HttpMethod.GET, (request, response) {
-      String newPeersJson = request.headers.value('newPeers')!;
+    ..addRouter(clientAddedEndPoint, HttpMethod.GET, (request, response) {
+      String newPeersJson = request.headers.value(newPeersHeaderKey)!;
       List<PeerModel> listOfAllPeers = (json.decode(newPeersJson) as List)
           .map(
             (e) => PeerModel.fromJSON(e),
