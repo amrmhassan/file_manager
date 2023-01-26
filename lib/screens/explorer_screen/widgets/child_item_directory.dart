@@ -12,6 +12,7 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
+import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -33,7 +34,8 @@ int getFolderChildrenNumber(String path) {
 
 class ChildDirectoryItem extends StatefulWidget {
   final String fileName;
-  final StorageItemModel storageItemModel;
+  final StorageItemModel? storageItemModel;
+  final ShareSpaceItemModel? shareSpaceItemModel;
   final bool sizesExplorer;
   final int parentSize;
   final bool isSelected;
@@ -42,7 +44,8 @@ class ChildDirectoryItem extends StatefulWidget {
   const ChildDirectoryItem({
     super.key,
     required this.fileName,
-    required this.storageItemModel,
+    this.storageItemModel,
+    this.shareSpaceItemModel,
     required this.sizesExplorer,
     required this.parentSize,
     required this.isSelected,
@@ -55,6 +58,10 @@ class ChildDirectoryItem extends StatefulWidget {
 }
 
 class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
+  String get path {
+    return widget.storageItemModel?.path ?? widget.shareSpaceItemModel!.path;
+  }
+
   final GlobalKey key = GlobalKey();
   int? childrenNumber;
   FileStat? fileStat;
@@ -70,7 +77,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     int itemCount,
   ) async {
     FolderItemInfoModel folderItemInfoModel = FolderItemInfoModel(
-      path: widget.storageItemModel.path,
+      path: path,
       name: widget.fileName,
       itemCount: itemCount,
       dateCaptured: DateTime.now(),
@@ -93,7 +100,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
       if (mounted) {
         bool isFav = await Provider.of<ListyProvider>(context, listen: false)
             .itemExistInAListy(
-          path: widget.storageItemModel.path,
+          path: path,
           listyTitle: defaultListyList.first.title,
         );
         if (mounted) {
@@ -136,7 +143,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
       try {
         FolderItemInfoModel? folderItemInfoModel =
             Provider.of<ChildrenItemsProvider>(context, listen: false)
-                .getFolderInfo(widget.storageItemModel.path);
+                .getFolderInfo(path);
         if (folderItemInfoModel != null) {
           if (mounted) {
             setState(() {
@@ -144,7 +151,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
             });
           }
         }
-        FileStat? fState = Directory(widget.storageItemModel.path).statSync();
+        FileStat? fState = Directory(path).statSync();
         if (mounted) {
           setState(() {
             fileStat = fState;
@@ -153,8 +160,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
         bool doUpdateInfo = updateFolderInfo(
             fState.modified, folderItemInfoModel?.dateCaptured);
         if (!doUpdateInfo) return;
-        int cn = await compute(
-            getFolderChildrenNumber, widget.storageItemModel.path);
+        int cn = await compute(getFolderChildrenNumber, path);
         await addDataToSqlite(context, [], cn);
         if (!mounted) {
           return;
@@ -177,7 +183,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
   @override
   Widget build(BuildContext context) {
     var foProvider = Provider.of<FilesOperationsProvider>(context);
-    Directory dir = Directory(widget.storageItemModel.path);
+    Directory dir = Directory(path);
     bool exists = dir.existsSync();
 
     return !exists
@@ -190,7 +196,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                   width: Responsive.getWidthPercentage(
                     context,
                     getSizePercentage(
-                      widget.storageItemModel.size ?? 0,
+                      widget.storageItemModel!.size ?? 0,
                       parentSize,
                     ),
                   ),
@@ -263,7 +269,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                         Text(
                                           widget.sizesExplorer
                                               ? handleConvertSize(widget
-                                                      .storageItemModel.size ??
+                                                      .storageItemModel!.size ??
                                                   0)
                                               : DateFormat('yyyy-MM-dd')
                                                   .format(fileStat!.changed),
@@ -281,7 +287,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                           Text(
                             sizePercentageString(
                               getSizePercentage(
-                                widget.storageItemModel.size ?? 0,
+                                widget.storageItemModel!.size ?? 0,
                                 parentSize,
                               ),
                             ),
@@ -293,7 +299,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                 widget.allowSelect
                             ? EntityCheckBox(
                                 isSelected: widget.isSelected,
-                                storageItemModel: widget.storageItemModel,
+                                storageItemModel: widget.storageItemModel!,
                               )
                             : Image.asset(
                                 'assets/icons/right-arrow.png',

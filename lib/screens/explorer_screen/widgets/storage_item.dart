@@ -3,6 +3,7 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -10,28 +11,30 @@ import 'package:explorer/screens/explorer_screen/widgets/animation_wrapper.dart'
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
 import 'package:open_file/open_file.dart' as open_file;
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as path_operations;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class StorageItem extends StatefulWidget {
-  final StorageItemModel storageItemModel;
+  final StorageItemModel? storageItemModel;
   final Function(String path) onDirTapped;
   final bool sizesExplorer;
   final int parentSize;
   final bool allowSelect;
   final bool allowShowingFavIcon;
   final bool allowClick;
+  final ShareSpaceItemModel? shareSpaceItemModel;
 
   const StorageItem({
     super.key,
-    required this.storageItemModel,
+    this.storageItemModel,
     required this.onDirTapped,
     required this.sizesExplorer,
     required this.parentSize,
     this.allowClick = true,
     this.allowSelect = true,
     this.allowShowingFavIcon = false,
+    this.shareSpaceItemModel,
   });
 
   @override
@@ -42,7 +45,19 @@ class _StorageItemState extends State<StorageItem> {
   bool isSelected(BuildContext context) {
     var foProvider =
         Provider.of<FilesOperationsProvider>(context, listen: false);
-    return foProvider.isSelected(widget.storageItemModel.path);
+    return foProvider.isSelected(path);
+  }
+
+  String get path =>
+      widget.storageItemModel?.path ?? widget.shareSpaceItemModel!.path;
+
+  @override
+  void initState() {
+    if (widget.storageItemModel == null && widget.shareSpaceItemModel == null) {
+      throw Exception(
+          'You must provide storageItemModel or shareSpaceItemModel');
+    }
+    super.initState();
   }
 
   @override
@@ -66,15 +81,13 @@ class _StorageItemState extends State<StorageItem> {
           child: ButtonWrapper(
             onTap: widget.allowClick
                 ? () async {
-                    if (isDir(widget.storageItemModel.path)) {
+                    if (isDir(path)) {
                       //* here open the folder
-                      widget.onDirTapped(widget.storageItemModel.path);
+                      widget.onDirTapped(path);
                     } else {
                       //* here perform open the file
-                      await open_file.OpenFile.open(
-                          widget.storageItemModel.path);
-                      await foProviderFalse
-                          .addToRecentlyOpened(widget.storageItemModel.path);
+                      await open_file.OpenFile.open(path);
+                      await foProviderFalse.addToRecentlyOpened(path);
                     }
                   }
                 : null,
@@ -84,19 +97,21 @@ class _StorageItemState extends State<StorageItem> {
                         Provider.of<ExplorerProvider>(context, listen: false);
 
                     foProviderFalse.toggleFromSelectedItems(
-                        widget.storageItemModel, expProvider);
+                        widget.storageItemModel!, expProvider);
                   }
                 : null,
             borderRadius: 0,
-            child: isDir(widget.storageItemModel.path)
+            child: isDir(widget.storageItemModel?.path ??
+                    widget.shareSpaceItemModel!.path)
                 ? ChildDirectoryItem(
-                    fileName: path.basename(widget.storageItemModel.path),
+                    fileName: path_operations.basename(path),
                     storageItemModel: widget.storageItemModel,
                     parentSize: widget.parentSize,
                     sizesExplorer: widget.sizesExplorer,
                     isSelected: isSelected(context),
                     allowShowingFavIcon: widget.allowShowingFavIcon,
                     allowSelect: widget.allowSelect,
+                    shareSpaceItemModel: widget.shareSpaceItemModel,
                   )
                 : ChildFileItem(
                     storageItemModel: widget.storageItemModel,
@@ -104,6 +119,7 @@ class _StorageItemState extends State<StorageItem> {
                     sizesExplorer: widget.sizesExplorer,
                     isSelected: isSelected(context),
                     allowSelect: widget.allowSelect,
+                    shareSpaceItemModel: widget.shareSpaceItemModel,
                   ),
           ),
         ),

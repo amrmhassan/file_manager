@@ -11,6 +11,7 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
+import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
@@ -22,12 +23,13 @@ import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart' as path_operations;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class ChildFileItem extends StatefulWidget {
-  final StorageItemModel storageItemModel;
+  final StorageItemModel? storageItemModel;
+  final ShareSpaceItemModel? shareSpaceItemModel;
   final bool sizesExplorer;
   final int parentSize;
   final bool isSelected;
@@ -35,7 +37,8 @@ class ChildFileItem extends StatefulWidget {
 
   const ChildFileItem({
     super.key,
-    required this.storageItemModel,
+    this.storageItemModel,
+    this.shareSpaceItemModel,
     required this.sizesExplorer,
     required this.parentSize,
     required this.isSelected,
@@ -47,6 +50,8 @@ class ChildFileItem extends StatefulWidget {
 }
 
 class _ChildFileItemState extends State<ChildFileItem> {
+  String get path =>
+      widget.storageItemModel?.path ?? widget.shareSpaceItemModel!.path;
   final GlobalKey key = GlobalKey();
 
   Directory? tempDir;
@@ -79,7 +84,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
   Widget build(BuildContext context) {
     var foProvider = Provider.of<FilesOperationsProvider>(context);
     // this code took 200 micro second which is very small amount of time
-    File file = File(widget.storageItemModel.path);
+    File file = File(path);
     bool exists = file.existsSync();
 
     return !exists
@@ -93,7 +98,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                   width: Responsive.getWidthPercentage(
                     context,
                     getSizePercentage(
-                        widget.storageItemModel.size ?? 0, parentSize),
+                        widget.storageItemModel!.size ?? 0, parentSize),
                   ),
                   color: kInactiveColor.withOpacity(.2),
                   height: height,
@@ -106,7 +111,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                     child: Row(
                       children: [
                         FileThumbnail(
-                          path: widget.storageItemModel.path,
+                          path: path,
                         ),
                         HSpace(),
                         Expanded(
@@ -117,9 +122,8 @@ class _ChildFileItemState extends State<ChildFileItem> {
                                 widget.sizesExplorer ||
                                         foProvider.exploreMode ==
                                             ExploreMode.selection
-                                    ? path
-                                        .basename(widget.storageItemModel.path)
-                                    : getFileName(widget.storageItemModel.path),
+                                    ? path_operations.basename(path)
+                                    : getFileName(path),
                                 style: h4LightTextStyle,
                                 //! fix the file name
                                 maxLines: 1,
@@ -128,15 +132,14 @@ class _ChildFileItemState extends State<ChildFileItem> {
                               widget.sizesExplorer
                                   ? FileSizeWithDateModified(
                                       fileSize: handleConvertSize(
-                                        widget.storageItemModel.size ?? 0,
+                                        widget.storageItemModel!.size ?? 0,
                                       ),
                                       hasData: true,
                                       modified:
-                                          widget.storageItemModel.modified,
+                                          widget.storageItemModel!.modified,
                                     )
                                   : FutureBuilder<FileStat>(
-                                      future: File(widget.storageItemModel.path)
-                                          .stat(),
+                                      future: File(path).stat(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           String fileSize = handleConvertSize(
@@ -161,14 +164,14 @@ class _ChildFileItemState extends State<ChildFileItem> {
                         ),
                         HSpace(),
                         MediaPlayerButton(
-                          mediaPath: widget.storageItemModel.path,
+                          mediaPath: path,
                         ),
                         HSpace(),
                         foProvider.exploreMode == ExploreMode.selection &&
                                 widget.allowSelect
                             ? EntityCheckBox(
                                 isSelected: widget.isSelected,
-                                storageItemModel: widget.storageItemModel,
+                                storageItemModel: widget.storageItemModel!,
                               )
                             : Container(
                                 constraints:
@@ -177,12 +180,11 @@ class _ChildFileItemState extends State<ChildFileItem> {
                                   widget.sizesExplorer
                                       ? sizePercentageString(
                                           getSizePercentage(
-                                            widget.storageItemModel.size ?? 0,
+                                            widget.storageItemModel!.size ?? 0,
                                             parentSize,
                                           ),
                                         )
-                                      : getFileExtension(
-                                          widget.storageItemModel.path),
+                                      : getFileExtension(path),
                                   style: h4TextStyleInactive.copyWith(
                                     color: kInActiveTextColor.withOpacity(.7),
                                   ),
