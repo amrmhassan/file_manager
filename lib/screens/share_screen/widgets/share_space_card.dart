@@ -5,9 +5,12 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/screens/share_screen/widgets/peer_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ShareSpaceCard extends StatelessWidget {
   final PeerModel peerModel;
@@ -50,7 +53,41 @@ class ShareSpaceCard extends StatelessWidget {
               ),
               ButtonWrapper(
                 borderRadius: 1000,
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => ModalWrapper(
+                      showTopLine: false,
+                      color: kCardBackgroundColor,
+                      child: Column(
+                        children: [
+                          PeerInfoItem(
+                            title: 'Type:',
+                            value: peerModel.memberType.name,
+                          ),
+                          PeerInfoItem(
+                            title: 'Peer Name:',
+                            value: peerModel.name,
+                          ),
+                          PeerInfoItem(
+                            title: 'Device ID:',
+                            value: peerModel.deviceID,
+                          ),
+                          PeerInfoItem(
+                            title: 'Session ID:',
+                            value: peerModel.sessionID,
+                          ),
+                          PeerInfoItem(
+                            title: 'Joined At:',
+                            value: DateFormat('yy-MM-dd hh:mm aa')
+                                .format(peerModel.joinedAt),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
                 child: Image.asset(
                   'assets/icons/info.png',
                   width: mediumIconSize,
@@ -66,25 +103,30 @@ class ShareSpaceCard extends StatelessWidget {
   }
 }
 
-class PeerIcon extends StatelessWidget {
-  const PeerIcon({
+class PeerInfoItem extends StatelessWidget {
+  final String title;
+  final String value;
+  const PeerInfoItem({
     Key? key,
+    required this.title,
+    required this.value,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(largePadding),
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(1000),
-        color: Colors.white.withOpacity(.6),
-      ),
-      child: Image.asset(
-        'assets/icons/user.png',
-        color: kCardBackgroundColor.withOpacity(.5),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: h4TextStyle,
+        ),
+        Text(
+          value,
+          style: h4TextStyleInactive,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }
