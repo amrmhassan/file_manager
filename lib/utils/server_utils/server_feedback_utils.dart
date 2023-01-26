@@ -10,23 +10,13 @@ Future<void> peerAdded(ServerProvider serverProvider) async {
     //? to skip if the peer is me
     if (peer.ip == serverProvider.myIp) continue;
     String connLink = 'http://${peer.ip}:${peer.port}/clientAdded';
-    var peers = serverProvider.peers;
-    print(peers);
     await Dio().get(
       connLink,
       options: Options(
         headers: {
           'newPeers': json.encode(serverProvider.peers
               .map(
-                (e) => {
-                  'sessionsID': e.sessionID,
-                  'deviceID': e.deviceID,
-                  'name': e.name,
-                  'ip': e.ip,
-                  'port': e.port,
-                  'joinedAt': e.joinedAt.toIso8601String(),
-                  'memberType': e.memberType.name,
-                },
+                (e) => e.toJSON(),
               )
               .toList())
         },

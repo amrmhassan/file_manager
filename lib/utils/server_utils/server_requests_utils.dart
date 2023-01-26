@@ -82,20 +82,11 @@ CustomRouterSystem addServerRouters(
     })
     ..addRouter('/clientAdded', HttpMethod.GET, (request, response) {
       String newPeersJson = request.headers.value('newPeers')!;
-      List<Map<String, dynamic>> listOfAllPeers =
-          (json.decode(newPeersJson) as List)
-              .map(
-                (e) => {
-                  'sessionsID': e['sessionsID'],
-                  'deviceID': e['deviceID'],
-                  'name': e['name'],
-                  'ip': e['ip'],
-                  'port': e['port'],
-                  'joinedAt': e['joinedAt'],
-                  'memberType': e['memberType'],
-                },
-              )
-              .toList();
+      List<PeerModel> listOfAllPeers = (json.decode(newPeersJson) as List)
+          .map(
+            (e) => PeerModel.fromJSON(e),
+          )
+          .toList();
       serverProvider.updateAllPeers(listOfAllPeers);
     });
   return customRouterSystem;

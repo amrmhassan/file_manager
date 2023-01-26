@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
@@ -25,20 +24,8 @@ class ServerProvider extends ChangeNotifier {
   List<PeerModel> peers = [];
 
 //? update all peers
-  void updateAllPeers(List<Map<String, dynamic>> newPeersList) {
-    peers = newPeersList
-        .map(
-          (e) => PeerModel(
-            deviceID: e['deviceID'] as String,
-            joinedAt: DateTime.parse(e['joinedAt']),
-            name: e['name'],
-            memberType: stringToEnum(e['memberType'], MemberType.values),
-            ip: e['ip'],
-            port: e['port'],
-            sessionID: e['sessionsID'],
-          ),
-        )
-        .toList();
+  void updateAllPeers(List<PeerModel> newPeersList) {
+    peers = [...newPeersList];
     notifyListeners();
   }
 
@@ -62,7 +49,7 @@ class ServerProvider extends ChangeNotifier {
     PeerModel meHost = PeerModel(
       deviceID: shareProvider.myDeviceId,
       joinedAt: DateTime.now(),
-      name: 'peer name will be here',
+      name: 'this is me server name',
       memberType: MemberType.host,
       ip: myIp!,
       port: myPort,

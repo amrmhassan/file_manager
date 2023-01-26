@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class ClientProvider extends ChangeNotifier {
@@ -18,13 +20,13 @@ class ClientProvider extends ChangeNotifier {
       '$connLink/addClient',
       options: Options(
         headers: {
-          'name': name,
-          'deviceID': deviceID,
-          'port': myPort,
-          'ip': myIp,
+          nameString: name,
+          deviceIDString: deviceID,
+          portString: myPort,
+          ipString: myIp,
         },
       ),
     );
-    print(response.data);
+    printOnDebug(response.data);
   }
 }
