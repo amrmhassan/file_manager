@@ -6,6 +6,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/helpers/responsive.dart';
+import 'package:explorer/providers/client_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
@@ -99,8 +100,17 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                   context,
                   ScanQRCodeScreen.routeName,
                 );
+                if (qrCode is String) {
+                  //? here just open the link and start adding a client
+                  var serverProvider =
+                      Provider.of<ServerProvider>(context, listen: false);
 
-                printOnDebug('ReceivedQrCode is:$qrCode');
+                  var shareProvider =
+                      Provider.of<ShareProvider>(context, listen: false);
+
+                  Provider.of<ClientProvider>(context, listen: false)
+                      .addClient(qrCode, shareProvider, serverProvider);
+                }
               },
               backgroundColor: kBlueColor,
               child: Text(

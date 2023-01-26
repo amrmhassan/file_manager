@@ -23,6 +23,11 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
       controller = c;
     });
     await c.resumeCamera();
+    //? instead of end point you can add a date time object
+    //? and make the maximum period to scan is for example 10 minutes
+    //? if the qr code was created more than 10 minutes just show a warning that
+    //? it needs to be refreshed
+    //? as clicking on the qr code icon will add a new 10 minutes to the qr code
     c.scannedDataStream.listen((scanData) async {
       if ((scanData.code ?? '').endsWith(dummyEndPoint) &&
           (scanData.code ?? '').startsWith('http://') &&

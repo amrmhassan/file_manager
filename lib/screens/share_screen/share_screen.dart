@@ -68,6 +68,10 @@ class ShareScreen extends StatelessWidget {
                       ButtonWrapper(
                         padding: EdgeInsets.all(largePadding),
                         borderRadius: 0,
+                        onLongPress: () {
+                          Provider.of<ServerProvider>(context, listen: false)
+                              .restartServer(shareProviderFalse);
+                        },
                         onTap: () {
                           // showModalBottomSheet(
                           //   backgroundColor: Colors.transparent,
@@ -83,7 +87,7 @@ class ShareScreen extends StatelessWidget {
                           // );
                           //! this is just temporary
                           Provider.of<ServerProvider>(context, listen: false)
-                              .restartServer(shareProviderFalse);
+                              .closeServer();
                         },
                         child: Image.asset(
                           'assets/icons/info.png',

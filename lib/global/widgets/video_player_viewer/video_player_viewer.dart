@@ -23,8 +23,10 @@ class _VideoPlayerViewerState extends State<VideoPlayerViewer> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
-      Provider.of<MediaPlayerProvider>(context, listen: false)
-          .updateDeviceVolume();
+      if (mounted) {
+        Provider.of<MediaPlayerProvider>(context, listen: false)
+            .updateDeviceVolume();
+      }
     });
     super.initState();
   }

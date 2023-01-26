@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
@@ -22,6 +23,24 @@ class ServerProvider extends ChangeNotifier {
   String? myIp;
   HttpServer? httpServer;
   List<PeerModel> peers = [];
+
+//? update all peers
+  void updateAllPeers(List<Map<String, dynamic>> newPeersList) {
+    peers = newPeersList
+        .map(
+          (e) => PeerModel(
+            deviceID: e['deviceID'] as String,
+            joinedAt: DateTime.parse(e['joinedAt']),
+            name: e['name'],
+            memberType: stringToEnum(e['memberType'], MemberType.values),
+            ip: e['ip'],
+            port: e['port'],
+            sessionID: e['sessionsID'],
+          ),
+        )
+        .toList();
+    notifyListeners();
+  }
 
   //? send file
   Future<void> openServer(ShareProvider shareProvider,
@@ -70,7 +89,7 @@ class ServerProvider extends ChangeNotifier {
   }
 
   //# server functions
-  String addPeer(String clientId, String name, String ip, int port) {
+  PeerModel addPeer(String clientId, String name, String ip, int port) {
     // if the peer is already registered
     // this might mean that he disconnected
     // so i will replace the current session with the new one
@@ -92,12 +111,12 @@ class ServerProvider extends ChangeNotifier {
 
       peers[index] = peerModel;
       notifyListeners();
-      return sessionID;
+      return peerModel;
     }
     peers.add(peerModel);
     notifyListeners();
 
-    return sessionID;
+    return peerModel;
   }
 
 //? this will be used when a new device is connected

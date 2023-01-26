@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
@@ -47,17 +48,19 @@ CustomRouterSystem addServerRouters(
       String deviceID = headers.value('deviceID') as String;
       String ip = headers.value('ip') as String;
       int port = int.parse(headers.value('port') as String);
-      String sessionID = serverProvider.addPeer(deviceID, name, ip, port);
+      PeerModel peerModel = serverProvider.addPeer(deviceID, name, ip, port);
       response
         ..headers.contentType = ContentType.json
         ..write(
           jsonify(
             {
-              'sessionID': sessionID,
+              'sessionID': peerModel.sessionID,
               'deviceID': deviceID,
               'name': name,
               'ip': ip,
               'port': port,
+              'joinedAt': peerModel.joinedAt.toIso8601String(),
+              'memberType': peerModel.memberType.name,
             },
           ),
         );
@@ -77,8 +80,23 @@ CustomRouterSystem addServerRouters(
         ..headers.contentType = ContentType.json
         ..write(jsonResponse);
     })
-    ..addRouter('/test', HttpMethod.GET, (request, response) {
-      response.write('test end point hit');
+    ..addRouter('/clientAdded', HttpMethod.GET, (request, response) {
+      String newPeersJson = request.headers.value('newPeers')!;
+      List<Map<String, dynamic>> listOfAllPeers =
+          (json.decode(newPeersJson) as List)
+              .map(
+                (e) => {
+                  'sessionsID': e['sessionsID'],
+                  'deviceID': e['deviceID'],
+                  'name': e['name'],
+                  'ip': e['ip'],
+                  'port': e['port'],
+                  'joinedAt': e['joinedAt'],
+                  'memberType': e['memberType'],
+                },
+              )
+              .toList();
+      serverProvider.updateAllPeers(listOfAllPeers);
     });
   return customRouterSystem;
 }
