@@ -11,10 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ApkThumbnail extends StatefulWidget {
+  final bool sharingFile;
   final String filePath;
+
   const ApkThumbnail({
     super.key,
     required this.filePath,
+    required this.sharingFile,
   });
 
   @override
@@ -58,7 +61,7 @@ class _ApkThumbnailState extends State<ApkThumbnail> {
 
   @override
   void initState() {
-    runCreateAPKThumbnail();
+    if (!widget.sharingFile) runCreateAPKThumbnail();
 
     super.initState();
   }

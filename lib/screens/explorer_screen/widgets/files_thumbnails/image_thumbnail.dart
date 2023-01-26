@@ -23,9 +23,11 @@ class ImageThumbnail extends StatefulWidget {
   const ImageThumbnail({
     Key? key,
     required this.path,
+    required this.sharingFile,
   }) : super(key: key);
 
   final String path;
+  final bool sharingFile;
 
   @override
   State<ImageThumbnail> createState() => _ImageThumbnailState();
@@ -81,7 +83,7 @@ class _ImageThumbnailState extends State<ImageThumbnail> {
 
   @override
   void initState() {
-    runCompress();
+    if (!widget.sharingFile) runCompress();
     super.initState();
   }
 

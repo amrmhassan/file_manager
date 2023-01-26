@@ -41,17 +41,10 @@ class SharedItems extends StatelessWidget {
               }
               ShareSpaceItemModel shareSpaceItemModel =
                   shareProvider.sharedItems[index];
-              ShareSpaceItemModel s = ShareSpaceItemModel(
-                blockedAt: ['blockedAt'],
-                entityType: EntityType.folder,
-                path: 'sdcard/testPath',
-                ownerDeviceID: 'ownerDeviceID',
-                ownerSessionID: 'ownerSessionID',
-                addedAt: DateTime.now(),
-              );
+
               return StorageItem(
                 allowSelect: false,
-                shareSpaceItemModel: s,
+                shareSpaceItemModel: shareSpaceItemModel,
                 onDirTapped: (e) {},
                 sizesExplorer: false,
                 parentSize: 0,

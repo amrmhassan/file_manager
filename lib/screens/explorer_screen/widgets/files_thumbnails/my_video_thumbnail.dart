@@ -12,9 +12,12 @@ import 'package:provider/provider.dart';
 
 class MyVideoThumbnail extends StatefulWidget {
   final String path;
+  final bool sharingFile;
+
   const MyVideoThumbnail({
     Key? key,
     required this.path,
+    required this.sharingFile,
   }) : super(key: key);
 
   @override
@@ -58,7 +61,7 @@ class _MyVideoThumbnailState extends State<MyVideoThumbnail> {
 
   @override
   void initState() {
-    runVideoThumbnail();
+    if (!widget.sharingFile) runVideoThumbnail();
 
     super.initState();
   }

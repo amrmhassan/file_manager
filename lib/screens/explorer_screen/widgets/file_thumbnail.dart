@@ -10,9 +10,12 @@ import 'package:path/path.dart' as path_operations;
 
 class FileThumbnail extends StatefulWidget {
   final String path;
+  final bool sharingFile;
+
   const FileThumbnail({
     Key? key,
     required this.path,
+    required this.sharingFile,
   }) : super(key: key);
 
   @override
@@ -32,11 +35,18 @@ class _FileThumbnailState extends State<FileThumbnail> {
     return fileType == FileType.image
         ? ImageThumbnail(
             path: widget.path,
+            sharingFile: widget.sharingFile,
           )
         : fileType == FileType.video
-            ? MyVideoThumbnail(path: widget.path)
+            ? MyVideoThumbnail(
+                path: widget.path,
+                sharingFile: widget.sharingFile,
+              )
             : fileType == FileType.apk
-                ? ApkThumbnail(filePath: widget.path)
+                ? ApkThumbnail(
+                    filePath: widget.path,
+                    sharingFile: widget.sharingFile,
+                  )
                 : Image.asset(
                     getFileTypeIcon(getFileExt()),
                     width: largeIconSize,

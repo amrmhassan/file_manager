@@ -87,7 +87,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
     File file = File(path);
     bool exists = file.existsSync();
 
-    return !exists
+    return !exists && widget.storageItemModel != null
         ? SizedBox()
         : Stack(
             children: [
@@ -112,6 +112,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                       children: [
                         FileThumbnail(
                           path: path,
+                          sharingFile: widget.storageItemModel == null,
                         ),
                         HSpace(),
                         Expanded(
@@ -129,36 +130,38 @@ class _ChildFileItemState extends State<ChildFileItem> {
                                 maxLines: 1,
                                 // overflow: TextOverflow.ellipsis,
                               ),
-                              widget.sizesExplorer
-                                  ? FileSizeWithDateModified(
-                                      fileSize: handleConvertSize(
-                                        widget.storageItemModel!.size ?? 0,
-                                      ),
-                                      hasData: true,
-                                      modified:
-                                          widget.storageItemModel!.modified,
-                                    )
-                                  : FutureBuilder<FileStat>(
-                                      future: File(path).stat(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          String fileSize = handleConvertSize(
-                                              snapshot.data?.size ?? 0);
-                                          return FileSizeWithDateModified(
-                                            fileSize: fileSize,
-                                            hasData: snapshot.data != null,
-                                            modified: snapshot.data!.modified,
-                                          );
-                                        } else {
-                                          return Text(
-                                            '...',
-                                            style: h4TextStyleInactive.copyWith(
-                                              color: kInactiveColor,
-                                              height: 1,
-                                            ),
-                                          );
-                                        }
-                                      }),
+                              if (widget.storageItemModel != null)
+                                widget.sizesExplorer
+                                    ? FileSizeWithDateModified(
+                                        fileSize: handleConvertSize(
+                                          widget.storageItemModel!.size ?? 0,
+                                        ),
+                                        hasData: true,
+                                        modified:
+                                            widget.storageItemModel!.modified,
+                                      )
+                                    : FutureBuilder<FileStat>(
+                                        future: File(path).stat(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            String fileSize = handleConvertSize(
+                                                snapshot.data?.size ?? 0);
+                                            return FileSizeWithDateModified(
+                                              fileSize: fileSize,
+                                              hasData: snapshot.data != null,
+                                              modified: snapshot.data!.modified,
+                                            );
+                                          } else {
+                                            return Text(
+                                              '...',
+                                              style:
+                                                  h4TextStyleInactive.copyWith(
+                                                color: kInactiveColor,
+                                                height: 1,
+                                              ),
+                                            );
+                                          }
+                                        }),
                             ],
                           ),
                         ),
