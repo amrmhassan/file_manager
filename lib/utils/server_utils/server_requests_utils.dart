@@ -80,6 +80,11 @@ CustomRouterSystem addServerRouters(
           )
           .toList();
       serverProvider.updateAllPeers(listOfAllPeers);
+    })
+    ..addRouter(clientLeftEndPoint, HttpMethod.GET, (request, response) {
+      //? her just remove the peer from the list
+      String sessionID = request.headers.value(sessionIDString)!;
+      serverProvider.peerLeft(sessionID);
     });
   return customRouterSystem;
 }

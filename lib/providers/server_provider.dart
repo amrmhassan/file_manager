@@ -23,9 +23,21 @@ class ServerProvider extends ChangeNotifier {
   HttpServer? httpServer;
   List<PeerModel> peers = [];
 
+//? to return my info
+  PeerModel me(ShareProvider shareProvider) {
+    return peers
+        .firstWhere((element) => element.deviceID == shareProvider.myDeviceId);
+  }
+
 //? update all peers
   void updateAllPeers(List<PeerModel> newPeersList) {
     peers = [...newPeersList];
+    notifyListeners();
+  }
+
+  //? remove peer
+  void peerLeft(String sessionID) {
+    peers.removeWhere((element) => element.sessionID == sessionID);
     notifyListeners();
   }
 

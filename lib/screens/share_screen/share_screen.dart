@@ -36,9 +36,15 @@ class ShareScreen extends StatelessWidget {
           serverProvider.httpServer == null
               ? NotSharingView()
               : Builder(builder: (context) {
-                  PeerModel hostPeer = serverProvider.peers.firstWhere(
-                    (element) => element.memberType == MemberType.host,
-                  );
+                  late PeerModel hostPeer;
+                  try {
+                    hostPeer = serverProvider.peers.firstWhere(
+                      (element) => element.memberType == MemberType.host,
+                    );
+                  } catch (e) {
+                    hostPeer = serverProvider.peers.first;
+                  }
+
                   bool iamTheHost =
                       shareProvider.myDeviceId == hostPeer.deviceID;
                   var otherPeersButMe = serverProvider.peers.where(
