@@ -7,7 +7,6 @@ import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
-import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/client_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
