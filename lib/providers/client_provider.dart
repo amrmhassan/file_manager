@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
@@ -50,5 +53,20 @@ class ClientProvider extends ChangeNotifier {
         ),
       );
     }
+  }
+
+  //? get a peer share space
+  Future<List<ShareSpaceItemModel>> getPeerShareSpace(
+    String sessionID,
+    ServerProvider serverProvider,
+    ShareProvider shareProvider,
+  ) async {
+    PeerModel peerModel = serverProvider.peerModelWithSessionID(sessionID);
+    String connLink = getConnLink(peerModel.ip, peerModel.port);
+    var res = await Dio().get('$connLink$getShareSpaceEndPoint');
+    var data = res.data;
+    List<ShareSpaceItemModel> items =
+        (data as List).map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
+    return items;
   }
 }

@@ -66,8 +66,9 @@ class ShareProvider extends ChangeNotifier {
       blockedAt: [],
       entityType: storageItemModel.entityType,
       path: storageItemModel.path,
-      ownerID: myDeviceId,
+      ownerDeviceID: myDeviceId,
       addedAt: DateTime.now(),
+      ownerSessionID: null,
     );
     sharedItems.add(shareSpaceItemModel);
     notifyListeners();

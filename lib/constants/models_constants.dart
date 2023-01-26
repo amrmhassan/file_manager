@@ -51,3 +51,8 @@ const String memberTypeString = 'memberTypeString';
 const String ipString = 'ipString';
 const String portString = 'portString';
 const String sessionIDString = 'sessionIDString';
+
+//? share item model
+const String thumbPathString = 'thumbPathString';
+const String ownerDeviceIDString = 'ownerDeviceIDString';
+const String ownerSessionIDString = 'ownerSessionIDString';

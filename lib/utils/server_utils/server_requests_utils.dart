@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
@@ -60,13 +61,13 @@ CustomRouterSystem addServerRouters(
     })
     //? to get the share space
     ..addRouter(getShareSpaceEndPoint, HttpMethod.GET, (request, response) {
-      List<Map<String, String>> sharedItemsMap = shareProvider.sharedItems
-          .map((e) => {
-                pathHeaderKey: e.path,
-                entityTypeHeaderKey: e.entityType.toString(),
-                ownerIDHeaderKey: e.ownerID,
-              })
-          .toList();
+      List<Map<String, String?>> sharedItemsMap =
+          shareProvider.sharedItems.map((e) {
+        ShareSpaceItemModel shareSpaceItemModel = e;
+        shareSpaceItemModel.ownerSessionID =
+            serverProvider.me(shareProvider).sessionID;
+        return shareSpaceItemModel.toJSON();
+      }).toList();
       String jsonResponse = json.encode(sharedItemsMap);
       response
         ..headers.contentType = ContentType.json

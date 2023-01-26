@@ -29,6 +29,11 @@ class ServerProvider extends ChangeNotifier {
         .firstWhere((element) => element.deviceID == shareProvider.myDeviceId);
   }
 
+  //?
+  PeerModel peerModelWithSessionID(String sessionID) {
+    return peers.firstWhere((element) => element.sessionID == sessionID);
+  }
+
 //? update all peers
   void updateAllPeers(List<PeerModel> newPeersList) {
     peers = [...newPeersList];

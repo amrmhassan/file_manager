@@ -28,6 +28,7 @@ import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/selected_items_screen/selected_items_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
+import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
@@ -104,6 +105,8 @@ class MyApp extends StatelessWidget {
           ShareScreen.routeName: (context) => ShareScreen(),
           QrCodeViewerScreen.routeName: (context) => QrCodeViewerScreen(),
           ScanQRCodeScreen.routeName: (context) => ScanQRCodeScreen(),
+          ShareSpaceViewerScreen.routeName: (context) =>
+              ShareSpaceViewerScreen(),
         },
       ),
     );

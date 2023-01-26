@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/screens/share_screen/widgets/peer_icon.dart';
+import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:flutter/material.dart';
 
 class ShareSpaceCard extends StatelessWidget {
@@ -24,7 +25,14 @@ class ShareSpaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        ButtonWrapper(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              ShareSpaceViewerScreen.routeName,
+              arguments: peerModel,
+            );
+          },
           padding: EdgeInsets.symmetric(
             horizontal: kHPad / 2,
             vertical: kVPad / 2,
