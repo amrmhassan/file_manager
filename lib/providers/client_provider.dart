@@ -15,7 +15,7 @@ class ClientProvider extends ChangeNotifier {
   ) async {
     await serverProvider.openServer(shareProvider);
     String deviceID = shareProvider.myDeviceId;
-    String name = 'This is me client name';
+    String name = 'Client Name';
     String myIp = serverProvider.myIp!;
     int myPort = serverProvider.myPort;
     await Dio().get(
