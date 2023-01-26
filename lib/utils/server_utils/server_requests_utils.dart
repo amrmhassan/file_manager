@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
@@ -10,6 +10,7 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
+import 'package:flutter/cupertino.dart';
 
 //? used
 enum HttpMethod {

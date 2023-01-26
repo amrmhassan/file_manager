@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -8,6 +8,7 @@ import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:explorer/utils/server_utils/server_requests_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/peer_model.dart';

@@ -11,13 +11,14 @@ class ClientProvider extends ChangeNotifier {
     String connLink,
     ShareProvider shareProvider,
     ServerProvider serverProvider,
+    BuildContext context,
   ) async {
     await serverProvider.openServer(shareProvider);
     String deviceID = shareProvider.myDeviceId;
     String name = 'This is me client name';
     String myIp = serverProvider.myIp!;
     int myPort = serverProvider.myPort;
-    var response = await Dio().get(
+    await Dio().get(
       '$connLink$addClientEndPoint',
       options: Options(
         headers: {
@@ -28,6 +29,5 @@ class ClientProvider extends ChangeNotifier {
         },
       ),
     );
-    printOnDebug(response.data);
   }
 }

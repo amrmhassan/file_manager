@@ -11,7 +11,6 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -108,8 +107,8 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                   var shareProvider =
                       Provider.of<ShareProvider>(context, listen: false);
 
-                  Provider.of<ClientProvider>(context, listen: false)
-                      .addClient(qrCode, shareProvider, serverProvider);
+                  Provider.of<ClientProvider>(context, listen: false).addClient(
+                      qrCode, shareProvider, serverProvider, context);
                 }
               },
               backgroundColor: kBlueColor,
