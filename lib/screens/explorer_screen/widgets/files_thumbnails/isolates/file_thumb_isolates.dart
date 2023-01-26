@@ -33,26 +33,30 @@ Future<void> getFileThumbnail(
     if (exists) return setThumbnail(thumbnail);
   }
 
-  // Directory tempDir = await getTemporaryDirectory();
-  late String compressedImagePath;
-  if (fileType == FileType.image) {
-    compressedImagePath = await createImageThumbnailKotlin(rawFilePath);
-  } else if (fileType == FileType.video) {
-    //* video thumbnail
-    compressedImagePath = await createVideoThumbnail(rawFilePath);
-  } else if (fileType == FileType.apk) {
-    compressedImagePath = await createAPKThumbnail(rawFilePath);
-  }
+  try {
+    // Directory tempDir = await getTemporaryDirectory();
+    late String compressedImagePath;
+    if (fileType == FileType.image) {
+      compressedImagePath = await createImageThumbnailKotlin(rawFilePath);
+    } else if (fileType == FileType.video) {
+      //* video thumbnail
+      compressedImagePath = await createVideoThumbnail(rawFilePath);
+    } else if (fileType == FileType.apk) {
+      compressedImagePath = await createAPKThumbnail(rawFilePath);
+    }
 
-  await DBHelper.insert(
-    thumbnailPathTableName,
-    {
-      pathString: rawFilePath,
-      thumbnailStringPath: compressedImagePath,
-    },
-    persistentDbName,
-  );
-  setThumbnail(compressedImagePath);
+    await DBHelper.insert(
+      thumbnailPathTableName,
+      {
+        pathString: rawFilePath,
+        thumbnailStringPath: compressedImagePath,
+      },
+      persistentDbName,
+    );
+    setThumbnail(compressedImagePath);
+  } catch (e) {
+    printOnDebug('cant generate thumbnail');
+  }
 }
 
 //? create image thumbnail with kotlin
@@ -68,6 +72,9 @@ Future<String> createImageThumbnailKotlin(String sourcePath) async {
     'output': thumbnailPath,
     'width': (largeIconSize * 1.5).toInt(),
   });
+  if (thumbnail == 'error') {
+    throw Exception('Can\'t generate a thumbnail');
+  }
   return thumbnail;
 }
 
@@ -83,6 +90,9 @@ Future<String> createVideoThumbnail(String sourcePath) async {
     'output': thumbnailPath,
     'width': (largeIconSize * 1.5).toInt(),
   });
+  if (thumbnail == 'error') {
+    throw Exception('Can\'t generate a thumbnail');
+  }
   return thumbnail;
 }
 
@@ -97,5 +107,8 @@ Future<String> createAPKThumbnail(String sourcePath) async {
     'output': thumbnailPath,
     'width': (largeIconSize * 1.5).toInt(),
   });
+  if (apkThumbnail == 'error') {
+    throw Exception('Can\'t generate a thumbnail');
+  }
   return apkThumbnail;
 }
