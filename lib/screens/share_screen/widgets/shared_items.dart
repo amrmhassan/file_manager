@@ -4,6 +4,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/utils/models_transformer_utils.dart';
@@ -40,15 +41,17 @@ class SharedItems extends StatelessWidget {
               }
               ShareSpaceItemModel shareSpaceItemModel =
                   shareProvider.sharedItems[index];
-              // StorageItemModel? storageItemModel = storageModelFromPath(
-              //     shareProvider.sharedItems[index].path,
-              //     shareProvider.sharedItems[index].entityType);
-              // if (storageItemModel == null) {
-              //   return SizedBox();
-              // }
+              ShareSpaceItemModel s = ShareSpaceItemModel(
+                blockedAt: ['blockedAt'],
+                entityType: EntityType.folder,
+                path: 'sdcard/testPath',
+                ownerDeviceID: 'ownerDeviceID',
+                ownerSessionID: 'ownerSessionID',
+                addedAt: DateTime.now(),
+              );
               return StorageItem(
                 allowSelect: false,
-                shareSpaceItemModel: shareSpaceItemModel,
+                shareSpaceItemModel: s,
                 onDirTapped: (e) {},
                 sizesExplorer: false,
                 parentSize: 0,

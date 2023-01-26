@@ -186,7 +186,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     Directory dir = Directory(path);
     bool exists = dir.existsSync();
 
-    return !exists
+    return !exists && widget.storageItemModel != null
         ? SizedBox()
         : Stack(
             children: [
@@ -240,46 +240,51 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                 maxLines: 1,
                                 // overflow: TextOverflow.ellipsis,
                               ),
-                              Row(
-                                children: [
-                                  error == null
-                                      ? Text(
-                                          childrenNumber == null
-                                              ? '...'
-                                              : '$childrenNumber Items',
-                                          style: h5InactiveTextStyle.copyWith(
-                                            height: 1,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                        )
-                                      : Text(
-                                          'System',
-                                          style: h5InactiveTextStyle.copyWith(
-                                              height: 1),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                  if (fileStat != null)
-                                    Row(
+                              widget.storageItemModel == null
+                                  ? SizedBox()
+                                  : Row(
                                       children: [
-                                        Text(
-                                          ' | ',
-                                          style: h5InactiveTextStyle.copyWith(
-                                              height: 1),
-                                        ),
-                                        Text(
-                                          widget.sizesExplorer
-                                              ? handleConvertSize(widget
-                                                      .storageItemModel!.size ??
-                                                  0)
-                                              : DateFormat('yyyy-MM-dd')
-                                                  .format(fileStat!.changed),
-                                          style: h5InactiveTextStyle.copyWith(
-                                              height: 1),
-                                        )
+                                        error == null
+                                            ? Text(
+                                                childrenNumber == null
+                                                    ? '...'
+                                                    : '$childrenNumber Items',
+                                                style: h5InactiveTextStyle
+                                                    .copyWith(
+                                                  height: 1,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              )
+                                            : Text(
+                                                'System',
+                                                style: h5InactiveTextStyle
+                                                    .copyWith(height: 1),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                        if (fileStat != null)
+                                          Row(
+                                            children: [
+                                              Text(
+                                                ' | ',
+                                                style: h5InactiveTextStyle
+                                                    .copyWith(height: 1),
+                                              ),
+                                              Text(
+                                                widget.sizesExplorer
+                                                    ? handleConvertSize(widget
+                                                            .storageItemModel!
+                                                            .size ??
+                                                        0)
+                                                    : DateFormat('yyyy-MM-dd')
+                                                        .format(
+                                                            fileStat!.changed),
+                                                style: h5InactiveTextStyle
+                                                    .copyWith(height: 1),
+                                              )
+                                            ],
+                                          ),
                                       ],
                                     ),
-                                ],
-                              ),
                             ],
                           ),
                         ),

@@ -5,6 +5,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/animation_wrapper.dart';
@@ -50,6 +51,9 @@ class _StorageItemState extends State<StorageItem> {
 
   String get path =>
       widget.storageItemModel?.path ?? widget.shareSpaceItemModel!.path;
+  EntityType get entityType =>
+      widget.storageItemModel?.entityType ??
+      widget.shareSpaceItemModel!.entityType;
 
   @override
   void initState() {
@@ -81,7 +85,7 @@ class _StorageItemState extends State<StorageItem> {
           child: ButtonWrapper(
             onTap: widget.allowClick
                 ? () async {
-                    if (isDir(path)) {
+                    if (entityType == EntityType.folder) {
                       //* here open the folder
                       widget.onDirTapped(path);
                     } else {
@@ -101,8 +105,7 @@ class _StorageItemState extends State<StorageItem> {
                   }
                 : null,
             borderRadius: 0,
-            child: isDir(widget.storageItemModel?.path ??
-                    widget.shareSpaceItemModel!.path)
+            child: entityType == EntityType.folder
                 ? ChildDirectoryItem(
                     fileName: path_operations.basename(path),
                     storageItemModel: widget.storageItemModel,
