@@ -83,9 +83,21 @@ CustomRouterSystem addServerRouters(
       serverProvider.updateAllPeers(listOfAllPeers);
     })
     ..addRouter(clientLeftEndPoint, HttpMethod.GET, (request, response) {
-      //? her just remove the peer from the list
       String sessionID = request.headers.value(sessionIDString)!;
       serverProvider.peerLeft(sessionID);
+    })
+    ..addRouter(fileAddedToShareSpaceEndPoint, HttpMethod.POST,
+        (request, response) {
+      //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
+      // var headers = request.headers;
+      // var payload = headers[shareSpaceItemModelString]!;
+      // final body =  request.transform(utf8.decoder).join();
+
+      // print(headers);
+    })
+    ..addRouter(fileRemovedFromShareSpaceEndPoint, HttpMethod.POST,
+        (request, response) async {
+      //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
     });
   return customRouterSystem;
 }

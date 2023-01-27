@@ -23,6 +23,10 @@ class ServerProvider extends ChangeNotifier {
   HttpServer? httpServer;
   List<PeerModel> peers = [];
 
+//? all peers but me
+  Iterable<PeerModel> get allPeersButMe =>
+      peers.where((element) => element.ip != myIp);
+
 //? to return my info
   PeerModel me(ShareProvider shareProvider) {
     return peers

@@ -24,7 +24,8 @@ class RecentItemType extends StatelessWidget {
     return ButtonWrapper(
       alignment: Alignment.center,
       width: 80,
-      height: 80,
+
+      // height: 80,
       borderRadius: 0,
       onTap: onTap,
       child: Column(

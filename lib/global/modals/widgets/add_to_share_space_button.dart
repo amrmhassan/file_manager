@@ -1,5 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/providers/client_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
@@ -45,11 +50,37 @@ class _AddToShareSpaceButtonState extends State<AddToShareSpaceButton> {
               : 'Add To Share Space',
       onTap: () async {
         if (added == true) {
-          Provider.of<ShareProvider>(context, listen: false)
+          //? remove from share space
+          var shareProviderFalse =
+              Provider.of<ShareProvider>(context, listen: false);
+          var serverProviderFalse =
+              Provider.of<ServerProvider>(context, listen: false);
+          await shareProviderFalse
               .removeMultipleItemsFromShareSpace(foProviderFalse.selectedItems);
+
+          //? broad cast files removal from share space
+          await Provider.of<ClientProvider>(context, listen: false)
+              .broadCastFileRemovalFromShareSpace(
+            serverProvider: serverProviderFalse,
+            shareProvider: shareProviderFalse,
+            paths: foProviderFalse.selectedItems.map((e) => e.path).toList(),
+          );
         } else if (added == false) {
-          Provider.of<ShareProvider>(context, listen: false)
+          //? add to share space
+          var shareProviderFalse =
+              Provider.of<ShareProvider>(context, listen: false);
+          var serverProviderFalse =
+              Provider.of<ServerProvider>(context, listen: false);
+          List<ShareSpaceItemModel> addedItems = await shareProviderFalse
               .addMultipleFilesToShareSpace(foProviderFalse.selectedItems);
+
+          //? broad cast files addition from share space
+          await Provider.of<ClientProvider>(context, listen: false)
+              .broadCastFileAddedToShareSpace(
+            serverProvider: serverProviderFalse,
+            shareProvider: shareProviderFalse,
+            addedItems: addedItems,
+          );
         }
         foProviderFalse.clearAllSelectedItems(
             Provider.of<ExplorerProvider>(context, listen: false));

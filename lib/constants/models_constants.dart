@@ -53,6 +53,7 @@ const String portString = 'portString';
 const String sessionIDString = 'sessionIDString';
 
 //? share item model
+const String shareSpaceItemModelString = 'shareSpaceItemModelString';
 const String thumbPathString = 'thumbPathString';
 const String ownerDeviceIDString = 'ownerDeviceIDString';
 const String ownerSessionIDString = 'ownerSessionIDString';

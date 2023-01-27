@@ -5,6 +5,7 @@ import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -66,5 +67,70 @@ class ClientProvider extends ChangeNotifier {
     List<ShareSpaceItemModel> items =
         (data as List).map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
     return items;
+  }
+
+  //? to broadcast file removal from share space
+  Future<void> broadCastFileRemovalFromShareSpace({
+    required ServerProvider serverProvider,
+    required ShareProvider shareProvider,
+    required List<String> paths,
+  }) async {
+    if (serverProvider.myIp == null) {
+      return printOnDebug('you  aren\'t connected to make broadcast');
+    }
+    PeerModel me = serverProvider.me(shareProvider);
+    await _broadcast(
+        serverProvider: serverProvider,
+        shareProvider: shareProvider,
+        endPoint: fileRemovedFromShareSpaceEndPoint,
+        headers: {
+          ownerSessionIDString: me.sessionID,
+          ownerDeviceIDString: me.deviceID,
+        },
+        data: {
+          pathString: paths,
+        });
+  }
+
+  //? to broadcast file added to share space
+  Future<void> broadCastFileAddedToShareSpace({
+    required ServerProvider serverProvider,
+    required ShareProvider shareProvider,
+    required List<ShareSpaceItemModel> addedItems,
+  }) async {
+    if (serverProvider.myIp == null) {
+      return printOnDebug('you  aren\'t connected to make broadcast');
+    }
+    PeerModel me = serverProvider.me(shareProvider);
+    await _broadcast(
+        serverProvider: serverProvider,
+        shareProvider: shareProvider,
+        endPoint: fileAddedToShareSpaceEndPoint,
+        headers: {
+          ownerSessionIDString: me.sessionID,
+          ownerDeviceIDString: me.deviceID,
+        },
+        data: {
+          shareSpaceItemModelString: addedItems.map((e) => e.toJSON()).toList(),
+        });
+  }
+
+//? to broadcast data to all servers except me
+  Future<void> _broadcast({
+    required ServerProvider serverProvider,
+    required ShareProvider shareProvider,
+    required String endPoint,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? data,
+  }) async {
+    if (serverProvider.myIp == null) {
+      return printOnDebug('you  aren\'t connected to make broadcast');
+    }
+    Iterable<PeerModel> allPeersButMe = serverProvider.allPeersButMe;
+    for (var peer in allPeersButMe) {
+      String remoteLink = '${peer.connLink}$endPoint';
+      await Dio()
+          .post(remoteLink, data: data, options: Options(headers: headers));
+    }
   }
 }

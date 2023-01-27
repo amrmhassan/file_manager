@@ -54,14 +54,18 @@ class ShareProvider extends ChangeNotifier {
   }
 
   //? add multiple files to share space
-  Future addMultipleFilesToShareSpace(List<StorageItemModel> items) async {
+  Future<List<ShareSpaceItemModel>> addMultipleFilesToShareSpace(
+      List<StorageItemModel> items) async {
+    List<ShareSpaceItemModel> addedItems = [];
     for (var item in items) {
-      await _addToShareSpace(item);
+      addedItems.add(await _addToShareSpace(item));
     }
+    return addedItems;
   }
 
   //? add file to share space
-  Future _addToShareSpace(StorageItemModel storageItemModel) async {
+  Future<ShareSpaceItemModel> _addToShareSpace(
+      StorageItemModel storageItemModel) async {
     ShareSpaceItemModel shareSpaceItemModel = ShareSpaceItemModel(
       blockedAt: [],
       entityType: storageItemModel.entityType,
@@ -77,6 +81,7 @@ class ShareProvider extends ChangeNotifier {
       shareSpaceItemModel.toJSON(),
       persistentDbName,
     );
+    return shareSpaceItemModel;
   }
 
   //? to check if multiple items are at share space

@@ -1,7 +1,14 @@
 //? end points
+// other
 const String dummyEndPoint = '/dummyendpointjustlikethemainone';
-const String addClientEndPoint = '/addClient';
+
+// files
 const String getShareSpaceEndPoint = '/getShareSpace';
+const String fileAddedToShareSpaceEndPoint = '/fileAddedToShareSpace';
+const String fileRemovedFromShareSpaceEndPoint = '/fileRemovedFromShareSpace';
+
+// clients
+const String addClientEndPoint = '/addClient';
 const String clientAddedEndPoint = '/clientAdded';
 const String clientLeftEndPoint = '/clientLeft';
 
