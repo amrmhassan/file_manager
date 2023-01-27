@@ -80,16 +80,15 @@ class ClientProvider extends ChangeNotifier {
     }
     PeerModel me = serverProvider.me(shareProvider);
     await _broadcast(
-        serverProvider: serverProvider,
-        shareProvider: shareProvider,
-        endPoint: fileRemovedFromShareSpaceEndPoint,
-        headers: {
-          ownerSessionIDString: me.sessionID,
-          ownerDeviceIDString: me.deviceID,
-        },
-        data: {
-          pathString: paths,
-        });
+      serverProvider: serverProvider,
+      shareProvider: shareProvider,
+      endPoint: fileRemovedFromShareSpaceEndPoint,
+      headers: {
+        ownerSessionIDString: me.sessionID,
+        ownerDeviceIDString: me.deviceID,
+      },
+      data: paths,
+    );
   }
 
   //? to broadcast file added to share space
@@ -103,16 +102,15 @@ class ClientProvider extends ChangeNotifier {
     }
     PeerModel me = serverProvider.me(shareProvider);
     await _broadcast(
-        serverProvider: serverProvider,
-        shareProvider: shareProvider,
-        endPoint: fileAddedToShareSpaceEndPoint,
-        headers: {
-          ownerSessionIDString: me.sessionID,
-          ownerDeviceIDString: me.deviceID,
-        },
-        data: {
-          shareSpaceItemModelString: addedItems.map((e) => e.toJSON()).toList(),
-        });
+      serverProvider: serverProvider,
+      shareProvider: shareProvider,
+      endPoint: fileAddedToShareSpaceEndPoint,
+      headers: {
+        ownerSessionIDString: me.sessionID,
+        ownerDeviceIDString: me.deviceID,
+      },
+      data: addedItems.map((e) => e.toJSON()).toList(),
+    );
   }
 
 //? to broadcast data to all servers except me
@@ -121,7 +119,7 @@ class ClientProvider extends ChangeNotifier {
     required ShareProvider shareProvider,
     required String endPoint,
     Map<String, dynamic>? headers,
-    Map<String, dynamic>? data,
+    dynamic? data,
   }) async {
     if (serverProvider.myIp == null) {
       return printOnDebug('you  aren\'t connected to make broadcast');

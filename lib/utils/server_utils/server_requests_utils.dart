@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -87,17 +88,32 @@ CustomRouterSystem addServerRouters(
       serverProvider.peerLeft(sessionID);
     })
     ..addRouter(fileAddedToShareSpaceEndPoint, HttpMethod.POST,
-        (request, response) {
+        (request, response) async {
+      //! i am stuck here
       //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
-      // var headers = request.headers;
-      // var payload = headers[shareSpaceItemModelString]!;
-      // final body =  request.transform(utf8.decoder).join();
+      var headers = request.headers;
+      var senderSessionID = headers[ownerSessionIDString];
+
+      Uint8List bodyBinary = await request.single;
+      String bodyString = String.fromCharCodes(bodyBinary);
+      List<dynamic> bodyJson = json.decode(bodyString);
+      List<ShareSpaceItemModel> addedItemsModels = bodyJson.map((e) {
+        ShareSpaceItemModel s = ShareSpaceItemModel.fromJSON(e);
+        s.ownerSessionID = senderSessionID![0];
+        return s;
+      }).toList();
 
       // print(headers);
     })
     ..addRouter(fileRemovedFromShareSpaceEndPoint, HttpMethod.POST,
         (request, response) async {
       //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
+      Uint8List bodyBinary = await request.single;
+      String bodyString = String.fromCharCodes(bodyBinary);
+      List<dynamic> bodyJson = json.decode(bodyString);
+      List<String> removedItemsPaths =
+          bodyJson.map((e) => e as String).toList();
+      String myName = serverProvider.me(shareProvider).name;
     });
   return customRouterSystem;
 }

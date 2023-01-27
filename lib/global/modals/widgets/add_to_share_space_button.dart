@@ -59,7 +59,8 @@ class _AddToShareSpaceButtonState extends State<AddToShareSpaceButton> {
               .removeMultipleItemsFromShareSpace(foProviderFalse.selectedItems);
 
           //? broad cast files removal from share space
-          await Provider.of<ClientProvider>(context, listen: false)
+          //? i removed await to prevent the user waiting for the other device to respond
+          Provider.of<ClientProvider>(context, listen: false)
               .broadCastFileRemovalFromShareSpace(
             serverProvider: serverProviderFalse,
             shareProvider: shareProviderFalse,
@@ -75,7 +76,8 @@ class _AddToShareSpaceButtonState extends State<AddToShareSpaceButton> {
               .addMultipleFilesToShareSpace(foProviderFalse.selectedItems);
 
           //? broad cast files addition from share space
-          await Provider.of<ClientProvider>(context, listen: false)
+          //? i removed await to prevent the user waiting for the other device to respond
+          Provider.of<ClientProvider>(context, listen: false)
               .broadCastFileAddedToShareSpace(
             serverProvider: serverProviderFalse,
             shareProvider: shareProviderFalse,
