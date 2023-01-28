@@ -12,7 +12,6 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as path_operations;
 import 'package:provider/provider.dart';
 
 class ShareSpaceViewerScreen extends StatefulWidget {

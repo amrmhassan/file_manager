@@ -10,6 +10,7 @@ class ShareSpaceItemModel {
   final String ownerDeviceID;
   String? ownerSessionID;
   final DateTime addedAt;
+  int? size;
 
   ShareSpaceItemModel({
     required this.blockedAt,
@@ -18,6 +19,7 @@ class ShareSpaceItemModel {
     required this.ownerDeviceID,
     required this.ownerSessionID,
     required this.addedAt,
+    this.size = 10000,
   });
 
   Map<String, String> toJSON() {

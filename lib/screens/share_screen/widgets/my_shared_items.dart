@@ -3,16 +3,13 @@
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/models/share_space_item_model.dart';
-import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
-import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class SharedItems extends StatelessWidget {
-  const SharedItems({
+class MySharedItems extends StatelessWidget {
+  const MySharedItems({
     Key? key,
   }) : super(key: key);
 

@@ -76,8 +76,12 @@ class QrCodeViewerScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 300, maxHeight: 300),
+                          constraints: BoxConstraints(
+                            maxWidth: 250,
+                            maxHeight: 250,
+                            minHeight: 100,
+                            minWidth: 100,
+                          ),
                           child: QrImage(
                             backgroundColor: Colors.white,
                             data: '${serverProvider.myConnLink!}$dummyEndPoint',

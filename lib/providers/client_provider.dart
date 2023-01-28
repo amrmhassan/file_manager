@@ -119,7 +119,7 @@ class ClientProvider extends ChangeNotifier {
     required ShareProvider shareProvider,
     required String endPoint,
     Map<String, dynamic>? headers,
-    dynamic? data,
+    dynamic data,
   }) async {
     if (serverProvider.myIp == null) {
       return printOnDebug('you  aren\'t connected to make broadcast');

@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/providers/client_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => ShareProvider()),
         ChangeNotifierProvider(create: (ctx) => ServerProvider()),
         ChangeNotifierProvider(create: (ctx) => ClientProvider()),
+        ChangeNotifierProvider(create: (ctx) => ShareItemsExplorerProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -15,12 +15,11 @@ import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
+import 'package:explorer/screens/explorer_screen/widgets/file_size.dart';
 import 'package:explorer/screens/explorer_screen/widgets/media_player_button.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';
-import 'package:explorer/screens/explorer_screen/widgets/file_size_with_date_modified.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_thumbnail.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:path/path.dart' as path_operations;
@@ -52,6 +51,9 @@ class ChildFileItem extends StatefulWidget {
 class _ChildFileItemState extends State<ChildFileItem> {
   String get path =>
       widget.storageItemModel?.path ?? widget.shareSpaceItemModel!.path;
+
+  int? get size =>
+      widget.storageItemModel?.size ?? widget.shareSpaceItemModel?.size;
   final GlobalKey key = GlobalKey();
 
   Directory? tempDir;
@@ -84,6 +86,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
   Widget build(BuildContext context) {
     var foProvider = Provider.of<FilesOperationsProvider>(context);
     // this code took 200 micro second which is very small amount of time
+
     File file = File(path);
     bool exists = file.existsSync();
 
@@ -130,38 +133,14 @@ class _ChildFileItemState extends State<ChildFileItem> {
                                 maxLines: 1,
                                 // overflow: TextOverflow.ellipsis,
                               ),
-                              if (widget.storageItemModel != null)
-                                widget.sizesExplorer
-                                    ? FileSizeWithDateModified(
-                                        fileSize: handleConvertSize(
-                                          widget.storageItemModel!.size ?? 0,
-                                        ),
-                                        hasData: true,
-                                        modified:
-                                            widget.storageItemModel!.modified,
-                                      )
-                                    : FutureBuilder<FileStat>(
-                                        future: File(path).stat(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData) {
-                                            String fileSize = handleConvertSize(
-                                                snapshot.data?.size ?? 0);
-                                            return FileSizeWithDateModified(
-                                              fileSize: fileSize,
-                                              hasData: snapshot.data != null,
-                                              modified: snapshot.data!.modified,
-                                            );
-                                          } else {
-                                            return Text(
-                                              '...',
-                                              style:
-                                                  h4TextStyleInactive.copyWith(
-                                                color: kInactiveColor,
-                                                height: 1,
-                                              ),
-                                            );
-                                          }
-                                        }),
+                              FileSize(
+                                modified: widget.storageItemModel?.modified,
+                                path: widget.storageItemModel?.path ??
+                                    widget.shareSpaceItemModel!.path,
+                                size: size,
+                                sizesExplorer: widget.sizesExplorer,
+                                localFile: widget.storageItemModel != null,
+                              ),
                             ],
                           ),
                         ),
