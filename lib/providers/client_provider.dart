@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/models_constants.dart';
@@ -127,7 +128,10 @@ class ClientProvider extends ChangeNotifier {
         ownerDeviceIDString: me.deviceID,
         // 'Content-Type': 'application/json; charset=utf-8',
       },
-      data: addedItems.map((e) => e.toJSON()).toList(),
+      data: addedItems.map((e) {
+        e.size = File(e.path).statSync().size;
+        return e.toJSON();
+      }).toList(),
     );
   }
 

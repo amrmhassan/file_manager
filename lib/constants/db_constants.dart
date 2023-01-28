@@ -46,4 +46,4 @@ const String listyListTableCreation =
 const String listyItemsTableCreation =
     'CREATE TABLE $listyItemsTableName ($idString TEXT PRIMARY KEY, $pathString TEXT, $listyTitleString TEXT, $createdAtString TEXT, $entityTypeString TEXT)';
 const String shareSpaceItemsTableCreation =
-    'CREATE TABLE $shareSpaceItemsTableName ($pathString TEXT PRIMARY KEY, $entityTypeString TEXT, $blockedAtString TEXT, $ownerIDString TEXT, $addedAtString TEXT, $ownerSessionIDString TEXT)';
+    'CREATE TABLE $shareSpaceItemsTableName ($pathString TEXT PRIMARY KEY, $entityTypeString TEXT, $blockedAtString TEXT, $ownerIDString TEXT, $addedAtString TEXT, $ownerSessionIDString TEXT, $sizeString TEXT)';

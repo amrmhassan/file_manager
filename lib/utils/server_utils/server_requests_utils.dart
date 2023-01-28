@@ -64,7 +64,7 @@ CustomRouterSystem addServerRouters(
     })
     //? to get the share space
     ..addRouter(getShareSpaceEndPoint, HttpMethod.GET, (request, response) {
-      List<Map<String, String?>> sharedItemsMap =
+      List<Map<String, dynamic>> sharedItemsMap =
           shareProvider.sharedItems.map((e) {
         ShareSpaceItemModel shareSpaceItemModel = e;
         shareSpaceItemModel.ownerSessionID =
@@ -104,7 +104,7 @@ CustomRouterSystem addServerRouters(
         s.ownerSessionID = senderSessionID;
         return s;
       }).toList();
-      print(addedItemsModels.first.path);
+      // print(addedItemsModels.first.path);
 
       shareItemsExplorerProvider.addToPeerShareSpaceScreen(
         addedItems: addedItemsModels,

@@ -19,10 +19,10 @@ class ShareSpaceItemModel {
     required this.ownerDeviceID,
     required this.ownerSessionID,
     required this.addedAt,
-    this.size = 10000,
+    this.size,
   });
 
-  Map<String, String> toJSON() {
+  Map<String, dynamic> toJSON() {
     return {
       pathString: path,
       entityTypeString: entityType.name,
@@ -30,6 +30,7 @@ class ShareSpaceItemModel {
       ownerIDString: ownerDeviceID,
       addedAtString: addedAt.toIso8601String(),
       ownerSessionIDString: ownerSessionID ?? dbNull,
+      sizeString: size ?? dbNull,
     };
   }
 
@@ -43,6 +44,9 @@ class ShareSpaceItemModel {
       ownerSessionID: jsonOBJ[ownerSessionIDString] == dbNull
           ? null
           : jsonOBJ[ownerSessionIDString],
+      size: jsonOBJ[sizeString] == dbNull
+          ? null
+          : int.parse((jsonOBJ[sizeString]).toString()),
     );
   }
 }

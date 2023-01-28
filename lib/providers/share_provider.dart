@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
@@ -22,7 +24,15 @@ enum MemberType {
 class ShareProvider extends ChangeNotifier {
   //# shared space items properties
   late String myDeviceId;
-  List<ShareSpaceItemModel> sharedItems = [];
+  final List<ShareSpaceItemModel> _sharedItems = [];
+
+  List<ShareSpaceItemModel> get sharedItems {
+    var operated = _sharedItems.map((e) {
+      e.size = File(e.path).statSync().size;
+      return e;
+    }).toList();
+    return operated;
+  }
 
   //? i will give this device an id in the first run of the app
   //? and if it is there just don't change it
@@ -48,7 +58,7 @@ class ShareProvider extends ChangeNotifier {
 
   //? to remove an item from share space
   Future _removeItemFromShareSpace(String path) async {
-    sharedItems.removeWhere((element) => element.path == path);
+    _sharedItems.removeWhere((element) => element.path == path);
     notifyListeners();
     await DBHelper.deleteById(path, shareSpaceItemsTableName, persistentDbName);
   }
@@ -74,7 +84,7 @@ class ShareProvider extends ChangeNotifier {
       addedAt: DateTime.now(),
       ownerSessionID: null,
     );
-    sharedItems.add(shareSpaceItemModel);
+    _sharedItems.add(shareSpaceItemModel);
     notifyListeners();
     await DBHelper.insert(
       shareSpaceItemsTableName,
@@ -113,7 +123,7 @@ class ShareProvider extends ChangeNotifier {
     var data =
         await DBHelper.getData(shareSpaceItemsTableName, persistentDbName);
     for (var item in data) {
-      sharedItems.add(ShareSpaceItemModel.fromJSON(item));
+      _sharedItems.add(ShareSpaceItemModel.fromJSON(item));
     }
     notifyListeners();
   }
