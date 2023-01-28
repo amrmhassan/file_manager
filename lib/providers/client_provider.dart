@@ -5,6 +5,7 @@ import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,9 +16,10 @@ class ClientProvider extends ChangeNotifier {
     String connLink,
     ShareProvider shareProvider,
     ServerProvider serverProvider,
+    ShareItemsExplorerProvider shareItemsExplorerProvider,
     BuildContext context,
   ) async {
-    await serverProvider.openServer(shareProvider);
+    await serverProvider.openServer(shareProvider, shareItemsExplorerProvider);
     String deviceID = shareProvider.myDeviceId;
     String name = 'Client Name';
     String myIp = serverProvider.myIp!;
@@ -55,18 +57,28 @@ class ClientProvider extends ChangeNotifier {
   }
 
   //? get a peer share space
-  Future<List<ShareSpaceItemModel>> getPeerShareSpace(
+  Future<void> getPeerShareSpace(
     String sessionID,
     ServerProvider serverProvider,
     ShareProvider shareProvider,
+    ShareItemsExplorerProvider shareItemsExplorerProvider,
+    String deviceID,
   ) async {
+    shareItemsExplorerProvider.setLoadingItems(true);
     PeerModel peerModel = serverProvider.peerModelWithSessionID(sessionID);
     String connLink = getConnLink(peerModel.ip, peerModel.port);
     var res = await Dio().get('$connLink$getShareSpaceEndPoint');
     var data = res.data;
     List<ShareSpaceItemModel> items =
         (data as List).map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
-    return items;
+    shareItemsExplorerProvider.updateShareSpaceScreenInfo(
+      viewedUserSessionId: sessionID,
+      viewedUserDeviceId: deviceID,
+      viewedItems: items,
+      serverProvider: serverProvider,
+      shareProvider: shareProvider,
+    );
+    shareItemsExplorerProvider.setLoadingItems(false);
   }
 
   //? to broadcast file removal from share space

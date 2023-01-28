@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/providers/client_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,8 +66,13 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
                   padding: EdgeInsets.all(largePadding),
                   borderRadius: 0,
                   onLongPress: () {
+                    var shareItemsExplorerProvider =
+                        Provider.of<ShareItemsExplorerProvider>(context,
+                            listen: false);
+
                     Provider.of<ServerProvider>(context, listen: false)
-                        .restartServer(shareProviderFalse);
+                        .restartServer(
+                            shareProviderFalse, shareItemsExplorerProvider);
                   },
                   onTap: () {
                     // showModalBottomSheet(

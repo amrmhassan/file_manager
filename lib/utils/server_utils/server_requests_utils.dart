@@ -10,6 +10,7 @@ import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
 
@@ -42,6 +43,7 @@ String jsonify(Map<String, dynamic> obj) {
 CustomRouterSystem addServerRouters(
   ServerProvider serverProvider,
   ShareProvider shareProvider,
+  ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) {
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
   customRouterSystem

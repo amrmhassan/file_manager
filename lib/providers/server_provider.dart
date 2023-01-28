@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
@@ -52,11 +53,12 @@ class ServerProvider extends ChangeNotifier {
 
   //? send file
   Future<void> openServer(ShareProvider shareProvider,
+      ShareItemsExplorerProvider shareItemsExplorerProvider,
       [bool wifi = true]) async {
     //? opening the server port and setting end points
     httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
     CustomRouterSystem customRouterSystem =
-        addServerRouters(this, shareProvider);
+        addServerRouters(this, shareProvider, shareItemsExplorerProvider);
     httpServer!.listen(customRouterSystem.handleListen);
 //? when above code is success then set the needed stuff like port, other things
     myPort = httpServer!.port;
@@ -91,9 +93,10 @@ class ServerProvider extends ChangeNotifier {
   }
 
   //? to restart the server
-  Future restartServer(ShareProvider shareProvider) async {
+  Future restartServer(ShareProvider shareProvider,
+      ShareItemsExplorerProvider shareItemsExplorerProvider) async {
     await closeServer();
-    await openServer(shareProvider);
+    await openServer(shareProvider, shareItemsExplorerProvider);
   }
 
   //# server functions
