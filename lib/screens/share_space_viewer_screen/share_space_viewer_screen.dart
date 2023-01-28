@@ -66,7 +66,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              shareExpProvider.loadingItems
+              shareExpProvider.loadingItems || (peerModel == null)
                   ? '...'
                   : '${peerModel!.name} Share Space',
               style: h2TextStyle.copyWith(

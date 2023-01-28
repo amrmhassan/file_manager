@@ -28,6 +28,34 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+//? to add some items to share space when the other peer add some
+  void addToPeerShareSpaceScreen({
+    required List<ShareSpaceItemModel> addedItems,
+    required String sessionId,
+  }) {
+    if (viewedUserSessionId == sessionId) {
+      for (var item in addedItems) {
+        if (!viewedItems.any((element) => element.path == item.path)) {
+          viewedItems.add(item);
+        }
+      }
+      notifyListeners();
+    }
+  }
+
+  //? remove some from share space item model
+  void removeFromPeerShareSpace({
+    required List<String> removedItems,
+    required String sessionId,
+  }) {
+    if (viewedUserSessionId == sessionId) {
+      for (var itemPath in removedItems) {
+        viewedItems.removeWhere((element) => element.path == itemPath);
+      }
+      notifyListeners();
+    }
+  }
+
   void setLoadingItems(bool i) {
     loadingItems = i;
     notifyListeners();

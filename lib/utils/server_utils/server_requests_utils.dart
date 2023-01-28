@@ -94,16 +94,21 @@ CustomRouterSystem addServerRouters(
       //! i am stuck here
       //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
       var headers = request.headers;
-      var senderSessionID = headers[ownerSessionIDString];
+      var senderSessionID = (headers[ownerSessionIDString])!.first;
 
       Uint8List bodyBinary = await request.single;
-      String bodyString = String.fromCharCodes(bodyBinary);
+      String bodyString = utf8.decode(bodyBinary);
       List<dynamic> bodyJson = json.decode(bodyString);
       List<ShareSpaceItemModel> addedItemsModels = bodyJson.map((e) {
         ShareSpaceItemModel s = ShareSpaceItemModel.fromJSON(e);
-        s.ownerSessionID = senderSessionID![0];
+        s.ownerSessionID = senderSessionID;
         return s;
       }).toList();
+
+      shareItemsExplorerProvider.addToPeerShareSpaceScreen(
+        addedItems: addedItemsModels,
+        sessionId: senderSessionID,
+      );
 
       // print(headers);
     })
@@ -111,11 +116,15 @@ CustomRouterSystem addServerRouters(
         (request, response) async {
       //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
       Uint8List bodyBinary = await request.single;
-      String bodyString = String.fromCharCodes(bodyBinary);
+      String bodyString = utf8.decode(bodyBinary);
       List<dynamic> bodyJson = json.decode(bodyString);
       List<String> removedItemsPaths =
           bodyJson.map((e) => e as String).toList();
-      String myName = serverProvider.me(shareProvider).name;
+      var headers = request.headers;
+      var senderSessionID = (headers[ownerSessionIDString])!.first;
+
+      shareItemsExplorerProvider.removeFromPeerShareSpace(
+          removedItems: removedItemsPaths, sessionId: senderSessionID);
     });
   return customRouterSystem;
 }

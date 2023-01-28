@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -98,6 +100,7 @@ class ClientProvider extends ChangeNotifier {
       headers: {
         ownerSessionIDString: me.sessionID,
         ownerDeviceIDString: me.deviceID,
+        'Content-Type': 'application/json; charset=utf-8',
       },
       data: paths,
     );
@@ -120,6 +123,7 @@ class ClientProvider extends ChangeNotifier {
       headers: {
         ownerSessionIDString: me.sessionID,
         ownerDeviceIDString: me.deviceID,
+        'Content-Type': 'application/json; charset=utf-8',
       },
       data: addedItems.map((e) => e.toJSON()).toList(),
     );
@@ -139,8 +143,17 @@ class ClientProvider extends ChangeNotifier {
     Iterable<PeerModel> allPeersButMe = serverProvider.allPeersButMe;
     for (var peer in allPeersButMe) {
       String remoteLink = '${peer.connLink}$endPoint';
-      await Dio()
-          .post(remoteLink, data: data, options: Options(headers: headers));
+
+      await Dio().post(
+        remoteLink,
+        data: data,
+        options: Options(
+          headers: headers,
+          requestEncoder: (request, options) {
+            return utf8.encode(request);
+          },
+        ),
+      );
     }
   }
 }
