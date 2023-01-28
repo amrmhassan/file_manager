@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/models_constants.dart';
@@ -12,6 +11,9 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:flutter/cupertino.dart';
 
+//! make a function to send utf8 requests and handles them on the server side by reading the utf8
+//! and add the header
+//! actually i just needed to handle the server side by decoding the utf8 request
 class ClientProvider extends ChangeNotifier {
   //? to send add client request
   Future addClient(
@@ -100,7 +102,7 @@ class ClientProvider extends ChangeNotifier {
       headers: {
         ownerSessionIDString: me.sessionID,
         ownerDeviceIDString: me.deviceID,
-        'Content-Type': 'application/json; charset=utf-8',
+        // 'Content-Type': 'application/json; charset=utf-8',
       },
       data: paths,
     );
@@ -123,7 +125,7 @@ class ClientProvider extends ChangeNotifier {
       headers: {
         ownerSessionIDString: me.sessionID,
         ownerDeviceIDString: me.deviceID,
-        'Content-Type': 'application/json; charset=utf-8',
+        // 'Content-Type': 'application/json; charset=utf-8',
       },
       data: addedItems.map((e) => e.toJSON()).toList(),
     );
@@ -149,9 +151,9 @@ class ClientProvider extends ChangeNotifier {
         data: data,
         options: Options(
           headers: headers,
-          requestEncoder: (request, options) {
-            return utf8.encode(request);
-          },
+          // requestEncoder: (request, options) {
+          //   return utf8.encode(request);
+          // },
         ),
       );
     }

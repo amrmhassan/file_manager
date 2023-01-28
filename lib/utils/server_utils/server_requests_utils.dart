@@ -104,6 +104,7 @@ CustomRouterSystem addServerRouters(
         s.ownerSessionID = senderSessionID;
         return s;
       }).toList();
+      print(addedItemsModels.first.path);
 
       shareItemsExplorerProvider.addToPeerShareSpaceScreen(
         addedItems: addedItemsModels,
@@ -122,6 +123,7 @@ CustomRouterSystem addServerRouters(
           bodyJson.map((e) => e as String).toList();
       var headers = request.headers;
       var senderSessionID = (headers[ownerSessionIDString])!.first;
+      print(removedItemsPaths.first);
 
       shareItemsExplorerProvider.removeFromPeerShareSpace(
           removedItems: removedItemsPaths, sessionId: senderSessionID);
