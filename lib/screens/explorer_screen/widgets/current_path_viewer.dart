@@ -15,9 +15,16 @@ import 'package:provider/provider.dart';
 
 class CurrentPathViewer extends StatefulWidget {
   final bool sizesExplorer;
+  final String? customPath;
+  final VoidCallback? onHomeClicked;
+  final VoidCallback? onCopy;
+
   const CurrentPathViewer({
     Key? key,
     required this.sizesExplorer,
+    this.customPath,
+    this.onHomeClicked,
+    this.onCopy,
   }) : super(key: key);
 
   @override
@@ -55,18 +62,19 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
     return Row(
       children: [
         ButtonWrapper(
-          onTap: () {
-            var foProviderFalse = Provider.of<FilesOperationsProvider>(
-              context,
-              listen: false,
-            );
-            expProviderFalse.goHome(
-              sizesExplorer: widget.sizesExplorer,
-              analyzerProvider:
-                  Provider.of<AnalyzerProvider>(context, listen: false),
-              filesOperationsProvider: foProviderFalse,
-            );
-          },
+          onTap: widget.onHomeClicked ??
+              () {
+                var foProviderFalse = Provider.of<FilesOperationsProvider>(
+                  context,
+                  listen: false,
+                );
+                expProviderFalse.goHome(
+                  sizesExplorer: widget.sizesExplorer,
+                  analyzerProvider:
+                      Provider.of<AnalyzerProvider>(context, listen: false),
+                  filesOperationsProvider: foProviderFalse,
+                );
+              },
           borderRadius: 0,
           padding: EdgeInsets.all(largePadding),
           child: Image.asset(
@@ -77,8 +85,9 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
         ),
         Expanded(
           child: GestureDetector(
-            onTap: () => copyToClipboard(
-                context, expProviderFalse.currentActiveDir.path),
+            onTap: widget.onCopy ??
+                () => copyToClipboard(
+                    context, expProviderFalse.currentActiveDir.path),
             child: Container(
               width: double.infinity,
               color: kCardBackgroundColor,
@@ -93,6 +102,8 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
                     HSpace(),
                     PathRow(
                       sizesExplorer: widget.sizesExplorer,
+                      customPath: widget.customPath,
+                      onCopy: widget.onCopy,
                     ),
                     HSpace(),
                   ],

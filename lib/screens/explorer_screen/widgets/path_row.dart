@@ -12,9 +12,14 @@ import 'package:provider/provider.dart';
 
 class PathRow extends StatelessWidget {
   final bool sizesExplorer;
+  final String? customPath;
+  final VoidCallback? onCopy;
+
   const PathRow({
     super.key,
     required this.sizesExplorer,
+    required this.customPath,
+    required this.onCopy,
   });
 
   @override
@@ -22,13 +27,15 @@ class PathRow extends StatelessWidget {
     var expProvider = Provider.of<ExplorerProvider>(context);
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
-    List<String> folders = expProvider.currentActiveDir.path.split('/');
-    var analyzerProvieer =
+    List<String> folders =
+        (customPath ?? expProvider.currentActiveDir.path).split('/');
+    var analyzerProvider =
         Provider.of<AnalyzerProvider>(context, listen: false);
 
     return GestureDetector(
-      onLongPress: () =>
-          copyToClipboard(context, expProviderFalse.currentActiveDir.path),
+      onLongPress: onCopy ??
+          () =>
+              copyToClipboard(context, expProviderFalse.currentActiveDir.path),
       child: Row(
         children: [
           ...folders.asMap().entries.map(
@@ -49,7 +56,7 @@ class PathRow extends StatelessWidget {
                         expProviderFalse.setActiveDir(
                           sizesExplorer: sizesExplorer,
                           path: newPath,
-                          analyzerProvider: analyzerProvieer,
+                          analyzerProvider: analyzerProvider,
                           filesOperationsProvider: foProviderFalse,
                         );
                       } else {

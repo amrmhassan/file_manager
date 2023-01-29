@@ -10,7 +10,9 @@ import 'package:explorer/providers/client_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/screens/explorer_screen/widgets/current_path_viewer.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -73,6 +75,21 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
               ),
             ),
           ),
+          if (shareExpProvider.currentPath != null)
+            CurrentPathViewer(
+              sizesExplorer: false,
+              customPath: shareExpProvider.currentPath,
+              onCopy: () {
+                copyToClipboard(context, shareExpProvider.currentPath!);
+              },
+              onHomeClicked: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  ShareSpaceViewerScreen.routeName,
+                  arguments: peerModel,
+                );
+              },
+            ),
           shareExpProvider.loadingItems
               ? Expanded(child: Center(child: CircularProgressIndicator()))
               : Expanded(
