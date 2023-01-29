@@ -86,12 +86,17 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                             shareExpProvider.viewedItems[index].ownerSessionID!;
                         var shareProvider =
                             Provider.of<ShareProvider>(context, listen: false);
+                        var shareItemsExplorerProvider =
+                            Provider.of<ShareItemsExplorerProvider>(context,
+                                listen: false);
                         Provider.of<ClientProvider>(context, listen: false)
                             .getFolderContent(
                           serverProvider: serverProvider,
                           folderPath: path,
                           shareProvider: shareProvider,
                           userSessionID: userSessionID,
+                          shareItemsExplorerProvider:
+                              shareItemsExplorerProvider,
                         );
                       },
                       sizesExplorer: false,

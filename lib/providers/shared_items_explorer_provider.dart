@@ -14,11 +14,6 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
 // the current path that would be viewed in the other peer share space
   String? currentPath;
 
-  void setCurrentPath(String s) {
-    currentPath = s;
-    notifyListeners();
-  }
-
 //? to be called when asking for a user shared items
   void updateShareSpaceScreenInfo({
     required String viewedUserSessionId,
@@ -32,6 +27,7 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
     this.viewedUserDeviceId = viewedUserDeviceId;
     this.viewedUserSessionId = viewedUserSessionId;
     myShareSpace = viewedUserDeviceId == me.deviceID;
+    currentPath = null;
     notifyListeners();
   }
 
@@ -63,8 +59,16 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
     }
   }
 
-  void setLoadingItems(bool i) {
-    loadingItems = i;
+//? when getting a shared folder items, they need to be added to the screen
+//? this function will do this job
+  void updatePath(String path, List<ShareSpaceItemModel> items) {
+    currentPath = path;
+    viewedItems = items;
     notifyListeners();
+  }
+
+  void setLoadingItems(bool i, [bool notify = true]) {
+    loadingItems = i;
+    if (notify) notifyListeners();
   }
 }

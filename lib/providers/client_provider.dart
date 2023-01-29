@@ -141,7 +141,9 @@ class ClientProvider extends ChangeNotifier {
     required String folderPath,
     required ShareProvider shareProvider,
     required String userSessionID,
+    required ShareItemsExplorerProvider shareItemsExplorerProvider,
   }) async {
+    shareItemsExplorerProvider.setLoadingItems(true);
     PeerModel me = serverProvider.me(shareProvider);
     PeerModel otherPeer = serverProvider.peerModelWithSessionID(userSessionID);
     String connLink = getConnLink(otherPeer.ip, otherPeer.port);
@@ -156,8 +158,9 @@ class ClientProvider extends ChangeNotifier {
     );
     var data = res.data as List;
     var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
+    shareItemsExplorerProvider.updatePath(folderPath, items);
 
-    print(items.length);
+    shareItemsExplorerProvider.setLoadingItems(false, false);
   }
 
 //? to broadcast data to all servers except me
