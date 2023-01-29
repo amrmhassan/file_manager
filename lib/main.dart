@@ -74,13 +74,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          useMaterial3: true,
           scaffoldBackgroundColor: Colors.white,
           textTheme: TextTheme(
-            bodyText1: TextStyle(
+            bodyLarge: TextStyle(
               fontFamily: 'Cairo',
               color: kActiveTextColor,
             ),
-            bodyText2: TextStyle(
+            bodyMedium: TextStyle(
               fontFamily: 'Cairo',
               color: kActiveTextColor,
             ),

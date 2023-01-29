@@ -9,8 +9,15 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
   String? viewedUserSessionId;
   String? viewedUserDeviceId;
   bool myShareSpace = true;
-
   bool loadingItems = true;
+
+// the current path that would be viewed in the other peer share space
+  String? currentPath;
+
+  void setCurrentPath(String s) {
+    currentPath = s;
+    notifyListeners();
+  }
 
 //? to be called when asking for a user shared items
   void updateShareSpaceScreenInfo({

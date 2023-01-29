@@ -68,6 +68,16 @@ CustomRouterSystem addServerRouters(
         response,
         shareItemsExplorerProvider,
       ),
+    )
+    ..addRouter(
+      getFolderContentEndPointEndPoint,
+      HttpMethod.GET,
+      (request, response) => getFolderContent(
+        request,
+        response,
+        serverProvider,
+        shareProvider,
+      ),
     );
   return customRouterSystem;
 }

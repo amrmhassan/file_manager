@@ -79,7 +79,21 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                   child: ListView.builder(
                     itemCount: shareExpProvider.viewedItems.length,
                     itemBuilder: (context, index) => StorageItem(
-                      onDirTapped: (p) {},
+                      onDirTapped: (path) async {
+                        var serverProvider =
+                            Provider.of<ServerProvider>(context, listen: false);
+                        String userSessionID =
+                            shareExpProvider.viewedItems[index].ownerSessionID!;
+                        var shareProvider =
+                            Provider.of<ShareProvider>(context, listen: false);
+                        Provider.of<ClientProvider>(context, listen: false)
+                            .getFolderContent(
+                          serverProvider: serverProvider,
+                          folderPath: path,
+                          shareProvider: shareProvider,
+                          userSessionID: userSessionID,
+                        );
+                      },
                       sizesExplorer: false,
                       parentSize: 0,
                       shareSpaceItemModel: shareExpProvider.viewedItems[index],

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -133,6 +134,30 @@ class ClientProvider extends ChangeNotifier {
         return e.toJSON();
       }).toList(),
     );
+  }
+
+  Future<void> getFolderContent({
+    required ServerProvider serverProvider,
+    required String folderPath,
+    required ShareProvider shareProvider,
+    required String userSessionID,
+  }) async {
+    PeerModel me = serverProvider.me(shareProvider);
+    PeerModel otherPeer = serverProvider.peerModelWithSessionID(userSessionID);
+    String connLink = getConnLink(otherPeer.ip, otherPeer.port);
+    var res = await Dio().get(
+      '$connLink$getFolderContentEndPointEndPoint',
+      options: Options(
+        headers: {
+          folderPathHeaderKey: folderPath,
+          sessionIDHeaderKey: me.sessionID,
+        },
+      ),
+    );
+    var data = res.data as List;
+    var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
+
+    print(items.length);
   }
 
 //? to broadcast data to all servers except me

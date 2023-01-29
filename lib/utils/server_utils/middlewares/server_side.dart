@@ -5,15 +5,17 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
 import 'package:explorer/utils/server_utils/server_requests_utils.dart';
+import 'package:flutter/foundation.dart';
 
 void addClientMiddleWare(
-  request,
-  response,
+  HttpRequest request,
+  HttpResponse response,
   ServerProvider serverProvider,
 ) async {
   var headers = request.headers;
@@ -31,8 +33,8 @@ void addClientMiddleWare(
 }
 
 void getShareSpaceMiddleWare(
-  request,
-  response,
+  HttpRequest request,
+  HttpResponse response,
   ServerProvider serverProvider,
   ShareProvider shareProvider,
 ) {
@@ -50,8 +52,8 @@ void getShareSpaceMiddleWare(
 }
 
 void clientAddedMiddleWare(
-  request,
-  response,
+  HttpRequest request,
+  HttpResponse response,
   ServerProvider serverProvider,
 ) {
   String newPeersJson = request.headers.value(newPeersHeaderKey)!;
@@ -64,8 +66,8 @@ void clientAddedMiddleWare(
 }
 
 void clientLeftMiddleWare(
-  request,
-  response,
+  HttpRequest request,
+  HttpResponse response,
   ServerProvider serverProvider,
 ) {
   String sessionID = request.headers.value(sessionIDString)!;
@@ -73,8 +75,8 @@ void clientLeftMiddleWare(
 }
 
 void fileAddedMiddleWare(
-  request,
-  response,
+  HttpRequest request,
+  HttpResponse response,
   ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) async {
   //! i am stuck here
@@ -99,8 +101,8 @@ void fileAddedMiddleWare(
 }
 
 void fileRemovedMiddleWare(
-  request,
-  response,
+  HttpRequest request,
+  HttpResponse response,
   ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) async {
   //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
@@ -112,4 +114,46 @@ void fileRemovedMiddleWare(
 
   shareItemsExplorerProvider.removeFromPeerShareSpace(
       removedItems: removedItemsPaths, sessionId: senderSessionID);
+}
+
+Future<void> getFolderContent(
+  HttpRequest request,
+  HttpResponse response,
+  ServerProvider serverProvider,
+  ShareProvider shareProvider,
+) async {
+  var headers = request.headers;
+  String folderPath = headers[folderPathHeaderKey]!.first;
+  // i will need the peer session id to know that if it is allowed or not
+  String peerSessionID = headers[sessionIDHeaderKey]!.first;
+  Directory directory = Directory(folderPath);
+  if (directory.existsSync()) {
+    PeerModel me = serverProvider.me(shareProvider);
+    var folderChildren = await compute(getFolderChildren, folderPath);
+    List<Map<String, dynamic>> sharedItems = folderChildren.map((entity) {
+      FileStat fileStat = entity.statSync();
+
+      return ShareSpaceItemModel(
+        blockedAt: [],
+        entityType: fileStat.type == FileSystemEntityType.file
+            ? EntityType.file
+            : EntityType.folder,
+        path: entity.path,
+        ownerDeviceID: me.deviceID,
+        ownerSessionID: me.sessionID,
+        addedAt: DateTime.now(),
+        size: fileStat.size,
+      ).toJSON();
+    }).toList();
+    var encodedData = utf8.encode(json.encode(sharedItems));
+
+    response
+      ..headers.add('Content-Type', 'application/json; charset=utf-8')
+      ..add(encodedData);
+  }
+}
+
+// the isolate that will get any folder children then return it when finished
+List<FileSystemEntity> getFolderChildren(String folderPath) {
+  return Directory(folderPath).listSync();
 }
