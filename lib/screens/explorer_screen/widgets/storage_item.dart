@@ -24,6 +24,7 @@ class StorageItem extends StatefulWidget {
   final bool allowShowingFavIcon;
   final bool allowClick;
   final ShareSpaceItemModel? shareSpaceItemModel;
+  final Function(String path)? onFileTapped;
 
   const StorageItem({
     super.key,
@@ -35,6 +36,7 @@ class StorageItem extends StatefulWidget {
     this.allowSelect = true,
     this.allowShowingFavIcon = false,
     this.shareSpaceItemModel,
+    this.onFileTapped,
   });
 
   @override
@@ -88,9 +90,13 @@ class _StorageItemState extends State<StorageItem> {
                       //* here open the folder
                       widget.onDirTapped(path);
                     } else {
-                      //* here perform open the file
-                      await open_file.OpenFile.open(path);
-                      await foProviderFalse.addToRecentlyOpened(path);
+                      if (widget.onFileTapped == null) {
+                        //* here perform open the file
+                        await open_file.OpenFile.open(path);
+                        await foProviderFalse.addToRecentlyOpened(path);
+                      } else {
+                        widget.onFileTapped!(path);
+                      }
                     }
                   }
                 : null,

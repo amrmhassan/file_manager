@@ -89,6 +89,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                   arguments: peerModel,
                 );
               },
+              onClickingSubPath: getFolderContent,
             ),
           shareExpProvider.loadingItems
               ? Expanded(child: Center(child: CircularProgressIndicator()))
@@ -96,35 +97,38 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                   child: ListView.builder(
                     itemCount: shareExpProvider.viewedItems.length,
                     itemBuilder: (context, index) => StorageItem(
-                      onDirTapped: (path) async {
-                        var serverProvider =
-                            Provider.of<ServerProvider>(context, listen: false);
-                        String userSessionID =
-                            shareExpProvider.viewedItems[index].ownerSessionID!;
-                        var shareProvider =
-                            Provider.of<ShareProvider>(context, listen: false);
-                        var shareItemsExplorerProvider =
-                            Provider.of<ShareItemsExplorerProvider>(context,
-                                listen: false);
-                        Provider.of<ClientProvider>(context, listen: false)
-                            .getFolderContent(
-                          serverProvider: serverProvider,
-                          folderPath: path,
-                          shareProvider: shareProvider,
-                          userSessionID: userSessionID,
-                          shareItemsExplorerProvider:
-                              shareItemsExplorerProvider,
-                        );
-                      },
+                      onDirTapped: getFolderContent,
                       sizesExplorer: false,
                       parentSize: 0,
                       shareSpaceItemModel: shareExpProvider.viewedItems[index],
+                      onFileTapped: (path) {
+                        print(path);
+                      },
+                      allowSelect: false,
                     ),
                   ),
                 ),
           VSpace(),
         ],
       ),
+    );
+  }
+
+  void getFolderContent(String path) async {
+    var shareExpProvider =
+        Provider.of<ShareItemsExplorerProvider>(context, listen: false);
+
+    var serverProvider = Provider.of<ServerProvider>(context, listen: false);
+    String userSessionID = shareExpProvider.viewedUserSessionId!;
+    var shareProvider = Provider.of<ShareProvider>(context, listen: false);
+    var shareItemsExplorerProvider =
+        Provider.of<ShareItemsExplorerProvider>(context, listen: false);
+    Provider.of<ClientProvider>(context, listen: false).getFolderContent(
+      serverProvider: serverProvider,
+      folderPath: path,
+      shareProvider: shareProvider,
+      userSessionID: userSessionID,
+      shareItemsExplorerProvider: shareItemsExplorerProvider,
     );
   }
 }

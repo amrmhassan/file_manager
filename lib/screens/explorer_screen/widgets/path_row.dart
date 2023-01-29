@@ -14,12 +14,13 @@ class PathRow extends StatelessWidget {
   final bool sizesExplorer;
   final String? customPath;
   final VoidCallback? onCopy;
-
+  final Function(String subPath)? onClickingSubPath;
   const PathRow({
     super.key,
     required this.sizesExplorer,
     required this.customPath,
     required this.onCopy,
+    required this.onClickingSubPath,
   });
 
   @override
@@ -48,20 +49,28 @@ class PathRow extends StatelessWidget {
                       if (entry.key != folders.length - 1) {
                         String newPath =
                             folders.sublist(0, entry.key + 1).join('/');
-                        var foProviderFalse =
-                            Provider.of<FilesOperationsProvider>(
-                          context,
-                          listen: false,
-                        );
-                        expProviderFalse.setActiveDir(
-                          sizesExplorer: sizesExplorer,
-                          path: newPath,
-                          analyzerProvider: analyzerProvider,
-                          filesOperationsProvider: foProviderFalse,
-                        );
+                        if (onClickingSubPath != null) {
+                          onClickingSubPath!(newPath);
+                        } else {
+                          var foProviderFalse =
+                              Provider.of<FilesOperationsProvider>(
+                            context,
+                            listen: false,
+                          );
+                          expProviderFalse.setActiveDir(
+                            sizesExplorer: sizesExplorer,
+                            path: newPath,
+                            analyzerProvider: analyzerProvider,
+                            filesOperationsProvider: foProviderFalse,
+                          );
+                        }
                       } else {
-                        copyToClipboard(
-                            context, expProviderFalse.currentActiveDir.path);
+                        if (onCopy != null) {
+                          onCopy!();
+                        } else {
+                          copyToClipboard(
+                              context, expProviderFalse.currentActiveDir.path);
+                        }
                       }
                     },
                   ),
