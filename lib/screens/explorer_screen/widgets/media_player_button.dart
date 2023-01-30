@@ -82,7 +82,9 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
             height: largeIconSize,
             child: Image.asset(
               mePlaying(
-                      mpProvider.playingAudioFilePath, mpProvider.audioPlaying)
+                mpProvider.playingAudioFilePath,
+                mpProvider.audioPlaying,
+              )
                   ? 'assets/icons/pause.png'
                   : 'assets/icons/play-audio.png',
               width: largeIconSize / 2,

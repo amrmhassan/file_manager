@@ -26,6 +26,13 @@ class MediaPlayerProvider extends ChangeNotifier {
   String? playingAudioFilePath;
   Future<void> setPlayingFile(String path, [bool network = false]) async {
     playingAudioFilePath = path;
+    if (network) {
+      String parsedPath = path.replaceFirst('http://', '');
+      var parts = parsedPath.split('/');
+      parsedPath = parts.sublist(2).join('/');
+      playingAudioFilePath = parsedPath;
+      print('playingAudioFilePath $playingAudioFilePath');
+    }
     notifyListeners();
     await _playAudio(path, network);
   }
@@ -43,7 +50,6 @@ class MediaPlayerProvider extends ChangeNotifier {
     String path, [
     bool network = false,
   ]) async {
-    print(network);
     try {
       if (durationStreamSub != null) {
         durationStreamSub?.cancel();
