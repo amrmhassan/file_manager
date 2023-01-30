@@ -31,7 +31,6 @@ class MediaPlayerProvider extends ChangeNotifier {
       var parts = parsedPath.split('/');
       parsedPath = parts.sublist(2).join('/');
       playingAudioFilePath = parsedPath;
-      print('playingAudioFilePath $playingAudioFilePath');
     }
     notifyListeners();
     await _playAudio(path, network);
@@ -115,6 +114,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   bool isVideoPlaying = false;
   Duration videoPosition = Duration.zero;
   bool videoHidden = false;
+  bool networkVideo = false;
 
   //? set volume touched
   void setVolumeTouched(bool t) {
@@ -134,7 +134,18 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   //? play video
-  void playVideo(String path) {
+  void playVideo(String path, [bool network = false]) {
+    // print(path);
+    // print(network);
+    // print('object');
+    // if (network) {
+    //   String parsedPath = path.replaceFirst('http://', '');
+    //   var parts = parsedPath.split('/');
+    //   parsedPath = parts.sublist(2).join('/');
+    //   playingAudioFilePath = parsedPath;
+    //   path = playingAudioFilePath!;
+    // }
+
     videoPlayerController = VideoPlayerController.network(path,
         videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true))
       ..initialize().then((value) {
@@ -143,6 +154,7 @@ class MediaPlayerProvider extends ChangeNotifier {
         videoAspectRatio = videoPlayerController?.value.aspectRatio;
         // videoVolume = videoPlayerController?.value.volume ?? 0;
         videoDuration = videoPlayerController?.value.duration;
+        networkVideo = network;
 
         notifyListeners();
       })

@@ -1,1 +1,1 @@
-adb push build/app/outputs/flutter-apk/app-release.apk /sdcard
+adb  push build/app/outputs/flutter-apk/app-release.apk /sdcard

@@ -192,6 +192,44 @@ Future<void> streamAudioMiddleWare(
   file.openRead(start, end).pipe(req.response);
 }
 
+Future<void> streamVideoMiddleWare(
+  HttpRequest req,
+  HttpResponse response,
+) async {
+  String videoPath = req.uri.path.split(streamVideoEndPoint)[1];
+  videoPath = Uri.decodeComponent(videoPath);
+
+  // var headers = req.headers;
+//  i will need them to check for authorization
+  // String sessionID = headers.value(sessionIDHeaderKey)![0];
+  // String deviceID = headers.value(deviceIDString)![0];
+
+  File file = File(videoPath);
+  int length = await file.length();
+
+  // this formate 'bytes=0-' means that i want the bytes from the 0 to the end
+  // so the end here means the end of the file
+  // if it was 'bytes=0-1000' this means that i need the bytes from 0 to 1000
+  String range = req.headers.value('range') ?? 'bytes=0-';
+  List<String> parts = range.split('=');
+  List<String> positions = parts[1].split('-');
+  int start = int.parse(positions[0]);
+  int end = positions.length < 2 || int.tryParse(positions[1]) == null
+      ? length
+      : int.parse(positions[1]);
+  String? mime = lookupMimeType(videoPath);
+  // print('Needed bytes from $start to $end');
+
+  response.statusCode = HttpStatus.partialContent;
+  response.headers
+    ..contentType = ContentType.parse(mime ?? 'video/mp4')
+    ..contentLength = end - start
+    ..add('Accept-Ranges', 'bytes')
+    ..add('Content-Range', 'bytes $start-$end/$length')
+    ..add('Access-Control-Allow-Origin', '*');
+  file.openRead(start, end).pipe(req.response);
+}
+
 // the isolate that will get any folder children then return it when finished
 List<FileSystemEntity> getFolderChildren(String folderPath) {
   return Directory(folderPath).listSync();

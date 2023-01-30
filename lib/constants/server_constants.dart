@@ -8,6 +8,7 @@ const String fileAddedToShareSpaceEndPoint = '/fileAddedToShareSpace';
 const String fileRemovedFromShareSpaceEndPoint = '/fileRemovedFromShareSpace';
 const String getFolderContentEndPointEndPoint = '/getFolderContentEndPoint';
 const String streamAudioEndPoint = '/streamAudio';
+const String streamVideoEndPoint = '/streamVideo';
 
 // clients
 const String addClientEndPoint = '/addClient';

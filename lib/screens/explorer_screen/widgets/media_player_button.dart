@@ -94,8 +94,30 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
         : fileType == FileType.video
             ? ButtonWrapper(
                 onTap: () async {
-                  mpProviderFalse.playVideo(widget.mediaPath);
-                  mpProviderFalse.setBottomVideoControllersHidden(false);
+                  if (widget.network) {
+                    var sharedExpProvider =
+                        Provider.of<ShareItemsExplorerProvider>(
+                      context,
+                      listen: false,
+                    );
+                    String? connLink;
+                    if (sharedExpProvider.viewedUserSessionId != null &&
+                        widget.network) {
+                      var serverProvider =
+                          Provider.of<ServerProvider>(context, listen: false);
+                      connLink = serverProvider
+                          .peerModelWithSessionID(
+                              sharedExpProvider.viewedUserSessionId!)
+                          .connLink;
+                    }
+
+                    mpProviderFalse.playVideo(
+                        '$connLink$streamAudioEndPoint/${widget.mediaPath}',
+                        widget.network);
+                    mpProviderFalse.setBottomVideoControllersHidden(false);
+                  } else {
+                    mpProviderFalse.playVideo(widget.mediaPath, widget.network);
+                  }
                 },
                 width: largeIconSize,
                 height: largeIconSize,

@@ -93,9 +93,11 @@ class ServerProvider extends ChangeNotifier {
   }
 
   //? to restart the server
-  Future restartServer(ShareProvider shareProvider,
-      ShareItemsExplorerProvider shareItemsExplorerProvider) async {
-    await closeServer();
+  Future restartServer(
+    ShareProvider shareProvider,
+    ShareItemsExplorerProvider shareItemsExplorerProvider,
+  ) async {
+    await httpServer?.close();
     await openServer(shareProvider, shareItemsExplorerProvider);
   }
 
