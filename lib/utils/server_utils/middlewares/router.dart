@@ -3,7 +3,7 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
-import 'package:explorer/utils/server_utils/middlewares/server_side.dart';
+import 'package:explorer/utils/server_utils/middlewares/middle_wares.dart';
 import 'package:explorer/utils/server_utils/server_requests_utils.dart';
 
 //? this will add the server routers(end points), and it will refer to middle wares
@@ -72,11 +72,19 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       getFolderContentEndPointEndPoint,
       HttpMethod.GET,
-      (request, response) => getFolderContent(
+      (request, response) => getFolderContentMiddleWare(
         request,
         response,
         serverProvider,
         shareProvider,
+      ),
+    )
+    ..addRouter(
+      streamAudioEndPoint,
+      HttpMethod.GET,
+      (request, response) => streamAudioMiddleWare(
+        request,
+        response,
       ),
     );
   return customRouterSystem;

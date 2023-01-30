@@ -33,6 +33,7 @@ class ChildFileItem extends StatefulWidget {
   final int parentSize;
   final bool isSelected;
   final bool allowSelect;
+  final bool network;
 
   const ChildFileItem({
     super.key,
@@ -42,6 +43,7 @@ class ChildFileItem extends StatefulWidget {
     required this.parentSize,
     required this.isSelected,
     required this.allowSelect,
+    required this.network,
   });
 
   @override
@@ -147,6 +149,7 @@ class _ChildFileItemState extends State<ChildFileItem> {
                         HSpace(),
                         MediaPlayerButton(
                           mediaPath: path,
+                          network: widget.network,
                         ),
                         HSpace(),
                         foProvider.exploreMode == ExploreMode.selection &&

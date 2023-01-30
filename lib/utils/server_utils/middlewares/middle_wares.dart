@@ -12,6 +12,8 @@ import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
 import 'package:explorer/utils/server_utils/server_requests_utils.dart';
 import 'package:flutter/foundation.dart';
+import 'package:mime/mime.dart';
+import 'package:path/path.dart';
 
 void addClientMiddleWare(
   HttpRequest request,
@@ -116,14 +118,14 @@ void fileRemovedMiddleWare(
       removedItems: removedItemsPaths, sessionId: senderSessionID);
 }
 
-Future<void> getFolderContent(
+Future<void> getFolderContentMiddleWare(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
   ShareProvider shareProvider,
 ) async {
   var headers = request.headers;
-  String folderPath = headers[folderPathHeaderKey]!.first;
+  String folderPath = Uri.decodeComponent(headers[folderPathHeaderKey]!.first);
   // i will need the peer session id to know that if it is allowed or not
   String peerSessionID = headers[sessionIDHeaderKey]!.first;
   Directory directory = Directory(folderPath);
@@ -151,6 +153,43 @@ Future<void> getFolderContent(
       ..headers.add('Content-Type', 'application/json; charset=utf-8')
       ..add(encodedData);
   }
+}
+
+Future<void> streamAudioMiddleWare(
+  HttpRequest req,
+  HttpResponse response,
+) async {
+  String audioPath = req.uri.path.split(streamAudioEndPoint)[1];
+  audioPath = Uri.decodeComponent(audioPath);
+
+  // var headers = req.headers;
+//  i will need them to check for authorization
+  // String sessionID = headers.value(sessionIDHeaderKey)![0];
+  // String deviceID = headers.value(deviceIDString)![0];
+
+  File file = File(audioPath);
+  int length = await file.length();
+
+  // this formate 'bytes=0-' means that i want the bytes from the 0 to the end
+  // so the end here means the end of the file
+  // if it was 'bytes=0-1000' this means that i need the bytes from 0 to 1000
+  String range = req.headers.value('range') ?? 'bytes=0-';
+  List<String> parts = range.split('=');
+  List<String> positions = parts[1].split('-');
+  int start = int.parse(positions[0]);
+  int end = positions.length < 2 || int.tryParse(positions[1]) == null
+      ? length
+      : int.parse(positions[1]);
+  String? mime = lookupMimeType(audioPath);
+  // print('Needed bytes from $start to $end');
+
+  response.statusCode = HttpStatus.partialContent;
+  response.headers
+    ..contentType = ContentType.parse(mime ?? 'audio/mpeg')
+    ..contentLength = end - start
+    ..add('Accept-Ranges', 'bytes')
+    ..add('Content-Range', 'bytes $start-$end/$length');
+  file.openRead(start, end).pipe(req.response);
 }
 
 // the isolate that will get any folder children then return it when finished

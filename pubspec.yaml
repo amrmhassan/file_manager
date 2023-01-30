@@ -51,7 +51,6 @@ dependencies:
   video_player: ^2.4.8
   change_app_package_name: ^1.1.0
   shimmer: ^2.0.0
-  audioplayers: ^1.1.1
   volume_controller: ^2.0.6
   qr_code_scanner: ^1.0.1
   dio: ^4.0.6
@@ -59,6 +58,8 @@ dependencies:
   device_info_plus: ^4.0.0
   draggable_scrollbar: ^0.1.0
   connectivity_plus: ^3.0.2
+  mime: ^1.0.4
+  just_audio: ^0.9.31
 
 dev_dependencies:
   flutter_test:

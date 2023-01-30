@@ -3,18 +3,24 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
+import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/server_provider.dart';
+import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MediaPlayerButton extends StatefulWidget {
   final String mediaPath;
+  final bool network;
 
   const MediaPlayerButton({
     Key? key,
     required this.mediaPath,
+    required this.network,
   }) : super(key: key);
 
   @override
@@ -48,8 +54,28 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                 // here i am playing and i want to pause
                 await mpProviderFalse.pausePlaying();
               } else {
+                var sharedExpProvider = Provider.of<ShareItemsExplorerProvider>(
+                  context,
+                  listen: false,
+                );
+                String? connLink;
+                if (sharedExpProvider.viewedUserSessionId != null &&
+                    widget.network) {
+                  var serverProvider =
+                      Provider.of<ServerProvider>(context, listen: false);
+                  connLink = serverProvider
+                      .peerModelWithSessionID(
+                          sharedExpProvider.viewedUserSessionId!)
+                      .connLink;
+                }
+
                 // here i want to start over
-                await mpProviderFalse.setPlayingFile(widget.mediaPath);
+                await mpProviderFalse.setPlayingFile(
+                  widget.network
+                      ? '$connLink$streamAudioEndPoint/${widget.mediaPath}'
+                      : widget.mediaPath,
+                  widget.network,
+                );
               }
             },
             width: largeIconSize,

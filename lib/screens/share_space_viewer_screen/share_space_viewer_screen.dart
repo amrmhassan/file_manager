@@ -97,6 +97,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                   child: ListView.builder(
                     itemCount: shareExpProvider.viewedItems.length,
                     itemBuilder: (context, index) => StorageItem(
+                      network: true,
                       onDirTapped: getFolderContent,
                       sizesExplorer: false,
                       parentSize: 0,

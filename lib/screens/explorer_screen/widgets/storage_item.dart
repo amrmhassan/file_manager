@@ -25,6 +25,7 @@ class StorageItem extends StatefulWidget {
   final bool allowClick;
   final ShareSpaceItemModel? shareSpaceItemModel;
   final Function(String path)? onFileTapped;
+  final bool network;
 
   const StorageItem({
     super.key,
@@ -37,6 +38,7 @@ class StorageItem extends StatefulWidget {
     this.allowShowingFavIcon = false,
     this.shareSpaceItemModel,
     this.onFileTapped,
+    this.network = false,
   });
 
   @override
@@ -128,6 +130,7 @@ class _StorageItemState extends State<StorageItem> {
                     isSelected: isSelected(context),
                     allowSelect: widget.allowSelect,
                     shareSpaceItemModel: widget.shareSpaceItemModel,
+                    network: widget.network,
                   ),
           ),
         ),

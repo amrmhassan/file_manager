@@ -151,7 +151,7 @@ class ClientProvider extends ChangeNotifier {
       '$connLink$getFolderContentEndPointEndPoint',
       options: Options(
         headers: {
-          folderPathHeaderKey: folderPath,
+          folderPathHeaderKey: Uri.encodeComponent(folderPath),
           sessionIDHeaderKey: me.sessionID,
         },
       ),

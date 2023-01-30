@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
+import 'package:explorer/constants/server_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 
@@ -23,10 +24,10 @@ class MediaPlayerProvider extends ChangeNotifier {
 
 //? playing audio file path
   String? playingAudioFilePath;
-  Future<void> setPlayingFile(String path) async {
+  Future<void> setPlayingFile(String path, [bool network = false]) async {
     playingAudioFilePath = path;
     notifyListeners();
-    await _playAudio(path);
+    await _playAudio(path, network);
   }
 
   //? pause playing
@@ -38,28 +39,40 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
 //? to play an audio
-  Future<void> _playAudio(String path) async {
+  Future<void> _playAudio(
+    String path, [
+    bool network = false,
+  ]) async {
+    print(network);
     try {
       if (durationStreamSub != null) {
         durationStreamSub?.cancel();
       }
-      await _audioPlayer.setSourceDeviceFile(path);
-      fullSongDuration = await _audioPlayer.getDuration();
+      if (network) {
+        print(path);
+        fullSongDuration = await _audioPlayer.setUrl(
+          path,
+          // headers: {
+          //   audioPathHeaderKey: mediaPath,
+          // },
+        );
+      } else {
+        fullSongDuration = await _audioPlayer.setFilePath(path);
+      }
       audioPlaying = true;
       notifyListeners();
-      _audioPlayer.onPlayerComplete.listen((event) {
-        audioPlaying = false;
-        fullSongDuration = null;
-        playingAudioFilePath = null;
-        currentDuration = null;
-        notifyListeners();
-      });
-      durationStreamSub = _audioPlayer.onPositionChanged.listen((event) {
-        currentDuration = event;
-        notifyListeners();
-      });
 
-      await _audioPlayer.play(DeviceFileSource(path), position: Duration.zero);
+      durationStreamSub = _audioPlayer.positionStream.listen((event) {
+        currentDuration = event;
+        if (currentDuration?.inSeconds == fullSongDuration?.inSeconds) {
+          audioPlaying = false;
+          fullSongDuration = null;
+          playingAudioFilePath = null;
+          currentDuration = null;
+        }
+        notifyListeners();
+      });
+      await _audioPlayer.play();
     } catch (e) {
       audioPlaying = false;
       fullSongDuration = null;
