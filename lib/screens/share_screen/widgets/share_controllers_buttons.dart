@@ -3,6 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/helpers/responsive.dart';
@@ -26,13 +27,16 @@ class ShareControllersButtons extends StatefulWidget {
 }
 
 class _ShareControllersButtonsState extends State<ShareControllersButtons> {
-  Future openServer() async {
+  Future localOpenServerHandler([bool wifi = true]) async {
     var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
     var serverProvider = Provider.of<ServerProvider>(context, listen: false);
     var shareItemsExplorerProvider =
         Provider.of<ShareItemsExplorerProvider>(context, listen: false);
     await serverProvider.openServer(
-        shareProviderFalse, shareItemsExplorerProvider);
+      shareProviderFalse,
+      shareItemsExplorerProvider,
+      wifi,
+    );
   }
 
   @override
@@ -51,32 +55,39 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
               onTap: () async {
                 // ConnectivityResult connRes =
                 //     await Connectivity().checkConnectivity();
-                await openServer();
-                Navigator.pushNamed(context, QrCodeViewerScreen.routeName);
+                //! allow me [start]
+                // await openServer();
+                // Navigator.pushNamed(context, QrCodeViewerScreen.routeName);
+                //! allow me [end]
                 // if (connRes == ConnectivityResult.wifi) {
-                //   showModalBottomSheet(
-                //     backgroundColor: Colors.transparent,
-                //     context: context,
-                //     builder: (context) => DoubleButtonsModal(
-                //       onOk: () async {
-                //         //! i can't open hotspot yet
-                //         //! so i will suppose that user has already opened it and connected the other device to him
-                //         //? here open the hotspot then show the connection parameters as qr code
-                //         //? wifi ssid:password:ip:port
-                //         showServerInfoQrCode();
-                //       },
-                //       okText: 'HotSpot',
-                //       okColor: kBlueColor,
-                //       onCancel: () {
-                //         //? here just open the server on the currently connected wifi
-                //         showServerInfoQrCode();
-                //       },
-                //       cancelText: 'WiFi',
-                //       title: 'You are connected to WiFi network',
-                //       subTitle:
-                //           'Use connected wifi or open HotSpot for sharing ?',
-                //     ),
-                //   );
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => DoubleButtonsModal(
+                    onOk: () async {
+                      //! i can't open hotspot yet
+                      //! so i will suppose that user has already opened it and connected the other device to him
+                      //? here open the hotspot then show the connection parameters as qr code
+                      //? wifi ssid:password:ip:port
+                      await localOpenServerHandler(false);
+                      Navigator.pushNamed(
+                          context, QrCodeViewerScreen.routeName);
+                    },
+                    okText: 'HotSpot',
+                    okColor: kBlueColor,
+                    onCancel: () async {
+                      //? here just open the server on the currently connected wifi
+                      await localOpenServerHandler(true);
+                      Navigator.pushNamed(
+                          context, QrCodeViewerScreen.routeName);
+                    },
+                    cancelText: 'WiFi',
+                    // title: 'You are connected to WiFi network',
+                    title: 'Choose a network to connect through',
+                    // subTitle:
+                    //     'Use connected wifi or open HotSpot for sharing ?',
+                  ),
+                );
                 // }
               },
               backgroundColor: Colors.white,
