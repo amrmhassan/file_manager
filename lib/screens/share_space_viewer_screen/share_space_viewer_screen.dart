@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
@@ -13,7 +16,9 @@ import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/current_path_viewer.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
+import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -105,9 +110,56 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                       shareSpaceItemModel: shareExpProvider.viewedItems[index],
                       onFileTapped: (path) {
                         showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
                           context: context,
-                          builder: (context) =>
-                              ModalWrapper(child: Text('Hello world')),
+                          builder: (context) => ModalWrapper(
+                            padding: EdgeInsets.symmetric(
+                              vertical: kVPad / 2,
+                            ),
+                            bottomPaddingFactor: 0,
+                            afterLinePaddingFactor: 0,
+                            showTopLine: false,
+                            color: kBackgroundColor,
+                            child: Column(
+                              children: [
+                                ModalButtonElement(
+                                  inactiveColor: Colors.transparent,
+                                  title: 'Download Now',
+                                  onTap: () async {
+                                    Provider.of<ClientProvider>(
+                                      context,
+                                      listen: false,
+                                    ).downloadFile(
+                                      peerModel: peerModel!,
+                                      remoteFilePath: shareExpProvider
+                                          .viewedItems[index].path,
+                                      sessionID: me(context).sessionID,
+                                      deviceID: me(context).deviceID,
+                                    );
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ModalButtonElement(
+                                  showBottomLine: false,
+                                  inactiveColor: Colors.transparent,
+                                  title: 'Download to...',
+                                  onTap: () async {
+                                    // Provider.of<ClientProvider>(
+                                    //   context,
+                                    //   listen: false,
+                                    // ).downloadFile(
+                                    //   peerModel: peerModel!,
+                                    //   savePath: 'sdcard/amh_download',
+                                    //   remoteFilePath:
+                                    //       shareExpProvider.viewedItems[index].path,
+                                    //   sessionID: me(context).sessionID,
+                                    //   deviceID: me(context).deviceID,
+                                    // );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         );
                       },
                       allowSelect: false,

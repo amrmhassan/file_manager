@@ -9,6 +9,7 @@ const String fileRemovedFromShareSpaceEndPoint = '/fileRemovedFromShareSpace';
 const String getFolderContentEndPointEndPoint = '/getFolderContentEndPoint';
 const String streamAudioEndPoint = '/streamAudio';
 const String streamVideoEndPoint = '/streamVideo';
+const String downloadFileEndPoint = '/downloadFile';
 
 // clients
 const String addClientEndPoint = '/addClient';
@@ -23,3 +24,4 @@ const String newPeersHeaderKey = 'newPeersHeaderKey';
 const String folderPathHeaderKey = 'folderPathHeaderKey';
 const String sessionIDHeaderKey = 'sessionIDHeaderKey';
 const String audioPathHeaderKey = 'audioPathHeaderKey';
+const String filePathHeaderKey = 'filePathHeaderKey';

@@ -1,3 +1,5 @@
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
+
 enum FileType {
   image,
   video,
@@ -177,9 +179,14 @@ List<String> richTextExt = [
   'rtf',
 ];
 
+FileType getFileTypeFromPath(String filePath) {
+  String ext = getFileExtension(filePath);
+  return getFileType(ext);
+}
+
 //? this if to get the file type in general and have no relationship with file icon
-FileType getFileType(String extension) {
-  String ext = extension.toLowerCase().replaceAll('.', '');
+FileType getFileType(String fileExt) {
+  String ext = fileExt.toLowerCase().replaceAll('.', '');
 
   if (audioExt.contains(ext)) {
     return FileType.audio;

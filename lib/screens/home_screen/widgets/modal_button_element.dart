@@ -15,6 +15,7 @@ class ModalButtonElement extends StatelessWidget {
   final Color? inactiveColor;
   final double? opacity;
   final bool? checked;
+  final bool showBottomLine;
 
   const ModalButtonElement({
     Key? key,
@@ -24,6 +25,7 @@ class ModalButtonElement extends StatelessWidget {
     this.active = true,
     this.opacity,
     this.checked,
+    this.showBottomLine = true,
   }) : super(key: key);
 
   @override
@@ -54,10 +56,11 @@ class ModalButtonElement extends StatelessWidget {
             ],
           ),
         ),
-        HLine(
-          color: kInactiveColor.withOpacity(.2),
-          thickness: 1,
-        ),
+        if (showBottomLine)
+          HLine(
+            color: kInactiveColor.withOpacity(.2),
+            thickness: 1,
+          ),
       ],
     );
   }

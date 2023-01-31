@@ -28,6 +28,10 @@ class PeerModel {
     connLink = getConnLink(ip, port);
   }
 
+  String getMyLink(String endPoint) {
+    return getPeerConnLink(this, endPoint)!;
+  }
+
   Map<String, String> toJSON() {
     return {
       deviceIDString: deviceID,

@@ -32,3 +32,14 @@ const bool allowDebuggingDrawerElements = true;
 
 //? user prefs constants
 const bool allowRecentItemsFromHiddenFiles = true;
+
+//? downloading folders
+const String mainDownloadFolder = 'AFM Downloads';
+
+const String apkDownloadFolder = 'Apps';
+const String archiveDownloadFolder = 'Archive';
+const String audioDownloadFolder = 'Audio';
+const String docDownloadFolder = 'Documents';
+const String imageDownloadFolder = 'Images';
+const String videoDownloadFolder = 'Video';
+const String otherDownloadFolder = 'Other';

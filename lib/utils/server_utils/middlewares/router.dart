@@ -91,11 +91,17 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       streamAudioEndPoint,
       HttpMethod.GET,
-      (request, response) => streamAudioMiddleWare(
-        request,
-        response,
-      ),
+      streamAudioMiddleWare,
     )
-    ..addRouter(streamVideoEndPoint, HttpMethod.GET, streamVideoMiddleWare);
+    ..addRouter(
+      streamVideoEndPoint,
+      HttpMethod.GET,
+      streamVideoMiddleWare,
+    )
+    ..addRouter(
+      downloadFileEndPoint,
+      HttpMethod.GET,
+      downloadFileMiddleWare,
+    );
   return customRouterSystem;
 }

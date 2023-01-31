@@ -229,6 +229,19 @@ Future<void> streamVideoMiddleWare(
   file.openRead(start, end).pipe(req.response);
 }
 
+Future<void> downloadFileMiddleWare(
+  HttpRequest request,
+  HttpResponse response,
+) async {
+  String filePath =
+      Uri.decodeComponent(request.headers.value(filePathHeaderKey)!);
+  var bytes = File(filePath).readAsBytesSync();
+  response.headers
+    ..contentLength = bytes.length
+    ..contentType = ContentType.binary;
+  response.add(bytes);
+}
+
 // the isolate that will get any folder children then return it when finished
 List<FileSystemEntity> getFolderChildren(String folderPath) {
   return Directory(folderPath).listSync();

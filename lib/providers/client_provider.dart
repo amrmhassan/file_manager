@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
@@ -8,14 +9,35 @@ import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart' as path_operations;
 
 //! make a function to send utf8 requests and handles them on the server side by reading the utf8
 //! and add the header
 //! actually i just needed to handle the server side by decoding the utf8 request
 class ClientProvider extends ChangeNotifier {
+  bool downloading = false;
+  double? downloadSpeed;
+  double? downloadedPercent;
+
+  void setDownloading(bool i) {
+    downloading = i;
+    notifyListeners();
+  }
+
+  void setDownloadSpeed(double s) {
+    downloadSpeed = s;
+    notifyListeners();
+  }
+
+  void setDownloadPercent(double p) {
+    downloadedPercent = p;
+    notifyListeners();
+  }
+
   //? to send add client request
   Future addClient(
     String connLink,
@@ -160,6 +182,47 @@ class ClientProvider extends ChangeNotifier {
     shareItemsExplorerProvider.updatePath(folderPath, items);
 
     shareItemsExplorerProvider.setLoadingItems(false, false);
+  }
+
+  Future<void> downloadFile({
+    required PeerModel peerModel,
+    required String remoteFilePath,
+    required String sessionID,
+    required String deviceID,
+    String? customDownloadPath,
+  }) async {
+    DateTime before = DateTime.now();
+    downloading = true;
+    notifyListeners();
+    String fileName = path_operations.basename(remoteFilePath);
+    FileType fileType = getFileTypeFromPath(remoteFilePath);
+    String downloadFolderPath = getSaveFilePath(fileType, fileName);
+
+    Dio dio = Dio();
+    await dio.download(
+      peerModel.getMyLink(downloadFileEndPoint),
+      downloadFolderPath,
+      deleteOnError: false,
+      options: Options(
+        headers: {
+          filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
+          sessionIDHeaderKey: sessionID,
+          deviceIDString: deviceID,
+        },
+      ),
+      onReceiveProgress: (count, total) {
+        DateTime after = DateTime.now();
+        int diff = after.difference(before).inMilliseconds;
+        double speed = ((total / 1024 / 1024) / (diff / 1000));
+        downloadSpeed = speed;
+        downloadedPercent = count / total;
+        notifyListeners();
+        if (count == total) {
+          downloading = false;
+          notifyListeners();
+        }
+      },
+    );
   }
 
 //? to broadcast data to all servers except me
