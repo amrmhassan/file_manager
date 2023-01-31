@@ -9,8 +9,8 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/utils/server_utils/encoding_utils.dart';
 import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
-import 'package:explorer/utils/server_utils/server_requests_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
 
@@ -19,11 +19,11 @@ void addClientMiddleWare(
   HttpResponse response,
   ServerProvider serverProvider,
 ) async {
-  var headers = request.headers;
-  String name = headers.value(nameString) as String;
-  String deviceID = headers.value(deviceIDString) as String;
-  String ip = headers.value(ipString) as String;
-  int port = int.parse(headers.value(portString) as String);
+  Map body = await decodeRequest(request);
+  String name = body[nameString] as String;
+  String deviceID = body[deviceIDString] as String;
+  String ip = body[ipString] as String;
+  int port = body[portString];
   PeerModel peerModel = serverProvider.addPeer(deviceID, name, ip, port);
   response
     ..headers.contentType = ContentType.json
@@ -49,9 +49,10 @@ void getShareSpaceMiddleWare(
   String jsonResponse = json.encode(sharedItemsMap);
   response
     ..headers.contentType = ContentType.json
-    ..write(jsonResponse);
+    ..add(encodeRequest(jsonResponse));
 }
 
+//? this is from the server feedback to all peers after a client is added by one of the devices in the group
 void clientAddedMiddleWare(
   HttpRequest request,
   HttpResponse response,
@@ -70,8 +71,9 @@ void clientLeftMiddleWare(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
-) {
-  String sessionID = request.headers.value(sessionIDString)!;
+) async {
+  String sessionID = (await decodeRequest(request))[sessionIDString];
+
   serverProvider.peerLeft(sessionID);
 }
 
@@ -85,8 +87,7 @@ void fileAddedMiddleWare(
   var headers = request.headers;
   var senderSessionID = (headers[ownerSessionIDString])!.first;
 
-  String bodyString = await decodeRequest(request);
-  List<dynamic> bodyJson = json.decode(bodyString);
+  List<dynamic> bodyJson = await decodeRequest(request);
   List<ShareSpaceItemModel> addedItemsModels = bodyJson.map((e) {
     ShareSpaceItemModel s = ShareSpaceItemModel.fromJSON(e);
     s.ownerSessionID = senderSessionID;
@@ -107,14 +108,15 @@ void fileRemovedMiddleWare(
   ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) async {
   //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
-  String bodyString = await decodeRequest(request);
-  List<dynamic> bodyJson = json.decode(bodyString);
+  List<dynamic> bodyJson = await decodeRequest(request);
   List<String> removedItemsPaths = bodyJson.map((e) => e as String).toList();
   var headers = request.headers;
   var senderSessionID = (headers[ownerSessionIDString])!.first;
 
   shareItemsExplorerProvider.removeFromPeerShareSpace(
-      removedItems: removedItemsPaths, sessionId: senderSessionID);
+    removedItems: removedItemsPaths,
+    sessionId: senderSessionID,
+  );
 }
 
 Future<void> getFolderContentMiddleWare(
@@ -146,7 +148,7 @@ Future<void> getFolderContentMiddleWare(
         size: fileStat.size,
       ).toJSON();
     }).toList();
-    var encodedData = utf8.encode(json.encode(sharedItems));
+    var encodedData = encodeRequest(json.encode(sharedItems));
 
     response
       ..headers.add('Content-Type', 'application/json; charset=utf-8')

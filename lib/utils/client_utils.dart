@@ -28,16 +28,14 @@ Future addClient(
   String name = 'Client Name';
   String myIp = serverProvider.myIp!;
   int myPort = serverProvider.myPort;
-  await Dio().get(
+  await Dio().post(
     '$connLink$addClientEndPoint',
-    options: Options(
-      headers: {
-        nameString: name,
-        deviceIDString: deviceID,
-        portString: myPort,
-        ipString: myIp,
-      },
-    ),
+    data: {
+      nameString: name,
+      deviceIDString: deviceID,
+      portString: myPort,
+      ipString: myIp,
+    },
   );
 }
 
@@ -49,13 +47,11 @@ Future unsubscribeClient(
   PeerModel me = serverProvider.me(shareProvider);
   for (var peer in serverProvider.peers) {
     if (peer.sessionID == me.sessionID) continue;
-    await Dio().get(
+    await Dio().post(
       '${getConnLink(peer.ip, peer.port)}$clientLeftEndPoint',
-      options: Options(
-        headers: {
-          sessionIDString: me.sessionID,
-        },
-      ),
+      data: {
+        sessionIDString: me.sessionID,
+      },
     );
   }
 }
@@ -70,8 +66,8 @@ Future<void> getPeerShareSpace(
 ) async {
   shareItemsExplorerProvider.setLoadingItems(true);
   PeerModel peerModel = serverProvider.peerModelWithSessionID(sessionID);
-  String connLink = getConnLink(peerModel.ip, peerModel.port);
-  var res = await Dio().get('$connLink$getShareSpaceEndPoint');
+  String connLink = peerModel.getMyLink(getShareSpaceEndPoint);
+  var res = await Dio().get(connLink);
   var data = res.data;
   List<ShareSpaceItemModel> items =
       (data as List).map((e) => ShareSpaceItemModel.fromJSON(e)).toList();

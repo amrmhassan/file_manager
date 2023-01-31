@@ -10,7 +10,11 @@ class CustomRouterSystem {
   void addRouter(
     String path,
     HttpMethod method,
-    Function(HttpRequest request, HttpResponse response) callback,
+    Function(
+      HttpRequest request,
+      HttpResponse response,
+    )
+        callback,
   ) {
     if (routers
         .any((element) => element.path == path && element.method == method)) {

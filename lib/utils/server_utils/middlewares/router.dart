@@ -25,7 +25,7 @@ CustomRouterSystem addServerRouters(
   customRouterSystem
     ..addRouter(
       addClientEndPoint,
-      HttpMethod.GET,
+      HttpMethod.POST,
       (request, response) => addClientMiddleWare(
         request,
         response,
@@ -53,7 +53,7 @@ CustomRouterSystem addServerRouters(
     )
     ..addRouter(
       clientLeftEndPoint,
-      HttpMethod.GET,
+      HttpMethod.POST,
       (request, response) => clientLeftMiddleWare(
         request,
         response,

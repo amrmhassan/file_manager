@@ -1,9 +1,5 @@
 // ignore_for_file: constant_identifier_names, use_build_context_synchronously
 
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-
 //? used
 enum HttpMethod {
   GET,
@@ -23,14 +19,4 @@ HttpMethod stringToHttpMethod(String m) {
   } else {
     return HttpMethod.UNKNOWN;
   }
-}
-
-String jsonify(Map<String, dynamic> obj) {
-  return json.encode(obj);
-}
-
-Future<String> decodeRequest(HttpRequest request) async {
-  Uint8List bodyBinary = await request.single;
-  String bodyString = utf8.decode(bodyBinary);
-  return bodyString;
 }
