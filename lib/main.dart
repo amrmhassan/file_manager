@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/providers/client_provider.dart';
+import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => ServerProvider()),
         ChangeNotifierProvider(create: (ctx) => ClientProvider()),
         ChangeNotifierProvider(create: (ctx) => ShareItemsExplorerProvider()),
+        ChangeNotifierProvider(create: (ctx) => DownloadProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

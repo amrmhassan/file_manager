@@ -1,16 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/client_provider.dart';
+import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -126,7 +125,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                                   inactiveColor: Colors.transparent,
                                   title: 'Download Now',
                                   onTap: () async {
-                                    Provider.of<ClientProvider>(
+                                    Provider.of<DownloadProvider>(
                                       context,
                                       listen: false,
                                     ).downloadFile(
