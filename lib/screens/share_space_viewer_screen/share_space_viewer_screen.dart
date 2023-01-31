@@ -3,6 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
@@ -102,7 +103,13 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                       sizesExplorer: false,
                       parentSize: 0,
                       shareSpaceItemModel: shareExpProvider.viewedItems[index],
-                      onFileTapped: (path) {},
+                      onFileTapped: (path) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) =>
+                              ModalWrapper(child: Text('Hello world')),
+                        );
+                      },
                       allowSelect: false,
                     ),
                   ),
