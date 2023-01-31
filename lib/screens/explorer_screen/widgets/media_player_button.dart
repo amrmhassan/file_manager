@@ -6,7 +6,6 @@ import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';

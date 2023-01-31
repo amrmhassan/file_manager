@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:explorer/constants/server_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:video_player/video_player.dart';
@@ -54,12 +53,8 @@ class MediaPlayerProvider extends ChangeNotifier {
         durationStreamSub?.cancel();
       }
       if (network) {
-        print(path);
         fullSongDuration = await _audioPlayer.setUrl(
           path,
-          // headers: {
-          //   audioPathHeaderKey: mediaPath,
-          // },
         );
       } else {
         fullSongDuration = await _audioPlayer.setFilePath(path);

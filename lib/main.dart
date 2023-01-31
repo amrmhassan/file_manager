@@ -55,8 +55,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)?.settings.arguments;
-    print(data);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => ChildrenItemsProvider()),

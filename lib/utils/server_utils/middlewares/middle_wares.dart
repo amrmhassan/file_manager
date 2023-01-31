@@ -13,7 +13,6 @@ import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
 import 'package:explorer/utils/server_utils/server_requests_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
-import 'package:path/path.dart';
 
 void addClientMiddleWare(
   HttpRequest request,
@@ -127,7 +126,7 @@ Future<void> getFolderContentMiddleWare(
   var headers = request.headers;
   String folderPath = Uri.decodeComponent(headers[folderPathHeaderKey]!.first);
   // i will need the peer session id to know that if it is allowed or not
-  String peerSessionID = headers[sessionIDHeaderKey]!.first;
+  // String peerSessionID = headers[sessionIDHeaderKey]!.first;
   Directory directory = Directory(folderPath);
   if (directory.existsSync()) {
     PeerModel me = serverProvider.me(shareProvider);

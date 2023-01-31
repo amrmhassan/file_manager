@@ -102,9 +102,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                       sizesExplorer: false,
                       parentSize: 0,
                       shareSpaceItemModel: shareExpProvider.viewedItems[index],
-                      onFileTapped: (path) {
-                        print(path);
-                      },
+                      onFileTapped: (path) {},
                       allowSelect: false,
                     ),
                   ),

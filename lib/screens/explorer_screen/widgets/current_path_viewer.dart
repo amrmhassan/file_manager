@@ -3,7 +3,6 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/global/widgets/custom_volume_controllers.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
