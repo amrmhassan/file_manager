@@ -2,7 +2,7 @@
 
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/providers/client_provider.dart';
+import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
@@ -60,8 +60,7 @@ class _AddToShareSpaceButtonState extends State<AddToShareSpaceButton> {
 
           //? broad cast files removal from share space
           //? i removed await to prevent the user waiting for the other device to respond
-          Provider.of<ClientProvider>(context, listen: false)
-              .broadCastFileRemovalFromShareSpace(
+          client_utils.broadCastFileRemovalFromShareSpace(
             serverProvider: serverProviderFalse,
             shareProvider: shareProviderFalse,
             paths: foProviderFalse.selectedItems.map((e) => e.path).toList(),
@@ -77,8 +76,7 @@ class _AddToShareSpaceButtonState extends State<AddToShareSpaceButton> {
 
           //? broad cast files addition from share space
           //? i removed await to prevent the user waiting for the other device to respond
-          Provider.of<ClientProvider>(context, listen: false)
-              .broadCastFileAddedToShareSpace(
+          client_utils.broadCastFileAddedToShareSpace(
             serverProvider: serverProviderFalse,
             shareProvider: shareProviderFalse,
             addedItems: addedItems,

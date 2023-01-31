@@ -1,9 +1,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/providers/client_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DownloadingOverLay extends StatelessWidget {
   const DownloadingOverLay({
@@ -12,7 +10,6 @@ class DownloadingOverLay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var clientProvider = Provider.of<ClientProvider>(context);
     return Container(
       alignment: Alignment.center,
       width: mediumIconSize / 1.4,

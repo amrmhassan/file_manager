@@ -7,7 +7,7 @@ import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/helpers/responsive.dart';
-import 'package:explorer/providers/client_provider.dart';
+import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -125,12 +125,8 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                       Provider.of<ShareItemsExplorerProvider>(context,
                           listen: false);
 
-                  Provider.of<ClientProvider>(context, listen: false).addClient(
-                      qrCode,
-                      shareProvider,
-                      serverProvider,
-                      shareItemsExplorerProvider,
-                      context);
+                  client_utils.addClient(qrCode, shareProvider, serverProvider,
+                      shareItemsExplorerProvider, context);
                 }
               },
               backgroundColor: kBlueColor,

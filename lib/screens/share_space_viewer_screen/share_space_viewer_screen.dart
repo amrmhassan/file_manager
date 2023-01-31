@@ -8,7 +8,7 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
-import 'package:explorer/providers/client_provider.dart';
+import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
@@ -43,7 +43,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
     var shareItemsExplorerProvider =
         Provider.of<ShareItemsExplorerProvider>(context, listen: false);
 
-    await Provider.of<ClientProvider>(context, listen: false).getPeerShareSpace(
+    client_utils.getPeerShareSpace(
       peerModel!.sessionID,
       serverProviderFalse,
       shareProviderFalse,
@@ -94,7 +94,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                   arguments: peerModel,
                 );
               },
-              onClickingSubPath: getFolderContent,
+              onClickingSubPath: localGetFolderContent,
             ),
           shareExpProvider.loadingItems
               ? Expanded(child: Center(child: CircularProgressIndicator()))
@@ -103,7 +103,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                     itemCount: shareExpProvider.viewedItems.length,
                     itemBuilder: (context, index) => StorageItem(
                       network: true,
-                      onDirTapped: getFolderContent,
+                      onDirTapped: localGetFolderContent,
                       sizesExplorer: false,
                       parentSize: 0,
                       shareSpaceItemModel: shareExpProvider.viewedItems[index],
@@ -171,7 +171,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
     );
   }
 
-  void getFolderContent(String path) async {
+  void localGetFolderContent(String path) async {
     var shareExpProvider =
         Provider.of<ShareItemsExplorerProvider>(context, listen: false);
 
@@ -180,7 +180,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
     var shareProvider = Provider.of<ShareProvider>(context, listen: false);
     var shareItemsExplorerProvider =
         Provider.of<ShareItemsExplorerProvider>(context, listen: false);
-    Provider.of<ClientProvider>(context, listen: false).getFolderContent(
+    client_utils.getFolderContent(
       serverProvider: serverProvider,
       folderPath: path,
       shareProvider: shareProvider,

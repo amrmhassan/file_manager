@@ -2,7 +2,6 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/screens/share_screen/widgets/downloading_overlay.dart';
 import 'package:explorer/screens/share_screen/widgets/share_screen_tab_button.dart';
 import 'package:flutter/material.dart';

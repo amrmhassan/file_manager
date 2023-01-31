@@ -5,7 +5,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:explorer/providers/client_provider.dart';
+import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -23,8 +23,7 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
     var serverProvider = Provider.of<ServerProvider>(context);
 
     var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
-    var clientProviderFalse =
-        Provider.of<ClientProvider>(context, listen: false);
+
     var serverProviderFalse =
         Provider.of<ServerProvider>(context, listen: false);
     return CustomAppBar(
@@ -89,7 +88,7 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
                     // );
                     //! this is just temporary
                     serverProviderFalse.closeServer();
-                    clientProviderFalse.unsubscribeClient(
+                    client_utils.unsubscribeClient(
                       serverProviderFalse,
                       shareProviderFalse,
                     );
