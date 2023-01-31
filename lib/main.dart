@@ -24,6 +24,7 @@ import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.d
 import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
+import 'package:explorer/screens/quick_send_screen/quick_send_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/selected_items_screen/selected_items_screen.dart';
@@ -54,6 +55,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)?.settings.arguments;
+    print(data);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => ChildrenItemsProvider()),
@@ -89,6 +92,9 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
         routes: {
+          WidgetsBinding.instance.window.defaultRouteName: (context) {
+            return QuickSendScreen();
+          },
           HomeScreen.routeName: (context) => HomeScreen(),
           TestScreen.routeName: (context) => TestScreen(),
           IsolateTestingScreen.routeName: (context) => IsolateTestingScreen(),
