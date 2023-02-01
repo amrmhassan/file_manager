@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
 import 'package:explorer/screens/share_screen/widgets/downloading_overlay.dart';
 import 'package:explorer/screens/share_screen/widgets/share_screen_tab_button.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,12 @@ class ShareScreenNavBar extends StatelessWidget {
               ShareScreenTabButton(
                 title: 'Recent',
                 iconName: 'clock',
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    DownloadManagerScreen.routeName,
+                  );
+                },
               ),
               DownloadingOverLay(),
             ],

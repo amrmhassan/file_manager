@@ -19,6 +19,17 @@ class DownloadProvider extends ChangeNotifier {
   double? downloadSpeed;
   double? downloadedPercent;
 
+  List<DownloadTaskModel> get activeTasks =>
+      [...downloadingTasks, ...pendingTasks];
+
+  List<DownloadTaskModel> get downloadingTasks => tasks
+      .where((element) => element.taskStatus == TaskStatus.downloading)
+      .toList();
+
+  List<DownloadTaskModel> get pendingTasks => tasks
+      .where((element) => element.taskStatus == TaskStatus.pending)
+      .toList();
+
   void setDownloading(bool i) {
     downloading = i;
     notifyListeners();
@@ -46,6 +57,7 @@ class DownloadProvider extends ChangeNotifier {
       );
 
 // when adding a new download task i want to check if there is any task downloading now or not
+// this will be called when the user wants to download a file from the other device storage
   void addDownloadTask({
     required String remoteFilePath,
     required int? fileSize,
@@ -73,6 +85,7 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
+// after finishing a task from downloading this will check for the next tasks in the queue to start downloading
   void _downloadNextTask({
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
@@ -88,6 +101,7 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
+// this will mark a task with a flag(downloading, finished, etc..)
   void _markDownloadTask(
     String downloadTaskID,
     TaskStatus taskStatus,
@@ -107,62 +121,72 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
+// this will start downloading a task immediately
   Future<void> _startDownloadTask({
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
     required DownloadTaskModel downloadTaskModel,
     // String? customDownloadPath,
   }) async {
-    PeerModel me = serverProvider.me(shareProvider);
-    PeerModel remotePeer =
-        serverProvider.peerModelWithDeviceID(downloadTaskModel.peerDeviceID);
-    DateTime before = DateTime.now();
-    downloading = true;
-    notifyListeners();
-    String fileName =
-        path_operations.basename(downloadTaskModel.remoteFilePath);
-    FileType fileType = getFileTypeFromPath(downloadTaskModel.remoteFilePath);
-    String downloadFolderPath = getSaveFilePath(fileType, fileName);
+    try {
+      PeerModel me = serverProvider.me(shareProvider);
+      PeerModel remotePeer =
+          serverProvider.peerModelWithDeviceID(downloadTaskModel.peerDeviceID);
+      DateTime before = DateTime.now();
+      downloading = true;
+      notifyListeners();
+      String fileName =
+          path_operations.basename(downloadTaskModel.remoteFilePath);
+      FileType fileType = getFileTypeFromPath(downloadTaskModel.remoteFilePath);
+      String downloadFolderPath = getSaveFilePath(fileType, fileName);
 
-    _markDownloadTask(
-      downloadTaskModel.id,
-      TaskStatus.downloading,
-      serverProvider,
-      shareProvider,
-    );
-    Dio dio = Dio();
-    await dio.download(
-      remotePeer.getMyLink(downloadFileEndPoint),
-      downloadFolderPath,
-      deleteOnError: false,
-      options: Options(
-        headers: {
-          filePathHeaderKey:
-              Uri.encodeComponent(downloadTaskModel.remoteFilePath),
-          sessionIDHeaderKey: me.sessionID,
-          deviceIDString: me.deviceID,
-        },
-      ),
-      onReceiveProgress: (count, total) {
-        DateTime after = DateTime.now();
-        int diff = after.difference(before).inMilliseconds;
-        double speed = ((total / 1024 / 1024) / (diff / 1000));
-        downloadSpeed = speed;
-        downloadedPercent = count / total;
-        notifyListeners();
-        if (count == total) {
-          downloading = false;
+      _markDownloadTask(
+        downloadTaskModel.id,
+        TaskStatus.downloading,
+        serverProvider,
+        shareProvider,
+      );
+      Dio dio = Dio();
+      await dio.download(
+        remotePeer.getMyLink(downloadFileEndPoint),
+        downloadFolderPath,
+        deleteOnError: false,
+        options: Options(
+          headers: {
+            filePathHeaderKey:
+                Uri.encodeComponent(downloadTaskModel.remoteFilePath),
+            sessionIDHeaderKey: me.sessionID,
+            deviceIDString: me.deviceID,
+          },
+        ),
+        onReceiveProgress: (count, total) {
+          DateTime after = DateTime.now();
+          int diff = after.difference(before).inMilliseconds;
+          double speed = ((total / 1024 / 1024) / (diff / 1000));
+          downloadSpeed = speed;
+          downloadedPercent = count / total;
           notifyListeners();
+          if (count == total) {
+            downloading = false;
+            notifyListeners();
 
-          // mark the download task as done
-          _markDownloadTask(
-            downloadTaskModel.id,
-            TaskStatus.finished,
-            serverProvider,
-            shareProvider,
-          );
-        }
-      },
-    );
+            // mark the download task as done
+            _markDownloadTask(
+              downloadTaskModel.id,
+              TaskStatus.finished,
+              serverProvider,
+              shareProvider,
+            );
+          }
+        },
+      );
+    } catch (e) {
+      _markDownloadTask(
+        downloadTaskModel.id,
+        TaskStatus.failed,
+        serverProvider,
+        shareProvider,
+      );
+    }
   }
 }

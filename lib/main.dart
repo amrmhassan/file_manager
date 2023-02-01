@@ -16,6 +16,7 @@ import 'package:explorer/providers/theme_provider.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
+import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
@@ -24,7 +25,6 @@ import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.d
 import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
-import 'package:explorer/screens/quick_send_screen/quick_send_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/selected_items_screen/selected_items_screen.dart';
@@ -88,11 +88,11 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
+        initialRoute: testing ? TestScreen.routeName : DownloadManagerScreen.routeName,
         routes: {
-          WidgetsBinding.instance.window.defaultRouteName: (context) {
-            return QuickSendScreen();
-          },
+          // WidgetsBinding.instance.window.defaultRouteName: (context) {
+          //   return QuickSendScreen();
+          // },
           HomeScreen.routeName: (context) => HomeScreen(),
           TestScreen.routeName: (context) => TestScreen(),
           IsolateTestingScreen.routeName: (context) => IsolateTestingScreen(),
@@ -114,6 +114,7 @@ class MyApp extends StatelessWidget {
           ScanQRCodeScreen.routeName: (context) => ScanQRCodeScreen(),
           ShareSpaceViewerScreen.routeName: (context) =>
               ShareSpaceViewerScreen(),
+          DownloadManagerScreen.routeName: (context) => DownloadManagerScreen(),
         },
       ),
     );
