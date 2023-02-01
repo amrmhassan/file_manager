@@ -6,6 +6,8 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/providers/server_provider.dart';
+import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
@@ -47,13 +49,13 @@ class DownloadProvider extends ChangeNotifier {
   void addDownloadTask({
     required String remoteFilePath,
     required int? fileSize,
-    required PeerModel remotePeerModel,
-    required String mySessionID,
-    required String myDeviceID,
+    required String remoteDeviceID,
+    required ServerProvider serverProvider,
+    required ShareProvider shareProvider,
   }) {
     DownloadTaskModel downloadTaskModel = DownloadTaskModel(
       id: Uuid().v4(),
-      peerDeviceID: remotePeerModel.deviceID,
+      peerDeviceID: remoteDeviceID,
       remoteFilePath: remoteFilePath,
       addedAt: DateTime.now(),
       size: fileSize,
@@ -63,39 +65,82 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
     //? this is to start downloading the task if there is no tasks downloading
     if (tasksFree) {
-      _startDownloadFile(
-        remotePeerModel: remotePeerModel,
-        remoteFilePath: remoteFilePath,
-        mySessionID: mySessionID,
-        myDeviceID: myDeviceID,
+      _startDownloadTask(
+        shareProvider: shareProvider,
+        serverProvider: serverProvider,
+        downloadTaskModel: downloadTaskModel,
       );
     }
   }
 
-  Future<void> _startDownloadFile({
-    required PeerModel remotePeerModel,
-    required String remoteFilePath,
-    required String mySessionID,
-    required String myDeviceID,
-    String? customDownloadPath,
+  void _downloadNextTask({
+    required ServerProvider serverProvider,
+    required ShareProvider shareProvider,
+  }) {
+    if (tasks.any((element) => element.taskStatus == TaskStatus.pending)) {
+      _startDownloadTask(
+        serverProvider: serverProvider,
+        shareProvider: shareProvider,
+        downloadTaskModel: tasks.firstWhere(
+          (element) => element.taskStatus == TaskStatus.pending,
+        ),
+      );
+    }
+  }
+
+  void _markDownloadTask(
+    String downloadTaskID,
+    TaskStatus taskStatus,
+    ServerProvider serverProvider,
+    ShareProvider shareProvider,
+  ) {
+    int index = tasks.indexWhere((element) => element.id == downloadTaskID);
+    DownloadTaskModel newTask = tasks[index];
+    newTask.taskStatus = taskStatus;
+    tasks[index] = newTask;
+    notifyListeners();
+    if (taskStatus == TaskStatus.finished) {
+      _downloadNextTask(
+        serverProvider: serverProvider,
+        shareProvider: shareProvider,
+      );
+    }
+  }
+
+  Future<void> _startDownloadTask({
+    required ServerProvider serverProvider,
+    required ShareProvider shareProvider,
+    required DownloadTaskModel downloadTaskModel,
+    // String? customDownloadPath,
   }) async {
+    PeerModel me = serverProvider.me(shareProvider);
+    PeerModel remotePeer =
+        serverProvider.peerModelWithDeviceID(downloadTaskModel.peerDeviceID);
     DateTime before = DateTime.now();
     downloading = true;
     notifyListeners();
-    String fileName = path_operations.basename(remoteFilePath);
-    FileType fileType = getFileTypeFromPath(remoteFilePath);
+    String fileName =
+        path_operations.basename(downloadTaskModel.remoteFilePath);
+    FileType fileType = getFileTypeFromPath(downloadTaskModel.remoteFilePath);
     String downloadFolderPath = getSaveFilePath(fileType, fileName);
 
+    _markDownloadTask(
+      downloadTaskModel.id,
+      TaskStatus.downloading,
+      serverProvider,
+      shareProvider,
+    );
     Dio dio = Dio();
     await dio.download(
-      remotePeerModel.getMyLink(downloadFileEndPoint),
+      remotePeer.getMyLink(downloadFileEndPoint),
       downloadFolderPath,
       deleteOnError: false,
       options: Options(
         headers: {
-          filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
-          sessionIDHeaderKey: mySessionID,
-          deviceIDString: myDeviceID,
+          filePathHeaderKey:
+              Uri.encodeComponent(downloadTaskModel.remoteFilePath),
+          sessionIDHeaderKey: me.sessionID,
+          deviceIDString: me.deviceID,
         },
       ),
       onReceiveProgress: (count, total) {
@@ -108,6 +153,14 @@ class DownloadProvider extends ChangeNotifier {
         if (count == total) {
           downloading = false;
           notifyListeners();
+
+          // mark the download task as done
+          _markDownloadTask(
+            downloadTaskModel.id,
+            TaskStatus.finished,
+            serverProvider,
+            shareProvider,
+          );
         }
       },
     );

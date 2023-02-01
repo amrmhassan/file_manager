@@ -24,11 +24,11 @@ class ServerProvider extends ChangeNotifier {
   HttpServer? httpServer;
   List<PeerModel> peers = [];
 
-//? all peers but me
+  //? all peers but me
   Iterable<PeerModel> get allPeersButMe =>
       peers.where((element) => element.ip != myIp);
 
-//? to return my info
+  //? to return my info
   PeerModel me(ShareProvider shareProvider) {
     return peers
         .firstWhere((element) => element.deviceID == shareProvider.myDeviceId);
@@ -39,7 +39,11 @@ class ServerProvider extends ChangeNotifier {
     return peers.firstWhere((element) => element.sessionID == sessionID);
   }
 
-//? update all peers
+  PeerModel peerModelWithDeviceID(String deviceID) {
+    return peers.firstWhere((element) => element.deviceID == deviceID);
+  }
+
+  //? update all peers
   void updateAllPeers(List<PeerModel> newPeersList) {
     peers = [...newPeersList];
     notifyListeners();
@@ -60,7 +64,7 @@ class ServerProvider extends ChangeNotifier {
     CustomRouterSystem customRouterSystem =
         addServerRouters(this, shareProvider, shareItemsExplorerProvider);
     httpServer!.listen(customRouterSystem.handleListen);
-//? when above code is success then set the needed stuff like port, other things
+    //? when above code is success then set the needed stuff like port, other things
     myPort = httpServer!.port;
     String? myWifiIp = await getMyIpAddress(wifi);
     if (myWifiIp == null) {
@@ -82,7 +86,7 @@ class ServerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//? to close the server
+  //? to close the server
   Future closeServer() async {
     await httpServer!.close();
     httpServer = null;
@@ -132,7 +136,7 @@ class ServerProvider extends ChangeNotifier {
     return peerModel;
   }
 
-//? this will be used when a new device is connected
+  //? this will be used when a new device is connected
   void broadcastToAllClients() {
     //? here i will send a normal http request to all clients from the peers except me of course
     //? this should run only from the server(hotspot) device and it will be only one such a device in the network

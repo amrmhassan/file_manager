@@ -7,7 +7,6 @@ import 'package:explorer/models/peer_model.dart';
 
 enum TaskStatus {
   pending,
-  initializing,
   downloading,
   finished,
   failed,
@@ -30,7 +29,7 @@ class DownloadTaskModel {
     required this.remoteFilePath,
     required this.addedAt,
     required this.size,
-    required this.taskStatus,
+    this.taskStatus = TaskStatus.pending,
     this.peerModel,
     this.fulfilled = false,
   });

@@ -17,6 +17,7 @@ import 'package:explorer/screens/explorer_screen/widgets/current_path_viewer.dar
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -132,11 +133,11 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                                     ).addDownloadTask(
                                       fileSize: shareExpProvider
                                           .viewedItems[index].size,
-                                      remotePeerModel: remotePeerModel!,
+                                      remoteDeviceID: remotePeerModel!.deviceID,
                                       remoteFilePath: shareExpProvider
                                           .viewedItems[index].path,
-                                      mySessionID: me(context).sessionID,
-                                      myDeviceID: me(context).deviceID,
+                                      serverProvider: serverPF(context),
+                                      shareProvider: sharePF(context),
                                     );
                                     Navigator.pop(context);
                                   },
