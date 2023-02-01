@@ -140,7 +140,7 @@ class DownloadProvider extends ChangeNotifier {
       PeerModel me = serverProvider.me(shareProvider);
       PeerModel remotePeer =
           serverProvider.peerModelWithDeviceID(downloadTaskModel.peerDeviceID);
-      DateTime before = DateTime.now();
+
       downloading = true;
       notifyListeners();
       String fileName =
@@ -155,6 +155,8 @@ class DownloadProvider extends ChangeNotifier {
         shareProvider,
       );
       Dio dio = Dio();
+      int startTime = DateTime.now().millisecondsSinceEpoch;
+
       await dio.download(
         remotePeer.getMyLink(downloadFileEndPoint),
         downloadFolderPath,
@@ -168,10 +170,9 @@ class DownloadProvider extends ChangeNotifier {
           },
         ),
         onReceiveProgress: (count, total) {
-          DateTime after = DateTime.now();
-          int diff = after.difference(before).inMilliseconds;
-          double speed = ((total / 1024 / 1024) / (diff / 1000));
-          downloadSpeed = speed;
+          downloadSpeed =
+              ((DateTime.now().millisecondsSinceEpoch - startTime) / 1000) /
+                  (count / 1021 / 1024);
           updateTaskPercent(downloadTaskModel.id, count);
 
           notifyListeners();
