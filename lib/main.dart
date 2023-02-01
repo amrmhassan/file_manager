@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        initialRoute: testing ? TestScreen.routeName : DownloadManagerScreen.routeName,
+        initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
         routes: {
           // WidgetsBinding.instance.window.defaultRouteName: (context) {
           //   return QuickSendScreen();

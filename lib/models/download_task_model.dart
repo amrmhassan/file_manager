@@ -18,10 +18,10 @@ class DownloadTaskModel {
   final PeerModel? peerModel;
   final String remoteFilePath;
   final DateTime addedAt;
-  final bool fulfilled;
   TaskStatus taskStatus;
   // downloaded file size in bytes
   final int? size;
+  int? count;
 
   DownloadTaskModel({
     required this.id,
@@ -29,9 +29,9 @@ class DownloadTaskModel {
     required this.remoteFilePath,
     required this.addedAt,
     required this.size,
+    this.count = 0,
     this.taskStatus = TaskStatus.pending,
     this.peerModel,
-    this.fulfilled = false,
   });
 
   //! to json

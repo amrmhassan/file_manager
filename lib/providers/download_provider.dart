@@ -17,7 +17,6 @@ class DownloadProvider extends ChangeNotifier {
   List<DownloadTaskModel> tasks = [];
   bool downloading = false;
   double? downloadSpeed;
-  double? downloadedPercent;
 
   List<DownloadTaskModel> get activeTasks =>
       [...downloadingTasks, ...pendingTasks];
@@ -30,6 +29,11 @@ class DownloadProvider extends ChangeNotifier {
       .where((element) => element.taskStatus == TaskStatus.pending)
       .toList();
 
+  void clearAllTasks() {
+    tasks.clear();
+    notifyListeners();
+  }
+
   void setDownloading(bool i) {
     downloading = i;
     notifyListeners();
@@ -40,8 +44,11 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setDownloadPercent(double p) {
-    downloadedPercent = p;
+  void updateTaskPercent(String taskID, int count) {
+    int index = tasks.indexWhere((element) => element.id == taskID);
+    DownloadTaskModel newTask = tasks[index];
+    newTask.count = count;
+    tasks[index] = newTask;
     notifyListeners();
   }
   // ! when loading tasks from the sqlite don't load all tasks, just load the tasks that need to be download or whose status isn't finished,
@@ -65,6 +72,7 @@ class DownloadProvider extends ChangeNotifier {
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
   }) {
+    bool tasksFreeLocal = tasksFree;
     DownloadTaskModel downloadTaskModel = DownloadTaskModel(
       id: Uuid().v4(),
       peerDeviceID: remoteDeviceID,
@@ -76,7 +84,7 @@ class DownloadProvider extends ChangeNotifier {
     tasks.add(downloadTaskModel);
     notifyListeners();
     //? this is to start downloading the task if there is no tasks downloading
-    if (tasksFree) {
+    if (tasksFreeLocal) {
       _startDownloadTask(
         shareProvider: shareProvider,
         serverProvider: serverProvider,
@@ -164,7 +172,8 @@ class DownloadProvider extends ChangeNotifier {
           int diff = after.difference(before).inMilliseconds;
           double speed = ((total / 1024 / 1024) / (diff / 1000));
           downloadSpeed = speed;
-          downloadedPercent = count / total;
+          updateTaskPercent(downloadTaskModel.id, count);
+
           notifyListeners();
           if (count == total) {
             downloading = false;

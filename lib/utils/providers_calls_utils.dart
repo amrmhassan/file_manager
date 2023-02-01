@@ -1,3 +1,4 @@
+import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:flutter/material.dart';
@@ -20,4 +21,13 @@ ShareProvider sharePF(BuildContext context) {
 
 ShareProvider shareP(BuildContext context) {
   return Provider.of<ShareProvider>(context);
+}
+
+//? download provider
+DownloadProvider downPF(BuildContext context) {
+  return Provider.of<DownloadProvider>(context, listen: false);
+}
+
+DownloadProvider downP(BuildContext context) {
+  return Provider.of<DownloadProvider>(context);
 }
