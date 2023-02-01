@@ -32,7 +32,7 @@ class ShareSpaceViewerScreen extends StatefulWidget {
 }
 
 class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
-  PeerModel? peerModel;
+  PeerModel? remotePeerModel;
   bool loadingSharedItems = true;
 
 //? to load shared items
@@ -44,11 +44,11 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
         Provider.of<ShareItemsExplorerProvider>(context, listen: false);
 
     client_utils.getPeerShareSpace(
-      peerModel!.sessionID,
+      remotePeerModel!.sessionID,
       serverProviderFalse,
       shareProviderFalse,
       shareItemsExplorerProvider,
-      peerModel!.deviceID,
+      remotePeerModel!.deviceID,
     );
   }
 
@@ -56,7 +56,8 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
   void initState() {
     Future.delayed(Duration.zero).then((value) {
       setState(() {
-        peerModel = ModalRoute.of(context)!.settings.arguments as PeerModel;
+        remotePeerModel =
+            ModalRoute.of(context)!.settings.arguments as PeerModel;
       });
       loadSharedItems();
     });
@@ -72,9 +73,9 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              shareExpProvider.loadingItems || (peerModel == null)
+              shareExpProvider.loadingItems || (remotePeerModel == null)
                   ? '...'
-                  : '${peerModel!.name} Share Space',
+                  : '${remotePeerModel!.name} Share Space',
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
@@ -91,7 +92,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                 Navigator.pushReplacementNamed(
                   context,
                   ShareSpaceViewerScreen.routeName,
-                  arguments: peerModel,
+                  arguments: remotePeerModel,
                 );
               },
               onClickingSubPath: localGetFolderContent,
@@ -128,12 +129,14 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                                     Provider.of<DownloadProvider>(
                                       context,
                                       listen: false,
-                                    ).downloadFile(
-                                      peerModel: peerModel!,
+                                    ).addDownloadTask(
+                                      fileSize: shareExpProvider
+                                          .viewedItems[index].size,
+                                      remotePeerModel: remotePeerModel!,
                                       remoteFilePath: shareExpProvider
                                           .viewedItems[index].path,
-                                      sessionID: me(context).sessionID,
-                                      deviceID: me(context).deviceID,
+                                      mySessionID: me(context).sessionID,
+                                      myDeviceID: me(context).deviceID,
                                     );
                                     Navigator.pop(context);
                                   },

@@ -5,15 +5,34 @@ import 'package:explorer/models/peer_model.dart';
 //? but peer device id will be saved
 //? so if peer model is null then this task is being continued in another session
 
+enum TaskStatus {
+  pending,
+  initializing,
+  downloading,
+  finished,
+  failed,
+}
+
 class DownloadTaskModel {
+  final String id;
   final String peerDeviceID;
   final PeerModel? peerModel;
   final String remoteFilePath;
+  final DateTime addedAt;
+  final bool fulfilled;
+  TaskStatus taskStatus;
+  // downloaded file size in bytes
+  final int? size;
 
-  const DownloadTaskModel({
+  DownloadTaskModel({
+    required this.id,
     required this.peerDeviceID,
-    this.peerModel,
     required this.remoteFilePath,
+    required this.addedAt,
+    required this.size,
+    required this.taskStatus,
+    this.peerModel,
+    this.fulfilled = false,
   });
 
   //! to json
