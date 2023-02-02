@@ -1,6 +1,7 @@
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,4 +31,13 @@ DownloadProvider downPF(BuildContext context) {
 
 DownloadProvider downP(BuildContext context) {
   return Provider.of<DownloadProvider>(context);
+}
+
+//? shareItemsExplorerProvider
+ShareItemsExplorerProvider shareExpPF(BuildContext context) {
+  return Provider.of<ShareItemsExplorerProvider>(context, listen: false);
+}
+
+ShareItemsExplorerProvider shareExpP(BuildContext context) {
+  return Provider.of<ShareItemsExplorerProvider>(context);
 }

@@ -12,4 +12,8 @@ class CustomLogger {
     var data = await DBHelper.getData(errorsLoggerTableName, errorsDbName);
     return data.map((e) => ErrorLoggerModel.fromJSON(e)).toList();
   }
+
+  Future<void> deleteAllErrors() async {
+    await DBHelper.deleteTable(errorsLoggerTableName, errorsDbName);
+  }
 }

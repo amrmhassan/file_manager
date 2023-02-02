@@ -7,12 +7,16 @@ import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/helpers/responsive.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
+import 'package:explorer/utils/errors_collection/custom_exception.dart';
+import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -29,13 +33,9 @@ class ShareControllersButtons extends StatefulWidget {
 
 class _ShareControllersButtonsState extends State<ShareControllersButtons> {
   Future localOpenServerHandler([bool wifi = true]) async {
-    var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
-    var serverProvider = Provider.of<ServerProvider>(context, listen: false);
-    var shareItemsExplorerProvider =
-        Provider.of<ShareItemsExplorerProvider>(context, listen: false);
-    await serverProvider.openServer(
-      shareProviderFalse,
-      shareItemsExplorerProvider,
+    await serverPF(context).openServer(
+      sharePF(context),
+      shareExpPF(context),
       wifi,
     );
   }
@@ -70,17 +70,39 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                       //! so i will suppose that user has already opened it and connected the other device to him
                       //? here open the hotspot then show the connection parameters as qr code
                       //? wifi ssid:password:ip:port
-                      await localOpenServerHandler(false);
-                      Navigator.pushNamed(
-                          context, QrCodeViewerScreen.routeName);
+                      try {
+                        await localOpenServerHandler(false);
+                        Navigator.pushNamed(
+                            context, QrCodeViewerScreen.routeName);
+                      } catch (e, s) {
+                        showSnackBar(
+                          context: context,
+                          message: CustomException(
+                            errString: e,
+                            stackTrace: s,
+                          ).toString(),
+                          snackBarType: SnackBarType.error,
+                        );
+                      }
                     },
                     okText: 'HotSpot',
                     okColor: kBlueColor,
                     onCancel: () async {
                       //? here just open the server on the currently connected wifi
-                      await localOpenServerHandler(true);
-                      Navigator.pushNamed(
-                          context, QrCodeViewerScreen.routeName);
+                      try {
+                        await localOpenServerHandler(true);
+                        Navigator.pushNamed(
+                            context, QrCodeViewerScreen.routeName);
+                      } catch (e, s) {
+                        showSnackBar(
+                          context: context,
+                          message: CustomException(
+                            errString: e,
+                            stackTrace: s,
+                          ).toString(),
+                          snackBarType: SnackBarType.error,
+                        );
+                      }
                     },
                     cancelText: 'WiFi',
                     // title: 'You are connected to WiFi network',

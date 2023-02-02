@@ -15,7 +15,7 @@ import 'package:uuid/uuid.dart';
 import '../models/peer_model.dart';
 
 //? when adding a new client the client can be added by any of the other clients and the adding client will send a broadcast to all other devices in the network about the new client
-//? for example, adding a new client will be at /addclient and when the client is added in one of the connected devices that device will send a message to every other device in the network with /clientadded with the new list of the clients in the network
+//? for example, adding a new client will be at /addclient and when the client is added in one of the connected devices that device will send a message to every other device in the network with /clientAdded with the new list of the clients in the network
 //? including the new device which will add the clients list to his state to be used later
 
 class ServerProvider extends ChangeNotifier {
@@ -57,9 +57,19 @@ class ServerProvider extends ChangeNotifier {
   }
 
   //? send file
-  Future<void> openServer(ShareProvider shareProvider,
-      ShareItemsExplorerProvider shareItemsExplorerProvider,
-      [bool wifi = true]) async {
+  Future<void> openServer(
+    ShareProvider shareProvider,
+    ShareItemsExplorerProvider shareItemsExplorerProvider, [
+    bool wifi = true,
+  ]) async {
+    String? myWifiIp = await getMyIpAddress(wifi);
+    if (myWifiIp == null) {
+      CustomException(
+        errString: 'Ip is null',
+        stackTrace: StackTrace.current,
+        rethrowError: true,
+      );
+    }
     //? opening the server port and setting end points
     httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
     CustomRouterSystem customRouterSystem =
@@ -67,13 +77,7 @@ class ServerProvider extends ChangeNotifier {
     httpServer!.listen(customRouterSystem.handleListen);
     //? when above code is success then set the needed stuff like port, other things
     myPort = httpServer!.port;
-    String? myWifiIp = await getMyIpAddress(wifi);
-    if (myWifiIp == null) {
-      CustomException(
-        errString: 'Ip is null',
-        stackTrace: StackTrace.current,
-      );
-    }
+
     myIp = myWifiIp;
     myConnLink = 'http://$myWifiIp:$myPort';
 

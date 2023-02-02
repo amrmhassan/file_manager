@@ -8,13 +8,13 @@ import 'package:uuid/uuid.dart';
 final CustomLogger customLogger = CustomLogger();
 
 class CustomException implements Exception {
-  StackTrace stackTrace;
+  StackTrace? stackTrace;
   Object errString;
   bool rethrowError;
 
   CustomException({
     required this.errString,
-    required this.stackTrace,
+    this.stackTrace,
     this.rethrowError = false,
   }) {
     if (rethrowError) {
@@ -35,6 +35,6 @@ class CustomException implements Exception {
   }
   @override
   String toString() {
-    return errString.toString();
+    return errString.toString().replaceAll('Exception: ', '');
   }
 }
