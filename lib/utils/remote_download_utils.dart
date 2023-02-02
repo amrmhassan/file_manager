@@ -18,6 +18,7 @@ Future<int> chunkedDownloadFile({
     // initializing chunk size to be 8MB per request
     Dio dio = Dio();
     const chunkSize = 1024 * 1024 * 8;
+    // const chunkSize = 3;
     // getting file info from the server endpoints
     int length = int.parse((await dio.get(
       '$url/length',
@@ -49,7 +50,7 @@ Future<int> chunkedDownloadFile({
       var start = i * chunkSize;
       var end = (i + 1) * chunkSize;
       if (end >= length) {
-        end = length - 1;
+        end = length;
       }
       var range = 'bytes=$start-$end';
       files.add('$tempDirPath/$fileName-$i');

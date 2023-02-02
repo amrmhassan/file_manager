@@ -128,29 +128,31 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                 vertical: kVPad / 2,
               ),
               onTap: () async {
-                //? open qr scanner camera and scan the qr code which has
-                //? hotspot ssid:password:ip:port
-                //? or if we are connected through wifi, i will use the
-                //? ::ip:port
-                //? this will tell the other device that we are using the same wifi network
-                await Permission.camera.request();
-                var qrCode = await Navigator.pushNamed(
-                  context,
-                  ScanQRCodeScreen.routeName,
-                );
-                if (qrCode is String) {
-                  //? here just open the link and start adding a client
-                  var serverProvider =
-                      Provider.of<ServerProvider>(context, listen: false);
+                try {
+                  //? open qr scanner camera and scan the qr code which has
+                  //? hotspot ssid:password:ip:port
+                  //? or if we are connected through wifi, i will use the
+                  //? ::ip:port
+                  //? this will tell the other device that we are using the same wifi network
+                  await Permission.camera.request();
+                  var qrCode = await Navigator.pushNamed(
+                    context,
+                    ScanQRCodeScreen.routeName,
+                  );
+                  if (qrCode is String) {
+                    //? here just open the link and start adding a client
 
-                  var shareProvider =
-                      Provider.of<ShareProvider>(context, listen: false);
-                  var shareItemsExplorerProvider =
-                      Provider.of<ShareItemsExplorerProvider>(context,
-                          listen: false);
-
-                  client_utils.addClient(qrCode, shareProvider, serverProvider,
-                      shareItemsExplorerProvider, context);
+                    await client_utils.addClient(
+                      qrCode,
+                      sharePF(context),
+                      serverPF(context),
+                      shareExpPF(context),
+                      context,
+                    );
+                  }
+                } catch (e, s) {
+                  CustomException(e: e, s: s);
+                  showSnackBar(context: context, message: e.toString());
                 }
               },
               backgroundColor: kBlueColor,

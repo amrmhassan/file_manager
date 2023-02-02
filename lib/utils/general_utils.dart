@@ -66,7 +66,7 @@ void showSnackBar({
 }
 
 //? to get the size
-String handleConvertSize(int sizeInByte) {
+String handleConvertSize(int sizeInByte, [int fixedTo = 2]) {
   String unit = '';
   double convertedSize = 0;
   if (sizeInByte < 1024) {
@@ -82,7 +82,7 @@ String handleConvertSize(int sizeInByte) {
     convertedSize = sizeInByte.toGB;
     unit = ' GB';
   }
-  return '${double.parse(convertedSize.toStringAsFixed(2))}$unit';
+  return '${double.parse(convertedSize.toStringAsFixed(fixedTo))}$unit';
 }
 
 //? get code snippet execution time

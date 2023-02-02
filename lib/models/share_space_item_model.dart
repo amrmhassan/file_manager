@@ -24,7 +24,10 @@ class ShareSpaceItemModel {
 
   Map<String, dynamic> toJSON() {
     return {
-      pathString: path,
+      pathString: path
+          .replaceAll('\\', '/')
+          .replaceFirst(':', ':/')
+          .replaceAll("//", '/'),
       entityTypeString: entityType.name,
       blockedAtString: blockedAt.join('||'),
       ownerIDString: ownerDeviceID,

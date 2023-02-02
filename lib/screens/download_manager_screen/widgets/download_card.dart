@@ -51,8 +51,7 @@ class DownloadCard extends StatelessWidget {
           ),
           if (downloadTaskModel.taskStatus == TaskStatus.downloading)
             DownloadPercentBar(
-              downloadPercent:
-                  downloadTaskModel.count! / downloadTaskModel.size!,
+              downloadTaskModel: downloadTaskModel,
             ),
         ],
       ),
@@ -61,11 +60,11 @@ class DownloadCard extends StatelessWidget {
 }
 
 class DownloadPercentBar extends StatelessWidget {
-  final double downloadPercent;
+  final DownloadTaskModel downloadTaskModel;
 
   const DownloadPercentBar({
     super.key,
-    required this.downloadPercent,
+    required this.downloadTaskModel,
   });
 
   @override
@@ -78,7 +77,7 @@ class DownloadPercentBar extends StatelessWidget {
           width: double.infinity,
           alignment: Alignment.centerLeft,
           child: FractionallySizedBox(
-            widthFactor: downloadPercent,
+            widthFactor: downloadTaskModel.count! / downloadTaskModel.size!,
             child: Container(
               width: double.infinity,
               height: 4,
@@ -94,9 +93,14 @@ class DownloadPercentBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              '${(downloadPercent * 100).toStringAsFixed(0)}%',
+              '${handleConvertSize(downloadTaskModel.count!, 0)}/${handleConvertSize(downloadTaskModel.size!)}',
               style: h5TextStyle,
-            )
+            ),
+            Spacer(),
+            Text(
+              '${(downloadTaskModel.count! / downloadTaskModel.size! * 100).toStringAsFixed(0)}%',
+              style: h5TextStyle,
+            ),
           ],
         ),
         VSpace(factor: .5),
