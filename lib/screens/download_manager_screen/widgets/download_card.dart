@@ -35,9 +35,12 @@ class DownloadCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                path_operations.basename(downloadTaskModel.remoteFilePath),
-                style: h4TextStyle,
+              Expanded(
+                child: Text(
+                  path_operations.basename(downloadTaskModel.remoteFilePath),
+                  style: h4TextStyle,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Spacer(),
               Text(

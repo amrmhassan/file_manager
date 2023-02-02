@@ -11,6 +11,7 @@ import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart' as path_operations;
 
 //! make a function to send utf8 requests and handles them on the server side by reading the utf8
 //! and add the header
@@ -41,11 +42,11 @@ Future addClient(
 
 //? to send a client left request
 Future unsubscribeClient(
-  ServerProvider serverProvider,
-  ShareProvider shareProvider,
+  ServerProvider serverProviderFalse,
+  ShareProvider shareProviderFalse,
 ) async {
-  PeerModel me = serverProvider.me(shareProvider);
-  for (var peer in serverProvider.peers) {
+  PeerModel me = serverProviderFalse.me(shareProviderFalse);
+  for (var peer in serverProviderFalse.peers) {
     if (peer.sessionID == me.sessionID) continue;
     await Dio().post(
       '${getConnLink(peer.ip, peer.port)}$clientLeftEndPoint',
@@ -198,14 +199,25 @@ Future<int> chunkedDownloadFile({
   Dio dio = Dio();
   const chunkSize = 1024 * 1024 * 8;
   // getting file info from the server endpoints
-  int length = int.parse((await dio.get('$url/length')).data);
+  int length = int.parse((await dio.get(
+    '$url/length',
+    options: Options(
+      headers: {
+        reqIntentPathHeaderKey: 'length',
+        filePathHeaderKey: headers[filePathHeaderKey],
+      },
+    ),
+  ))
+      .data);
   if (onlyLength) return length;
   int received = 0;
-  String fileName = (await dio.get('$url/fileName')).data as String;
+  String fileName =
+      path_operations.basename(Uri.decodeComponent(headers[filePathHeaderKey]));
   // getting the chunks number for the final file
   int chunksNumber = (length / chunkSize).ceil();
   // making the temp dir for that will hold the temp files
-  Directory tempDir = Directory('$downloadPath/.tmp');
+  Directory tempDir =
+      Directory('${path_operations.dirname(downloadPath)}/.tmp');
   if (!tempDir.existsSync()) tempDir.createSync();
   String tempDirPath = tempDir.path;
 
@@ -257,8 +269,7 @@ Future<int> chunkedDownloadFile({
   // wait for all sub files to download
   await Future.wait(futures);
   // initializing the final file to collect it
-  var finalFile =
-      await File('$downloadPath/$fileName').open(mode: FileMode.append);
+  var finalFile = await File(downloadPath).open(mode: FileMode.append);
   // collecting the final file from sub files
   for (var subFilePath in files) {
     File subFile = File(subFilePath);

@@ -235,9 +235,16 @@ Future<void> downloadFileMiddleWare(
   HttpRequest req,
   HttpResponse response,
 ) async {
+  String? intent = req.headers.value(reqIntentPathHeaderKey);
   String filePath = Uri.decodeComponent(req.headers.value(filePathHeaderKey)!);
   File file = File(filePath);
   int length = await file.length();
+  if (intent == 'length') {
+    req.response
+      ..write(length)
+      ..close();
+    return;
+  }
 
   // this formate 'bytes=0-' means that i want the bytes from the 0 to the end
   // so the end here means the end of the file
