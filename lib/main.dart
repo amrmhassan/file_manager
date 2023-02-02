@@ -17,6 +17,7 @@ import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
+import 'package:explorer/screens/error_viewing_screen/error_viewing_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
@@ -115,6 +116,7 @@ class MyApp extends StatelessWidget {
           ShareSpaceViewerScreen.routeName: (context) =>
               ShareSpaceViewerScreen(),
           DownloadManagerScreen.routeName: (context) => DownloadManagerScreen(),
+          ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
         },
       ),
     );

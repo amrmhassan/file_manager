@@ -6,6 +6,8 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
+import 'package:explorer/utils/errors_collection/custom_logger.dart';
+import 'package:explorer/utils/errors_collection/error_logger_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -19,6 +21,8 @@ FutureOr<void> onCreateDatabase(
     await onTempDataBase(db, version);
   } else if (dbBaseName == persistentDbName) {
     await onPersistentDataBase(db, version);
+  } else if (dbBaseName == CustomLogger.errorsDbName) {
+    await onErrorDataBase(db, version);
   }
 }
 
@@ -73,4 +77,13 @@ FutureOr<void> onPersistentDataBase(
   await db.execute(listyItemsTableCreation);
   //? creating share space items table
   await db.execute(shareSpaceItemsTableCreation);
+}
+
+//? on create the persistent database
+FutureOr<void> onErrorDataBase(
+  Database db,
+  int? version,
+) async {
+  //? creating info of the explorer folders
+  await db.execute(ErrorLoggerModel.toSqliteString());
 }

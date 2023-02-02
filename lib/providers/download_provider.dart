@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:dio/dio.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -8,6 +7,7 @@ import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
@@ -63,8 +63,8 @@ class DownloadProvider extends ChangeNotifier {
             element.taskStatus == TaskStatus.failed,
       );
 
-// when adding a new download task i want to check if there is any task downloading now or not
-// this will be called when the user wants to download a file from the other device storage
+  // when adding a new download task i want to check if there is any task downloading now or not
+  // this will be called when the user wants to download a file from the other device storage
   void addDownloadTask({
     required String remoteFilePath,
     required int? fileSize,
@@ -93,7 +93,7 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
-// after finishing a task from downloading this will check for the next tasks in the queue to start downloading
+  // after finishing a task from downloading this will check for the next tasks in the queue to start downloading
   void _downloadNextTask({
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
@@ -109,7 +109,7 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
-// this will mark a task with a flag(downloading, finished, etc..)
+  // this will mark a task with a flag(downloading, finished, etc..)
   void _markDownloadTask(
     String downloadTaskID,
     TaskStatus taskStatus,
@@ -129,7 +129,7 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
-// this will start downloading a task immediately
+  // this will start downloading a task immediately
   Future<void> _startDownloadTask({
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
@@ -154,42 +154,65 @@ class DownloadProvider extends ChangeNotifier {
         serverProvider,
         shareProvider,
       );
-      Dio dio = Dio();
-      int startTime = DateTime.now().millisecondsSinceEpoch;
 
-      await dio.download(
-        remotePeer.getMyLink(downloadFileEndPoint),
-        downloadFolderPath,
-        deleteOnError: false,
-        options: Options(
-          headers: {
-            filePathHeaderKey:
-                Uri.encodeComponent(downloadTaskModel.remoteFilePath),
-            sessionIDHeaderKey: me.sessionID,
-            deviceIDString: me.deviceID,
-          },
-        ),
-        onReceiveProgress: (count, total) {
-          downloadSpeed =
-              ((DateTime.now().millisecondsSinceEpoch - startTime) / 1000) /
-                  (count / 1021 / 1024);
-          updateTaskPercent(downloadTaskModel.id, count);
-
+      //? new way of downloading with multiple streams for faster downloading speed
+      // ignore: unused_local_variable
+      int fileSize = await client_utils.chunkedDownloadFile(
+        url: remotePeer.getMyLink(downloadFileEndPoint),
+        downloadPath: downloadFolderPath,
+        setProgress: (int received) {
+          updateTaskPercent(downloadTaskModel.id, received);
+        },
+        setSpeed: (speed) {
+          downloadSpeed = speed;
           notifyListeners();
-          if (count == total) {
-            downloading = false;
-            notifyListeners();
-
-            // mark the download task as done
-            _markDownloadTask(
-              downloadTaskModel.id,
-              TaskStatus.finished,
-              serverProvider,
-              shareProvider,
-            );
-          }
+        },
+        headers: {
+          filePathHeaderKey:
+              Uri.encodeComponent(downloadTaskModel.remoteFilePath),
+          sessionIDHeaderKey: me.sessionID,
+          deviceIDString: me.deviceID,
         },
       );
+      _markDownloadTask(
+        downloadTaskModel.id,
+        TaskStatus.finished,
+        serverProvider,
+        shareProvider,
+      );
+
+      //? old way of downloading with a single stream
+      // await dio.download(
+      //   remotePeer.getMyLink(downloadFileEndPoint),
+      //   downloadFolderPath,
+      //   options: Options(
+      //     headers: {
+      //       filePathHeaderKey:
+      //           Uri.encodeComponent(downloadTaskModel.remoteFilePath),
+      //       sessionIDHeaderKey: me.sessionID,
+      //       deviceIDString: me.deviceID,
+      //     },
+      //   ),
+      //   onReceiveProgress: (count, total) {
+      //     downloadSpeed =
+      //         ((DateTime.now().millisecondsSinceEpoch - startTime) / 1000) /
+      //             (count / 1021 / 1024);
+      //     updateTaskPercent(downloadTaskModel.id, count);
+
+      //     if (count == total) {
+      //       downloading = false;
+      //       notifyListeners();
+
+      //       // mark the download task as done
+      //       _markDownloadTask(
+      //         downloadTaskModel.id,
+      //         TaskStatus.finished,
+      //         serverProvider,
+      //         shareProvider,
+      //       );
+      //     }
+      //   },
+      // );
     } catch (e) {
       _markDownloadTask(
         downloadTaskModel.id,

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
@@ -68,7 +69,10 @@ class ServerProvider extends ChangeNotifier {
     myPort = httpServer!.port;
     String? myWifiIp = await getMyIpAddress(wifi);
     if (myWifiIp == null) {
-      throw Exception('Ip is null');
+      CustomException(
+        errString: 'Ip is null',
+        stackTrace: StackTrace.current,
+      );
     }
     myIp = myWifiIp;
     myConnLink = 'http://$myWifiIp:$myPort';
