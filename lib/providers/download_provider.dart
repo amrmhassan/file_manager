@@ -7,8 +7,9 @@ import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
-import 'package:explorer/utils/client_utils.dart' as client_utils;
+import 'package:explorer/utils/remote_download_utils.dart' as rdu;
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
+
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:uuid/uuid.dart';
@@ -157,7 +158,7 @@ class DownloadProvider extends ChangeNotifier {
 
       //? new way of downloading with multiple streams for faster downloading speed
       // ignore: unused_local_variable
-      int fileSize = await client_utils.chunkedDownloadFile(
+      int fileSize = await rdu.chunkedDownloadFile(
         url: remotePeer.getMyLink(downloadFileEndPoint),
         downloadPath: downloadFolderPath,
         setProgress: (int received) {
