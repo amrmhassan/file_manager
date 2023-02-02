@@ -23,11 +23,11 @@ class ActiveScreen extends StatelessWidget {
       height: double.infinity,
       child: Column(
         children: [
-          ElevatedButton(
-              onPressed: () {
-                downPF(context).clearAllTasks();
-              },
-              child: Text('Clear All')),
+          // ElevatedButton(
+          //     onPressed: () {
+          //       downPF(context).clearAllTasks();
+          //     },
+          //     child: Text('Clear All')),
           if (downloadProvider.downloadSpeed != null)
             DownloadSpeedViewer(downloadSpeed: downloadProvider.downloadSpeed!),
           VSpace(),

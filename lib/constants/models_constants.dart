@@ -57,3 +57,8 @@ const String shareSpaceItemModelString = 'shareSpaceItemModelString';
 const String thumbPathString = 'thumbPathString';
 const String ownerDeviceIDString = 'ownerDeviceIDString';
 const String ownerSessionIDString = 'ownerSessionIDString';
+
+//? download task model
+const String peerDeviceIDString = 'peerDeviceIDString';
+const String remoteFilePathString = 'remoteFilePathString';
+const String taskStatusString = 'taskStatusString';

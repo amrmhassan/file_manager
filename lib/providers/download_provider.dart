@@ -20,13 +20,19 @@ class DownloadProvider extends ChangeNotifier {
   double? downloadSpeed;
 
   List<DownloadTaskModel> get activeTasks =>
-      [...downloadingTasks, ...pendingTasks];
+      [..._downloadingTasks, ..._pendingTasks];
 
-  List<DownloadTaskModel> get downloadingTasks => tasks
+  List<DownloadTaskModel> get doneTasks =>
+      [...tasks.where((element) => element.taskStatus == TaskStatus.finished)];
+
+  List<DownloadTaskModel> get failedTasks =>
+      [...tasks.where((element) => element.taskStatus == TaskStatus.failed)];
+
+  List<DownloadTaskModel> get _downloadingTasks => tasks
       .where((element) => element.taskStatus == TaskStatus.downloading)
       .toList();
 
-  List<DownloadTaskModel> get pendingTasks => tasks
+  List<DownloadTaskModel> get _pendingTasks => tasks
       .where((element) => element.taskStatus == TaskStatus.pending)
       .toList();
 

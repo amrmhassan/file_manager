@@ -1,3 +1,6 @@
+import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/peer_model.dart';
 
 //? these tasks will be saved into the sqlite for later download
@@ -21,7 +24,7 @@ class DownloadTaskModel {
   TaskStatus taskStatus;
   // downloaded file size in bytes
   final int? size;
-  int? count;
+  int count;
 
   DownloadTaskModel({
     required this.id,
@@ -35,5 +38,28 @@ class DownloadTaskModel {
   });
 
   //! to json
+  Map<String, String> toJSON() {
+    return {
+      idString: id,
+      peerDeviceIDString: peerDeviceID,
+      remoteFilePathString: remoteFilePath,
+      addedAtString: addedAt.toIso8601String(),
+      sizeString: size == null ? dbNull : size.toString(),
+      countString: count.toString(),
+      taskStatusString: taskStatus.name,
+    };
+  }
   //! from json
+
+  static DownloadTaskModel fromJSON(Map<String, dynamic> obj) {
+    return DownloadTaskModel(
+      id: obj[idString],
+      peerDeviceID: obj[peerDeviceIDString],
+      remoteFilePath: obj[remoteFilePathString],
+      addedAt: DateTime.parse(obj[addedAtString]),
+      size: obj[sizeString] == dbNull ? null : int.parse(obj[sizeString]),
+      count: int.parse(obj[countString]),
+      taskStatus: stringToEnum(obj[taskStatusString], TaskStatus.values),
+    );
+  }
 }

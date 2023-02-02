@@ -27,13 +27,16 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
       //? if the qr code was created more than 10 minutes just show a warning that
       //? it needs to be refreshed
       //? as clicking on the qr code icon will add a new 10 minutes to the qr code
+
+//! don't activate this length part because it doesn't work in some cases
+      // &&
+      //       (scanData.code ?? '').length >=
+      //           ('http://1.1.1.1:0$dummyEndPoint').length &&
+      //       (scanData.code ?? '').length <=
+      //           ('http://999.999.999.999:65000$dummyEndPoint').length
       c.scannedDataStream.listen((scanData) async {
         if ((scanData.code ?? '').endsWith(dummyEndPoint) &&
-            (scanData.code ?? '').startsWith('http://') &&
-            (scanData.code ?? '').length >=
-                ('http://1.1.1.1:0$dummyEndPoint').length &&
-            (scanData.code ?? '').length <=
-                ('http://999.999.999.999:65000$dummyEndPoint').length) {
+            (scanData.code ?? '').startsWith('http://')) {
           Navigator.pop(context, scanData.code?.replaceAll(dummyEndPoint, ''));
           await c.stopCamera();
         }

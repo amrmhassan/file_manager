@@ -32,7 +32,7 @@ void addClientMiddleWare(
       ..write(
         jsonify(peerModel.toJSON()),
       );
-    await peerAdded(serverProvider);
+    await peerAddedServerFeedBack(serverProvider);
   } catch (e, s) {
     CustomException(
       e: e,
@@ -70,18 +70,15 @@ void getShareSpaceMiddleWare(
 }
 
 //? this is from the server feedback to all peers after a client is added by one of the devices in the group
-void clientAddedMiddleWare(
+Future<void> clientAddedMiddleWare(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
-) {
+) async {
   try {
-    String newPeersJson = request.headers.value(newPeersHeaderKey)!;
-    List<PeerModel> listOfAllPeers = (json.decode(newPeersJson) as List)
-        .map(
-          (e) => PeerModel.fromJSON(e),
-        )
-        .toList();
+    List<dynamic> decodedRequest = await decodeRequest(request, true);
+    List<PeerModel> listOfAllPeers =
+        decodedRequest.map((e) => PeerModel.fromJSON(e)).toList();
     serverProvider.updateAllPeers(listOfAllPeers);
   } catch (e, s) {
     CustomException(

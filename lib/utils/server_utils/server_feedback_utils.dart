@@ -7,23 +7,23 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 
 //? to broad cast that a new peer added then send all peers connected data
-Future<void> peerAdded(ServerProvider serverProvider) async {
+Future<void> peerAddedServerFeedBack(ServerProvider serverProvider) async {
   try {
     for (var peer in serverProvider.peers) {
       //? to skip if the peer is me
       if (peer.ip == serverProvider.myIp) continue;
       String connLink = 'http://${peer.ip}:${peer.port}$clientAddedEndPoint';
-      await Dio().get(
+      var jsonRequest = json.encode(
+        serverProvider.peers
+            .map(
+              (e) => e.toJSON(),
+            )
+            .toList(),
+      );
+      var encodedRequest = jsonRequest;
+      await Dio().post(
         connLink,
-        options: Options(
-          headers: {
-            newPeersHeaderKey: json.encode(serverProvider.peers
-                .map(
-                  (e) => e.toJSON(),
-                )
-                .toList())
-          },
-        ),
+        data: encodedRequest,
       );
     }
   } catch (e, s) {

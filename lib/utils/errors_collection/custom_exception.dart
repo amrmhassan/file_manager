@@ -2,6 +2,7 @@
 
 import 'package:explorer/utils/errors_collection/custom_logger.dart';
 import 'package:explorer/utils/errors_collection/error_logger_model.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,13 +18,6 @@ class CustomException implements Exception {
     required this.s,
     this.rethrowError = false,
   }) {
-    if (rethrowError) {
-      throw Exception(e);
-    }
-    if (kDebugMode) {
-      print(e);
-      print(s);
-    }
     //? save the log
     ErrorLoggerModel error = ErrorLoggerModel(
       id: Uuid().v4(),
@@ -31,7 +25,17 @@ class CustomException implements Exception {
       stackTrace: s.toString(),
       date: DateTime.now(),
     );
-    customLogger.addError(error);
+    customLogger.addError(error).then((value) {
+      if (rethrowError || kDebugMode) {
+        printOnDebug(e);
+        printOnDebug(s);
+        throw Exception(e);
+      }
+      if (kDebugMode) {
+        print(e);
+        print(s);
+      }
+    });
   }
   @override
   String toString() {

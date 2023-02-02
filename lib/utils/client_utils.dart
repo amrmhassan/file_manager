@@ -55,7 +55,8 @@ Future unsubscribeClient(
 ) async {
   try {
     PeerModel me = serverProviderFalse.me(shareProviderFalse);
-    for (var peer in serverProviderFalse.peers) {
+    List<PeerModel> peersCopied = [...serverProviderFalse.peers];
+    for (var peer in peersCopied) {
       if (peer.sessionID == me.sessionID) continue;
       await Dio().post(
         '${getConnLink(peer.ip, peer.port)}$clientLeftEndPoint',

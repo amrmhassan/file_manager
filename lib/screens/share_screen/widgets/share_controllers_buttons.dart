@@ -9,9 +9,6 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
-import 'package:explorer/providers/server_provider.dart';
-import 'package:explorer/providers/share_provider.dart';
-import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
@@ -19,7 +16,6 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 class ShareControllersButtons extends StatefulWidget {
   const ShareControllersButtons({

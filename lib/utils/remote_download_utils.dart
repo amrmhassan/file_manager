@@ -5,6 +5,13 @@ import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:path/path.dart' as path_operations;
 
+bool fileAlreadyDownloadedChecker(String filePath) {
+  return File(filePath).existsSync();
+}
+
+int maximumParallelDownloadThreads = 50;
+
+//? to download a file as chunks
 Future<int> chunkedDownloadFile({
   required String url,
   required String downloadPath,
@@ -16,6 +23,12 @@ Future<int> chunkedDownloadFile({
   try {
     //? this function will support continue corrupted downloads later by downloading the stopped chunks
     // initializing chunk size to be 8MB per request
+
+    if (fileAlreadyDownloadedChecker(downloadPath)) {
+      print('File already downloaded');
+      return File(downloadPath).lengthSync();
+    }
+
     Dio dio = Dio();
     const chunkSize = 1024 * 1024 * 8;
     // const chunkSize = 3;
@@ -86,10 +99,17 @@ Future<int> chunkedDownloadFile({
         ),
       );
     }
-
-    // wait for all sub files to download
-    await Future.wait(futures);
-    // initializing the final file to collect it
+    List<List<Future>> listOfDownloads = List.generate(
+      (futures.length / maximumParallelDownloadThreads).ceil(),
+      (index) => futures.sublist(
+          index * maximumParallelDownloadThreads,
+          ((index + 1) * maximumParallelDownloadThreads) >= futures.length
+              ? futures.length
+              : ((index + 1) * maximumParallelDownloadThreads)),
+    );
+    for (var downloadPatch in listOfDownloads) {
+      await Future.wait(downloadPatch);
+    }
     var finalFile = await File(downloadPath).open(mode: FileMode.append);
     // collecting the final file from sub files
     for (var subFilePath in files) {

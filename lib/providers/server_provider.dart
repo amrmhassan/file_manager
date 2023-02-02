@@ -144,6 +144,12 @@ class ServerProvider extends ChangeNotifier {
     return peerModel;
   }
 
+  //?
+  void addPeerFromModel(PeerModel peerModel) {
+    peers.add(peerModel);
+    notifyListeners();
+  }
+
   //? this will be used when a new device is connected
   void broadcastToAllClients() {
     //? here i will send a normal http request to all clients from the peers except me of course
