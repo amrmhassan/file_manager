@@ -65,8 +65,8 @@ class ServerProvider extends ChangeNotifier {
     String? myWifiIp = await getMyIpAddress(wifi);
     if (myWifiIp == null) {
       CustomException(
-        errString: 'Ip is null',
-        stackTrace: StackTrace.current,
+        e: 'Ip is null',
+        s: StackTrace.current,
         rethrowError: true,
       );
     }

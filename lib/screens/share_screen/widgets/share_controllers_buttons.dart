@@ -78,8 +78,8 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                         showSnackBar(
                           context: context,
                           message: CustomException(
-                            errString: e,
-                            stackTrace: s,
+                            e: e,
+                            s: s,
                           ).toString(),
                           snackBarType: SnackBarType.error,
                         );
@@ -97,8 +97,8 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                         showSnackBar(
                           context: context,
                           message: CustomException(
-                            errString: e,
-                            stackTrace: s,
+                            e: e,
+                            s: s,
                           ).toString(),
                           snackBarType: SnackBarType.error,
                         );

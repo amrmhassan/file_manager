@@ -8,33 +8,33 @@ import 'package:uuid/uuid.dart';
 final CustomLogger customLogger = CustomLogger();
 
 class CustomException implements Exception {
-  StackTrace? stackTrace;
-  Object errString;
+  StackTrace? s;
+  Object e;
   bool rethrowError;
 
   CustomException({
-    required this.errString,
-    this.stackTrace,
+    required this.e,
+    required this.s,
     this.rethrowError = false,
   }) {
     if (rethrowError) {
-      throw Exception(errString);
+      throw Exception(e);
     }
     if (kDebugMode) {
-      print(errString);
-      print(stackTrace);
+      print(e);
+      print(s);
     }
     //? save the log
     ErrorLoggerModel error = ErrorLoggerModel(
       id: Uuid().v4(),
-      error: errString.toString(),
-      stackTrace: stackTrace.toString(),
+      error: e.toString(),
+      stackTrace: s.toString(),
       date: DateTime.now(),
     );
     customLogger.addError(error);
   }
   @override
   String toString() {
-    return errString.toString().replaceAll('Exception: ', '');
+    return e.toString().replaceAll('Exception: ', '');
   }
 }
