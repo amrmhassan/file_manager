@@ -43,6 +43,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 //! when the group host i should close the connection at all
+
+//! when you close the connection from the
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

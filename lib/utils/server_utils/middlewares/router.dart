@@ -30,6 +30,7 @@ CustomRouterSystem addServerRouters(
         request,
         response,
         serverProvider,
+        shareProvider,
       ),
     )
     ..addRouter(

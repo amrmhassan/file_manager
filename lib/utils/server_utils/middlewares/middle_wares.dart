@@ -19,6 +19,7 @@ void addClientMiddleWare(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
+  ShareProvider shareProviderFalse,
 ) async {
   try {
     Map body = await decodeRequest(request);
@@ -32,7 +33,7 @@ void addClientMiddleWare(
       ..write(
         jsonify(peerModel.toJSON()),
       );
-    await peerAddedServerFeedBack(serverProvider);
+    await peerAddedServerFeedBack(serverProvider, shareProviderFalse);
   } catch (e, s) {
     throw CustomException(
       e: e,

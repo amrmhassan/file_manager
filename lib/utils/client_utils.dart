@@ -51,8 +51,9 @@ Future addClient(
 //? to send a client left request
 Future unsubscribeClient(
   ServerProvider serverProviderFalse,
-  ShareProvider shareProviderFalse,
-) async {
+  ShareProvider shareProviderFalse, [
+  String? customSessionID,
+]) async {
   try {
     PeerModel me = serverProviderFalse.me(shareProviderFalse);
     List<PeerModel> peersCopied = [...serverProviderFalse.peers];
@@ -61,7 +62,7 @@ Future unsubscribeClient(
       await Dio().post(
         '${getConnLink(peer.ip, peer.port)}$clientLeftEndPoint',
         data: {
-          sessionIDString: me.sessionID,
+          sessionIDString: customSessionID ?? me.sessionID,
         },
       );
     }

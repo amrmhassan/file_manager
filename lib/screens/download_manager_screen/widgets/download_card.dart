@@ -13,13 +13,35 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path_operations;
 
-class DownloadCard extends StatelessWidget {
+class DownloadCard extends StatefulWidget {
   const DownloadCard({
     super.key,
     required this.downloadTaskModel,
   });
 
   final DownloadTaskModel downloadTaskModel;
+
+  @override
+  State<DownloadCard> createState() => _DownloadCardState();
+}
+
+class _DownloadCardState extends State<DownloadCard> {
+  final ScrollController _downloadCardScrollController = ScrollController();
+  // @override
+  // void initState() {
+  //   try {
+  //     WidgetsBinding.instance.addPostFrameCallback(
+  //       (timeStamp) {
+  //         _scrollController.animateTo(-_scrollController.offset,
+  //             duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+  //       },
+  //     );
+  //   } catch (e) {
+  //     printOnDebug(e);
+  //   }
+  //   super.initState();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,29 +62,36 @@ class DownloadCard extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  path_operations.basename(downloadTaskModel.remoteFilePath),
-                  style: h4TextStyle,
-                  overflow: TextOverflow.ellipsis,
+                child: SingleChildScrollView(
+                  controller: _downloadCardScrollController,
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    path_operations
+                        .basename(widget.downloadTaskModel.remoteFilePath),
+                    style: h4TextStyle,
+                    overflow: TextOverflow.clip,
+                    softWrap: false,
+                  ),
                 ),
               ),
-              Spacer(),
+              HSpace(factor: .7),
               Text(
-                downloadTaskModel.taskStatus == TaskStatus.finished
-                    ? downloadTaskModel.finishedAt == null
-                        ? capitalizeWord(downloadTaskModel.taskStatus.name)
+                widget.downloadTaskModel.taskStatus == TaskStatus.finished
+                    ? widget.downloadTaskModel.finishedAt == null
+                        ? capitalizeWord(
+                            widget.downloadTaskModel.taskStatus.name)
                         : DateFormat('hh:mm aa')
-                            .format(downloadTaskModel.finishedAt!)
-                    : capitalizeWord(downloadTaskModel.taskStatus.name),
+                            .format(widget.downloadTaskModel.finishedAt!)
+                    : capitalizeWord(widget.downloadTaskModel.taskStatus.name),
                 style: h4TextStyleInactive,
               ),
             ],
           ),
-          if (downloadTaskModel.taskStatus == TaskStatus.downloading)
+          if (widget.downloadTaskModel.taskStatus == TaskStatus.downloading)
             DownloadPercentBar(
-              downloadTaskModel: downloadTaskModel,
+              downloadTaskModel: widget.downloadTaskModel,
             ),
-          if (downloadTaskModel.taskStatus == TaskStatus.finished)
+          if (widget.downloadTaskModel.taskStatus == TaskStatus.finished)
             Column(
               children: [
                 VSpace(factor: .3),
@@ -70,7 +99,7 @@ class DownloadCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      handleConvertSize(downloadTaskModel.size!),
+                      handleConvertSize(widget.downloadTaskModel.size!),
                       style: h4TextStyleInactive,
                     ),
                     Spacer(),
@@ -97,7 +126,7 @@ class DownloadCard extends StatelessWidget {
                           subTitle:
                               'Do you want to delete the actual file also?',
                           cancelText: 'Task Only',
-                          okText: 'Delete File',
+                          okText: 'Also File',
                           onOk: () {
                             showSnackBar(context: context, message: 'Soon');
                           },

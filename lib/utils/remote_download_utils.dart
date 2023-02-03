@@ -25,7 +25,6 @@ Future<int?> chunkedDownloadFile({
     // initializing chunk size to be 8MB per request
 
     if (fileAlreadyDownloadedChecker(downloadPath)) {
-      print('File already downloaded');
       return File(downloadPath).lengthSync();
     }
 
@@ -128,5 +127,4 @@ Future<int?> chunkedDownloadFile({
       rethrowError: true,
     );
   }
-  return null;
 }
