@@ -18,6 +18,7 @@ class ActiveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var downloadProvider = downP(context);
+    var activeTasks = downloadProvider.activeTasks;
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
@@ -32,7 +33,7 @@ class ActiveScreen extends StatelessWidget {
             DownloadSpeedViewer(downloadSpeed: downloadProvider.downloadSpeed!),
           VSpace(),
           Expanded(
-            child: downloadProvider.activeTasks.isEmpty
+            child: activeTasks.isEmpty
                 ? Container(
                     alignment: Alignment.center,
                     child: Column(
@@ -54,9 +55,9 @@ class ActiveScreen extends StatelessWidget {
                 : PaddingWrapper(
                     padding: EdgeInsets.symmetric(horizontal: kHPad / 2),
                     child: ListView.builder(
-                      itemCount: downloadProvider.activeTasks.length,
+                      itemCount: activeTasks.length,
                       itemBuilder: (context, index) => DownloadCard(
-                        downloadTaskModel: downloadProvider.activeTasks[index],
+                        downloadTaskModel: activeTasks[index],
                       ),
                     ),
                   ),

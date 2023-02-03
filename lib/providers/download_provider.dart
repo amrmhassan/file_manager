@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/files_types_icons.dart';
-import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/peer_model.dart';
@@ -21,7 +20,7 @@ class DownloadProvider extends ChangeNotifier {
   double? downloadSpeed;
 
   List<DownloadTaskModel> get activeTasks =>
-      [..._downloadingTasks, ..._pendingTasks];
+      [..._downloadingTasks, ...pausedTasks, ..._pendingTasks];
 
   List<DownloadTaskModel> get doneTasks => [
         ...tasks.where((element) => element.taskStatus == TaskStatus.finished)
@@ -31,6 +30,8 @@ class DownloadProvider extends ChangeNotifier {
         ...tasks.where((element) => element.taskStatus == TaskStatus.failed)
       ].reversed.toList();
 
+  Iterable<DownloadTaskModel> get pausedTasks =>
+      tasks.where((element) => element.taskStatus == TaskStatus.paused);
   Iterable<DownloadTaskModel> get _downloadingTasks =>
       tasks.where((element) => element.taskStatus == TaskStatus.downloading);
 
@@ -39,6 +40,32 @@ class DownloadProvider extends ChangeNotifier {
 
   void clearAllTasks() {
     tasks.clear();
+    notifyListeners();
+  }
+
+  void togglePauseResumeTask(String taskID) {
+    int index = tasks.indexWhere((element) => element.id == taskID);
+    TaskStatus taskStatus = tasks[index].taskStatus;
+    if (taskStatus == TaskStatus.paused) {
+      _resumeTaskDownload(index);
+    } else if (taskStatus == TaskStatus.downloading) {
+      _pauseTaskDownload(index);
+    }
+  }
+
+  void _pauseTaskDownload(int index) {
+    DownloadTaskModel newTask = tasks[index];
+    newTask.taskStatus = TaskStatus.paused;
+
+    tasks[index] = newTask;
+    notifyListeners();
+  }
+
+  void _resumeTaskDownload(int index) {
+    DownloadTaskModel newTask = tasks[index];
+    newTask.taskStatus = TaskStatus.downloading;
+
+    tasks[index] = newTask;
     notifyListeners();
   }
 
@@ -167,10 +194,12 @@ class DownloadProvider extends ChangeNotifier {
       );
 
       //? new way of downloading with multiple streams for faster downloading speed
-      // ignore: unused_local_variable
-      int? fileSize = await rdu.chunkedDownloadFile(
-        url: remotePeer.getMyLink(downloadFileEndPoint),
+      rdu.TaskDownloadUtils taskDownloadUtils = rdu.TaskDownloadUtils(
         downloadPath: downloadFolderPath,
+        myDeviceID: me.deviceID,
+        mySessionID: me.sessionID,
+        remoteFilePath: downloadTaskModel.remoteFilePath,
+        url: remotePeer.getMyLink(downloadFileEndPoint),
         setProgress: (int received) {
           updateTaskPercent(downloadTaskModel.id, received);
         },
@@ -178,13 +207,9 @@ class DownloadProvider extends ChangeNotifier {
           downloadSpeed = speed;
           notifyListeners();
         },
-        headers: {
-          filePathHeaderKey:
-              Uri.encodeComponent(downloadTaskModel.remoteFilePath),
-          sessionIDHeaderKey: me.sessionID,
-          deviceIDString: me.deviceID,
-        },
       );
+      // ignore: unused_local_variable
+      int? fileSize = await taskDownloadUtils.chunkedDownloadFile();
       if (fileSize == null) {
         throw CustomException(
           e: 'File isn\'t valid',

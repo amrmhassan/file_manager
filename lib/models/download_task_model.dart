@@ -10,6 +10,7 @@ import 'package:explorer/models/peer_model.dart';
 
 enum TaskStatus {
   pending,
+  paused,
   downloading,
   finished,
   failed,

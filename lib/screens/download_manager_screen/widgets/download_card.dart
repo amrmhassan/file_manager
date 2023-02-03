@@ -3,11 +3,13 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/download_task_model.dart';
+import 'package:explorer/screens/download_manager_screen/widgets/download_percent_bar.dart';
+import 'package:explorer/screens/download_manager_screen/widgets/finished_task_info.dart';
+import 'package:explorer/screens/download_manager_screen/widgets/pause_resume_download_button.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -75,128 +77,33 @@ class _DownloadCardState extends State<DownloadCard> {
                 ),
               ),
               HSpace(factor: .7),
-              Text(
-                widget.downloadTaskModel.taskStatus == TaskStatus.finished
-                    ? widget.downloadTaskModel.finishedAt == null
-                        ? capitalizeWord(
-                            widget.downloadTaskModel.taskStatus.name)
-                        : DateFormat('hh:mm aa')
-                            .format(widget.downloadTaskModel.finishedAt!)
-                    : capitalizeWord(widget.downloadTaskModel.taskStatus.name),
-                style: h4TextStyleInactive,
-              ),
-            ],
-          ),
-          if (widget.downloadTaskModel.taskStatus == TaskStatus.downloading)
-            DownloadPercentBar(
-              downloadTaskModel: widget.downloadTaskModel,
-            ),
-          if (widget.downloadTaskModel.taskStatus == TaskStatus.finished)
-            Column(
-              children: [
-                VSpace(factor: .3),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      handleConvertSize(widget.downloadTaskModel.size!),
+              widget.downloadTaskModel.taskStatus == TaskStatus.downloading ||
+                      widget.downloadTaskModel.taskStatus == TaskStatus.paused
+                  ? PauseResumeDownloadButton(
+                      downloadTaskModel: widget.downloadTaskModel,
+                    )
+                  : Text(
+                      widget.downloadTaskModel.taskStatus == TaskStatus.finished
+                          ? widget.downloadTaskModel.finishedAt == null
+                              ? capitalizeWord(
+                                  widget.downloadTaskModel.taskStatus.name)
+                              : DateFormat('hh:mm aa')
+                                  .format(widget.downloadTaskModel.finishedAt!)
+                          : capitalizeWord(
+                              widget.downloadTaskModel.taskStatus.name),
                       style: h4TextStyleInactive,
                     ),
-                    Spacer(),
-                    ButtonWrapper(
-                      padding: EdgeInsets.all(smallPadding),
-                      borderRadius: smallBorderRadius,
-                      onTap: () {
-                        showSnackBar(context: context, message: 'Soon');
-                      },
-                      child: Image.asset(
-                        'assets/icons/folder_empty.png',
-                        width: smallIconSize,
-                        color: kMainIconColor.withOpacity(.6),
-                      ),
-                    ),
-                    HSpace(factor: .6),
-                    ButtonWrapper(
-                      padding: EdgeInsets.all(smallPadding),
-                      borderRadius: smallBorderRadius,
-                      onTap: () {
-                        confirmDeleteEntityModal(
-                          context: context,
-                          title: 'Delete this task?',
-                          subTitle:
-                              'Do you want to delete the actual file also?',
-                          cancelText: 'Task Only',
-                          okText: 'Also File',
-                          onOk: () {
-                            showSnackBar(context: context, message: 'Soon');
-                          },
-                          onCancel: () {
-                            showSnackBar(context: context, message: 'Soon');
-                          },
-                        );
-                      },
-                      child: Image.asset(
-                        'assets/icons/delete.png',
-                        width: smallIconSize,
-                        color: kDangerColor.withOpacity(.6),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            ],
+          ),
+          if (widget.downloadTaskModel.taskStatus == TaskStatus.downloading ||
+              widget.downloadTaskModel.taskStatus == TaskStatus.paused)
+            DownloadPercentBar(
+              downloadTaskModel: widget.downloadTaskModel,
+            )
+          else if (widget.downloadTaskModel.taskStatus == TaskStatus.finished)
+            FinishedTaskInfo(downloadTaskModel: widget.downloadTaskModel)
         ],
       ),
-    );
-  }
-}
-
-class DownloadPercentBar extends StatelessWidget {
-  final DownloadTaskModel downloadTaskModel;
-
-  const DownloadPercentBar({
-    super.key,
-    required this.downloadTaskModel,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        VSpace(factor: .5),
-        Container(
-          color: Colors.white.withOpacity(.4),
-          width: double.infinity,
-          alignment: Alignment.centerLeft,
-          child: FractionallySizedBox(
-            widthFactor: downloadTaskModel.count / downloadTaskModel.size!,
-            child: Container(
-              width: double.infinity,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(1000),
-              ),
-            ),
-          ),
-        ),
-        VSpace(factor: .2),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              '${handleConvertSize(downloadTaskModel.count, 0)}/${handleConvertSize(downloadTaskModel.size!)}',
-              style: h5TextStyle,
-            ),
-            Spacer(),
-            Text(
-              '${(downloadTaskModel.count / downloadTaskModel.size! * 100).toStringAsFixed(0)}%',
-              style: h5TextStyle,
-            ),
-          ],
-        ),
-        VSpace(factor: .5),
-      ],
     );
   }
 }

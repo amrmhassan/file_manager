@@ -14,7 +14,7 @@ Future<void> peerAddedServerFeedBack(
   ServerProvider serverProviderFalse,
   ShareProvider shareProviderFalse,
 ) async {
-  List<PeerModel> peers = [...serverProviderFalse.peers];
+  List<PeerModel> peers = [...serverProviderFalse.peers.reversed];
   for (var peer in peers) {
     try {
       //? to skip if the peer is me
