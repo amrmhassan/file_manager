@@ -18,6 +18,20 @@ class ChunkProgressModel {
   });
 }
 
+//! when the group host i should close the connection at all
+
+//! to resume the download you should first read the paths to files from the temp dir of the task
+//! reconstruct the temp dir from the download controller class by calling the function of temp dir
+//! when starting the download check if the temp dir of that task exists or not
+//! if not just start downloading from the start
+//! if exist read the files inside it and see what is the end for each chunk and make the client side to determine the start and the end to download for each chunk
+//! you won't need any adjustments on the server side because the server already handles the chunks principle
+//! you just need to set the start of the chunk download from the next byte in the saved file and the to the end of the chunk
+//! e.g the full chunk size is 10 byte => you downloaded 6 bytes => and the chunk arrangement is from 1000 to 1010
+//! in the next check your new start will be 1006 to 1010 and you will get a request from the server with the remaining bytes
+//! append these bytes to the file and you are done
+//! you will just need to save each chunk full size in a file in the same temp dir (make it text file or any thing you want, or use hive)
+
 class DownloadTaskController {
   //
   final Dio dio = Dio();
