@@ -2,6 +2,7 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/utils/download_task_controller.dart';
 
 //? these tasks will be saved into the sqlite for later download
 //? downloading might be continued in another session so i provided peer model which wont be saved to sqlite
@@ -22,13 +23,14 @@ class DownloadTaskModel {
   final PeerModel? peerModel;
   final String remoteFilePath;
   final DateTime addedAt;
-  DateTime? finishedAt;
-  TaskStatus taskStatus;
-  // downloaded file size in bytes
-  final int? size;
-  int count;
   final String remoteDeviceName;
   final String remoteDeviceID;
+  DownloadTaskController? downloadTaskController;
+  final int? size;
+
+  DateTime? finishedAt;
+  TaskStatus taskStatus;
+  int count;
 
   DownloadTaskModel({
     required this.remoteDeviceName,
@@ -38,6 +40,7 @@ class DownloadTaskModel {
     required this.remoteFilePath,
     required this.addedAt,
     required this.size,
+    this.downloadTaskController,
     this.finishedAt,
     this.count = 0,
     this.taskStatus = TaskStatus.pending,

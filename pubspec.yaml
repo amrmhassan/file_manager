@@ -60,6 +60,7 @@ dependencies:
   connectivity_plus: ^3.0.2
   mime: ^1.0.4
   just_audio: ^0.9.31
+  hive: ^2.2.3
 
 dev_dependencies:
   flutter_test:

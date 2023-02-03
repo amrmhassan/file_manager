@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_card.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_speed_viewer.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ActiveScreen extends StatelessWidget {
@@ -24,11 +25,12 @@ class ActiveScreen extends StatelessWidget {
       height: double.infinity,
       child: Column(
         children: [
-          // ElevatedButton(
-          //     onPressed: () {
-          //       downPF(context).clearAllTasks();
-          //     },
-          //     child: Text('Clear All')),
+          if (kDebugMode)
+            ElevatedButton(
+                onPressed: () {
+                  downPF(context).clearAllTasks();
+                },
+                child: Text('Clear All')),
           if (downloadProvider.downloadSpeed != null)
             DownloadSpeedViewer(downloadSpeed: downloadProvider.downloadSpeed!),
           VSpace(),

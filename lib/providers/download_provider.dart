@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/download_task_model.dart';
@@ -7,7 +9,7 @@ import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
-import 'package:explorer/utils/remote_download_utils.dart' as rdu;
+import 'package:explorer/utils/download_task_controller.dart' as rdu;
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 
 import 'package:flutter/material.dart';
@@ -38,9 +40,13 @@ class DownloadProvider extends ChangeNotifier {
   Iterable<DownloadTaskModel> get _pendingTasks =>
       tasks.where((element) => element.taskStatus == TaskStatus.pending);
 
-  void clearAllTasks() {
+  void clearAllTasks() async {
     tasks.clear();
     notifyListeners();
+    File(getSaveFilePath(FileType.video, 'fileName'))
+        .parent
+        .parent
+        .deleteSync(recursive: true);
   }
 
   void togglePauseResumeTask(String taskID) {
@@ -54,6 +60,7 @@ class DownloadProvider extends ChangeNotifier {
   }
 
   void _pauseTaskDownload(int index) {
+    tasks[index].downloadTaskController!.cancelTask();
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = TaskStatus.paused;
 
@@ -69,17 +76,18 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setDownloading(bool i) {
-    downloading = i;
+  void _setTaskController(
+    String taskID,
+    rdu.DownloadTaskController downloadTaskController,
+  ) {
+    int index = tasks.indexWhere((element) => element.id == taskID);
+    DownloadTaskModel downloadTaskModel = tasks[index];
+    downloadTaskModel.downloadTaskController = downloadTaskController;
+    tasks[index] = downloadTaskModel;
     notifyListeners();
   }
 
-  void setDownloadSpeed(double s) {
-    downloadSpeed = s;
-    notifyListeners();
-  }
-
-  void updateTaskPercent(String taskID, int count) {
+  void _updateTaskPercent(String taskID, int count) {
     int index = tasks.indexWhere((element) => element.id == taskID);
     DownloadTaskModel newTask = tasks[index];
     newTask.count = count;
@@ -196,14 +204,15 @@ class DownloadProvider extends ChangeNotifier {
       );
 
       //? new way of downloading with multiple streams for faster downloading speed
-      rdu.TaskDownloadUtils taskDownloadUtils = rdu.TaskDownloadUtils(
+      rdu.DownloadTaskController downloadTaskController =
+          rdu.DownloadTaskController(
         downloadPath: downloadFolderPath,
         myDeviceID: me.deviceID,
         mySessionID: me.sessionID,
         remoteFilePath: downloadTaskModel.remoteFilePath,
         url: remotePeer.getMyLink(downloadFileEndPoint),
         setProgress: (int received) {
-          updateTaskPercent(downloadTaskModel.id, received);
+          _updateTaskPercent(downloadTaskModel.id, received);
         },
         setSpeed: (speed) {
           downloadSpeed = speed;
@@ -212,48 +221,21 @@ class DownloadProvider extends ChangeNotifier {
         remoteDeviceID: downloadTaskModel.remoteDeviceID,
         remoteDeviceName: downloadTaskModel.remoteDeviceName,
       );
+      _setTaskController(downloadTaskModel.id, downloadTaskController);
       // ignore: unused_local_variable
-      await taskDownloadUtils.downloadFile();
-
-      _markDownloadTask(
-        downloadTaskModel.id,
-        TaskStatus.finished,
-        serverProvider,
-        shareProvider,
-      );
-
-      //? old way of downloading with a single stream
-      // await dio.download(
-      //   remotePeer.getMyLink(downloadFileEndPoint),
-      //   downloadFolderPath,
-      //   options: Options(
-      //     headers: {
-      //       filePathHeaderKey:
-      //           Uri.encodeComponent(downloadTaskModel.remoteFilePath),
-      //       sessionIDHeaderKey: me.sessionID,
-      //       deviceIDString: me.deviceID,
-      //     },
-      //   ),
-      //   onReceiveProgress: (count, total) {
-      //     downloadSpeed =
-      //         ((DateTime.now().millisecondsSinceEpoch - startTime) / 1000) /
-      //             (count / 1021 / 1024);
-      //     updateTaskPercent(downloadTaskModel.id, count);
-
-      //     if (count == total) {
-      //       downloading = false;
-      //       notifyListeners();
-
-      //       // mark the download task as done
-      //       _markDownloadTask(
-      //         downloadTaskModel.id,
-      //         TaskStatus.finished,
-      //         serverProvider,
-      //         shareProvider,
-      //       );
-      //     }
-      //   },
-      // );
+      var res = await downloadTaskController.downloadFile();
+      if (res != 0) {
+        // this mean that the file has been paused
+        // if the connection has been cut this mean that there was an error and it shouldn't be considered paused, but error task status
+        // the task is already downloading from the latest call of _markDownloadTask so this toggle will mark it as paused
+        // don't call toggle from here because you are already called it from the button click and this will reverse it's functionality
+        _markDownloadTask(
+          downloadTaskModel.id,
+          TaskStatus.finished,
+          serverProvider,
+          shareProvider,
+        );
+      }
     } catch (e, s) {
       _markDownloadTask(
         downloadTaskModel.id,

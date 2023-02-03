@@ -13,10 +13,11 @@ class DownloadErrorScreen extends StatelessWidget {
   const DownloadErrorScreen({
     super.key,
   });
-
+// sdcard/AFM Downloads/Apps/.com.mod.download.subway.surfers.v2.25.2.mod.unlimited.coinskeys.2.25.22.25.2.apk-tmp/com.mod.download.subway.surfers.v2.25.2.mod.unlimited.coinskeys.2.25.22.25.2.apk-0
   @override
   Widget build(BuildContext context) {
     var downloadProvider = downP(context);
+    var failedTasks = downloadProvider.failedTasks;
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
@@ -30,7 +31,7 @@ class DownloadErrorScreen extends StatelessWidget {
 
           VSpace(),
           Expanded(
-            child: downloadProvider.failedTasks.isEmpty
+            child: failedTasks.isEmpty
                 ? Container(
                     alignment: Alignment.center,
                     child: Column(
@@ -52,9 +53,9 @@ class DownloadErrorScreen extends StatelessWidget {
                 : PaddingWrapper(
                     padding: EdgeInsets.symmetric(horizontal: kHPad / 2),
                     child: ListView.builder(
-                      itemCount: downloadProvider.failedTasks.length,
+                      itemCount: failedTasks.length,
                       itemBuilder: (context, index) => DownloadCard(
-                        downloadTaskModel: downloadProvider.failedTasks[index],
+                        downloadTaskModel: failedTasks[index],
                       ),
                     ),
                   ),

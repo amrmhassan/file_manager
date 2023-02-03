@@ -2,7 +2,6 @@
 
 import 'package:explorer/utils/errors_collection/custom_logger.dart';
 import 'package:explorer/utils/errors_collection/error_logger_model.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -26,11 +25,12 @@ class CustomException implements Exception {
       date: DateTime.now(),
     );
     customLogger.addError(error).then((value) {
-      if (rethrowError || kDebugMode) {
-        printOnDebug(e);
-        printOnDebug(s);
-        throw Exception(e);
-      }
+      //! i disabled the rethrow function temporary
+      // if (rethrowError || kDebugMode) {
+      //   printOnDebug(e);
+      //   printOnDebug(s);
+      //   throw Exception(e);
+      // }
       if (kDebugMode) {
         print(e);
         print(s);
