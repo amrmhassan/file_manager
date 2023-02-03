@@ -137,6 +137,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                                           .viewedItems[index].path,
                                       serverProvider: serverPF(context),
                                       shareProvider: sharePF(context),
+                                      remoteDeviceName: remotePeerModel!.name,
                                     );
                                     Navigator.pop(context);
                                   },

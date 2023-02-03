@@ -104,18 +104,20 @@ class DownloadProvider extends ChangeNotifier {
     required String remoteFilePath,
     required int? fileSize,
     required String remoteDeviceID,
+    required String remoteDeviceName,
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
   }) {
     bool tasksFreeLocal = tasksFree;
     DownloadTaskModel downloadTaskModel = DownloadTaskModel(
-      id: Uuid().v4(),
-      peerDeviceID: remoteDeviceID,
-      remoteFilePath: remoteFilePath,
-      addedAt: DateTime.now(),
-      size: fileSize,
-      taskStatus: TaskStatus.pending,
-    );
+        id: Uuid().v4(),
+        peerDeviceID: remoteDeviceID,
+        remoteFilePath: remoteFilePath,
+        addedAt: DateTime.now(),
+        size: fileSize,
+        taskStatus: TaskStatus.pending,
+        remoteDeviceID: remoteDeviceID,
+        remoteDeviceName: remoteDeviceName);
     tasks.add(downloadTaskModel);
     notifyListeners();
     //? this is to start downloading the task if there is no tasks downloading
@@ -207,6 +209,8 @@ class DownloadProvider extends ChangeNotifier {
           downloadSpeed = speed;
           notifyListeners();
         },
+        remoteDeviceID: downloadTaskModel.remoteDeviceID,
+        remoteDeviceName: downloadTaskModel.remoteDeviceName,
       );
       // ignore: unused_local_variable
       int? fileSize = await taskDownloadUtils.chunkedDownloadFile();

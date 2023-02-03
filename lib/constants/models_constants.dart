@@ -63,3 +63,5 @@ const String peerDeviceIDString = 'peerDeviceIDString';
 const String remoteFilePathString = 'remoteFilePathString';
 const String taskStatusString = 'taskStatusString';
 const String finishedAtString = 'finishedAtString';
+const String remoteDeviceIDString = 'remoteDeviceIDString';
+const String remoteDeviceNameString = 'remoteDeviceNameString';

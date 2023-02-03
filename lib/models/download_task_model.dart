@@ -27,8 +27,12 @@ class DownloadTaskModel {
   // downloaded file size in bytes
   final int? size;
   int count;
+  final String remoteDeviceName;
+  final String remoteDeviceID;
 
   DownloadTaskModel({
+    required this.remoteDeviceName,
+    required this.remoteDeviceID,
     required this.id,
     required this.peerDeviceID,
     required this.remoteFilePath,
@@ -43,6 +47,8 @@ class DownloadTaskModel {
   //! to json
   Map<String, String> toJSON() {
     return {
+      remoteDeviceIDString: remoteDeviceID,
+      remoteDeviceNameString: remoteDeviceName,
       idString: id,
       peerDeviceIDString: peerDeviceID,
       remoteFilePathString: remoteFilePath,
@@ -58,6 +64,8 @@ class DownloadTaskModel {
 
   static DownloadTaskModel fromJSON(Map<String, dynamic> obj) {
     return DownloadTaskModel(
+      remoteDeviceID: obj[remoteDeviceIDString],
+      remoteDeviceName: obj[remoteDeviceNameString],
       id: obj[idString],
       peerDeviceID: obj[peerDeviceIDString],
       remoteFilePath: obj[remoteFilePathString],

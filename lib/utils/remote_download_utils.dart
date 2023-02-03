@@ -15,6 +15,8 @@ class TaskDownloadUtils {
   final String url;
   final Function(int p) setProgress;
   final Function(double speed) setSpeed;
+  final String remoteDeviceName;
+  final String remoteDeviceID;
 
   TaskDownloadUtils({
     required this.downloadPath,
@@ -24,6 +26,8 @@ class TaskDownloadUtils {
     required this.url,
     required this.setProgress,
     required this.setSpeed,
+    required this.remoteDeviceID,
+    required this.remoteDeviceName,
     this.maximumParallelDownloadThreads = 20,
   });
   bool fileAlreadyDownloadedChecker(String filePath) {
