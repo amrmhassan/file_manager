@@ -9,15 +9,14 @@ import 'package:explorer/screens/download_manager_screen/widgets/download_card.d
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
-class DoneScreen extends StatelessWidget {
-  const DoneScreen({
+class DownloadErrorScreen extends StatelessWidget {
+  const DownloadErrorScreen({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     var downloadProvider = downP(context);
-    var doneTasks = downloadProvider.doneTasks;
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
@@ -31,7 +30,7 @@ class DoneScreen extends StatelessWidget {
 
           VSpace(),
           Expanded(
-            child: doneTasks.isEmpty
+            child: downloadProvider.failedTasks.isEmpty
                 ? Container(
                     alignment: Alignment.center,
                     child: Column(
@@ -44,7 +43,7 @@ class DoneScreen extends StatelessWidget {
                         ),
                         VSpace(factor: .5),
                         Text(
-                          'No Finished Downloads',
+                          'No Failed Downloads',
                           style: h3InactiveTextStyle,
                         ),
                       ],
@@ -53,9 +52,9 @@ class DoneScreen extends StatelessWidget {
                 : PaddingWrapper(
                     padding: EdgeInsets.symmetric(horizontal: kHPad / 2),
                     child: ListView.builder(
-                      itemCount: doneTasks.length,
+                      itemCount: downloadProvider.failedTasks.length,
                       itemBuilder: (context, index) => DownloadCard(
-                        downloadTaskModel: doneTasks[index],
+                        downloadTaskModel: downloadProvider.failedTasks[index],
                       ),
                     ),
                   ),

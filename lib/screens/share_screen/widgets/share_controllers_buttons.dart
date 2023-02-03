@@ -73,7 +73,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                       } catch (e, s) {
                         showSnackBar(
                           context: context,
-                          message: CustomException(
+                          message: throw CustomException(
                             e: e,
                             s: s,
                           ).toString(),
@@ -92,7 +92,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                       } catch (e, s) {
                         showSnackBar(
                           context: context,
-                          message: CustomException(
+                          message: throw CustomException(
                             e: e,
                             s: s,
                           ).toString(),
@@ -147,7 +147,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                     );
                   }
                 } catch (e, s) {
-                  CustomException(e: e, s: s);
+                  throw CustomException(e: e, s: s);
                   showSnackBar(context: context, message: e.toString());
                 }
               },

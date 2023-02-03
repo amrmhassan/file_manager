@@ -30,7 +30,7 @@ class CustomRouterSystem {
       );
       routers.add(routerModel);
     } catch (e, s) {
-      CustomException(
+      throw CustomException(
         e: e,
         s: s,
         rethrowError: true,
@@ -57,7 +57,7 @@ class CustomRouterSystem {
         }
       }
     } catch (e, s) {
-      CustomException(
+      throw CustomException(
         e: e,
         s: s,
         rethrowError: true,

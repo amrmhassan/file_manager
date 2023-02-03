@@ -7,6 +7,7 @@ import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/remote_download_utils.dart' as rdu;
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 
@@ -22,19 +23,19 @@ class DownloadProvider extends ChangeNotifier {
   List<DownloadTaskModel> get activeTasks =>
       [..._downloadingTasks, ..._pendingTasks];
 
-  List<DownloadTaskModel> get doneTasks =>
-      [...tasks.where((element) => element.taskStatus == TaskStatus.finished)];
+  List<DownloadTaskModel> get doneTasks => [
+        ...tasks.where((element) => element.taskStatus == TaskStatus.finished)
+      ].reversed.toList();
 
-  List<DownloadTaskModel> get failedTasks =>
-      [...tasks.where((element) => element.taskStatus == TaskStatus.failed)];
+  List<DownloadTaskModel> get failedTasks => [
+        ...tasks.where((element) => element.taskStatus == TaskStatus.failed)
+      ].reversed.toList();
 
-  List<DownloadTaskModel> get _downloadingTasks => tasks
-      .where((element) => element.taskStatus == TaskStatus.downloading)
-      .toList();
+  Iterable<DownloadTaskModel> get _downloadingTasks =>
+      tasks.where((element) => element.taskStatus == TaskStatus.downloading);
 
-  List<DownloadTaskModel> get _pendingTasks => tasks
-      .where((element) => element.taskStatus == TaskStatus.pending)
-      .toList();
+  Iterable<DownloadTaskModel> get _pendingTasks =>
+      tasks.where((element) => element.taskStatus == TaskStatus.pending);
 
   void clearAllTasks() {
     tasks.clear();
@@ -126,6 +127,9 @@ class DownloadProvider extends ChangeNotifier {
     int index = tasks.indexWhere((element) => element.id == downloadTaskID);
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = taskStatus;
+    if (taskStatus == TaskStatus.finished) {
+      newTask.finishedAt = DateTime.now();
+    }
     tasks[index] = newTask;
     notifyListeners();
     if (taskStatus == TaskStatus.finished) {
@@ -164,7 +168,7 @@ class DownloadProvider extends ChangeNotifier {
 
       //? new way of downloading with multiple streams for faster downloading speed
       // ignore: unused_local_variable
-      int fileSize = await rdu.chunkedDownloadFile(
+      int? fileSize = await rdu.chunkedDownloadFile(
         url: remotePeer.getMyLink(downloadFileEndPoint),
         downloadPath: downloadFolderPath,
         setProgress: (int received) {
@@ -181,6 +185,13 @@ class DownloadProvider extends ChangeNotifier {
           deviceIDString: me.deviceID,
         },
       );
+      if (fileSize == null) {
+        throw CustomException(
+          e: 'File isn\'t valid',
+          s: StackTrace.current,
+          rethrowError: true,
+        );
+      }
       _markDownloadTask(
         downloadTaskModel.id,
         TaskStatus.finished,
@@ -220,12 +231,17 @@ class DownloadProvider extends ChangeNotifier {
       //     }
       //   },
       // );
-    } catch (e) {
+    } catch (e, s) {
       _markDownloadTask(
         downloadTaskModel.id,
         TaskStatus.failed,
         serverProvider,
         shareProvider,
+      );
+      throw CustomException(
+        e: e,
+        s: s,
+        rethrowError: true,
       );
     }
   }

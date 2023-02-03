@@ -27,7 +27,7 @@ Future<void> peerAddedServerFeedBack(ServerProvider serverProvider) async {
       );
     }
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,

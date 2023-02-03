@@ -40,7 +40,7 @@ Future addClient(
       },
     );
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -66,7 +66,7 @@ Future unsubscribeClient(
       );
     }
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -99,7 +99,7 @@ Future<void> getPeerShareSpace(
     );
     shareItemsExplorerProvider.setLoadingItems(false);
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -130,7 +130,7 @@ Future<void> broadCastFileRemovalFromShareSpace({
       data: paths,
     );
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -164,7 +164,7 @@ Future<void> broadCastFileAddedToShareSpace({
       }).toList(),
     );
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -199,7 +199,7 @@ Future<void> getFolderContent({
 
     shareItemsExplorerProvider.setLoadingItems(false, false);
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -235,7 +235,7 @@ Future<void> _broadcast({
       );
     }
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,

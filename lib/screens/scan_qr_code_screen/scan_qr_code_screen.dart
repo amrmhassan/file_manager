@@ -45,7 +45,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
         });
       });
     } catch (e, s) {
-      CustomException(
+      throw CustomException(
         e: e,
         s: s,
         rethrowError: true,

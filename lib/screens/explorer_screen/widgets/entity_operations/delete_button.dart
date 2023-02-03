@@ -14,7 +14,7 @@ class DeleteButton extends StatelessWidget {
     return OperationButton(
         iconName: 'delete',
         onTap: () {
-          confirmDeleteEntityModal(context);
+          confirmDeleteEntityModal(context: context);
         });
   }
 }

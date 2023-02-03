@@ -34,7 +34,7 @@ void addClientMiddleWare(
       );
     await peerAddedServerFeedBack(serverProvider);
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -61,7 +61,7 @@ void getShareSpaceMiddleWare(
       ..headers.contentType = ContentType.json
       ..add(encodeRequest(jsonResponse));
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -81,7 +81,7 @@ Future<void> clientAddedMiddleWare(
         decodedRequest.map((e) => PeerModel.fromJSON(e)).toList();
     serverProvider.updateAllPeers(listOfAllPeers);
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -99,7 +99,7 @@ void clientLeftMiddleWare(
 
     serverProvider.peerLeft(sessionID);
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -129,7 +129,7 @@ void fileAddedMiddleWare(
       sessionId: senderSessionID,
     );
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -156,7 +156,7 @@ void fileRemovedMiddleWare(
       sessionId: senderSessionID,
     );
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -202,7 +202,7 @@ Future<void> getFolderContentMiddleWare(
         ..add(encodedData);
     }
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -247,7 +247,7 @@ Future<void> streamAudioMiddleWare(
       ..add('Content-Range', 'bytes $start-$end/$length');
     file.openRead(start, end).pipe(req.response);
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -293,7 +293,7 @@ Future<void> streamVideoMiddleWare(
       ..add('Access-Control-Allow-Origin', '*');
     file.openRead(start, end).pipe(req.response);
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
@@ -339,7 +339,7 @@ Future<void> downloadFileMiddleWare(
       ..add('Content-Range', 'bytes $start-$end/$length');
     file.openRead(start, end).pipe(req.response);
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,

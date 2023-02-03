@@ -64,7 +64,7 @@ class ServerProvider extends ChangeNotifier {
   ]) async {
     String? myWifiIp = await getMyIpAddress(wifi);
     if (myWifiIp == null) {
-      CustomException(
+      throw CustomException(
         e: 'Ip is null',
         s: StackTrace.current,
         rethrowError: true,

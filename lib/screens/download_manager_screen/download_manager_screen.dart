@@ -7,8 +7,8 @@ import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/active_screen.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/done_screen.dart';
+import 'package:explorer/screens/download_manager_screen/widgets/download_error_screen.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_screen_navbar.dart';
-import 'package:explorer/screens/download_manager_screen/widgets/error_screen.dart';
 import 'package:flutter/material.dart';
 
 class DownloadManagerScreen extends StatefulWidget {
@@ -64,7 +64,7 @@ class _DownloadManagerScreenState extends State<DownloadManagerScreen> {
               children: [
                 ActiveScreen(),
                 DoneScreen(),
-                ErrorScreen(),
+                DownloadErrorScreen(),
               ],
             ),
           ),

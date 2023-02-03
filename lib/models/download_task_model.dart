@@ -21,6 +21,7 @@ class DownloadTaskModel {
   final PeerModel? peerModel;
   final String remoteFilePath;
   final DateTime addedAt;
+  DateTime? finishedAt;
   TaskStatus taskStatus;
   // downloaded file size in bytes
   final int? size;
@@ -32,6 +33,7 @@ class DownloadTaskModel {
     required this.remoteFilePath,
     required this.addedAt,
     required this.size,
+    this.finishedAt,
     this.count = 0,
     this.taskStatus = TaskStatus.pending,
     this.peerModel,
@@ -47,6 +49,8 @@ class DownloadTaskModel {
       sizeString: size == null ? dbNull : size.toString(),
       countString: count.toString(),
       taskStatusString: taskStatus.name,
+      finishedAtString:
+          finishedAt == null ? dbNull : finishedAt!.toIso8601String(),
     };
   }
   //! from json
@@ -60,6 +64,9 @@ class DownloadTaskModel {
       size: obj[sizeString] == dbNull ? null : int.parse(obj[sizeString]),
       count: int.parse(obj[countString]),
       taskStatus: stringToEnum(obj[taskStatusString], TaskStatus.values),
+      finishedAt: obj[finishedAtString] == dbNull
+          ? null
+          : DateTime.parse(obj[finishedAtString]),
     );
   }
 }

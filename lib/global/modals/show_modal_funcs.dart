@@ -77,19 +77,32 @@ Future<void> showFileExtChangeModal(BuildContext context,
 }
 
 //? confirm delete modal
-void confirmDeleteEntityModal(BuildContext context) {
+void confirmDeleteEntityModal({
+  required BuildContext context,
+  String? title,
+  String? subTitle,
+  VoidCallback? onOk,
+  VoidCallback? onCancel,
+  String? cancelText,
+  String? okText,
+}) {
   showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
     builder: (context) => DoubleButtonsModal(
-      title: 'Confirm Delete',
-      subTitle: 'Do you want to delete selected items?',
-      onOk: () {
-        var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
-        //? here delete the items
-        Provider.of<FilesOperationsProvider>(context, listen: false)
-            .performDelete(expProvider);
-      },
+      cancelText: cancelText,
+      onCancel: onCancel,
+      okText: okText,
+      title: title ?? 'Confirm Delete',
+      subTitle: subTitle ?? 'Do you want to delete selected items?',
+      onOk: onOk ??
+          () {
+            var expProvider =
+                Provider.of<ExplorerProvider>(context, listen: false);
+            //? here delete the items
+            Provider.of<FilesOperationsProvider>(context, listen: false)
+                .performDelete(expProvider);
+          },
     ),
   );
 }

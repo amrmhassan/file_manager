@@ -62,3 +62,4 @@ const String ownerSessionIDString = 'ownerSessionIDString';
 const String peerDeviceIDString = 'peerDeviceIDString';
 const String remoteFilePathString = 'remoteFilePathString';
 const String taskStatusString = 'taskStatusString';
+const String finishedAtString = 'finishedAtString';

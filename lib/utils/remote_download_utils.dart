@@ -9,10 +9,10 @@ bool fileAlreadyDownloadedChecker(String filePath) {
   return File(filePath).existsSync();
 }
 
-int maximumParallelDownloadThreads = 50;
+int maximumParallelDownloadThreads = 20;
 
 //? to download a file as chunks
-Future<int> chunkedDownloadFile({
+Future<int?> chunkedDownloadFile({
   required String url,
   required String downloadPath,
   required Function(int p) setProgress,
@@ -30,6 +30,7 @@ Future<int> chunkedDownloadFile({
     }
 
     Dio dio = Dio();
+    // dio.options.connectTimeout = 5000; //5s
     const chunkSize = 1024 * 1024 * 8;
     // const chunkSize = 3;
     // getting file info from the server endpoints
@@ -121,11 +122,11 @@ Future<int> chunkedDownloadFile({
     tempDir.deleteSync(recursive: true);
     return length;
   } catch (e, s) {
-    CustomException(
+    throw CustomException(
       e: e,
       s: s,
       rethrowError: true,
     );
   }
-  return 0;
+  return null;
 }
