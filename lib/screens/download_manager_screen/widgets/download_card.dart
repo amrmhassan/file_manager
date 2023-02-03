@@ -3,9 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
-import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_percent_bar.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/finished_task_info.dart';

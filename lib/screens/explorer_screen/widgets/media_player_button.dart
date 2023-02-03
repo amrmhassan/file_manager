@@ -71,9 +71,10 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                 // here i want to start over
                 await mpProviderFalse.setPlayingFile(
                   widget.network
-                      ? '$connLink$streamAudioEndPoint/${widget.mediaPath}'
+                      ? '$connLink$streamAudioEndPoint'
                       : widget.mediaPath,
                   widget.network,
+                  widget.mediaPath,
                 );
               }
             },
@@ -111,8 +112,10 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                     }
 
                     mpProviderFalse.playVideo(
-                        '$connLink$streamAudioEndPoint/${widget.mediaPath}',
-                        widget.network);
+                      '$connLink$streamAudioEndPoint',
+                      widget.network,
+                      widget.mediaPath,
+                    );
                     mpProviderFalse.setBottomVideoControllersHidden(false);
                   } else {
                     mpProviderFalse.playVideo(widget.mediaPath, widget.network);

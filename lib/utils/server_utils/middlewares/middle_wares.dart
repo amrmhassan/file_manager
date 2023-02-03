@@ -216,7 +216,7 @@ Future<void> streamAudioMiddleWare(
   HttpResponse response,
 ) async {
   try {
-    String audioPath = req.uri.path.split(streamAudioEndPoint)[1];
+    String audioPath = req.headers.value(filePathHeaderKey)!;
     audioPath = Uri.decodeComponent(audioPath);
 
     // var headers = req.headers;
@@ -261,7 +261,7 @@ Future<void> streamVideoMiddleWare(
   HttpResponse response,
 ) async {
   try {
-    String videoPath = req.uri.path.split(streamVideoEndPoint)[1];
+    String videoPath = req.headers.value(filePathHeaderKey)!;
     videoPath = Uri.decodeComponent(videoPath);
 
     // var headers = req.headers;

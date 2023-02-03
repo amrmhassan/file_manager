@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:explorer/constants/server_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:video_player/video_player.dart';
@@ -23,16 +24,22 @@ class MediaPlayerProvider extends ChangeNotifier {
 
 //? playing audio file path
   String? playingAudioFilePath;
-  Future<void> setPlayingFile(String path, [bool network = false]) async {
+
+  Future<void> setPlayingFile(
+    String path, [
+    bool network = false,
+    String? fileRemotePath,
+  ]) async {
     playingAudioFilePath = path;
     if (network) {
-      String parsedPath = path.replaceFirst('http://', '');
-      var parts = parsedPath.split('/');
-      parsedPath = parts.sublist(2).join('/');
-      playingAudioFilePath = parsedPath;
+      playingAudioFilePath = fileRemotePath;
     }
     notifyListeners();
-    await _playAudio(path, network);
+    await _playAudio(
+      path,
+      network,
+      fileRemotePath,
+    );
   }
 
   //? pause playing
@@ -47,6 +54,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   Future<void> _playAudio(
     String path, [
     bool network = false,
+    String? fileRemotePath,
   ]) async {
     try {
       if (durationStreamSub != null) {
@@ -55,6 +63,11 @@ class MediaPlayerProvider extends ChangeNotifier {
       if (network) {
         fullSongDuration = await _audioPlayer.setUrl(
           path,
+          headers: network
+              ? {
+                  filePathHeaderKey: Uri.encodeComponent(fileRemotePath!),
+                }
+              : null,
         );
       } else {
         fullSongDuration = await _audioPlayer.setFilePath(path);
@@ -129,7 +142,11 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   //? play video
-  void playVideo(String path, [bool network = false]) {
+  void playVideo(
+    String path, [
+    bool network = false,
+    String? fileRemotePath,
+  ]) {
     // print(path);
     // print(network);
     // print('object');
@@ -142,7 +159,14 @@ class MediaPlayerProvider extends ChangeNotifier {
     // }
 
     videoPlayerController = VideoPlayerController.network(path,
-        videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true))
+        httpHeaders: network
+            ? {
+                filePathHeaderKey: Uri.encodeComponent(fileRemotePath!),
+              }
+            : {},
+        videoPlayerOptions: VideoPlayerOptions(
+          allowBackgroundPlayback: true,
+        ))
       ..initialize().then((value) {
         videoHeight = videoPlayerController?.value.size.height;
         videoWidth = videoPlayerController?.value.size.width;

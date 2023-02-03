@@ -213,14 +213,8 @@ class DownloadProvider extends ChangeNotifier {
         remoteDeviceName: downloadTaskModel.remoteDeviceName,
       );
       // ignore: unused_local_variable
-      int? fileSize = await taskDownloadUtils.chunkedDownloadFile();
-      if (fileSize == null) {
-        throw CustomException(
-          e: 'File isn\'t valid',
-          s: StackTrace.current,
-          rethrowError: true,
-        );
-      }
+      await taskDownloadUtils.downloadFile();
+
       _markDownloadTask(
         downloadTaskModel.id,
         TaskStatus.finished,
