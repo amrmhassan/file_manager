@@ -69,6 +69,8 @@ class DownloadProvider extends ChangeNotifier {
   }
 
   void _resumeTaskDownload(int index) {
+    print('Resuming');
+    tasks[index].downloadTaskController!.resumeTask();
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = TaskStatus.downloading;
 
