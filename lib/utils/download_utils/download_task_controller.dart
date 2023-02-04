@@ -376,9 +376,8 @@ class DownloadTaskController {
       await _initTempDir();
       try {
         await _downloadChunks();
-        print('done');
         if (received != length) {
-          // zero return mean that the download isn't finished, paused
+          // zero return mean that the  isn't finished, paused
           return 0;
         }
       } catch (e) {

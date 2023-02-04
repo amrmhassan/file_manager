@@ -50,11 +50,19 @@ class DownloadProvider extends ChangeNotifier {
         .deleteSync(recursive: true);
   }
 
-  void togglePauseResumeTask(String taskID) {
+  void togglePauseResumeTask(
+    String taskID,
+    ServerProvider serverProvider,
+    ShareProvider shareProvider,
+  ) {
     int index = tasks.indexWhere((element) => element.id == taskID);
     TaskStatus taskStatus = tasks[index].taskStatus;
     if (taskStatus == TaskStatus.paused) {
-      _resumeTaskDownload(index);
+      _resumeTaskDownload(
+        index,
+        serverProvider,
+        shareProvider,
+      );
     } else if (taskStatus == TaskStatus.downloading) {
       _pauseTaskDownload(index);
     }
@@ -69,13 +77,22 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _resumeTaskDownload(int index) {
-    tasks[index].downloadTaskController!.resumeTask();
+  void _resumeTaskDownload(
+    int index,
+    ServerProvider serverProvider,
+    ShareProvider shareProvider,
+  ) {
+    // tasks[index].downloadTaskController!.resumeTask();
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = TaskStatus.downloading;
 
     tasks[index] = newTask;
     notifyListeners();
+    _startDownloadTask(
+      serverProvider: serverProvider,
+      shareProvider: shareProvider,
+      downloadTaskModel: newTask,
+    );
   }
 
   void _setTaskController(
@@ -226,6 +243,7 @@ class DownloadProvider extends ChangeNotifier {
       _setTaskController(downloadTaskModel.id, downloadTaskController);
       // ignore: unused_local_variable
       var res = await downloadTaskController.downloadFile();
+
       if (res == 0) {
         // zero return mean that the download isn't finished, paused
 

@@ -20,7 +20,11 @@ class PauseResumeDownloadButton extends StatelessWidget {
       padding: EdgeInsets.all(smallPadding),
       borderRadius: smallBorderRadius,
       onTap: () {
-        downPF(context).togglePauseResumeTask(downloadTaskModel.id);
+        downPF(context).togglePauseResumeTask(
+          downloadTaskModel.id,
+          serverPF(context),
+          sharePF(context),
+        );
       },
       child: Image.asset(
         'assets/icons/${downloadTaskModel.taskStatus == TaskStatus.downloading ? 'pause' : 'play'}.png',
