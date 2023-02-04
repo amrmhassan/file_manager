@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/utils/download_utils/custom_dio.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;
@@ -39,8 +40,8 @@ class ChunkProgressModel {
 
 class DownloadTaskController {
   //
-  Dio dio = Dio();
-  CancelToken _cancelToken = CancelToken();
+  CustomDio customDio = CustomDio();
+  CustomCancelToken _customCancelToken = CustomCancelToken();
   final int chunkSize = 1024 * 1024 * 8;
   int get chunksNumber => (length / chunkSize).ceil();
   bool continuingDownload = false;
@@ -88,8 +89,8 @@ class DownloadTaskController {
     futures.clear();
     received = chunksInfo.fold(
         0, (previousValue, element) => previousValue + element.count);
-    dio = Dio();
-    _cancelToken = CancelToken();
+    customDio = CustomDio();
+    _customCancelToken = CustomCancelToken();
   }
 
   Future<void> _reconstructChunkSizes() async {
@@ -158,7 +159,7 @@ class DownloadTaskController {
 
   void cancelTask() {
     try {
-      _cancelToken.cancel();
+      _customCancelToken.cancel();
     } catch (e) {
       printOnDebug(e);
       printOnDebug('Download cancelled');
@@ -184,7 +185,7 @@ class DownloadTaskController {
 
   Future<void> _initFileInfo() async {
     // initializing file length
-    length = int.parse((await dio.get(
+    length = int.parse((await Dio().get(
       '$url/length',
       options: Options(
         headers: {
@@ -208,52 +209,53 @@ class DownloadTaskController {
     tempDirPath = tempDir.path;
   }
 
-  void _constructChunksInfoFromStart() {
-    for (var i = 0; i < chunksNumber; i++) {
-      int start = i * chunkSize;
-      int end = (i + 1) * chunkSize;
-      if (end >= length) {
-        end = length;
-      }
-      String range = 'bytes=$start-$end';
-      chunksInfo.add(ChunkProgressModel(
-        size: end - start,
-        count: 0,
-        filePath: '$tempDirPath/$fileName-$i',
-      ));
+  // void _constructChunksInfoFromStart() {
+  //   for (var i = 0; i < chunksNumber; i++) {
+  //     int start = i * chunkSize;
+  //     int end = (i + 1) * chunkSize;
+  //     if (end >= length) {
+  //       end = length;
+  //     }
+  //     String range = 'bytes=$start-$end';
+  //     chunksInfo.add(ChunkProgressModel(
+  //       size: end - start,
+  //       count: 0,
+  //       filePath: '$tempDirPath/$fileName-$i',
+  //     ));
 
-      DateTime before = DateTime.now();
-      // to merge the headers, user headers and this function headers
-      Map<String, dynamic> mergedHeaders = {
-        HttpHeaders.rangeHeader: range,
-        filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
-        sessionIDHeaderKey: mySessionID,
-        deviceIDString: myDeviceID,
-      };
-      futures.add(
-        dio.download(
-          url,
-          chunksInfo[i].filePath,
-          cancelToken: _cancelToken,
-          deleteOnError: false,
-          onReceiveProgress: (count, total) {
-            _updateChunkProgress(chunksInfo[i].filePath, count);
-            received = chunksInfo.fold(
-                0, (previousValue, element) => previousValue + element.count);
-            setProgress(received);
-            DateTime after = DateTime.now();
-            int diff = after.difference(before).inMilliseconds;
-            double speed = (received / 1024 / 1024) / (diff / 1000);
-            setSpeed(speed);
-          },
-          options: Options(
-            headers: mergedHeaders,
-            responseType: ResponseType.stream,
-          ),
-        ),
-      );
-    }
-  }
+  //     DateTime before = DateTime.now();
+  //     // to merge the headers, user headers and this function headers
+  //     Map<String, dynamic> mergedHeaders = {
+  //       HttpHeaders.rangeHeader: range,
+  //       filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
+  //       sessionIDHeaderKey: mySessionID,
+  //       deviceIDString: myDeviceID,
+  //       "Accept": "application/octet-stream",
+  //     };
+  //     futures.add(
+  //       customDio.download(
+  //         url,
+  //         chunksInfo[i].filePath,
+  //         cancelToken: _customCancelToken,
+  //         onReceiveProgress: (count, total) {
+  //           _updateChunkProgress(chunksInfo[i].filePath, count);
+  //           received = chunksInfo.fold(
+  //               0, (previousValue, element) => previousValue + element.count);
+  //           setProgress(received);
+  //           DateTime after = DateTime.now();
+  //           int diff = after.difference(before).inMilliseconds;
+  //           double speed = (received / 1024 / 1024) / (diff / 1000);
+  //           setSpeed(speed);
+  //         },
+  //         headers: mergedHeaders,
+
+  //         // options: Options(
+  //         //   responseType: ResponseType.stream,
+  //         // ),
+  //       ),
+  //     );
+  //   }
+  // }
 
   void _useReconstructedInfoList() {
     // [] contains each chunk , | means that i downloaded till this byte
@@ -288,14 +290,14 @@ class DownloadTaskController {
         filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
         sessionIDHeaderKey: mySessionID,
         deviceIDString: myDeviceID,
+        "Accept": "application/octet-stream",
       };
 
       futures.add(
-        dio.download(
+        customDio.download(
           url,
           chunksInfo[i].filePath,
-          cancelToken: _cancelToken,
-          deleteOnError: false,
+          cancelToken: _customCancelToken,
           onReceiveProgress: (count, total) {
             _updateChunkProgress(chunksInfo[i].filePath, count);
             received = chunksInfo.fold(
@@ -306,10 +308,11 @@ class DownloadTaskController {
             double speed = (received / 1024 / 1024) / (diff / 1000);
             setSpeed(speed);
           },
-          options: Options(
-            headers: mergedHeaders,
-            responseType: ResponseType.stream,
-          ),
+          headers: mergedHeaders,
+
+          // options: Options(
+          //   responseType: ResponseType.stream,
+          // ),
         ),
       );
     }
@@ -336,10 +339,8 @@ class DownloadTaskController {
   }
 
   Future<void> _downloadChunks() async {
-    print('Before split');
     var listOfDownloads = await _splitFileTask();
 
-    print('After split');
     for (var downloadPatch in listOfDownloads) {
       await Future.wait(downloadPatch);
     }
@@ -371,13 +372,9 @@ class DownloadTaskController {
       await _initTempDir();
       try {
         await _downloadChunks();
-      } catch (e, s) {
-        print(e);
-        print(s);
-
+      } catch (e) {
         return 0;
       }
-      print('downloaded');
       await _collectTheFinalFile();
       await _deleteTempDir();
     } catch (e, s) {

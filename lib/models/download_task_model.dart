@@ -2,7 +2,7 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/peer_model.dart';
-import 'package:explorer/utils/download_task_controller.dart';
+import 'package:explorer/utils/download_utils/download_task_controller.dart';
 
 //? these tasks will be saved into the sqlite for later download
 //? downloading might be continued in another session so i provided peer model which wont be saved to sqlite

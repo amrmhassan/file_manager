@@ -9,7 +9,8 @@ import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
-import 'package:explorer/utils/download_task_controller.dart' as rdu;
+import 'package:explorer/utils/download_utils/download_task_controller.dart'
+    as rdu;
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 
 import 'package:flutter/material.dart';
@@ -69,7 +70,6 @@ class DownloadProvider extends ChangeNotifier {
   }
 
   void _resumeTaskDownload(int index) {
-    print('Resuming');
     tasks[index].downloadTaskController!.resumeTask();
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = TaskStatus.downloading;
