@@ -55,6 +55,7 @@ class DownloadTaskController {
   List<ChunkProgressModel> chunksInfo = [];
 
   // task runtime properties
+  int initialReceived = 0;
   int received = 0;
   late int length;
   late String fileName;
@@ -87,8 +88,7 @@ class DownloadTaskController {
   void _resetRunTimeVariables() {
     chunksInfo.clear();
     futures.clear();
-    received = chunksInfo.fold(
-        0, (previousValue, element) => previousValue + element.count);
+    received = initialReceived;
     customDio = CustomDio();
     _customCancelToken = CustomCancelToken();
   }
@@ -138,6 +138,8 @@ class DownloadTaskController {
         );
       }
     }
+    initialReceived = chunksInfo.fold(
+        0, (previousValue, element) => previousValue + element.count);
   }
 
   Future<void> _createChunksInfoFile() async {
@@ -301,7 +303,9 @@ class DownloadTaskController {
           onReceiveProgress: (count, total) {
             _updateChunkProgress(chunksInfo[i].filePath, count);
             received = chunksInfo.fold(
-                0, (previousValue, element) => previousValue + element.count);
+              initialReceived,
+              (previousValue, element) => previousValue + element.count,
+            );
             setProgress(received);
             DateTime after = DateTime.now();
             int diff = after.difference(before).inMilliseconds;
@@ -372,11 +376,20 @@ class DownloadTaskController {
       await _initTempDir();
       try {
         await _downloadChunks();
+        print('done');
+        if (received != length) {
+          // zero return mean that the download isn't finished, paused
+          return 0;
+        }
       } catch (e) {
-        return 0;
+        // null return means download error
+        return null;
       }
+
       await _collectTheFinalFile();
       await _deleteTempDir();
+      // length return means download finished
+      return length;
     } catch (e, s) {
       throw CustomException(
         e: e,

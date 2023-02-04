@@ -226,7 +226,11 @@ class DownloadProvider extends ChangeNotifier {
       _setTaskController(downloadTaskModel.id, downloadTaskController);
       // ignore: unused_local_variable
       var res = await downloadTaskController.downloadFile();
-      if (res != 0) {
+      if (res == 0) {
+        // zero return mean that the download isn't finished, paused
+
+        return;
+      } else if (res is int && res > 0) {
         // this mean that the file has been paused
         // if the connection has been cut this mean that there was an error and it shouldn't be considered paused, but error task status
         // the task is already downloading from the latest call of _markDownloadTask so this toggle will mark it as paused
@@ -237,6 +241,8 @@ class DownloadProvider extends ChangeNotifier {
           serverProvider,
           shareProvider,
         );
+      } else {
+        throw Exception('Error occurred during download');
       }
     } catch (e, s) {
       _markDownloadTask(

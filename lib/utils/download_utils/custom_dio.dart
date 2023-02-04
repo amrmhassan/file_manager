@@ -38,13 +38,14 @@ class CustomDio {
           raf.closeSync();
           responseSubscription.cancel();
           completer.complete(received);
+          // throw Exception('Cancelled');
           return;
         }
       }
       received += chunk.length;
       raf.writeFromSync(chunk);
       if (onReceiveProgress != null) {
-        onReceiveProgress(length, received);
+        onReceiveProgress(received, length);
       }
       if (received == length) {
         raf.closeSync();
