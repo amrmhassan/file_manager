@@ -27,20 +27,6 @@ class DownloadCard extends StatefulWidget {
 
 class _DownloadCardState extends State<DownloadCard> {
   final ScrollController _downloadCardScrollController = ScrollController();
-  // @override
-  // void initState() {
-  //   try {
-  //     WidgetsBinding.instance.addPostFrameCallback(
-  //       (timeStamp) {
-  //         _scrollController.animateTo(-_scrollController.offset,
-  //             duration: Duration(milliseconds: 500), curve: Curves.easeIn);
-  //       },
-  //     );
-  //   } catch (e) {
-  //     printOnDebug(e);
-  //   }
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {

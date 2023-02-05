@@ -40,7 +40,7 @@ class DownloadPercentBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              '${handleConvertSize(downloadTaskModel.count, 0)}/${handleConvertSize(downloadTaskModel.size!)}',
+              '${handleConvertSize(downloadTaskModel.count, 1)}/${handleConvertSize(downloadTaskModel.size!)}',
               style: h5TextStyle,
             ),
             Spacer(),

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:web_socket_channel/io.dart';
 
 import 'constants.dart';

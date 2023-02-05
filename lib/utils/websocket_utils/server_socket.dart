@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'dart:io';
 
@@ -29,6 +29,7 @@ class ServerSocket {
       socket.listen(
         (event) {
           // here the server(host) will receive joining requests
+          print('Message from client $si => $event');
         },
         onDone: () {
           print('Device $si disconnected');

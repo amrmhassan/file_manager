@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/utils/download_utils/custom_dio.dart';
@@ -12,11 +13,13 @@ class ChunkProgressModel {
   final int size;
   int count;
   final String filePath;
+  bool previousCountAdded;
 
   ChunkProgressModel({
     required this.size,
     required this.count,
     required this.filePath,
+    this.previousCountAdded = false,
   });
 }
 
@@ -41,10 +44,11 @@ class ChunkProgressModel {
 class DownloadTaskController {
   //
   CustomDio customDio = CustomDio();
-  CustomCancelToken _customCancelToken = CustomCancelToken();
-  final int chunkSize = 1024 * 1024 * 8;
+  final CustomCancelToken _customCancelToken = CustomCancelToken();
+  final int chunkSize = 1024 * 1024 * 40;
   int get chunksNumber => (length / chunkSize).ceil();
   bool continuingDownload = false;
+  bool previousReceivedAddedOnce = false;
 
   // temp dir info
   late Directory tempDir;
@@ -52,10 +56,11 @@ class DownloadTaskController {
 
   // sub files info
   List<Future> futures = <Future>[];
+  late List<List<Future<dynamic>>> listOfDownloads;
   List<ChunkProgressModel> chunksInfo = [];
 
   // task runtime properties
-  int initialReceived = 0;
+  List<int> previousReceived = [];
   int received = 0;
   late int length;
   late String fileName;
@@ -85,21 +90,21 @@ class DownloadTaskController {
     this.maximumParallelDownloadThreads = 20,
   });
 
-  void _resetRunTimeVariables() {
-    chunksInfo.clear();
-    futures.clear();
-    received = initialReceived;
-    customDio = CustomDio();
-    _customCancelToken = CustomCancelToken();
-  }
+  // void _resetRunTimeVariables() {
+  //   chunksInfo.clear();
+  //   futures.clear();
+  //   received = initialReceived;
+  //   customDio = CustomDio();
+  //   _customCancelToken = CustomCancelToken();
+  // }
 
-  Future<void> _reconstructChunkSizes() async {
+  void _reconstructChunkSizes() {
     String infoFilePath = '$tempDirPath/info_file.txt';
     File file = File(infoFilePath);
     bool exist = file.existsSync();
     if (!exist) return;
     continuingDownload = true;
-    _resetRunTimeVariables();
+    // _resetRunTimeVariables();
 
     // {
     //    'path':'the path to sub file'
@@ -138,11 +143,10 @@ class DownloadTaskController {
         );
       }
     }
-    initialReceived = chunksInfo.fold(
-        0, (previousValue, element) => previousValue + element.count);
+    previousReceived = chunksInfo.map((e) => e.count).toList();
   }
 
-  Future<void> _createChunksInfoFile() async {
+  void _createChunksInfoFile() {
     // this won't be needed in case of continuing stopped downloading
     // if the info file already exists, this means that you need to read the data from it and set the global variable "continuingDownload" to be true
     // in the downloading process you need to update your code to start not from zero but from the count of the chunkInfo Model and end at the chunkInfo model size
@@ -152,25 +156,19 @@ class DownloadTaskController {
     if (exist) return;
 
     RandomAccessFile infoFile =
-        await File(infoFilePath).open(mode: FileMode.append);
+        File(infoFilePath).openSync(mode: FileMode.append);
     for (var chunk in chunksInfo) {
-      await infoFile.writeString('${chunk.filePath}|${chunk.size}||');
+      infoFile.writeStringSync('${chunk.filePath}|${chunk.size}||');
     }
-    await infoFile.close();
+    infoFile.closeSync();
   }
 
   void cancelTask() {
     try {
       _customCancelToken.cancel();
     } catch (e) {
-      printOnDebug(e);
-      printOnDebug('Download cancelled');
-      // printOnDebug(s);
+      logger.i('Download Cancelled', null, StackTrace.current);
     }
-  }
-
-  Future<void> resumeTask() async {
-    await downloadFile();
   }
 
   void _updateChunkProgress(String chunkPath, int chunkCount) {
@@ -200,66 +198,18 @@ class DownloadTaskController {
     fileName = path_operations.basename(remoteFilePath);
   }
 
-  Future<void> _initTempDir() async {
+  void _initTempDir() {
     // getting the chunks number for the final file
     // making the temp dir for that will hold the temp files
     tempDir =
         Directory('${path_operations.dirname(downloadPath)}/.$fileName-tmp');
     if (!tempDir.existsSync()) {
-      await tempDir.create();
+      tempDir.createSync();
     }
     tempDirPath = tempDir.path;
   }
 
-  // void _constructChunksInfoFromStart() {
-  //   for (var i = 0; i < chunksNumber; i++) {
-  //     int start = i * chunkSize;
-  //     int end = (i + 1) * chunkSize;
-  //     if (end >= length) {
-  //       end = length;
-  //     }
-  //     String range = 'bytes=$start-$end';
-  //     chunksInfo.add(ChunkProgressModel(
-  //       size: end - start,
-  //       count: 0,
-  //       filePath: '$tempDirPath/$fileName-$i',
-  //     ));
-
-  //     DateTime before = DateTime.now();
-  //     // to merge the headers, user headers and this function headers
-  //     Map<String, dynamic> mergedHeaders = {
-  //       HttpHeaders.rangeHeader: range,
-  //       filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
-  //       sessionIDHeaderKey: mySessionID,
-  //       deviceIDString: myDeviceID,
-  //       "Accept": "application/octet-stream",
-  //     };
-  //     futures.add(
-  //       customDio.download(
-  //         url,
-  //         chunksInfo[i].filePath,
-  //         cancelToken: _customCancelToken,
-  //         onReceiveProgress: (count, total) {
-  //           _updateChunkProgress(chunksInfo[i].filePath, count);
-  //           received = chunksInfo.fold(
-  //               0, (previousValue, element) => previousValue + element.count);
-  //           setProgress(received);
-  //           DateTime after = DateTime.now();
-  //           int diff = after.difference(before).inMilliseconds;
-  //           double speed = (received / 1024 / 1024) / (diff / 1000);
-  //           setSpeed(speed);
-  //         },
-  //         headers: mergedHeaders,
-
-  //         // options: Options(
-  //         //   responseType: ResponseType.stream,
-  //         // ),
-  //       ),
-  //     );
-  //   }
-  // }
-
-  void _useReconstructedInfoList() {
+  void _addDownloadFuturesAndSetChunksInfo() {
     // [] contains each chunk , | means that i downloaded till this byte
     // [12|34][5|678][345|6][2345|]
     // when i ==0 => i am pointing to the first  chunk then the start should be from the downloaded part ==> count+(i*chunkSize) = 2+(0*4) =2 ,, end = (i+1)*chunkSize = 4
@@ -302,16 +252,28 @@ class DownloadTaskController {
           cancelToken: _customCancelToken,
           onReceiveProgress: (count, total) {
             _updateChunkProgress(chunksInfo[i].filePath, count);
-            received = chunksInfo.fold(
-              initialReceived,
-              (previousValue, element) => previousValue + element.count,
-            );
+            if (previousReceivedAddedOnce) {
+              received = chunksInfo.fold(
+                0,
+                (previousValue, element) => previousValue + element.count,
+              );
+            } else {
+              received = chunksInfo.fold(
+                    0,
+                    (previousValue, element) => previousValue + element.count,
+                  ) +
+                  previousReceived.fold(
+                      0, (previousValue, element) => previousValue + element);
+              previousReceivedAddedOnce = true;
+            }
+            print(handleConvertSize(received));
             setProgress(received);
             DateTime after = DateTime.now();
             int diff = after.difference(before).inMilliseconds;
             //! i subtracted the initialReceived to avoid miss speed measuring=> never tested yet
-            double speed =
-                ((received - initialReceived) / 1024 / 1024) / (diff / 1000);
+            double speed = ((received) / 1024 / 1024) / (diff / 1000);
+            // double speed =
+            //     ((received - previousReceived) / 1024 / 1024) / (diff / 1000);
             setSpeed(speed);
           },
           headers: mergedHeaders,
@@ -324,15 +286,12 @@ class DownloadTaskController {
     }
   }
 
-  Future<List<List<Future>>> _splitFileTask() async {
+  void _handleSplitFileTask() {
     // this function will return set the variable continuingDownload to be true if it finds the info file
     // this means that the chunks list has been constructed and i don't want to construct it from the start
     // so if continuingDownload==true => then i need to use the reconstructed version of the info list to continue downloading
-    await _reconstructChunkSizes();
-    _useReconstructedInfoList();
-    await _createChunksInfoFile();
 
-    List<List<Future>> listOfDownloads = List.generate(
+    listOfDownloads = List.generate(
       (futures.length / maximumParallelDownloadThreads).ceil(),
       (index) => futures.sublist(
           index * maximumParallelDownloadThreads,
@@ -340,13 +299,9 @@ class DownloadTaskController {
               ? futures.length
               : ((index + 1) * maximumParallelDownloadThreads)),
     );
-
-    return listOfDownloads;
   }
 
   Future<void> _downloadChunks() async {
-    var listOfDownloads = await _splitFileTask();
-
     for (var downloadPatch in listOfDownloads) {
       await Future.wait(downloadPatch);
     }
@@ -375,10 +330,15 @@ class DownloadTaskController {
         return;
       }
       await _initFileInfo();
-      await _initTempDir();
+      _initTempDir();
+      _reconstructChunkSizes();
+      _addDownloadFuturesAndSetChunksInfo();
+      _createChunksInfoFile();
+      _handleSplitFileTask();
       try {
         await _downloadChunks();
-        if (received != length) {
+
+        if ((received) != length) {
           // zero return mean that the  isn't finished, paused
           return 0;
         }
@@ -400,3 +360,11 @@ class DownloadTaskController {
     }
   }
 }
+
+
+// first
+// received 9956548
+// initial  0
+
+// second
+// received 
