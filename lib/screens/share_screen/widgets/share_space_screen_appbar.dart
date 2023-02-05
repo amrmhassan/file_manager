@@ -88,7 +88,13 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
                     // );
                     //! this is just temporary
                     client_utils.unsubscribeMe(serverProviderFalse);
-                    serverProviderFalse.closeServer();
+                    // the client server will be closed from the custom client socket
+                    // and this will happen if the host is disconnected
+                    // or when i am disconnected
+                    // so i don't need to call the close server form here
+                    if (serverProviderFalse.myType == MemberType.host) {
+                      serverProviderFalse.closeServer();
+                    }
                   },
                   child: Image.asset(
                     'assets/icons/info.png',

@@ -3,10 +3,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:explorer/utils/server_utils/middlewares/router.dart';
@@ -29,9 +31,18 @@ class ServerProvider extends ChangeNotifier {
   HttpServer? httpServer;
   List<PeerModel> peers = [];
   late WebSocketSink myClientWsSink;
+  late CustomServerSocket customServerSocket;
+
+  late MemberType myType;
+  late HttpServer wsServer;
 
   void setMyWsChannel(WebSocketSink s) {
     myClientWsSink = s;
+    notifyListeners();
+  }
+
+  void setMyServerSocket(CustomServerSocket s) {
+    customServerSocket = s;
     notifyListeners();
   }
 
@@ -71,9 +82,16 @@ class ServerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> closeWsServer() async {
+    logger.i('Closing ws Server');
+    await customServerSocket.sendCloseMsg();
+    await wsServer.close();
+  }
+
   //? send file
   Future<void> openServer(
     ShareProvider shareProvider,
+    MemberType memberType,
     ShareItemsExplorerProvider shareItemsExplorerProvider, [
     bool wifi = true,
   ]) async {
@@ -87,9 +105,11 @@ class ServerProvider extends ChangeNotifier {
     }
     //? opening the server port and setting end points
     httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
-    CustomServerSocket customServerSocket =
-        CustomServerSocket(myWifiIp, this, shareProvider);
-    myWSConnLink = await customServerSocket.getWsConnLink();
+    if (memberType == MemberType.host) {
+      customServerSocket = CustomServerSocket(myWifiIp, this, shareProvider);
+      wsServer = await customServerSocket.getWsConnLink();
+      myWSConnLink = getConnLink(myWifiIp, wsServer.port, true);
+    }
 
     CustomRouterSystem customRouterSystem =
         addServerRouters(this, shareProvider, shareItemsExplorerProvider);
@@ -99,12 +119,13 @@ class ServerProvider extends ChangeNotifier {
 
     myIp = myWifiIp;
     myConnLink = 'http://$myWifiIp:$myPort';
+    myType = memberType;
 
     PeerModel meHost = PeerModel(
       deviceID: shareProvider.myDeviceId,
       joinedAt: DateTime.now(),
-      name: 'Server Name',
-      memberType: MemberType.host,
+      name: memberType == MemberType.host ? 'Server Name' : 'Client Name',
+      memberType: memberType,
       ip: myIp!,
       port: myPort,
       sessionID: Uuid().v4(),
@@ -115,7 +136,8 @@ class ServerProvider extends ChangeNotifier {
 
   //? to close the server
   Future closeServer() async {
-    await httpServer!.close();
+    logger.i('Closing normal http server');
+    await httpServer?.close();
     httpServer = null;
     peers.clear();
     myConnLink = null;
@@ -129,16 +151,16 @@ class ServerProvider extends ChangeNotifier {
     ShareItemsExplorerProvider shareItemsExplorerProvider,
   ) async {
     await httpServer?.close();
-    await openServer(shareProvider, shareItemsExplorerProvider);
+    await openServer(shareProvider, myType, shareItemsExplorerProvider);
   }
 
   //# server functions
-  PeerModel addPeer(String clientId, String name, String ip, int port) {
+  PeerModel addPeer(
+      String sessionID, String clientId, String name, String ip, int port) {
     // if the peer is already registered
     // this might mean that he disconnected
     // so i will replace the current session with the new one
     bool exists = peers.any((element) => element.deviceID == clientId);
-    String sessionID = Uuid().v4();
     PeerModel peerModel = PeerModel(
       deviceID: clientId,
       joinedAt: DateTime.now(),

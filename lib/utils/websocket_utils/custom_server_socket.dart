@@ -3,10 +3,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
-import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:uuid/uuid.dart';
 
 import 'constants.dart';
@@ -14,6 +14,8 @@ import 'socket_conn_model.dart';
 
 class CustomServerSocket {
   final String myIp;
+  late Stream<WebSocket> websocketServer;
+  List<SocketConnModel> sockets = [];
   CustomServerSocket(
     this.myIp,
     ServerProvider serverProviderFalse,
@@ -24,14 +26,21 @@ class CustomServerSocket {
       shareProviderFalse,
     );
   }
-  Completer<String> connLinkCompleter = Completer<String>();
+  Completer<HttpServer> connLinkCompleter = Completer<HttpServer>();
 
-  Future<String> getWsConnLink() async {
-    return connLinkCompleter.future;
+  Future<void> sendCloseMsg() async {
+    for (var socket in sockets) {
+      _sendToClient(
+        'server disconnected',
+        serverDisconnected,
+        socket.webSocket,
+      );
+    }
   }
 
-  late Stream<WebSocket> websocketServer;
-  List<SocketConnModel> sockets = [];
+  Future<HttpServer> getWsConnLink() async {
+    return connLinkCompleter.future;
+  }
 
   Future<void> _transform(
     ServerProvider serverProviderFalse,
@@ -39,9 +48,9 @@ class CustomServerSocket {
   ) async {
     var server = await HttpServer.bind(InternetAddress.anyIPv4, 0);
     websocketServer = server.transform(WebSocketTransformer());
-    String connLink = getConnLink(myIp, server.port, true);
-    connLinkCompleter.complete(connLink);
-    print('SocketServer $connLink');
+
+    connLinkCompleter.complete(server);
+    logger.w('ws server listening at ${server.port}');
 
     await for (var socket in websocketServer) {
       String si = Uuid().v4();
@@ -58,19 +67,20 @@ class CustomServerSocket {
           print('Message from client $si => $event');
         },
         onDone: () {
-          print('Device $si disconnected');
+          logger.w('Device $si disconnected');
           var copiedSockets = [...sockets];
           for (var socket in copiedSockets) {
             if (socket.sessionID == si) {
               sockets.removeWhere((element) => element.sessionID == si);
+              serverProviderFalse.peerLeft(si);
+              client_utils.broadcastUnsubscribeClient(
+                serverProviderFalse,
+                shareProviderFalse,
+              );
               continue;
             }
 
             // _sendToClient(si, disconnectedIDPath, socket.webSocket);
-            client_utils.broadcastUnsubscribeClient(
-              serverProviderFalse,
-              shareProviderFalse,
-            );
           }
           print('Remaining devices ${sockets.length}');
         },

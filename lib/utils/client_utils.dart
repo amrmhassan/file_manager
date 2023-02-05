@@ -24,8 +24,19 @@ Future addClient(
   ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) async {
   try {
+    String? mySessionID =
+        await connectToWsServer(connLink, serverProviderFalse);
+    if (mySessionID == null) {
+      throw CustomException(
+        e: 'My Session ID is null',
+        s: StackTrace.current,
+      );
+    }
     await serverProviderFalse.openServer(
-        shareProvider, shareItemsExplorerProvider);
+      shareProvider,
+      MemberType.client,
+      shareItemsExplorerProvider,
+    );
     String deviceID = shareProvider.myDeviceId;
     String name = 'Client Name';
     String myIp = serverProviderFalse.myIp!;
@@ -37,10 +48,9 @@ Future addClient(
         deviceIDString: deviceID,
         portString: myPort,
         ipString: myIp,
+        sessionIDString: mySessionID,
       },
     );
-
-    await connectToWsServer(connLink, serverProviderFalse);
   } catch (e, s) {
     throw CustomException(
       e: e,
@@ -53,8 +63,15 @@ Future addClient(
 Future unsubscribeMe(ServerProvider serverProviderFalse) async {
   // if i left, this will tell the server about that
   // then the server will tell every one else about me
-  serverProviderFalse.myClientWsSink
-      .close(null, 'user normally left the group');
+  //! here check if i am a client or a server
+  //! if client just leave it as it is
+  //! or close the server instead
+  if (serverProviderFalse.myType == MemberType.client) {
+    serverProviderFalse.myClientWsSink
+        .close(null, 'user normally left the group');
+  } else if (serverProviderFalse.myType == MemberType.host) {
+    serverProviderFalse.closeWsServer();
+  }
 }
 
 //? to send a client left request
@@ -257,7 +274,7 @@ Future<void> _broadcast({
 
 //! check the method of addclient
 //! i am calling openServer, debug if the client opens add a peer model with server name, and host or not
-Future<void> connectToWsServer(
+Future<String?> connectToWsServer(
   String connLink,
   ServerProvider serverProviderFalse,
 ) async {
@@ -269,7 +286,9 @@ Future<void> connectToWsServer(
         .data;
 
     clientSocket.client(wsConnLink, serverProviderFalse);
+    String mySessionID = await clientSocket.getMySessionID();
     serverProviderFalse.setMyWsChannel(clientSocket.clientChannel.sink);
+    return mySessionID;
   } catch (e, s) {
     throw CustomException(
       e: e,

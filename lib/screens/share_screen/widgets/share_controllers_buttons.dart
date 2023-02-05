@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
@@ -31,6 +32,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
   Future localOpenServerHandler([bool wifi = true]) async {
     await serverPF(context).openServer(
       sharePF(context),
+      MemberType.host,
       shareExpPF(context),
       wifi,
     );

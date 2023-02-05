@@ -27,7 +27,9 @@ void addClientMiddleWare(
     String deviceID = body[deviceIDString] as String;
     String ip = body[ipString] as String;
     int port = body[portString];
-    PeerModel peerModel = serverProvider.addPeer(deviceID, name, ip, port);
+    String sessionID = body[sessionIDString];
+    PeerModel peerModel =
+        serverProvider.addPeer(sessionID, deviceID, name, ip, port);
     response
       ..headers.contentType = ContentType.json
       ..write(
