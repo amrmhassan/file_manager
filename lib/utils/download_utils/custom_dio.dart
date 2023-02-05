@@ -7,7 +7,7 @@ class CustomDio {
   Future<int> download(
     String url,
     String savePath, {
-    Function(int total, int received)? onReceiveProgress,
+    Function(int total, int received, int chunkSize)? onReceiveProgress,
     CustomCancelToken? cancelToken,
     bool deleteIfExist = false,
     Map<String, dynamic>? headers,
@@ -45,7 +45,7 @@ class CustomDio {
       received += chunk.length;
       raf.writeFromSync(chunk);
       if (onReceiveProgress != null) {
-        onReceiveProgress(received, length);
+        onReceiveProgress(received, length, chunk.length);
       }
       if (received == length) {
         raf.closeSync();

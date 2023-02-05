@@ -6,20 +6,17 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/utils/download_utils/custom_dio.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
 class ChunkProgressModel {
   final int size;
   int count;
   final String filePath;
-  bool previousCountAdded;
 
   ChunkProgressModel({
     required this.size,
     required this.count,
     required this.filePath,
-    this.previousCountAdded = false,
   });
 }
 
@@ -48,8 +45,6 @@ class DownloadTaskController {
   final int chunkSize = 1024 * 1024 * 40;
   int get chunksNumber => (length / chunkSize).ceil();
   bool continuingDownload = false;
-  bool previousReceivedAddedOnce = false;
-
   // temp dir info
   late Directory tempDir;
   late String tempDirPath;
@@ -58,9 +53,9 @@ class DownloadTaskController {
   List<Future> futures = <Future>[];
   late List<List<Future<dynamic>>> listOfDownloads;
   List<ChunkProgressModel> chunksInfo = [];
+  int previousReceived = 0;
 
   // task runtime properties
-  List<int> previousReceived = [];
   int received = 0;
   late int length;
   late String fileName;
@@ -143,7 +138,10 @@ class DownloadTaskController {
         );
       }
     }
-    previousReceived = chunksInfo.map((e) => e.count).toList();
+    previousReceived = chunksInfo.fold(
+      0,
+      (previousValue, element) => previousValue + element.count,
+    );
   }
 
   void _createChunksInfoFile() {
@@ -171,11 +169,11 @@ class DownloadTaskController {
     }
   }
 
-  void _updateChunkProgress(String chunkPath, int chunkCount) {
+  void _updateChunkProgress(String chunkPath, int newChunkSize) {
     int index =
         chunksInfo.indexWhere((element) => element.filePath == chunkPath);
     ChunkProgressModel chunkProgressModel = chunksInfo[index];
-    chunkProgressModel.count = chunkCount;
+    chunkProgressModel.count += newChunkSize;
     chunksInfo[index] = chunkProgressModel;
   }
 
@@ -250,30 +248,20 @@ class DownloadTaskController {
           url,
           chunksInfo[i].filePath,
           cancelToken: _customCancelToken,
-          onReceiveProgress: (count, total) {
-            _updateChunkProgress(chunksInfo[i].filePath, count);
-            if (previousReceivedAddedOnce) {
-              received = chunksInfo.fold(
-                0,
-                (previousValue, element) => previousValue + element.count,
-              );
-            } else {
-              received = chunksInfo.fold(
-                    0,
-                    (previousValue, element) => previousValue + element.count,
-                  ) +
-                  previousReceived.fold(
-                      0, (previousValue, element) => previousValue + element);
-              previousReceivedAddedOnce = true;
-            }
-            print(handleConvertSize(received));
+          onReceiveProgress: (_, total, chunkSize) {
+            _updateChunkProgress(chunksInfo[i].filePath, chunkSize);
+            received = chunksInfo.fold(
+              0,
+              (previousValue, element) => previousValue + element.count,
+            );
+
             setProgress(received);
             DateTime after = DateTime.now();
             int diff = after.difference(before).inMilliseconds;
             //! i subtracted the initialReceived to avoid miss speed measuring=> never tested yet
-            double speed = ((received) / 1024 / 1024) / (diff / 1000);
-            // double speed =
-            //     ((received - previousReceived) / 1024 / 1024) / (diff / 1000);
+            double speed =
+                ((received - previousReceived) / 1024 / 1024) / (diff / 1000);
+
             setSpeed(speed);
           },
           headers: mergedHeaders,
