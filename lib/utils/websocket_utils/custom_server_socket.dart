@@ -30,11 +30,15 @@ class CustomServerSocket {
 
   Future<void> sendCloseMsg() async {
     for (var socket in sockets) {
-      _sendToClient(
-        'server disconnected',
-        serverDisconnected,
-        socket.webSocket,
-      );
+      try {
+        _sendToClient(
+          'server disconnected',
+          serverDisconnected,
+          socket.webSocket,
+        );
+      } catch (e) {
+        logger.e(e.toString());
+      }
     }
   }
 
@@ -76,6 +80,7 @@ class CustomServerSocket {
               client_utils.broadcastUnsubscribeClient(
                 serverProviderFalse,
                 shareProviderFalse,
+                si,
               );
               continue;
             }

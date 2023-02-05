@@ -42,7 +42,7 @@ class DownloadTaskController {
   //
   CustomDio customDio = CustomDio();
   final CustomCancelToken _customCancelToken = CustomCancelToken();
-  final int chunkSize = 1024 * 1024 * 40;
+  final int chunkSize = 1024 * 1024 * 8;
   int get chunksNumber => (length / chunkSize).ceil();
   bool continuingDownload = false;
   // temp dir info

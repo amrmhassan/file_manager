@@ -77,9 +77,9 @@ Future unsubscribeMe(ServerProvider serverProviderFalse) async {
 //? to send a client left request
 Future broadcastUnsubscribeClient(
   ServerProvider serverProviderFalse,
-  ShareProvider shareProviderFalse, [
-  String? customSessionID,
-]) async {
+  ShareProvider shareProviderFalse,
+  String customSessionID,
+) async {
   // this should be called from the server to notify all other clients that a device has been disconnected
   // with his session id to be removed from the group
   try {
