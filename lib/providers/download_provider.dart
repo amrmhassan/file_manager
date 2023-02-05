@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
-import 'dart:math';
 
 import 'package:explorer/constants/files_types_icons.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/peer_model.dart';

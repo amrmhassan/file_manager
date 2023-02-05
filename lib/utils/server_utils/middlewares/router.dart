@@ -103,6 +103,15 @@ CustomRouterSystem addServerRouters(
       downloadFileEndPoint,
       HttpMethod.GET,
       downloadFileMiddleWare,
+    )
+    ..addRouter(
+      wsServerConnLinkEndPoint,
+      HttpMethod.GET,
+      (request, response) => getWsServerConnLink(
+        request,
+        response,
+        serverProvider,
+      ),
     );
   return customRouterSystem;
 }

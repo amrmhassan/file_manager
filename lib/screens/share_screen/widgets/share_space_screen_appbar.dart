@@ -87,11 +87,8 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
                     //   ),
                     // );
                     //! this is just temporary
+                    client_utils.unsubscribeMe(serverProviderFalse);
                     serverProviderFalse.closeServer();
-                    client_utils.unsubscribeClient(
-                      serverProviderFalse,
-                      shareProviderFalse,
-                    );
                   },
                   child: Image.asset(
                     'assets/icons/info.png',

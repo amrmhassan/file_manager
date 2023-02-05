@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:explorer/providers/share_provider.dart';
@@ -9,8 +10,10 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:explorer/utils/server_utils/middlewares/router.dart';
+import 'package:explorer/utils/websocket_utils/custom_server_socket.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../models/peer_model.dart';
 
@@ -20,10 +23,22 @@ import '../models/peer_model.dart';
 
 class ServerProvider extends ChangeNotifier {
   String? myConnLink;
+  late String myWSConnLink;
   int myPort = 0;
   String? myIp;
   HttpServer? httpServer;
   List<PeerModel> peers = [];
+  late WebSocketSink myClientWsSink;
+
+  void setMyWsChannel(WebSocketSink s) {
+    myClientWsSink = s;
+    notifyListeners();
+  }
+
+//? get the host peer
+  PeerModel get getHostPeer {
+    return peers.firstWhere((element) => element.memberType == MemberType.host);
+  }
 
   //? all peers but me
   Iterable<PeerModel> get allPeersButMe =>
@@ -72,6 +87,10 @@ class ServerProvider extends ChangeNotifier {
     }
     //? opening the server port and setting end points
     httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
+    CustomServerSocket customServerSocket =
+        CustomServerSocket(myWifiIp, this, shareProvider);
+    myWSConnLink = await customServerSocket.getWsConnLink();
+
     CustomRouterSystem customRouterSystem =
         addServerRouters(this, shareProvider, shareItemsExplorerProvider);
     httpServer!.listen(customRouterSystem.handleListen);

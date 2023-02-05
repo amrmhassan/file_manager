@@ -10,6 +10,7 @@ const String getFolderContentEndPointEndPoint = '/getFolderContentEndPoint';
 const String streamAudioEndPoint = '/streamAudio';
 const String streamVideoEndPoint = '/streamVideo';
 const String downloadFileEndPoint = '/downloadFile';
+const String wsServerConnLinkEndPoint = '/wsServerConnLink';
 
 // clients
 const String addClientEndPoint = '/addClient';

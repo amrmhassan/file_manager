@@ -93,9 +93,6 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
         routes: {
-          // WidgetsBinding.instance.window.defaultRouteName: (context) {
-          //   return QuickSendScreen();
-          // },
           HomeScreen.routeName: (context) => HomeScreen(),
           TestScreen.routeName: (context) => TestScreen(),
           IsolateTestingScreen.routeName: (context) => IsolateTestingScreen(),

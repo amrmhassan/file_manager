@@ -11,7 +11,7 @@ import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
 
 //! make a function to send utf8 requests and handles them on the server side by reading the utf8
 //! and add the header
@@ -20,16 +20,16 @@ import 'package:flutter/cupertino.dart';
 Future addClient(
   String connLink,
   ShareProvider shareProvider,
-  ServerProvider serverProvider,
+  ServerProvider serverProviderFalse,
   ShareItemsExplorerProvider shareItemsExplorerProvider,
-  BuildContext context,
 ) async {
   try {
-    await serverProvider.openServer(shareProvider, shareItemsExplorerProvider);
+    await serverProviderFalse.openServer(
+        shareProvider, shareItemsExplorerProvider);
     String deviceID = shareProvider.myDeviceId;
     String name = 'Client Name';
-    String myIp = serverProvider.myIp!;
-    int myPort = serverProvider.myPort;
+    String myIp = serverProviderFalse.myIp!;
+    int myPort = serverProviderFalse.myPort;
     await Dio().post(
       '$connLink$addClientEndPoint',
       data: {
@@ -39,6 +39,8 @@ Future addClient(
         ipString: myIp,
       },
     );
+
+    await connectToWsServer(connLink, serverProviderFalse);
   } catch (e, s) {
     throw CustomException(
       e: e,
@@ -48,12 +50,21 @@ Future addClient(
   }
 }
 
+Future unsubscribeMe(ServerProvider serverProviderFalse) async {
+  // if i left, this will tell the server about that
+  // then the server will tell every one else about me
+  serverProviderFalse.myClientWsSink
+      .close(null, 'user normally left the group');
+}
+
 //? to send a client left request
-Future unsubscribeClient(
+Future broadcastUnsubscribeClient(
   ServerProvider serverProviderFalse,
   ShareProvider shareProviderFalse, [
   String? customSessionID,
 ]) async {
+  // this should be called from the server to notify all other clients that a device has been disconnected
+  // with his session id to be removed from the group
   try {
     PeerModel me = serverProviderFalse.me(shareProviderFalse);
     List<PeerModel> peersCopied = [...serverProviderFalse.peers];
@@ -62,7 +73,7 @@ Future unsubscribeClient(
       await Dio().post(
         '${getConnLink(peer.ip, peer.port)}$clientLeftEndPoint',
         data: {
-          sessionIDString: customSessionID ?? me.sessionID,
+          sessionIDString: customSessionID,
         },
       );
     }
@@ -235,6 +246,30 @@ Future<void> _broadcast({
         ),
       );
     }
+  } catch (e, s) {
+    throw CustomException(
+      e: e,
+      s: s,
+      rethrowError: true,
+    );
+  }
+}
+
+//! check the method of addclient
+//! i am calling openServer, debug if the client opens add a peer model with server name, and host or not
+Future<void> connectToWsServer(
+  String connLink,
+  ServerProvider serverProviderFalse,
+) async {
+  try {
+    CustomClientSocket clientSocket = CustomClientSocket();
+    String wsConnLink = (await Dio().get(
+      '$connLink$wsServerConnLinkEndPoint',
+    ))
+        .data;
+
+    clientSocket.client(wsConnLink, serverProviderFalse);
+    serverProviderFalse.setMyWsChannel(clientSocket.clientChannel.sink);
   } catch (e, s) {
     throw CustomException(
       e: e,

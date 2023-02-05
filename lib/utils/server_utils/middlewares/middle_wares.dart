@@ -352,3 +352,11 @@ Future<void> downloadFileMiddleWare(
 List<FileSystemEntity> getFolderChildren(String folderPath) {
   return Directory(folderPath).listSync();
 }
+
+Future<void> getWsServerConnLink(
+  HttpRequest request,
+  HttpResponse response,
+  ServerProvider serverProvider,
+) async {
+  response.write(serverProvider.myWSConnLink);
+}

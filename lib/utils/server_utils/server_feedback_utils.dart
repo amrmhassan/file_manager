@@ -34,7 +34,7 @@ Future<void> peerAddedServerFeedBack(
       );
     } catch (e, s) {
       serverProviderFalse.peerLeft(peer.sessionID);
-      await unsubscribeClient(
+      await broadcastUnsubscribeClient(
         serverProviderFalse,
         shareProviderFalse,
         peer.sessionID,
