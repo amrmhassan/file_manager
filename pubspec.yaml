@@ -61,6 +61,7 @@ dependencies:
   mime: ^1.0.4
   just_audio: ^0.9.31
   hive: ^2.2.3
+  web_socket_channel: ^2.3.0
 
 dev_dependencies:
   flutter_test:

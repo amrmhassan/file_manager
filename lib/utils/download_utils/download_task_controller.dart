@@ -309,7 +309,9 @@ class DownloadTaskController {
             setProgress(received);
             DateTime after = DateTime.now();
             int diff = after.difference(before).inMilliseconds;
-            double speed = (received / 1024 / 1024) / (diff / 1000);
+            //! i subtracted the initialReceived to avoid miss speed measuring=> never tested yet
+            double speed =
+                ((received - initialReceived) / 1024 / 1024) / (diff / 1000);
             setSpeed(speed);
           },
           headers: mergedHeaders,
