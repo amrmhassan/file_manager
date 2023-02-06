@@ -6,11 +6,11 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_percent_bar.dart';
+import 'package:explorer/screens/download_manager_screen/widgets/failed_task_controllers.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/finished_task_info.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/pause_resume_download_button.dart';
-import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/screens/download_manager_screen/widgets/task_sub_info.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path_operations;
 
 class DownloadCard extends StatefulWidget {
@@ -63,20 +63,16 @@ class _DownloadCardState extends State<DownloadCard> {
               HSpace(factor: .7),
               widget.downloadTaskModel.taskStatus == TaskStatus.downloading ||
                       widget.downloadTaskModel.taskStatus == TaskStatus.paused
-                  ? PauseResumeDownloadButton(
+                  ? PauseResumeControllers(
                       downloadTaskModel: widget.downloadTaskModel,
                     )
-                  : Text(
-                      widget.downloadTaskModel.taskStatus == TaskStatus.finished
-                          ? widget.downloadTaskModel.finishedAt == null
-                              ? capitalizeWord(
-                                  widget.downloadTaskModel.taskStatus.name)
-                              : DateFormat('hh:mm aa')
-                                  .format(widget.downloadTaskModel.finishedAt!)
-                          : capitalizeWord(
-                              widget.downloadTaskModel.taskStatus.name),
-                      style: h4TextStyleInactive,
-                    ),
+                  : widget.downloadTaskModel.taskStatus == TaskStatus.failed
+                      ? FailedTaskControllers(
+                          downloadTaskModel: widget.downloadTaskModel,
+                        )
+                      : TaskSubInfo(
+                          downloadTaskModel: widget.downloadTaskModel,
+                        ),
             ],
           ),
           if (widget.downloadTaskModel.taskStatus == TaskStatus.downloading ||

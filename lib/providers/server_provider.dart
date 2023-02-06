@@ -36,6 +36,10 @@ class ServerProvider extends ChangeNotifier {
   late MemberType myType;
   late HttpServer wsServer;
 
+  bool connectedToDeviceWithId(String deviceID) {
+    return peers.any((element) => element.deviceID == deviceID);
+  }
+
   void setMyWsChannel(WebSocketSink s) {
     myClientWsSink = s;
     notifyListeners();

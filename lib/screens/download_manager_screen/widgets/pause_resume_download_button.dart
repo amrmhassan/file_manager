@@ -7,9 +7,9 @@ import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
-class PauseResumeDownloadButton extends StatelessWidget {
+class PauseResumeControllers extends StatelessWidget {
   final DownloadTaskModel downloadTaskModel;
-  const PauseResumeDownloadButton({
+  const PauseResumeControllers({
     super.key,
     required this.downloadTaskModel,
   });

@@ -50,12 +50,32 @@ class DownloadProvider extends ChangeNotifier {
   Iterable<DownloadTaskModel> get _pendingTasks =>
       tasks.where((element) => element.taskStatus == TaskStatus.pending);
 
+  Future<bool> continueFailedTasks(
+      DownloadTaskModel downloadTaskModel,
+      ServerProvider serverProviderFalse,
+      ShareProvider shareProviderFalse) async {
+    String deviceID = downloadTaskModel.remoteDeviceID;
+    bool connectedToDevice =
+        serverProviderFalse.connectedToDeviceWithId(deviceID);
+    if (!connectedToDevice) {
+      //! i am supposed to throw an error and catch it form the UI but it doesn't work
+      // throw CustomException(
+      //   e: 'Not connected to the owner of this file',
+      //   s: StackTrace.current,
+      // );
+      return false;
+    }
+    int index =
+        tasks.indexWhere((element) => element.id == downloadTaskModel.id);
+
+    _resumeTaskDownload(index, serverProviderFalse, shareProviderFalse);
+    return true;
+  }
+
   Future<void> loadTasks() async {
     if (taskLoadedFromDb) return;
     taskLoadedFromDb = true;
-
     var box = await HiveHelper(downloadTasksBoxName).init();
-
     List<DownloadTaskModel> loadedTasks = box.values
         .map((e) => DownloadTaskModel.fromJSON(
             (e as Map<dynamic, dynamic>).cast<String, dynamic>()))
@@ -167,14 +187,14 @@ class DownloadProvider extends ChangeNotifier {
   }) async {
     bool tasksFreeLocal = tasksFree;
     DownloadTaskModel downloadTaskModel = DownloadTaskModel(
-        id: Uuid().v4(),
-        peerDeviceID: remoteDeviceID,
-        remoteFilePath: remoteFilePath,
-        addedAt: DateTime.now(),
-        size: fileSize,
-        taskStatus: TaskStatus.pending,
-        remoteDeviceID: remoteDeviceID,
-        remoteDeviceName: remoteDeviceName);
+      id: Uuid().v4(),
+      remoteFilePath: remoteFilePath,
+      addedAt: DateTime.now(),
+      size: fileSize,
+      taskStatus: TaskStatus.pending,
+      remoteDeviceID: remoteDeviceID,
+      remoteDeviceName: remoteDeviceName,
+    );
     tasks.add(downloadTaskModel);
     notifyListeners();
     var box = await HiveHelper(downloadTasksBoxName).init();
@@ -245,8 +265,8 @@ class DownloadProvider extends ChangeNotifier {
   }) async {
     try {
       PeerModel me = serverProvider.me(shareProvider);
-      PeerModel remotePeer =
-          serverProvider.peerModelWithDeviceID(downloadTaskModel.peerDeviceID);
+      PeerModel remotePeer = serverProvider
+          .peerModelWithDeviceID(downloadTaskModel.remoteDeviceID);
 
       downloading = true;
       notifyListeners();

@@ -1,7 +1,6 @@
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
-import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/utils/download_utils/download_task_controller.dart';
 
 //? these tasks will be saved into the sqlite for later download
@@ -19,8 +18,7 @@ enum TaskStatus {
 
 class DownloadTaskModel {
   final String id;
-  final String peerDeviceID;
-  final PeerModel? peerModel;
+  // final PeerModel? peerModel;
   final String remoteFilePath;
   final DateTime addedAt;
   final String remoteDeviceName;
@@ -36,7 +34,6 @@ class DownloadTaskModel {
     required this.remoteDeviceName,
     required this.remoteDeviceID,
     required this.id,
-    required this.peerDeviceID,
     required this.remoteFilePath,
     required this.addedAt,
     required this.size,
@@ -44,7 +41,7 @@ class DownloadTaskModel {
     this.finishedAt,
     this.count = 0,
     this.taskStatus = TaskStatus.pending,
-    this.peerModel,
+    // this.peerModel,
   });
 
   //! to json
@@ -53,7 +50,6 @@ class DownloadTaskModel {
       remoteDeviceIDString: remoteDeviceID,
       remoteDeviceNameString: remoteDeviceName,
       idString: id,
-      peerDeviceIDString: peerDeviceID,
       remoteFilePathString: remoteFilePath,
       addedAtString: addedAt.toIso8601String(),
       sizeString: size == null ? dbNull : size.toString(),
@@ -70,7 +66,6 @@ class DownloadTaskModel {
       remoteDeviceID: obj[remoteDeviceIDString],
       remoteDeviceName: obj[remoteDeviceNameString],
       id: obj[idString],
-      peerDeviceID: obj[peerDeviceIDString],
       remoteFilePath: obj[remoteFilePathString],
       addedAt: DateTime.parse(obj[addedAtString]),
       size: obj[sizeString] == dbNull ? null : int.parse(obj[sizeString]),
