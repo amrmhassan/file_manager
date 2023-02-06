@@ -2,6 +2,9 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
 import 'package:explorer/providers/share_provider.dart';
@@ -15,15 +18,13 @@ import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
-import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
+import 'package:flutter/foundation.dart';
 
 //* this is the home page controller
 PageController pageController = PageController();
@@ -41,8 +42,18 @@ void setActiveScreen(BuildContext context, int i) {
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
 
+  // not implemented yet
+  final bool entitySelection;
+
+  // this will allow only for folder managing
+  // this might need sub explorer provider, or just in the original expProvider
+  // add a active sub dir path to be browsed different from the main one
+  final bool folderViewer;
+
   const HomeScreen({
     super.key,
+    this.entitySelection = false,
+    this.folderViewer = false,
   });
 
   @override
@@ -125,16 +136,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, ErrorViewScreen.routeName);
-            },
-            child: Container(
-              width: 20,
-              height: 100,
-              color: Colors.red,
+          if (kDebugMode)
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, ErrorViewScreen.routeName);
+              },
+              child: Container(
+                width: 20,
+                height: 100,
+                color: Colors.red,
+              ),
             ),
-          ),
         ],
       ),
     );

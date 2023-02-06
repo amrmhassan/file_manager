@@ -94,6 +94,13 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> removeTaskById(String id) async {
+    tasks.removeWhere((element) => element.id == id);
+    notifyListeners();
+    var box = await HiveHelper(downloadTasksBoxName).init();
+    await box.delete(id);
+  }
+
   void clearAllTasks() async {
     tasks.clear();
     notifyListeners();
@@ -288,10 +295,6 @@ class DownloadProvider extends ChangeNotifier {
 
       downloading = true;
       notifyListeners();
-      String fileName =
-          path_operations.basename(downloadTaskModel.remoteFilePath);
-      FileType fileType = getFileTypeFromPath(downloadTaskModel.remoteFilePath);
-      String downloadFolderPath = getSaveFilePath(fileType, fileName);
 
       await _markDownloadTask(
         downloadTaskModel.id,
@@ -303,7 +306,7 @@ class DownloadProvider extends ChangeNotifier {
       //? new way of downloading with multiple streams for faster downloading speed
       rdu.DownloadTaskController downloadTaskController =
           rdu.DownloadTaskController(
-        downloadPath: downloadFolderPath,
+        downloadPath: downloadTaskModel.localFilePath,
         myDeviceID: me.deviceID,
         mySessionID: me.sessionID,
         remoteFilePath: downloadTaskModel.remoteFilePath,

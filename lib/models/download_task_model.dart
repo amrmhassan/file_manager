@@ -1,8 +1,10 @@
 import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/utils/download_utils/download_task_controller.dart';
-
+import 'package:explorer/utils/files_operations_utils/download_utils.dart';
+import 'package:path/path.dart' as path_operations;
 //? these tasks will be saved into the sqlite for later download
 //? downloading might be continued in another session so i provided peer model which wont be saved to sqlite
 //? but peer device id will be saved
@@ -20,6 +22,7 @@ class DownloadTaskModel {
   final String id;
   // final PeerModel? peerModel;
   final String remoteFilePath;
+  late String localFilePath;
   final DateTime addedAt;
   final String remoteDeviceName;
   final String remoteDeviceID;
@@ -42,7 +45,11 @@ class DownloadTaskModel {
     this.count = 0,
     this.taskStatus = TaskStatus.pending,
     // this.peerModel,
-  });
+  }) {
+    String fileName = path_operations.basename(remoteFilePath);
+    FileType fileType = getFileTypeFromPath(remoteFilePath);
+    localFilePath = getSaveFilePath(fileType, fileName);
+  }
 
   //! to json
   Map<String, String> toJSON() {

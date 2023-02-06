@@ -61,6 +61,7 @@ const String ownerSessionIDString = 'ownerSessionIDString';
 //? download task model
 const String peerDeviceIDString = 'peerDeviceIDString';
 const String remoteFilePathString = 'remoteFilePathString';
+const String localFilePathString = 'localFilePathString';
 const String taskStatusString = 'taskStatusString';
 const String finishedAtString = 'finishedAtString';
 const String remoteDeviceIDString = 'remoteDeviceIDString';
