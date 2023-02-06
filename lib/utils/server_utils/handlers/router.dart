@@ -3,11 +3,11 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
-import 'package:explorer/utils/server_utils/middlewares/middle_wares.dart';
+import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 import 'package:explorer/utils/server_utils/server_requests_utils.dart';
 
 //! i need to add the logic to authenticate users here
-//! i mean in the main router before entering any middleware
+//! i mean in the main router before entering any Handler
 //! the user will provide his deviceID and sessionID for each request and upon that i will authorize him or not
 
 //! i also need to add the logic to decode or encode headers for arabic letters with Uri.decodeComponent before sending or receiving any headers
@@ -26,7 +26,7 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       addClientEndPoint,
       HttpMethod.POST,
-      (request, response) => addClientMiddleWare(
+      (request, response) => addClientHandler(
         request,
         response,
         serverProvider,
@@ -36,7 +36,7 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       getShareSpaceEndPoint,
       HttpMethod.GET,
-      (request, response) => getShareSpaceMiddleWare(
+      (request, response) => getShareSpaceHandler(
         request,
         response,
         serverProvider,
@@ -46,7 +46,7 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       clientAddedEndPoint,
       HttpMethod.POST,
-      (request, response) => clientAddedMiddleWare(
+      (request, response) => clientAddedHandler(
         request,
         response,
         serverProvider,
@@ -55,7 +55,7 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       clientLeftEndPoint,
       HttpMethod.POST,
-      (request, response) => clientLeftMiddleWare(
+      (request, response) => clientLeftHandler(
         request,
         response,
         serverProvider,
@@ -64,7 +64,7 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       fileAddedToShareSpaceEndPoint,
       HttpMethod.POST,
-      (request, response) => fileAddedMiddleWare(
+      (request, response) => fileAddedHandler(
         request,
         response,
         shareItemsExplorerProvider,
@@ -73,7 +73,7 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       fileRemovedFromShareSpaceEndPoint,
       HttpMethod.POST,
-      (request, response) => fileRemovedMiddleWare(
+      (request, response) => fileRemovedHandler(
         request,
         response,
         shareItemsExplorerProvider,
@@ -82,7 +82,7 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       getFolderContentEndPointEndPoint,
       HttpMethod.GET,
-      (request, response) => getFolderContentMiddleWare(
+      (request, response) => getFolderContentHandler(
         request,
         response,
         serverProvider,
@@ -92,17 +92,17 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       streamAudioEndPoint,
       HttpMethod.GET,
-      streamAudioMiddleWare,
+      streamAudioHandler,
     )
     ..addRouter(
       streamVideoEndPoint,
       HttpMethod.GET,
-      streamVideoMiddleWare,
+      streamVideoHandler,
     )
     ..addRouter(
       downloadFileEndPoint,
       HttpMethod.GET,
-      downloadFileMiddleWare,
+      downloadFileHandler,
     )
     ..addRouter(
       wsServerConnLinkEndPoint,

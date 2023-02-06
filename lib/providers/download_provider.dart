@@ -1,9 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:path/path.dart' as path_operations;
+import 'package:uuid/uuid.dart';
 
 import 'package:explorer/constants/files_types_icons.dart';
+import 'package:explorer/constants/hive_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/helpers/hive_helper.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -13,12 +18,16 @@ import 'package:explorer/utils/download_utils/download_task_controller.dart'
     as rdu;
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 
-import 'package:flutter/material.dart';
-import 'package:path/path.dart' as path_operations;
-import 'package:uuid/uuid.dart';
+//! when loading the download tasks at the download screen startup
+//! set a variable loadedFromDb to be true
+//! if any download task is paused or downloading set it to be failed
+//! failed tasks can be resumed just like the paused tasks, but make sure first you are connected to the device that the download task
+//! has his deviceID
 
 class DownloadProvider extends ChangeNotifier {
   List<DownloadTaskModel> tasks = [];
+  bool taskLoadedFromDb = false;
+
   bool downloading = false;
   double? downloadSpeed;
 
@@ -41,6 +50,28 @@ class DownloadProvider extends ChangeNotifier {
   Iterable<DownloadTaskModel> get _pendingTasks =>
       tasks.where((element) => element.taskStatus == TaskStatus.pending);
 
+  Future<void> loadTasks() async {
+    if (taskLoadedFromDb) return;
+    taskLoadedFromDb = true;
+
+    var box = await HiveHelper(downloadTasksBoxName).init();
+
+    List<DownloadTaskModel> loadedTasks = box.values
+        .map((e) => DownloadTaskModel.fromJSON(
+            (e as Map<dynamic, dynamic>).cast<String, dynamic>()))
+        .toList();
+    List<DownloadTaskModel> parsedTasks = [];
+    for (var loadedTask in loadedTasks) {
+      if (loadedTask.taskStatus == TaskStatus.downloading ||
+          loadedTask.taskStatus == TaskStatus.paused) {
+        loadedTask.taskStatus = TaskStatus.failed;
+      }
+      parsedTasks.add(loadedTask);
+    }
+    tasks = loadedTasks;
+    notifyListeners();
+  }
+
   void clearAllTasks() async {
     tasks.clear();
     notifyListeners();
@@ -48,6 +79,8 @@ class DownloadProvider extends ChangeNotifier {
         .parent
         .parent
         .deleteSync(recursive: true);
+    var box = await HiveHelper(downloadTasksBoxName).init();
+    await box.clear();
   }
 
   void togglePauseResumeTask(
@@ -72,9 +105,7 @@ class DownloadProvider extends ChangeNotifier {
     tasks[index].downloadTaskController!.cancelTask();
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = TaskStatus.paused;
-
-    tasks[index] = newTask;
-    notifyListeners();
+    _updateTask(index, newTask);
   }
 
   void _resumeTaskDownload(
@@ -85,8 +116,7 @@ class DownloadProvider extends ChangeNotifier {
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = TaskStatus.downloading;
 
-    tasks[index] = newTask;
-    notifyListeners();
+    _updateTask(index, newTask);
     _startDownloadTask(
       serverProvider: serverProvider,
       shareProvider: shareProvider,
@@ -106,6 +136,7 @@ class DownloadProvider extends ChangeNotifier {
   }
 
   void _updateTaskPercent(String taskID, int count) {
+    //don't save this into the box, to prevent so many db reads, which will slow down the process
     int index = tasks.indexWhere((element) => element.id == taskID);
     DownloadTaskModel newTask = tasks[index];
     newTask.count = count;
@@ -126,14 +157,14 @@ class DownloadProvider extends ChangeNotifier {
 
   // when adding a new download task i want to check if there is any task downloading now or not
   // this will be called when the user wants to download a file from the other device storage
-  void addDownloadTask({
+  Future<void> addDownloadTask({
     required String remoteFilePath,
     required int? fileSize,
     required String remoteDeviceID,
     required String remoteDeviceName,
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
-  }) {
+  }) async {
     bool tasksFreeLocal = tasksFree;
     DownloadTaskModel downloadTaskModel = DownloadTaskModel(
         id: Uuid().v4(),
@@ -146,6 +177,9 @@ class DownloadProvider extends ChangeNotifier {
         remoteDeviceName: remoteDeviceName);
     tasks.add(downloadTaskModel);
     notifyListeners();
+    var box = await HiveHelper(downloadTasksBoxName).init();
+    await box.put(downloadTaskModel.id, downloadTaskModel.toJSON());
+
     //? this is to start downloading the task if there is no tasks downloading
     if (tasksFreeLocal) {
       _startDownloadTask(
@@ -172,21 +206,28 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> _updateTask(int index, DownloadTaskModel newTask) async {
+    tasks[index] = newTask;
+    notifyListeners();
+    var box = await HiveHelper(downloadTasksBoxName).init();
+    await box.put(newTask.id, newTask.toJSON());
+  }
+
   // this will mark a task with a flag(downloading, finished, etc..)
-  void _markDownloadTask(
+  Future<void> _markDownloadTask(
     String downloadTaskID,
     TaskStatus taskStatus,
     ServerProvider serverProvider,
     ShareProvider shareProvider,
-  ) {
+  ) async {
     int index = tasks.indexWhere((element) => element.id == downloadTaskID);
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = taskStatus;
     if (taskStatus == TaskStatus.finished) {
       newTask.finishedAt = DateTime.now();
     }
-    tasks[index] = newTask;
-    notifyListeners();
+    _updateTask(index, newTask);
+
     if (taskStatus == TaskStatus.finished) {
       _downloadNextTask(
         serverProvider: serverProvider,
@@ -214,7 +255,7 @@ class DownloadProvider extends ChangeNotifier {
       FileType fileType = getFileTypeFromPath(downloadTaskModel.remoteFilePath);
       String downloadFolderPath = getSaveFilePath(fileType, fileName);
 
-      _markDownloadTask(
+      await _markDownloadTask(
         downloadTaskModel.id,
         TaskStatus.downloading,
         serverProvider,
@@ -252,7 +293,7 @@ class DownloadProvider extends ChangeNotifier {
         // if the connection has been cut this mean that there was an error and it shouldn't be considered paused, but error task status
         // the task is already downloading from the latest call of _markDownloadTask so this toggle will mark it as paused
         // don't call toggle from here because you are already called it from the button click and this will reverse it's functionality
-        _markDownloadTask(
+        await _markDownloadTask(
           downloadTaskModel.id,
           TaskStatus.finished,
           serverProvider,
@@ -262,7 +303,7 @@ class DownloadProvider extends ChangeNotifier {
         throw Exception('Error occurred during download');
       }
     } catch (e, s) {
-      _markDownloadTask(
+      await _markDownloadTask(
         downloadTaskModel.id,
         TaskStatus.failed,
         serverProvider,

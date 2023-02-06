@@ -42,8 +42,8 @@ import 'package:explorer/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-//! when the group host i should close the connection at all
-
+  //! try chewie for video player controllers it's link
+  //! https://pub.dev/packages/chewie
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

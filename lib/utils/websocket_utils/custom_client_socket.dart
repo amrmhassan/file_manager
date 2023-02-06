@@ -30,7 +30,7 @@ class CustomClientSocket {
     String path = payload[0];
     String msg = payload[1];
     if (path == yourIDPath) {
-      logger.i('My ID is $msg');
+      logger.i('My Session ID is $msg');
       mySessionIDCompleter.complete(msg);
     } else if (path == disconnectedIDPath) {
       logger.w('Disconnected Device ID $msg');

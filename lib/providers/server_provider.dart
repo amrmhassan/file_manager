@@ -11,7 +11,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/server_utils/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
-import 'package:explorer/utils/server_utils/middlewares/router.dart';
+import 'package:explorer/utils/server_utils/handlers/router.dart';
 import 'package:explorer/utils/websocket_utils/custom_server_socket.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';

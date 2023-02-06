@@ -15,7 +15,7 @@ import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
 
-void addClientMiddleWare(
+void addClientHandler(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
@@ -45,7 +45,7 @@ void addClientMiddleWare(
   }
 }
 
-void getShareSpaceMiddleWare(
+void getShareSpaceHandler(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
@@ -73,7 +73,7 @@ void getShareSpaceMiddleWare(
 }
 
 //? this is from the server feedback to all peers after a client is added by one of the devices in the group
-Future<void> clientAddedMiddleWare(
+Future<void> clientAddedHandler(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
@@ -92,7 +92,7 @@ Future<void> clientAddedMiddleWare(
   }
 }
 
-void clientLeftMiddleWare(
+void clientLeftHandler(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
@@ -110,7 +110,7 @@ void clientLeftMiddleWare(
   }
 }
 
-void fileAddedMiddleWare(
+void fileAddedHandler(
   HttpRequest request,
   HttpResponse response,
   ShareItemsExplorerProvider shareItemsExplorerProvider,
@@ -142,7 +142,7 @@ void fileAddedMiddleWare(
   // print(headers);
 }
 
-void fileRemovedMiddleWare(
+void fileRemovedHandler(
   HttpRequest request,
   HttpResponse response,
   ShareItemsExplorerProvider shareItemsExplorerProvider,
@@ -167,7 +167,7 @@ void fileRemovedMiddleWare(
   }
 }
 
-Future<void> getFolderContentMiddleWare(
+Future<void> getFolderContentHandler(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
@@ -213,7 +213,7 @@ Future<void> getFolderContentMiddleWare(
   }
 }
 
-Future<void> streamAudioMiddleWare(
+Future<void> streamAudioHandler(
   HttpRequest req,
   HttpResponse response,
 ) async {
@@ -258,7 +258,7 @@ Future<void> streamAudioMiddleWare(
   }
 }
 
-Future<void> streamVideoMiddleWare(
+Future<void> streamVideoHandler(
   HttpRequest req,
   HttpResponse response,
 ) async {
@@ -304,7 +304,7 @@ Future<void> streamVideoMiddleWare(
   }
 }
 
-Future<void> downloadFileMiddleWare(
+Future<void> downloadFileHandler(
   HttpRequest req,
   HttpResponse response,
 ) async {
