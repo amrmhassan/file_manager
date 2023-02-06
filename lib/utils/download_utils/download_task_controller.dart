@@ -40,7 +40,6 @@ class ChunkProgressModel {
 
 class DownloadTaskController {
   //
-  CustomDio customDio = CustomDio();
   final CustomCancelToken _customCancelToken = CustomCancelToken();
   final int chunkSize = 1024 * 1024 * 8;
   int get chunksNumber => (length / chunkSize).ceil();
@@ -242,6 +241,8 @@ class DownloadTaskController {
         deviceIDString: myDeviceID,
         "Accept": "application/octet-stream",
       };
+      CustomDio customDio = CustomDio();
+      customDio.timeOutMilliSecond = 5000;
 
       futures.add(
         customDio.download(
@@ -325,6 +326,7 @@ class DownloadTaskController {
       _handleSplitFileTask();
       try {
         await _downloadChunks();
+        logger.e('received $received length $length');
 
         if ((received) != length) {
           // zero return mean that the  isn't finished, paused

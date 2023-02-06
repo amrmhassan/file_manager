@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
@@ -126,20 +127,32 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
                                   inactiveColor: Colors.transparent,
                                   title: 'Download Now',
                                   onTap: () async {
-                                    Provider.of<DownloadProvider>(
-                                      context,
-                                      listen: false,
-                                    ).addDownloadTask(
-                                      fileSize: shareExpProvider
-                                          .viewedItems[index].size,
-                                      remoteDeviceID: remotePeerModel!.deviceID,
-                                      remoteFilePath: shareExpProvider
-                                          .viewedItems[index].path,
-                                      serverProvider: serverPF(context),
-                                      shareProvider: sharePF(context),
-                                      remoteDeviceName: remotePeerModel!.name,
-                                    );
-                                    Navigator.pop(context);
+                                    try {
+                                      await Provider.of<DownloadProvider>(
+                                        context,
+                                        listen: false,
+                                      ).addDownloadTask(
+                                        fileSize: shareExpProvider
+                                            .viewedItems[index].size,
+                                        remoteDeviceID:
+                                            remotePeerModel!.deviceID,
+                                        remoteFilePath: shareExpProvider
+                                            .viewedItems[index].path,
+                                        serverProvider: serverPF(context),
+                                        shareProvider: sharePF(context),
+                                        remoteDeviceName: remotePeerModel!.name,
+                                      );
+                                      Navigator.pop(context);
+                                    } catch (e) {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: (context) =>
+                                            DoubleButtonsModal(
+                                          onOk: () {},
+                                          title: e.toString(),
+                                        ),
+                                      );
+                                    }
                                   },
                                 ),
                                 ModalButtonElement(

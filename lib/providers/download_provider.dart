@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
+import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:uuid/uuid.dart';
@@ -185,6 +187,22 @@ class DownloadProvider extends ChangeNotifier {
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
   }) async {
+    DownloadTaskModel? task;
+
+    try {
+      task = tasks.firstWhere((element) =>
+          element.remoteFilePath == remoteFilePath &&
+          element.remoteDeviceID == remoteDeviceID);
+    } catch (e) {
+      if (task == null) {
+        logger
+            .i('Task doesn\'t exit and it will be added to be downloaded soon');
+      } else {
+        throw CustomException(
+            e: 'Task already added and ${task.taskStatus.name}',
+            s: StackTrace.current);
+      }
+    }
     bool tasksFreeLocal = tasksFree;
     DownloadTaskModel downloadTaskModel = DownloadTaskModel(
       id: Uuid().v4(),
@@ -303,6 +321,7 @@ class DownloadProvider extends ChangeNotifier {
       _setTaskController(downloadTaskModel.id, downloadTaskController);
       // ignore: unused_local_variable
       var res = await downloadTaskController.downloadFile();
+      logger.e('res $res');
 
       if (res == 0) {
         // zero return mean that the download isn't finished, paused

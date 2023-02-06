@@ -4,6 +4,23 @@ import 'dart:io';
 import 'package:explorer/utils/general_utils.dart';
 
 class CustomDio {
+  // bool _timeoutReached = false;
+  int? timeOutMilliSecond;
+
+  // void timeoutChecker() {
+  //   Future.delayed(Duration(milliseconds: timeOutMilliSecond!)).then((value) {
+  //     if (_timeoutReached) {
+  //       logger.e('Download timeout reached');
+  //       throw CustomException(
+  //         e: 'Download timeout reached',
+  //         s: StackTrace.current,
+  //       );
+  //     }
+
+  //     timeoutChecker();
+  //   });
+  // }
+
   Future<int> download(
     String url,
     String savePath, {
@@ -12,12 +29,17 @@ class CustomDio {
     bool deleteIfExist = false,
     Map<String, dynamic>? headers,
   }) async {
+    // if (timeOutMilliSecond != null) {
+    //   timeoutChecker();
+    // }
+
     if (deleteIfExist) {
       File file = File(savePath);
       if (file.existsSync()) {
         file.deleteSync();
       }
     }
+
     Completer<int> completer = Completer<int>();
     Uri uri = Uri.parse(url);
     HttpClient httpClient = HttpClient();
@@ -52,6 +74,9 @@ class CustomDio {
         completer.complete(received);
         responseSubscription.cancel();
       }
+      // if (timeOutMilliSecond != null) {
+      //   _timeoutReached = false;
+      // }
     });
 
     return completer.future;
