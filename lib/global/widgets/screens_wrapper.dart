@@ -5,7 +5,10 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/show_controllers_button.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player_show_button.dart';
+import 'package:explorer/providers/media_player_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ScreensWrapper extends StatelessWidget {
   final Widget child;
@@ -28,6 +31,7 @@ class ScreensWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mpProvider = Provider.of<MediaPlayerProvider>(context);
     return Scaffold(
       key: scfKey,
       drawer: drawer,
@@ -44,6 +48,7 @@ class ScreensWrapper extends StatelessWidget {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: SafeArea(
+          top: mpProvider.videoHidden,
           child: Stack(
             alignment: Alignment.bottomRight,
             children: [
@@ -81,6 +86,13 @@ class ScreensWrapper extends StatelessWidget {
               ),
               // VideoPlayerViewer(),
               AdvancedVideoPlayer(),
+              if (!mpProvider.videoHidden && kDebugMode)
+                Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.red,
+                  child: Text('hidden False'),
+                )
             ],
           ),
         ),

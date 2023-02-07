@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 final Duration animationDuration = Duration(milliseconds: 350);
-final Duration reverseDuration = Duration(milliseconds: 400);
+final Duration reverseDuration = Duration(milliseconds: 350);
 
 class PlayPauseOverLay extends StatefulWidget {
   const PlayPauseOverLay({

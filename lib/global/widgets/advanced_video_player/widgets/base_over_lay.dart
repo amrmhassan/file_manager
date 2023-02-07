@@ -1,5 +1,4 @@
 import 'package:explorer/helpers/responsive.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 class BaseOverLay extends StatelessWidget {

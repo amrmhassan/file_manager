@@ -46,7 +46,9 @@ class _VideoPlayerViewerState extends State<VideoPlayerViewer> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                ActualVideoPlayer(mpProvider: mpProvider),
+                ActualVideoPlayer(
+                  mpProvider: mpProvider,
+                ),
                 Column(
                   children: [
                     Expanded(
