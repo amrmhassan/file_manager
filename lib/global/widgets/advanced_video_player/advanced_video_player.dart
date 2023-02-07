@@ -53,10 +53,11 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
 
 //?
   void toggleControllerOverLayViewed() async {
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
     setState(() {
       controllerOverLayViewed = !controllerOverLayViewed;
     });
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
   }
 
   @override
@@ -69,36 +70,40 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
   }
 
   @override
+  void dispose() {
+    activatePortraitMode();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
 
-    return mpProvider.videoPlayerController != null && (!mpProvider.videoHidden)
-        ? WillPopScope(
-            onWillPop: () async {
-              Provider.of<MediaPlayerProvider>(context, listen: false)
-                  .toggleHideVideo();
-              await activatePortraitMode();
-              setControllersOverlayViewed(true);
+    return WillPopScope(
+      onWillPop: () async {
+        Provider.of<MediaPlayerProvider>(context, listen: false)
+            .toggleHideVideo();
+        await activatePortraitMode();
+        setControllersOverlayViewed(true);
 
-              return false;
-            },
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                ActualVideoPlayer(
-                  mpProvider: mpProvider,
-                ),
-                BaseOverLay(
-                  toggleControllerOverLayViewed: toggleControllerOverLayViewed,
-                ),
-                if (controllerOverLayViewed)
-                  ControllersOverlay(
-                    setControllersOverlayViewed: setControllersOverlayViewed,
-                    toggleLandscape: toggleLandScape,
-                  ),
-              ],
+        return false;
+      },
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          ActualVideoPlayer(
+            mpProvider: mpProvider,
+          ),
+          BaseOverLay(
+            toggleControllerOverLayViewed: toggleControllerOverLayViewed,
+          ),
+          if (controllerOverLayViewed)
+            ControllersOverlay(
+              setControllersOverlayViewed: setControllersOverlayViewed,
+              toggleLandscape: toggleLandScape,
             ),
-          )
-        : SizedBox();
+        ],
+      ),
+    );
   }
 }
