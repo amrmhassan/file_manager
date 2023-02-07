@@ -16,6 +16,7 @@ class ModalButtonElement extends StatelessWidget {
   final double? opacity;
   final bool? checked;
   final bool showBottomLine;
+  final String? value;
 
   const ModalButtonElement({
     Key? key,
@@ -26,6 +27,7 @@ class ModalButtonElement extends StatelessWidget {
     this.opacity,
     this.checked,
     this.showBottomLine = true,
+    this.value,
   }) : super(key: key);
 
   @override
@@ -52,6 +54,7 @@ class ModalButtonElement extends StatelessWidget {
                 ),
               ),
               Spacer(),
+              if (value != null) Text(value!, style: h4TextStyleInactive),
               if (checked != null) CustomCheckBox(checked: checked),
             ],
           ),

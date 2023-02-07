@@ -19,6 +19,7 @@ class ModalWrapper extends StatelessWidget {
   final Color? applyButtonColor;
   final double? borderRadius;
   final EdgeInsets? padding;
+  final Clip? clip;
 
   const ModalWrapper({
     Key? key,
@@ -32,6 +33,7 @@ class ModalWrapper extends StatelessWidget {
     this.showTopLine = true,
     this.applyButtonColor,
     this.borderRadius,
+    this.clip,
     this.padding,
   }) : super(key: key);
 
@@ -40,6 +42,7 @@ class ModalWrapper extends StatelessWidget {
     double bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
     return PaddingWrapper(
+      clip: clip,
       margin: EdgeInsets.only(bottom: bottomPadding),
       padding: padding ??
           EdgeInsets.only(

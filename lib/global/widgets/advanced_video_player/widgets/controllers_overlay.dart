@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/advanced_video_player/widgets/close_video_button.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/custom_icon_button.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/play_pause_overlay.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/settings_button.dart';
@@ -9,6 +10,7 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/utils/duration_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -32,7 +34,10 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
   //! commented this just for testing
   @override
   void initState() {
-    Future.delayed(Duration(milliseconds: 3000)).then((value) {
+    var mpProvider = mpPF(context);
+    Future.delayed(Duration(
+            milliseconds: mpProvider.isVideoPlaying ? 3 * 1000 : 20 * 1000))
+        .then((value) {
       if (mounted) {
         widget.toggleControllerOverLayViewed();
       }
@@ -50,16 +55,22 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
       children: [
         Column(
           children: [
-            FadeInRight(
-              preferences: AnimationPreferences(
-                duration: Duration(milliseconds: 500),
-              ),
-              child: SettingsButton(),
+            Row(
+              children: [
+                CloseVideoButton(),
+                Spacer(),
+                FadeInRight(
+                  preferences: AnimationPreferences(
+                    duration: Duration(milliseconds: 350),
+                  ),
+                  child: SettingsButton(),
+                ),
+              ],
             ),
             Spacer(),
             FadeInRight(
               preferences: AnimationPreferences(
-                duration: Duration(milliseconds: 500),
+                duration: Duration(milliseconds: 350),
               ),
               child: PaddingWrapper(
                 child: Row(
@@ -88,7 +99,7 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
             if (mpProvider.videoPlayerController != null)
               FadeInUp(
                 preferences: AnimationPreferences(
-                  duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 250),
                 ),
                 child: Column(
                   children: [
@@ -112,7 +123,9 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
               ),
           ],
         ),
-        PlayPauseOverLay(),
+        PlayPauseOverLay(
+          toggleControllerOverLayViewed: widget.toggleControllerOverLayViewed,
+        ),
       ],
     );
   }
