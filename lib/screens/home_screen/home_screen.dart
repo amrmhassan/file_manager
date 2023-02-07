@@ -42,18 +42,8 @@ void setActiveScreen(BuildContext context, int i) {
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
 
-  // not implemented yet
-  final bool entitySelection;
-
-  // this will allow only for folder managing
-  // this might need sub explorer provider, or just in the original expProvider
-  // add a active sub dir path to be browsed different from the main one
-  final bool folderViewer;
-
   const HomeScreen({
     super.key,
-    this.entitySelection = false,
-    this.folderViewer = false,
   });
 
   @override

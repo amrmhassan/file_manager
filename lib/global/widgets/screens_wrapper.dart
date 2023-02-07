@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:explorer/global/widgets/video_player_viewer/video_player_viewer.dart';
+import 'package:explorer/global/widgets/advanced_video_player/advanced_video_player.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/show_controllers_button.dart';
@@ -79,8 +79,8 @@ class ScreensWrapper extends StatelessWidget {
                   ],
                 ),
               ),
-              VideoPlayerViewer(),
-              // CustomVolumeControllers(),
+              // VideoPlayerViewer(),
+              AdvancedVideoPlayer(),
             ],
           ),
         ),

@@ -39,9 +39,7 @@ class FinishedTaskInfo extends StatelessWidget {
             ButtonWrapper(
               padding: EdgeInsets.all(smallPadding),
               borderRadius: smallBorderRadius,
-              onTap: () {
-                showSnackBar(context: context, message: 'Soon');
-              },
+              onTap: () {},
               child: Image.asset(
                 'assets/icons/folder_empty.png',
                 width: smallIconSize,

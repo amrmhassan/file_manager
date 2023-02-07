@@ -42,8 +42,11 @@ import 'package:explorer/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-  //! try chewie for video player controllers it's link
-  //! https://pub.dev/packages/chewie
+
+//! add the ability to download a folder
+//! set the video player in screen wrapper with chewie
+//! add the screen to show the downloaded file or folder in an explorer with the list children screen 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

@@ -228,6 +228,12 @@ class MediaPlayerProvider extends ChangeNotifier {
     await videoPlayerController?.seekTo(videoPosition);
   }
 
+  Future<void> seekVideo(double p) async {
+    videoPosition = Duration(milliseconds: p.toInt());
+    notifyListeners();
+    await videoPlayerController?.seekTo(videoPosition);
+  }
+
   //? toggle hide video
   void toggleHideVideo() {
     videoHidden = !videoHidden;
