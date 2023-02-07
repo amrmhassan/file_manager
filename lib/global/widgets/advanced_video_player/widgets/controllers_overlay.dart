@@ -1,20 +1,25 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/advanced_video_player/widgets/custom_icon_button.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/play_pause_overlay.dart';
+import 'package:explorer/global/widgets/advanced_video_player/widgets/settings_button.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/video_player_slider.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/utils/duration_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class ControllersOverlay extends StatefulWidget {
-  final Function(bool v) setControllersOverlayViewed;
+  final VoidCallback toggleControllerOverLayViewed;
   final VoidCallback toggleLandscape;
 
   const ControllersOverlay({
     super.key,
-    required this.setControllersOverlayViewed,
+    required this.toggleControllerOverLayViewed,
     required this.toggleLandscape,
   });
 
@@ -24,11 +29,11 @@ class ControllersOverlay extends StatefulWidget {
 
 class _ControllersOverlayState extends State<ControllersOverlay> {
   //! commented this just for testing
-  // @overridea
+  // @override
   // void initState() {
   //   Future.delayed(Duration(milliseconds: 3000)).then((value) {
   //     if (mounted) {
-  //       widget.setControllersOverlayViewed(false);
+  //       widget.toggleControllerOverLayViewed(false);
   //     }
   //   });
   //   super.initState();
@@ -37,40 +42,52 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
   @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    var mpProviderFalse =
+        Provider.of<MediaPlayerProvider>(context, listen: false);
 
     return Stack(
       children: [
         Column(
           children: [
+            SettingsButton(),
             Spacer(),
             PaddingWrapper(
               child: Row(
                 children: [
                   Spacer(),
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(1000),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: IconButton(
-                        onPressed: widget.toggleLandscape,
-                        splashColor: Colors.white.withOpacity(.5),
-                        icon: Icon(
-                          MediaQuery.of(context).orientation ==
-                                  Orientation.landscape
-                              ? Icons.fullscreen_exit
-                              : Icons.fullscreen,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  )
+                  CustomIconButton(
+                    color: Colors.white.withOpacity(.8),
+                    onTap: () {
+                      mpProviderFalse.toggleMuteVideo();
+                    },
+                    iconData: mpProvider.videoMuted
+                        ? FontAwesomeIcons.volumeXmark
+                        : FontAwesomeIcons.volumeLow,
+                  ),
+                  CustomIconButton(
+                    onTap: widget.toggleLandscape,
+                    iconData: MediaQuery.of(context).orientation ==
+                            Orientation.landscape
+                        ? Icons.fullscreen_exit
+                        : Icons.fullscreen,
+                  ),
                 ],
               ),
             ),
             if (mpProvider.videoPlayerController != null) VideoPlayerSlider(),
+            PaddingWrapper(
+              child: Row(
+                children: [
+                  Text(
+                    '${durationToString(mpProvider.videoPosition)} / ${durationToString(mpProvider.videoDuration)}',
+                    style: h5TextStyle.copyWith(
+                      color: Colors.white.withOpacity(.8),
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             VSpace(),
           ],
         ),

@@ -19,10 +19,10 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   StreamSubscription? durationStreamSub;
 
-//? check playing
+  //? check playing
   bool audioPlaying = false;
 
-//? playing audio file path
+  //? playing audio file path
   String? playingAudioFilePath;
 
   Future<void> setPlayingFile(
@@ -50,7 +50,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-//? to play an audio
+  //? to play an audio
   Future<void> _playAudio(
     String path, [
     bool network = false,
@@ -115,7 +115,6 @@ class MediaPlayerProvider extends ChangeNotifier {
   double? videoHeight;
   double? videoWidth;
   double? videoAspectRatio;
-  // double videoVolume = 0;
   bool volumeTouched = false;
   bool seekerTouched = false;
   Duration? videoDuration;
@@ -147,17 +146,6 @@ class MediaPlayerProvider extends ChangeNotifier {
     bool network = false,
     String? fileRemotePath,
   ]) {
-    // print(path);
-    // print(network);
-    // print('object');
-    // if (network) {
-    //   String parsedPath = path.replaceFirst('http://', '');
-    //   var parts = parsedPath.split('/');
-    //   parsedPath = parts.sublist(2).join('/');
-    //   playingAudioFilePath = parsedPath;
-    //   path = playingAudioFilePath!;
-    // }
-
     videoPlayerController = VideoPlayerController.network(path,
         httpHeaders: network
             ? {
@@ -180,6 +168,7 @@ class MediaPlayerProvider extends ChangeNotifier {
       ..play()
       ..addListener(() async {
         videoPosition = videoPlayerController?.value.position ?? Duration.zero;
+        notifyListeners();
         if (isVideoPlaying &&
             !(videoPlayerController?.value.isPlaying ?? false)) {
           //* this means it stopped playing cause it's duration finished
@@ -247,7 +236,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     volume_controllers.VolumeController().setVolume(v, showSystemUI: false);
   }
 
-//? to change device volume with a slider
+  //? to change device volume with a slider
   void addToDeviceVolume(double v) {
     deviceVolume += v;
     if (deviceVolume < 0) deviceVolume = 0;
@@ -256,7 +245,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     setDeviceVolume(deviceVolume);
   }
 
-//? to update the device volume from the original android volume
+  //? to update the device volume from the original android volume
   Future updateDeviceVolume() async {
     deviceVolume = await volume_controllers.VolumeController().getVolume();
     notifyListeners();
@@ -272,5 +261,42 @@ class MediaPlayerProvider extends ChangeNotifier {
   void setBottomVideoControllersHidden(bool b) {
     bottomVideoControllersHidden = b;
     notifyListeners();
+  }
+
+  //# muting the video
+  bool videoMuted = false;
+  Future toggleMuteVideo() async {
+    if (videoMuted) {
+      await videoPlayerController?.setVolume(1);
+    } else {
+      await videoPlayerController?.setVolume(0);
+    }
+
+    videoMuted = !videoMuted;
+    notifyListeners();
+  }
+
+  //# video fast seeking
+  Future videoBackWard10() async {
+    videoPlayerController?.seekTo(
+        Duration(milliseconds: videoPosition.inMilliseconds - 10 * 1000));
+    Duration newDuration =
+        Duration(milliseconds: videoPosition.inMilliseconds - 10000);
+    if (newDuration.inSeconds < 0) {
+      videoPlayerController?.seekTo(Duration.zero);
+    } else {
+      videoPlayerController?.seekTo(newDuration);
+    }
+  }
+
+  Future videoForWard10() async {
+    Duration newDuration = Duration(
+      milliseconds: videoPosition.inMilliseconds + 10000,
+    );
+    if (newDuration.inSeconds > videoDuration!.inSeconds) {
+      videoPlayerController?.seekTo(videoDuration!);
+    } else {
+      videoPlayerController?.seekTo(newDuration);
+    }
   }
 }

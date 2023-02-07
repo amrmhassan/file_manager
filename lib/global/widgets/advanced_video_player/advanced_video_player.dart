@@ -7,6 +7,7 @@ import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock/wakelock.dart';
 
 class AdvancedVideoPlayer extends StatefulWidget {
   const AdvancedVideoPlayer({
@@ -63,6 +64,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
   @override
   void initState() {
     super.initState();
+    Wakelock.enable();
 
     var mediaProvider =
         Provider.of<MediaPlayerProvider>(context, listen: false);
@@ -72,6 +74,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
   @override
   void dispose() {
     activatePortraitMode();
+    Wakelock.disable();
     super.dispose();
   }
 
@@ -99,7 +102,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
           ),
           if (controllerOverLayViewed)
             ControllersOverlay(
-              setControllersOverlayViewed: setControllersOverlayViewed,
+              toggleControllerOverLayViewed: toggleControllerOverLayViewed,
               toggleLandscape: toggleLandScape,
             ),
         ],

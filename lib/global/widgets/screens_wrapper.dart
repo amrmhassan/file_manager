@@ -88,13 +88,6 @@ class ScreensWrapper extends StatelessWidget {
               if (mpProvider.videoPlayerController != null &&
                   (!mpProvider.videoHidden))
                 AdvancedVideoPlayer(),
-              // if (!mpProvider.videoHidden && kDebugMode)
-              //   Container(
-              //     width: 50,
-              //     height: 50,
-              //     color: Colors.red,
-              //     child: Text('hidden False'),
-              //   )
             ],
           ),
         ),

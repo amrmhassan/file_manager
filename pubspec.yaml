@@ -64,6 +64,8 @@ dependencies:
   web_socket_channel: ^2.3.0
   logger: ^1.1.0
   lottie: ^2.2.0
+  wakelock: ^0.6.2
+  font_awesome_flutter: ^10.3.0
 
 dev_dependencies:
   flutter_test:

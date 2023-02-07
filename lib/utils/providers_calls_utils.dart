@@ -1,4 +1,5 @@
 import 'package:explorer/providers/download_provider.dart';
+import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -40,4 +41,13 @@ ShareItemsExplorerProvider shareExpPF(BuildContext context) {
 
 ShareItemsExplorerProvider shareExpP(BuildContext context) {
   return Provider.of<ShareItemsExplorerProvider>(context);
+}
+
+//? media player providers
+MediaPlayerProvider mpPF(BuildContext context) {
+  return Provider.of<MediaPlayerProvider>(context, listen: false);
+}
+
+MediaPlayerProvider mpP(BuildContext context) {
+  return Provider.of<MediaPlayerProvider>(context);
 }

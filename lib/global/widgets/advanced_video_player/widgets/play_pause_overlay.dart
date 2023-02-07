@@ -60,7 +60,7 @@ class _PlayPauseOverLayState extends State<PlayPauseOverLay>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ButtonWrapper(
-              backgroundColor: Colors.black.withOpacity(.8),
+              backgroundColor: Colors.black.withOpacity(.4),
               borderRadius: 1000,
               width: largeIconSize * 2,
               height: largeIconSize * 2,
@@ -76,6 +76,7 @@ class _PlayPauseOverLayState extends State<PlayPauseOverLay>
                 icon: AnimatedIcons.pause_play,
                 progress: _controller.view,
                 color: Colors.white,
+                size: mediumIconSize,
               ),
             ),
           ],
