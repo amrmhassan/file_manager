@@ -1,66 +1,156 @@
-// // ignore_for_file: prefer_const_constructors
+import 'package:flutter/material.dart';
 
-// import 'package:flutter/material.dart';
+import 'painter.dart';
+import 'sub_range_model.dart';
 
-// class MultiTrackSlider extends StatefulWidget {
-//   const MultiTrackSlider({super.key});
+class CustomSlider extends StatefulWidget {
+  final double listeningAreaHeigh;
+  final Color? listeningAreaColor;
+  final double min;
+  final double max;
+  final double value;
+  final Function(double v) onChanged;
+  final double circleRadius;
+  final double activeThickness;
+  final double inactiveThickness;
+  final Color circleColor;
+  final Color activeColor;
+  final Color inactiveColor;
+  final List<SubRangeModel>? subRanges;
+  final double widthFactor;
 
-//   @override
-//   _MultiTrackSliderState createState() => _MultiTrackSliderState();
-// }
+  const CustomSlider({
+    super.key,
+    this.listeningAreaColor,
+    this.listeningAreaHeigh = 50,
+    this.circleRadius = 10,
+    this.activeThickness = 4,
+    this.inactiveThickness = 2,
+    this.circleColor = Colors.red,
+    this.activeColor = Colors.red,
+    this.inactiveColor = Colors.white,
+    this.subRanges,
+    this.widthFactor = .9,
+    required this.min,
+    required this.max,
+    required this.value,
+    required this.onChanged,
+  });
 
-// class _MultiTrackSliderState extends State<MultiTrackSlider> {
-//   double _value = 0.5;
+  @override
+  State<CustomSlider> createState() => _CustomSliderState();
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onPanUpdate: (details) {
-//         setState(() {
-//           _value = (details.localPosition.dx / (context.size?.width ?? 1));
-//         });
-//       },
-//       child: CustomPaint(
-//         size: Size(double.infinity, 100),
-//         painter: MultiTrackPainter(_value),
-//       ),
-//     );
-//   }
-// }
+class _CustomSliderState extends State<CustomSlider>
+    with WidgetsBindingObserver {
+  GlobalKey globalKey = GlobalKey();
+  double width = 0;
 
-// class MultiTrackPainter extends CustomPainter {
-//   final double _value;
+  void handleComputeSliderData() {
+    if (widget.value > widget.max || widget.value < widget.min) {
+      throw Exception('initialValue should be >= min && <= max');
+    }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (mounted) {
+        setState(() {
+          width = globalKey.currentContext!.size!.width;
+        });
+      }
+    });
+  }
 
-//   MultiTrackPainter(this._value);
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
 
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     var primaryTrackPaint = Paint()
-//       ..color = Colors.grey[300]!
-//       ..style = PaintingStyle.fill;
+    handleComputeSliderData();
+    super.initState();
+  }
 
-//     var secondaryTrackPaint = Paint()
-//       ..color = Colors.grey[500]!
-//       ..style = PaintingStyle.fill;
+  @override
+  void didUpdateWidget(covariant CustomSlider oldWidget) {
+    handleComputeSliderData();
+    super.didUpdateWidget(oldWidget);
+  }
 
-//     var thumbPaint = Paint()
-//       ..color = Colors.red
-//       ..style = PaintingStyle.fill;
+  @override
+  void didChangeMetrics() {
+    handleComputeSliderData();
+  }
 
-//     var primaryTrackRect = Rect.fromLTRB(0, 50, size.width, 60);
-//     var secondaryTrackRect1 = Rect.fromLTRB(0, 40, _value * size.width, 50);
-//     var secondaryTrackRect2 =
-//         Rect.fromLTRB(_value * size.width, 60, size.width, 70);
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
-//     canvas.drawRect(primaryTrackRect, primaryTrackPaint);
-//     canvas.drawRect(secondaryTrackRect1, secondaryTrackPaint);
-//     canvas.drawRect(secondaryTrackRect2, secondaryTrackPaint);
+  // this is the adjacent value that i will be using in the class, to distribute the size of the outer range over the slider actual size
+  double get innerValue => valueEncode(widget.value);
 
-//     var thumbRect = Rect.fromLTRB(
-//         _value * size.width - 10, 35, _value * size.width + 10, 65);
-//     canvas.drawOval(thumbRect, thumbPaint);
-//   }
+  // this is the range that the user wants
+  double get range => widget.max - widget.min;
 
-//   @override
-//   bool shouldRepaint(CustomPainter oldDelegate) => true;
-// }
+  // this is the range that we want in this widget for our calculations
+  double get size => width;
+
+  // this will decode the used value in our slider to the actual value that the user needs
+  double valueDecode(double dx) =>
+      double.parse((((dx * range) / size) + widget.min).toStringAsFixed(4));
+
+  // this will do the opposite=> to transform the value from the perspective of the user into ours
+  double valueEncode(double v) => (v * width) / range;
+
+  // when the slider is moved
+  void handleValueChanged(Offset localPosition) {
+    double dx = localPosition.dx;
+    if (dx < 0) {
+      dx = 0;
+    } else if (dx > width) {
+      dx = width;
+    }
+    if (dx == innerValue) return;
+    widget.onChanged(valueDecode(dx));
+  }
+
+  // ranges transformer into our scale
+  List<SubRangeModel> get innerSubRanges => [
+        ...(widget.subRanges?.map(
+              (e) => SubRangeModel(
+                start: valueEncode(e.start),
+                end: valueEncode(e.end),
+                color: e.color,
+              ),
+            ) ??
+            [])
+      ];
+
+  @override
+  Widget build(BuildContext context) {
+    return FractionallySizedBox(
+      widthFactor: widget.widthFactor,
+      child: GestureDetector(
+        key: globalKey,
+        onPanUpdate: (details) => handleValueChanged(details.localPosition),
+        onTapDown: (details) => handleValueChanged(details.localPosition),
+        child: Container(
+          color: widget.listeningAreaColor ?? Colors.transparent,
+          height: widget.listeningAreaHeigh,
+          width: MediaQuery.of(context).size.width,
+          child: CustomPaint(
+            foregroundPainter: SliderPainter(
+              thickness: widget.activeThickness,
+              circleColor: widget.circleColor,
+              value: innerValue,
+              activeColor: widget.activeColor,
+              activeThickness: widget.activeThickness,
+              circleRadius: widget.circleRadius,
+              inactiveColor: widget.inactiveColor,
+              inactiveThickness: widget.inactiveThickness,
+              subRanges: innerSubRanges,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
