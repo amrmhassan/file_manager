@@ -44,8 +44,14 @@ import 'package:provider/provider.dart';
 
 
 //! add the ability to download a folder
-//! set the video player in screen wrapper with chewie
 //! add the screen to show the downloaded file or folder in an explorer with the list children screen 
+
+// i put these lines to cause an error to make me read them before starting
+
+// fix the video player to prevent the overlay controllers hide when i am touching them 
+// search for how to cancel a future in dart
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

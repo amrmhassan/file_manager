@@ -10,6 +10,8 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/utils/duration_utils.dart';
+import 'package:explorer/utils/futures_utils.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -31,18 +33,46 @@ class ControllersOverlay extends StatefulWidget {
 }
 
 class _ControllersOverlayState extends State<ControllersOverlay> {
-  //! commented this just for testing
+  late CustomFuture customFuture;
+  late Duration hideMeAfterDuration;
+
+  Duration get defaultDuration {
+    var mpProvider = mpPF(context);
+    return Duration(
+        milliseconds: mpProvider.isVideoPlaying ? 3 * 1000 : 20 * 1000);
+  }
+
+  void cancelHidingFuture() {
+    // print('cancelling hiding');
+    try {
+      customFuture.cancel();
+    } catch (e) {
+      printOnDebug('First time to open controller overlay');
+    }
+  }
+
+  hideMeAfter() {
+    // print('running hiding future');
+    cancelHidingFuture();
+
+    hideMeAfterDuration = defaultDuration;
+    customFuture = CustomFuture()
+      ..delayedAction(
+        hideMeAfterDuration,
+        widget.toggleControllerOverLayViewed,
+      );
+  }
+
   @override
   void initState() {
-    var mpProvider = mpPF(context);
-    Future.delayed(Duration(
-            milliseconds: mpProvider.isVideoPlaying ? 3 * 1000 : 20 * 1000))
-        .then((value) {
-      if (mounted) {
-        widget.toggleControllerOverLayViewed();
-      }
-    });
+    hideMeAfter();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    cancelHidingFuture();
+    super.dispose();
   }
 
   @override
@@ -51,82 +81,90 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
     var mpProviderFalse =
         Provider.of<MediaPlayerProvider>(context, listen: false);
 
-    return Stack(
-      children: [
-        Column(
-          children: [
-            Row(
-              children: [
-                CloseVideoButton(),
-                Spacer(),
-                FadeInRight(
-                  preferences: AnimationPreferences(
-                    duration: Duration(milliseconds: 350),
+    return Listener(
+      onPointerDown: (details) {
+        cancelHidingFuture();
+      },
+      onPointerUp: (event) {
+        hideMeAfter();
+      },
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              Row(
+                children: [
+                  CloseVideoButton(),
+                  Spacer(),
+                  FadeInRight(
+                    preferences: AnimationPreferences(
+                      duration: Duration(milliseconds: 350),
+                    ),
+                    child: SettingsButton(),
                   ),
-                  child: SettingsButton(),
-                ),
-              ],
-            ),
-            Spacer(),
-            FadeInRight(
-              preferences: AnimationPreferences(
-                duration: Duration(milliseconds: 350),
+                ],
               ),
-              child: PaddingWrapper(
-                child: Row(
-                  children: [
-                    Spacer(),
-                    CustomIconButton(
-                      color: Colors.white.withOpacity(.8),
-                      onTap: () {
-                        mpProviderFalse.toggleMuteVideo();
-                      },
-                      iconData: mpProvider.videoMuted
-                          ? FontAwesomeIcons.volumeXmark
-                          : FontAwesomeIcons.volumeLow,
-                    ),
-                    CustomIconButton(
-                      onTap: widget.toggleLandscape,
-                      iconData: MediaQuery.of(context).orientation ==
-                              Orientation.landscape
-                          ? Icons.fullscreen_exit
-                          : Icons.fullscreen,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if (mpProvider.videoPlayerController != null)
-              FadeInUp(
+              Spacer(),
+              FadeInRight(
                 preferences: AnimationPreferences(
-                  duration: Duration(milliseconds: 250),
+                  duration: Duration(milliseconds: 350),
                 ),
-                child: Column(
-                  children: [
-                    VideoPlayerSlider(),
-                    PaddingWrapper(
-                      child: Row(
-                        children: [
-                          Text(
-                            '${durationToString(mpProvider.videoPosition)} / ${durationToString(mpProvider.videoDuration)}',
-                            style: h5TextStyle.copyWith(
-                              color: Colors.white.withOpacity(.8),
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
+                child: PaddingWrapper(
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      CustomIconButton(
+                        color: Colors.white.withOpacity(.8),
+                        onTap: () {
+                          mpProviderFalse.toggleMuteVideo();
+                        },
+                        iconData: mpProvider.videoMuted
+                            ? FontAwesomeIcons.volumeXmark
+                            : FontAwesomeIcons.volumeLow,
                       ),
-                    ),
-                    VSpace(),
-                  ],
+                      CustomIconButton(
+                        onTap: widget.toggleLandscape,
+                        iconData: MediaQuery.of(context).orientation ==
+                                Orientation.landscape
+                            ? Icons.fullscreen_exit
+                            : Icons.fullscreen,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-          ],
-        ),
-        PlayPauseOverLay(
-          toggleControllerOverLayViewed: widget.toggleControllerOverLayViewed,
-        ),
-      ],
+              if (mpProvider.videoPlayerController != null)
+                FadeInUp(
+                  preferences: AnimationPreferences(
+                    duration: Duration(milliseconds: 250),
+                  ),
+                  child: Column(
+                    children: [
+                      VideoPlayerSlider(),
+                      PaddingWrapper(
+                        child: Row(
+                          children: [
+                            Text(
+                              '${durationToString(mpProvider.videoPosition)} / ${durationToString(mpProvider.videoDuration)}',
+                              style: h5TextStyle.copyWith(
+                                color: Colors.white.withOpacity(.8),
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      VSpace(),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+          PlayPauseOverLay(
+            toggleControllerOverLayViewed: widget.toggleControllerOverLayViewed,
+          ),
+        ],
+      ),
     );
   }
 }
