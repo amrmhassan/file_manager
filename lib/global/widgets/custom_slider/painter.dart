@@ -103,7 +103,7 @@ class SliderPainter extends CustomPainter {
           radius: circleRadius,
         ),
       );
-    canvas.drawShadow(circlePath, Colors.grey, 2, true);
+    canvas.drawShadow(circlePath, Colors.black, 2, true);
     canvas.drawPath(circlePath, paint);
   }
 

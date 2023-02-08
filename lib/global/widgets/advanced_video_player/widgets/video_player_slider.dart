@@ -20,7 +20,7 @@ class VideoPlayerSlider extends StatelessWidget {
         ? SizedBox()
         : CustomSlider(
             circleRadius: 7,
-            activeThickness: 4,
+            activeThickness: 3,
             inactiveThickness: 2,
             inactiveColor: Colors.grey.withOpacity(.5),
             activeColor: Colors.red,

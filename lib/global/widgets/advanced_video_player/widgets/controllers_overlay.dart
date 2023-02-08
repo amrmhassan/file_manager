@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/advanced_video_player/widgets/settings_b
 import 'package:explorer/global/widgets/advanced_video_player/widgets/video_player_slider.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/utils/duration_utils.dart';
 import 'package:explorer/utils/futures_utils.dart';
@@ -65,7 +66,8 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
 
   @override
   void initState() {
-    hideMeAfter();
+    //! activate this
+    // hideMeAfter();
     super.initState();
   }
 
@@ -138,23 +140,42 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
                   preferences: AnimationPreferences(
                     duration: Duration(milliseconds: 250),
                   ),
-                  child: Column(
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
                     children: [
-                      VideoPlayerSlider(),
-                      PaddingWrapper(
-                        child: Row(
-                          children: [
-                            Text(
-                              '${durationToString(mpProvider.videoPosition)} / ${durationToString(mpProvider.videoDuration)}',
-                              style: h5TextStyle.copyWith(
-                                color: Colors.white.withOpacity(.8),
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ],
+                      Container(
+                        width: double.infinity,
+                        height: Responsive.getHeight(context) / 4,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.black.withOpacity(.4),
+                              Colors.transparent,
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
                         ),
                       ),
-                      VSpace(),
+                      Column(
+                        children: [
+                          VideoPlayerSlider(),
+                          PaddingWrapper(
+                            child: Row(
+                              children: [
+                                Text(
+                                  '${durationToString(mpProvider.videoPosition)} / ${durationToString(mpProvider.videoDuration)}',
+                                  style: h5TextStyle.copyWith(
+                                    color: Colors.white.withOpacity(.8),
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          VSpace(),
+                        ],
+                      ),
                     ],
                   ),
                 ),
