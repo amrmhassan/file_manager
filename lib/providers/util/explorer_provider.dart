@@ -25,6 +25,14 @@ import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 
 class ExplorerProvider extends ChangeNotifier
     implements ExplorerProviderAbstract {
+  // this will indicate that the mode is just to view the downloaded file or folder
+
+  String? viewedFilePath;
+  void setViewedFilePath(String? p) {
+    viewedFilePath = p;
+    notifyListeners();
+  }
+
   @override
   int activeViewIndex = 0;
   @override

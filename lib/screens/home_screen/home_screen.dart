@@ -29,21 +29,13 @@ import 'package:flutter/foundation.dart';
 //* this is the home page controller
 PageController pageController = PageController();
 
-//? set the current active screen
-void setActiveScreen(BuildContext context, int i) {
-  pageController.animateToPage(
-    i,
-    duration: homePageViewDuration,
-    curve: Curves.easeInOut,
-  );
-  Provider.of<ExplorerProvider>(context, listen: false).setActivePageIndex(i);
-}
-
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home-screen';
+  final bool fileViewer;
 
   const HomeScreen({
     super.key,
+    this.fileViewer = false,
   });
 
   @override
@@ -95,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var expProvider = Provider.of<ExplorerProvider>(context);
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
 
-    var screensWrapper = ScreensWrapper(
+    var homeScreenContent = ScreensWrapper(
       scfKey: expScreenKey,
       drawer: CustomAppDrawer(),
       backgroundColor: kBackgroundColor,
@@ -120,12 +112,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     RecentScreen(),
                     ExplorerScreen(
                       sizesExplorer: false,
+                      viewFile: widget.fileViewer,
                     ),
                   ],
                 ),
               ),
             ],
           ),
+          // error red widget that opens the errors logging screen
           if (kDebugMode)
             GestureDetector(
               onTap: () {
@@ -141,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
     return !mpProvider.videoHidden && mpProvider.videoPlayerController != null
-        ? screensWrapper
+        ? homeScreenContent
         : WillPopScope(
             onWillPop: () => handlePressPhoneBackButton(
               context: context,
@@ -154,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 exitCounter++;
               },
             ),
-            child: screensWrapper,
+            child: homeScreenContent,
           );
   }
 }

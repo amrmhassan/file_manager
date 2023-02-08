@@ -14,6 +14,7 @@ import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/models_transformer_utils.dart';
+import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -118,27 +119,9 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
                                 child: StorageItem(
                                   allowSelect: false,
                                   storageItemModel: e,
-                                  onDirTapped: (path) {
-                                    var expProvider =
-                                        Provider.of<ExplorerProvider>(
-                                      context,
-                                      listen: false,
-                                    );
-                                    var foProvider =
-                                        Provider.of<FilesOperationsProvider>(
-                                      context,
-                                      listen: false,
-                                    );
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    try {
-                                      expProvider.openTab(path, foProvider);
-                                    } catch (e) {
-                                      printOnDebug('This tab already exists');
-                                    }
-
-                                    setActiveScreen(context, 1);
-                                  },
+                                  onDirTapped: (path) =>
+                                      handleOpenTabFromOtherScreen(
+                                          path, context),
                                   sizesExplorer: false,
                                   parentSize: 0,
                                 ),

@@ -34,6 +34,7 @@ import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
+import 'package:explorer/screens/sub_explorer_screen/sub_explorer_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
@@ -42,16 +43,8 @@ import 'package:explorer/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 //! add the ability to download a folder
-//! add the screen to show the downloaded file or folder in an explorer with the list children screen 
-
-// i put these lines to cause an error to make me read them before starting
-
-// fix the video player to prevent the overlay controllers hide when i am touching them 
-// search for how to cancel a future in dart
-
-
+//! add the screen to show the downloaded file or folder in an explorer with the list children screen
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -125,6 +118,7 @@ class MyApp extends StatelessWidget {
               ShareSpaceViewerScreen(),
           DownloadManagerScreen.routeName: (context) => DownloadManagerScreen(),
           ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
+          SubExplorerScreen.routeName: (context) => SubExplorerScreen(),
         },
       ),
     );

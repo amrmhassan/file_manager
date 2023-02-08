@@ -9,11 +9,14 @@ import 'package:explorer/screens/home_screen/widgets/error_opening_folder.dart';
 import 'package:provider/provider.dart';
 
 class ChildrenViewList extends StatefulWidget {
+  final bool viewFile;
+
   final bool sizesExplorer;
 
   const ChildrenViewList({
     super.key,
     this.sizesExplorer = false,
+    required this.viewFile,
   });
 
   @override
@@ -39,6 +42,7 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
                     ? EntitiesListViewBuilder(
                         sizesExplorer: widget.sizesExplorer,
                         viewedList: viewedList,
+                        viewFile: widget.viewFile,
                       )
                     : expProviderFalse.error == null
                         ? (!expProviderFalse.loadingChildren

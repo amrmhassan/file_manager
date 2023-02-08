@@ -53,6 +53,7 @@ class _SizesExpScreenState extends State<SizesExpScreen> {
             Expanded(
               child: ExplorerScreen(
                 sizesExplorer: true,
+                viewFile: false,
               ),
             ),
           ],

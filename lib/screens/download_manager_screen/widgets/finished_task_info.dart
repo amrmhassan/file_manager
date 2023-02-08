@@ -16,9 +16,11 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class FinishedTaskInfo extends StatelessWidget {
+  final VoidCallback navigateToFile;
   const FinishedTaskInfo({
     super.key,
     required this.downloadTaskModel,
+    required this.navigateToFile,
   });
 
   final DownloadTaskModel downloadTaskModel;
@@ -39,7 +41,7 @@ class FinishedTaskInfo extends StatelessWidget {
             ButtonWrapper(
               padding: EdgeInsets.all(smallPadding),
               borderRadius: smallBorderRadius,
-              onTap: () {},
+              onTap: navigateToFile,
               child: Image.asset(
                 'assets/icons/folder_empty.png',
                 width: smallIconSize,

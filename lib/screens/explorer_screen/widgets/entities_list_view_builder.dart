@@ -16,11 +16,13 @@ import 'package:provider/provider.dart';
 class EntitiesListViewBuilder extends StatefulWidget {
   final List<StorageItemModel> viewedList;
   final bool sizesExplorer;
+  final bool viewFile;
 
   const EntitiesListViewBuilder({
     Key? key,
     required this.viewedList,
     required this.sizesExplorer,
+    required this.viewFile,
   }) : super(key: key);
 
   @override
@@ -45,6 +47,16 @@ class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
     scrollController.jumpTo(scrollPosition);
   }
 
+  void scrollToFile(ExplorerProvider explorerProviderFalse) {
+    double fullListHeight = scrollController.position.viewportDimension +
+        scrollController.position.maxScrollExtent;
+    int index = widget.viewedList.indexWhere(
+        (element) => element.path == explorerProviderFalse.viewedFilePath);
+    double eachItemHeight = fullListHeight / widget.viewedList.length;
+    scrollController.jumpTo(index * eachItemHeight);
+    explorerProviderFalse.setViewedFilePath(null);
+  }
+
   @override
   void initState() {
     var expProviderFalse =
@@ -60,7 +72,11 @@ class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
           scrollController.offset,
         );
       });
-      updateScrollingPosition();
+      if (expProviderFalse.viewedFilePath == null) {
+        updateScrollingPosition();
+      } else {
+        scrollToFile(expProviderFalse);
+      }
     });
 
     super.initState();
@@ -72,6 +88,12 @@ class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
   //   updateScrollingPosition();
   //   super.didUpdateWidget(oldWidget);
   // }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

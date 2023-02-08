@@ -8,6 +8,7 @@ import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
+import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -73,4 +74,41 @@ void handlePermissionsGrantedCallback(BuildContext context) async {
   var recentProvider = Provider.of<RecentProvider>(context, listen: false);
   await Provider.of<AnalyzerProvider>(context, listen: false)
       .handleAnalyzeEvent(recentProvider);
+}
+
+//? set the current active screen
+void setActiveScreen(BuildContext context, int i) {
+  pageController.animateToPage(
+    i,
+    duration: homePageViewDuration,
+    curve: Curves.easeInOut,
+  );
+  Provider.of<ExplorerProvider>(context, listen: false).setActivePageIndex(i);
+}
+
+void handleOpenTabFromOtherScreen(
+  String path,
+  BuildContext context, [
+  String? filePath,
+]) {
+  var expProviderFalse = Provider.of<ExplorerProvider>(
+    context,
+    listen: false,
+  );
+  var foProviderFalse = Provider.of<FilesOperationsProvider>(
+    context,
+    listen: false,
+  );
+  Navigator.pop(context);
+  Navigator.pop(context);
+  try {
+    expProviderFalse.openTab(path, foProviderFalse);
+  } catch (e) {
+    printOnDebug('This tab already exists');
+  }
+
+  setActiveScreen(context, 1);
+  if (filePath != null) {
+    expProviderFalse.setViewedFilePath(filePath);
+  }
 }

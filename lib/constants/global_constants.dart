@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:explorer/providers/explorer_provider_abstract.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 final Directory initialDir = Directory('sdcard');
@@ -45,3 +46,7 @@ const String docDownloadFolder = 'Documents';
 const String imageDownloadFolder = 'Images';
 const String videoDownloadFolder = 'Video';
 const String otherDownloadFolder = 'Other';
+
+//? storage item
+const double height = 60;
+GlobalKey storageItemKey = GlobalKey();

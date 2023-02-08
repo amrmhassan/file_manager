@@ -12,10 +12,12 @@ import 'package:provider/provider.dart';
 
 class ExplorerScreen extends StatefulWidget {
   final bool sizesExplorer;
+  final bool viewFile;
 
   const ExplorerScreen({
     super.key,
     this.sizesExplorer = false,
+    required this.viewFile,
   });
 
   @override
@@ -43,6 +45,7 @@ class _ExplorerScreenState extends State<ExplorerScreen> {
           child: ChildrenViewList(
             //! remove this , it is only for testing UI
             sizesExplorer: widget.sizesExplorer,
+            viewFile: widget.viewFile,
           ),
         ),
         ExplorerTabs(),
