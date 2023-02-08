@@ -80,8 +80,6 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
   @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
-    var mpProviderFalse =
-        Provider.of<MediaPlayerProvider>(context, listen: false);
 
     return Listener(
       onPointerDown: (details) {
@@ -94,47 +92,8 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
         children: [
           Column(
             children: [
-              Row(
-                children: [
-                  CloseVideoButton(),
-                  Spacer(),
-                  FadeInRight(
-                    preferences: AnimationPreferences(
-                      duration: Duration(milliseconds: 350),
-                    ),
-                    child: SettingsButton(),
-                  ),
-                ],
-              ),
+              VideoUpperControllers(),
               Spacer(),
-              FadeInRight(
-                preferences: AnimationPreferences(
-                  duration: Duration(milliseconds: 350),
-                ),
-                child: PaddingWrapper(
-                  child: Row(
-                    children: [
-                      Spacer(),
-                      CustomIconButton(
-                        color: Colors.white.withOpacity(.8),
-                        onTap: () {
-                          mpProviderFalse.toggleMuteVideo();
-                        },
-                        iconData: mpProvider.videoMuted
-                            ? FontAwesomeIcons.volumeXmark
-                            : FontAwesomeIcons.volumeLow,
-                      ),
-                      CustomIconButton(
-                        onTap: widget.toggleLandscape,
-                        iconData: MediaQuery.of(context).orientation ==
-                                Orientation.landscape
-                            ? Icons.fullscreen_exit
-                            : Icons.fullscreen,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               if (mpProvider.videoPlayerController != null)
                 FadeInUp(
                   preferences: AnimationPreferences(
@@ -143,36 +102,14 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      Container(
-                        width: double.infinity,
-                        height: Responsive.getHeight(context) / 4,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.black.withOpacity(.4),
-                              Colors.transparent,
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                      ),
+                      VideoLowerBackgroundShader(),
                       Column(
                         children: [
-                          VideoPlayerSlider(),
-                          PaddingWrapper(
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${durationToString(mpProvider.videoPosition)} / ${durationToString(mpProvider.videoDuration)}',
-                                  style: h5TextStyle.copyWith(
-                                    color: Colors.white.withOpacity(.8),
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          VideoMuteFullScreenControllers(
+                            toggleLandscape: widget.toggleLandscape,
                           ),
+                          VideoPlayerSlider(),
+                          VideoDurationViewer(),
                           VSpace(),
                         ],
                       ),
@@ -186,6 +123,121 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
               ),
         ],
       ),
+    );
+  }
+}
+
+class VideoDurationViewer extends StatelessWidget {
+  const VideoDurationViewer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var mpProvider = Provider.of<MediaPlayerProvider>(context);
+
+    return PaddingWrapper(
+      child: Row(
+        children: [
+          Text(
+            '${durationToString(mpProvider.videoPosition)} / ${durationToString(mpProvider.videoDuration)}',
+            style: h5TextStyle.copyWith(
+              color: Colors.white.withOpacity(.8),
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VideoLowerBackgroundShader extends StatelessWidget {
+  const VideoLowerBackgroundShader({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: Responsive.getHeight(context) / 4,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.black.withOpacity(.4),
+            Colors.transparent,
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+      ),
+    );
+  }
+}
+
+class VideoMuteFullScreenControllers extends StatelessWidget {
+  final VoidCallback toggleLandscape;
+
+  const VideoMuteFullScreenControllers({
+    super.key,
+    required this.toggleLandscape,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    var mpProviderFalse =
+        Provider.of<MediaPlayerProvider>(context, listen: false);
+    return FadeInRight(
+      preferences: AnimationPreferences(
+        duration: Duration(milliseconds: 350),
+      ),
+      child: PaddingWrapper(
+        child: Row(
+          children: [
+            Spacer(),
+            CustomIconButton(
+              color: Colors.white.withOpacity(.8),
+              onTap: () {
+                mpProviderFalse.toggleMuteVideo();
+              },
+              iconData: mpProvider.videoMuted
+                  ? FontAwesomeIcons.volumeXmark
+                  : FontAwesomeIcons.volumeLow,
+            ),
+            CustomIconButton(
+              onTap: toggleLandscape,
+              iconData:
+                  MediaQuery.of(context).orientation == Orientation.landscape
+                      ? Icons.fullscreen_exit
+                      : Icons.fullscreen,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class VideoUpperControllers extends StatelessWidget {
+  const VideoUpperControllers({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CloseVideoButton(),
+        Spacer(),
+        FadeInRight(
+          preferences: AnimationPreferences(
+            duration: Duration(milliseconds: 350),
+          ),
+          child: SettingsButton(),
+        ),
+      ],
     );
   }
 }
