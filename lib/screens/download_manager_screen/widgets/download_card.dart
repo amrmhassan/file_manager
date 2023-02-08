@@ -6,6 +6,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/global/widgets/custom_volume_controllers.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_percent_bar.dart';
@@ -50,7 +51,9 @@ class _DownloadCardState extends State<DownloadCard> {
   @override
   Widget build(BuildContext context) {
     return ButtonWrapper(
-      onTap: navigateToFile,
+      onTap: widget.downloadTaskModel.taskStatus == TaskStatus.finished
+          ? navigateToFile
+          : null,
       decoration: BoxDecoration(
         color: kCardBackgroundColor,
         borderRadius: BorderRadius.circular(

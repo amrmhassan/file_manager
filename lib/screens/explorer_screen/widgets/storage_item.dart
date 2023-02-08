@@ -11,6 +11,8 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/animation_wrapper.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:open_file/open_file.dart' as open_file;
 import 'package:path/path.dart' as path_operations;
 import 'package:flutter/material.dart';
@@ -27,6 +29,7 @@ class StorageItem extends StatefulWidget {
   final ShareSpaceItemModel? shareSpaceItemModel;
   final Function(String path)? onFileTapped;
   final bool network;
+  final String? viewedFilePath;
 
   const StorageItem({
     super.key,
@@ -40,6 +43,7 @@ class StorageItem extends StatefulWidget {
     this.shareSpaceItemModel,
     this.onFileTapped,
     this.network = false,
+    this.viewedFilePath,
   });
 
   @override
@@ -47,6 +51,10 @@ class StorageItem extends StatefulWidget {
 }
 
 class _StorageItemState extends State<StorageItem> {
+  GlobalKey globalKey = GlobalKey();
+  bool hint = false;
+  double? height;
+
   bool isSelected(BuildContext context) {
     var foProvider =
         Provider.of<FilesOperationsProvider>(context, listen: false);
@@ -59,6 +67,20 @@ class _StorageItemState extends State<StorageItem> {
       widget.storageItemModel?.entityType ??
       widget.shareSpaceItemModel!.entityType;
 
+  void handleViewedFileHint() {
+    if (widget.viewedFilePath == null) return;
+    if (widget.viewedFilePath == null ||
+        widget.viewedFilePath != widget.storageItemModel?.path) return;
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      if (mounted) {
+        setState(() {
+          height = globalKey.currentContext?.size?.height;
+        });
+      }
+    });
+    hint = true;
+  }
+
   @override
   void initState() {
     if (widget.storageItemModel == null && widget.shareSpaceItemModel == null) {
@@ -70,12 +92,23 @@ class _StorageItemState extends State<StorageItem> {
 
   @override
   Widget build(BuildContext context) {
+    handleViewedFileHint();
+
     var foProviderFalse =
         Provider.of<FilesOperationsProvider>(context, listen: false);
     var foProvider = Provider.of<FilesOperationsProvider>(context);
 
     return Stack(
       children: [
+        if (hint)
+          FadeOut(
+            preferences: AnimationPreferences(duration: Duration(seconds: 5)),
+            child: Container(
+              width: double.infinity,
+              height: height,
+              color: Colors.white.withOpacity(.2),
+            ),
+          ),
         //? i added this null widget just to update this UI when the selected items changes(don't remove it)
         SizedBox(
           width: 0,
@@ -87,6 +120,7 @@ class _StorageItemState extends State<StorageItem> {
         ),
         AnimationWrapper(
           child: ButtonWrapper(
+            key: globalKey,
             onTap: widget.allowClick
                 ? () async {
                     if (entityType == EntityType.folder) {

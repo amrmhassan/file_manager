@@ -32,6 +32,8 @@ class EntitiesListViewBuilder extends StatefulWidget {
 
 class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
   ScrollController scrollController = ScrollController();
+  double? eachItemHeight;
+  String? viewedFilePath;
 
 //? this will get the scrolling position and update it
   void updateScrollingPosition() {
@@ -52,8 +54,11 @@ class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
         scrollController.position.maxScrollExtent;
     int index = widget.viewedList.indexWhere(
         (element) => element.path == explorerProviderFalse.viewedFilePath);
-    double eachItemHeight = fullListHeight / widget.viewedList.length;
-    scrollController.jumpTo(index * eachItemHeight);
+    setState(() {
+      eachItemHeight = fullListHeight / widget.viewedList.length;
+      viewedFilePath = explorerProviderFalse.viewedFilePath;
+    });
+    scrollController.jumpTo(index * eachItemHeight!);
     explorerProviderFalse.setViewedFilePath(null);
   }
 
@@ -113,6 +118,7 @@ class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
         itemBuilder: (context, index) {
           StorageItemModel f = widget.viewedList[index];
           return StorageItem(
+            viewedFilePath: viewedFilePath,
             allowShowingFavIcon: true,
             key: Key(f.path),
             storageItemModel: f,
