@@ -29,8 +29,10 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
   }
 
 //? to activate the portrait mode
-  Future<void> activatePortraitMode() async {
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  Future<void> activatePortraitMode(bool activateStatusBar) async {
+    if (activateStatusBar) {
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     await SystemChrome.restoreSystemUIOverlays();
   }
@@ -39,7 +41,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
   void toggleLandScape() async {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
     if (currentOrientation == Orientation.landscape) {
-      await activatePortraitMode();
+      await activatePortraitMode(false);
     } else {
       await activateLandScapeMode();
     }
@@ -65,6 +67,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
   void initState() {
     super.initState();
     Wakelock.enable();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
 
     var mediaProvider =
         Provider.of<MediaPlayerProvider>(context, listen: false);
@@ -73,7 +76,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
 
   @override
   void dispose() {
-    activatePortraitMode();
+    activatePortraitMode(true);
     Wakelock.disable();
     super.dispose();
   }
@@ -86,7 +89,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
       onWillPop: () async {
         Provider.of<MediaPlayerProvider>(context, listen: false)
             .toggleHideVideo();
-        await activatePortraitMode();
+        await activatePortraitMode(true);
         setControllersOverlayViewed(true);
 
         return false;
