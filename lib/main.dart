@@ -48,9 +48,9 @@ import 'package:provider/provider.dart';
 //! prevent the app from being killed when it is in the backend
 
 // view buffered places in the video player seeker bar
-// make the fast seeker widget for the video to be much bigger for the landscape mode
-// make the video not to be hidden when clicking the eye button next to a video even if the video is playing right now
-// open the task file when clicking over it and open it's folder when clicking the folder icon
+//! make the fast seeker widget for the video to be much bigger for the landscape mode
+//! make the video not to be hidden when clicking the eye button next to a video even if the video is playing right now
+//! open the task file when clicking over it and open it's folder when clicking the folder icon
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

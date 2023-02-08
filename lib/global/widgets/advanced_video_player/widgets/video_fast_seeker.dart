@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class _VideoFastSeekerState extends State<VideoFastSeeker> {
   int amount = 0;
   int actualAmount = 0;
 
-  void backward() {
+  void fastSeek() {
     if (widget.backward) {
       mpPF(context).videoBackWard10();
     } else {
@@ -47,20 +48,22 @@ class _VideoFastSeekerState extends State<VideoFastSeeker> {
     });
   }
 
+  double get seekerWidgetWidth => (Responsive.getWidth(context) - 100);
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: widget.backward ? -150 : null,
-      right: widget.backward ? null : -150,
+      left: widget.backward ? -seekerWidgetWidth / 2 : null,
+      right: widget.backward ? null : -seekerWidgetWidth / 2,
       child: GestureDetector(
-        onDoubleTap: backward,
+        onDoubleTap: fastSeek,
         onTap: widget.toggleControllerOverLayViewed,
         child: Opacity(
           opacity: shown ? 1 : 0,
           child: Container(
             alignment: Alignment.centerRight,
-            width: 300,
-            height: 300,
+            width: seekerWidgetWidth,
+            height: seekerWidgetWidth,
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(.2),
               borderRadius: BorderRadius.circular(1000),

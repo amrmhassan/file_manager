@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/global/widgets/advanced_video_player/widgets/left_fast_seeker.dart';
+import 'package:explorer/global/widgets/advanced_video_player/widgets/video_fast_seeker.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:flutter/material.dart';
 
