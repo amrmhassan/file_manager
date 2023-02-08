@@ -36,16 +36,17 @@ class VideoPlayerSlider extends StatelessWidget {
               onChanged: (value) {
                 mpProviderFalse.seekVideo(value);
               },
-              // secondaryTrackValue: (mpProvider.videoPosition.inMilliseconds +
-              //             mpProvider.videoPlayerController!.value.buffered.last
-              //                 .end.inMilliseconds) >
-              //         mpProvider.videoDuration!.inMilliseconds
-              //     ? mpProvider.videoDuration!.inMilliseconds.toDouble()
+              // secondaryTrackValue: mpProvider.bufferedParts.isEmpty
+              //     ? null
               //     : (mpProvider.videoPosition.inMilliseconds +
-              //             mpProvider.videoPlayerController!.value.buffered.last
-              //                 .end.inMilliseconds)
-              //         .toDouble()
-              //         .toDouble(),
+              //                 mpProvider
+              //                     .bufferedParts.last.end.inMilliseconds) >
+              //             mpProvider.videoDuration!.inMilliseconds
+              //         ? mpProvider.videoDuration!.inMilliseconds.toDouble()
+              //         : (mpProvider.videoPosition.inMilliseconds +
+              //                 mpProvider.bufferedParts.last.end.inMilliseconds)
+              //             .toDouble()
+              //             .toDouble(),
             ),
     );
   }

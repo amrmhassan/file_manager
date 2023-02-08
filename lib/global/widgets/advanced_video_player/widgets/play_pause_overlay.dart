@@ -10,11 +10,11 @@ final Duration animationDuration = Duration(milliseconds: 350);
 final Duration reverseDuration = Duration(milliseconds: 350);
 
 class PlayPauseOverLay extends StatefulWidget {
-  final VoidCallback toggleControllerOverLayViewed;
+  // final VoidCallback toggleControllerOverLayViewed;
 
   const PlayPauseOverLay({
     super.key,
-    required this.toggleControllerOverLayViewed,
+    // required this.toggleControllerOverLayViewed,
   });
 
   @override
@@ -76,12 +76,12 @@ class _PlayPauseOverLayState extends State<PlayPauseOverLay>
                 }
                 mpProviderFalse.toggleVideoPlay();
                 // if the button played the video then clear the user way from teh overlays after 3 seconds(the minimum when the video is playing)
-                if (mpProviderFalse.isVideoPlaying && mounted) {
-                  Future.delayed(Duration(milliseconds: 3 * 1000))
-                      .then((value) {
-                    widget.toggleControllerOverLayViewed();
-                  });
-                }
+                // if (mpProviderFalse.isVideoPlaying && mounted) {
+                //   Future.delayed(Duration(milliseconds: 3 * 1000))
+                //       .then((value) {
+                //     widget.toggleControllerOverLayViewed();
+                //   });
+                // }
               },
               child: AnimatedIcon(
                 icon: AnimatedIcons.pause_play,

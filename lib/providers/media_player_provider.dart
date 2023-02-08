@@ -122,6 +122,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   Duration videoPosition = Duration.zero;
   bool videoHidden = false;
   bool networkVideo = false;
+  List<DurationRange> bufferedParts = [];
 
   //? set volume touched
   void setVolumeTouched(bool t) {
@@ -159,7 +160,6 @@ class MediaPlayerProvider extends ChangeNotifier {
         videoHeight = videoPlayerController?.value.size.height;
         videoWidth = videoPlayerController?.value.size.width;
         videoAspectRatio = videoPlayerController?.value.aspectRatio;
-        // videoVolume = videoPlayerController?.value.volume ?? 0;
         videoDuration = videoPlayerController?.value.duration;
         networkVideo = network;
 
@@ -168,6 +168,7 @@ class MediaPlayerProvider extends ChangeNotifier {
       ..play()
       ..addListener(() async {
         videoPosition = videoPlayerController?.value.position ?? Duration.zero;
+        bufferedParts = [...(videoPlayerController?.value.buffered ?? [])];
         notifyListeners();
         if (isVideoPlaying &&
             !(videoPlayerController?.value.isPlaying ?? false)) {
@@ -187,9 +188,11 @@ class MediaPlayerProvider extends ChangeNotifier {
     videoPlayerController = null;
     isVideoPlaying = false;
     videoDuration = null;
+    videoMuted = false;
     videoPosition = Duration.zero;
     videoHidden = false;
     bottomVideoControllersHidden = false;
+    bufferedParts.clear();
     notifyListeners();
   }
 

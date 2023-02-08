@@ -19,7 +19,6 @@ import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/constants/colors.dart';

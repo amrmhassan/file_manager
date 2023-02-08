@@ -6,7 +6,6 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/global/widgets/custom_volume_controllers.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_percent_bar.dart';
@@ -14,7 +13,6 @@ import 'package:explorer/screens/download_manager_screen/widgets/failed_task_con
 import 'package:explorer/screens/download_manager_screen/widgets/finished_task_info.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/pause_resume_download_button.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/task_sub_info.dart';
-import 'package:explorer/screens/sub_explorer_screen/sub_explorer_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/material.dart';
