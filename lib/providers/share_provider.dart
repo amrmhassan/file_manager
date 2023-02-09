@@ -26,8 +26,16 @@ class ShareProvider extends ChangeNotifier {
   //# shared space items properties
   late String myDeviceId;
   final List<ShareSpaceItemModel> _sharedItems = [];
+  String? myImagePath;
 
   late String myName;
+
+//?
+  Future<void> setMyImagePath(String path) async {
+    myImagePath = path;
+    notifyListeners();
+    await SharedPrefHelper.setString(myImageKey, path);
+  }
 
   List<ShareSpaceItemModel> get sharedItems {
     var operated = _sharedItems.map((e) {
@@ -42,6 +50,7 @@ class ShareProvider extends ChangeNotifier {
   Future<void> loadDeviceIdAndName() async {
     await _loadDeviceID();
     await _loadMyName();
+    await _loadMyImagePath();
   }
 
   //? to load my saved name
@@ -55,6 +64,17 @@ class ShareProvider extends ChangeNotifier {
       return;
     }
     myName = savedName;
+    notifyListeners();
+  }
+
+  //? to load my saved name
+  Future<void> _loadMyImagePath() async {
+    String? savedPath = await SharedPrefHelper.getString(myImageKey);
+
+    if (savedPath == null) return;
+    if (!File(savedPath).existsSync()) return;
+
+    myImagePath = savedPath;
     notifyListeners();
   }
 

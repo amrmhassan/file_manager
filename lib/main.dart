@@ -124,8 +124,7 @@ class MyApp extends StatelessWidget {
           ShareScreen.routeName: (context) => ShareScreen(),
           QrCodeViewerScreen.routeName: (context) => QrCodeViewerScreen(),
           ScanQRCodeScreen.routeName: (context) => ScanQRCodeScreen(),
-          ShareSpaceViewerScreen.routeName: (context) =>
-              ShareSpaceViewerScreen(),
+          ShareSpaceVScreen.routeName: (context) => ShareSpaceVScreen(),
           DownloadManagerScreen.routeName: (context) => DownloadManagerScreen(),
           ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
           SubExplorerScreen.routeName: (context) => SubExplorerScreen(),

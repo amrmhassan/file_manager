@@ -22,17 +22,17 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ShareSpaceViewerScreen extends StatefulWidget {
+class ShareSpaceVScreen extends StatefulWidget {
   static const String routeName = '/ShareSpaceViewerScreen';
-  const ShareSpaceViewerScreen({
+  const ShareSpaceVScreen({
     super.key,
   });
 
   @override
-  State<ShareSpaceViewerScreen> createState() => _ShareSpaceViewerScreenState();
+  State<ShareSpaceVScreen> createState() => _ShareSpaceVScreenState();
 }
 
-class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
+class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   PeerModel? remotePeerModel;
   bool loadingSharedItems = true;
 
@@ -92,7 +92,7 @@ class _ShareSpaceViewerScreenState extends State<ShareSpaceViewerScreen> {
               onHomeClicked: () {
                 Navigator.pushReplacementNamed(
                   context,
-                  ShareSpaceViewerScreen.routeName,
+                  ShareSpaceVScreen.routeName,
                   arguments: remotePeerModel,
                 );
               },

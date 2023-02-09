@@ -29,7 +29,7 @@ class ShareSpaceCard extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(
               context,
-              ShareSpaceViewerScreen.routeName,
+              ShareSpaceVScreen.routeName,
               arguments: peerModel,
             );
           },
@@ -49,7 +49,9 @@ class ShareSpaceCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  PeerIcon(),
+                  PeerIcon(
+                    imagePath: null,
+                  ),
                   HSpace(),
                   Text(
                     me ? 'Your Share Space' : '${peerModel.name} Share Space',
