@@ -10,6 +10,7 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/animation_wrapper.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
+import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:open_file/open_file.dart' as open_file;
@@ -127,9 +128,7 @@ class _StorageItemState extends State<StorageItem> {
                       widget.onDirTapped(path);
                     } else {
                       if (widget.onFileTapped == null) {
-                        //* here perform open the file
-                        await open_file.OpenFile.open(path);
-                        await foProviderFalse.addToRecentlyOpened(path);
+                        openFile(path, context);
                       } else {
                         widget.onFileTapped!(path);
                       }

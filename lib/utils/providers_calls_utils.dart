@@ -1,4 +1,5 @@
 import 'package:explorer/providers/download_provider.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
@@ -50,4 +51,13 @@ MediaPlayerProvider mpPF(BuildContext context) {
 
 MediaPlayerProvider mpP(BuildContext context) {
   return Provider.of<MediaPlayerProvider>(context);
+}
+
+//? files operations providers
+FilesOperationsProvider foPF(BuildContext context) {
+  return Provider.of<FilesOperationsProvider>(context, listen: false);
+}
+
+FilesOperationsProvider foP(BuildContext context) {
+  return Provider.of<FilesOperationsProvider>(context);
 }

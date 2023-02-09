@@ -8,14 +8,18 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/download_task_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_percent_bar.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/failed_task_controllers.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/finished_task_info.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/pause_resume_download_button.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/task_sub_info.dart';
+import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path_operations;
 
 class DownloadCard extends StatefulWidget {
@@ -42,7 +46,11 @@ class _DownloadCardState extends State<DownloadCard> {
         widget.downloadTaskModel.localFilePath,
       );
     } else {
-      showSnackBar(context: context, message: 'file doesn\'t exist');
+      showSnackBar(
+        context: context,
+        message: 'file doesn\'t exist',
+        snackBarType: SnackBarType.error,
+      );
     }
   }
 
@@ -50,7 +58,9 @@ class _DownloadCardState extends State<DownloadCard> {
   Widget build(BuildContext context) {
     return ButtonWrapper(
       onTap: widget.downloadTaskModel.taskStatus == TaskStatus.finished
-          ? navigateToFile
+          ? () {
+              openFile(widget.downloadTaskModel.localFilePath, context);
+            }
           : null,
       decoration: BoxDecoration(
         color: kCardBackgroundColor,
