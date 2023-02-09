@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
@@ -28,6 +29,7 @@ void addClientHandler(
     String ip = body[ipString] as String;
     int port = body[portString];
     String sessionID = body[sessionIDString];
+
     PeerModel peerModel =
         serverProvider.addPeer(sessionID, deviceID, name, ip, port);
     response
@@ -355,10 +357,33 @@ List<FileSystemEntity> getFolderChildren(String folderPath) {
   return Directory(folderPath).listSync();
 }
 
-Future<void> getWsServerConnLink(
+Future<void> getWsServerConnLinkHandler(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
 ) async {
   response.write(serverProvider.myWSConnLink);
+}
+
+Future<void> getUserImageHandler(
+  HttpRequest request,
+  HttpResponse response,
+  ShareProvider shareProvider,
+) async {
+  bool exist = File(shareProvider.myImagePath!).existsSync();
+  if (shareProvider.myImagePath == null || !exist) {
+    response
+      ..statusCode = HttpStatus.notFound
+      ..write('Not Found')
+      ..close();
+    return;
+  }
+  File file = File(shareProvider.myImagePath!);
+  var bytes = file.readAsBytesSync();
+
+  response
+    ..headers.contentType = ContentType.binary
+    ..contentLength = bytes.length
+    ..add(bytes)
+    ..close();
 }

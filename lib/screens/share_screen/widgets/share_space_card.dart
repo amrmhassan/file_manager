@@ -50,7 +50,7 @@ class ShareSpaceCard extends StatelessWidget {
               Row(
                 children: [
                   PeerIcon(
-                    imagePath: null,
+                    peerModel: peerModel,
                   ),
                   HSpace(),
                   Text(

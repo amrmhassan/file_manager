@@ -37,7 +37,7 @@ class PickImageModal extends StatelessWidget {
     File? file = await FlutterImageCompress.compressAndGetFile(
       pickedFile.path,
       newPath,
-      quality: 60,
+      quality: 40,
     );
     if (file == null) return null;
     return file;

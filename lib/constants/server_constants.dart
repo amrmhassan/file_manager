@@ -16,6 +16,7 @@ const String wsServerConnLinkEndPoint = '/wsServerConnLink';
 const String addClientEndPoint = '/addClient';
 const String clientAddedEndPoint = '/clientAdded';
 const String clientLeftEndPoint = '/clientLeft';
+const String getPeerImagePathEndPoint = '/getPeerImagePath';
 
 //? headers keys
 const String pathHeaderKey = 'pathHeaderKey';
@@ -27,3 +28,4 @@ const String sessionIDHeaderKey = 'sessionIDHeaderKey';
 const String audioPathHeaderKey = 'audioPathHeaderKey';
 const String filePathHeaderKey = 'filePathHeaderKey';
 const String reqIntentPathHeaderKey = 'reqIntentPathHeaderKey';
+const String peerImageHeaderKey = 'peerImageHeaderKey';

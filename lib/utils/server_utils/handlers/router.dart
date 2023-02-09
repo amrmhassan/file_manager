@@ -107,10 +107,19 @@ CustomRouterSystem addServerRouters(
     ..addRouter(
       wsServerConnLinkEndPoint,
       HttpMethod.GET,
-      (request, response) => getWsServerConnLink(
+      (request, response) => getWsServerConnLinkHandler(
         request,
         response,
         serverProvider,
+      ),
+    )
+    ..addRouter(
+      getPeerImagePathEndPoint,
+      HttpMethod.GET,
+      (request, response) => getUserImageHandler(
+        request,
+        response,
+        shareProvider,
       ),
     );
   return customRouterSystem;

@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
@@ -38,7 +41,7 @@ Future addClient(
       shareItemsExplorerProvider,
     );
     String deviceID = shareProvider.myDeviceId;
-    String name = 'Client Name';
+    String name = shareProvider.myName;
     String myIp = serverProviderFalse.myIp!;
     int myPort = serverProviderFalse.myPort;
     await Dio().post(
@@ -57,6 +60,30 @@ Future addClient(
       s: s,
       rethrowError: true,
     );
+  }
+}
+
+//?
+// the user will ask for the other peer image then i will be headed to the other user handler asking for his image
+// then if he has one he will reply with his one as a Uint8List
+// otherwise he will reply with a 404 error which will cause this getPeerImage function to return null
+//
+Future<Uint8List?> getPeerImage(String connLink) async {
+  try {
+    String url = '$connLink$getPeerImagePathEndPoint';
+    Uri uri = Uri.parse(url);
+    HttpClient client = HttpClient();
+    var request = await client.getUrl(uri);
+    var res = await request.close();
+    if (res.statusCode == 404) throw Exception('No image');
+    List<int> bytes = [];
+    await for (var chunk in res) {
+      bytes.addAll(chunk);
+    }
+
+    return Uint8List.fromList(bytes);
+  } catch (e) {
+    return null;
   }
 }
 
