@@ -33,7 +33,11 @@ class CustomTextField extends StatelessWidget {
   final int? minLines;
   final String? initialValue;
   final Widget? trailingIcon;
-
+  final int? maxLength;
+  final Widget? Function(BuildContext,
+      {required int currentLength,
+      required bool isFocused,
+      required int? maxLength})? buildCounter;
   const CustomTextField({
     Key? key,
     this.iconName,
@@ -61,6 +65,8 @@ class CustomTextField extends StatelessWidget {
     this.minLines,
     this.initialValue,
     this.trailingIcon,
+    this.maxLength,
+    this.buildCounter,
   }) : super(key: key);
 
   @override
@@ -112,7 +118,9 @@ class CustomTextField extends StatelessWidget {
                       HSpace(factor: .5),
                       Expanded(
                         child: TextFormField(
+                          maxLength: maxLength,
                           maxLines: maxLines ?? 1,
+                          buildCounter: buildCounter,
                           minLines: minLines ?? 1,
                           enabled: enabled,
                           validator: validator,

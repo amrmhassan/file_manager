@@ -128,7 +128,7 @@ class ServerProvider extends ChangeNotifier {
     PeerModel meHost = PeerModel(
       deviceID: shareProvider.myDeviceId,
       joinedAt: DateTime.now(),
-      name: memberType == MemberType.host ? 'Server Name' : 'Client Name',
+      name: shareProvider.myName,
       memberType: memberType,
       ip: myIp!,
       port: myPort,

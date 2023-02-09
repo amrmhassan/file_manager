@@ -77,6 +77,7 @@ TextStyle h4TextStyleInactive = TextStyle(
 TextStyle h4LiteTextStyle = TextStyle(
   fontSize: h4TextSize,
   fontFamily: 'Cairo',
+  color: kActiveTextColor,
 );
 TextStyle h4LightTextStyle = TextStyle(
   fontSize: h4TextSize,

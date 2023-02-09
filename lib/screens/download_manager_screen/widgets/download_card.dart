@@ -16,10 +16,8 @@ import 'package:explorer/screens/download_manager_screen/widgets/pause_resume_do
 import 'package:explorer/screens/download_manager_screen/widgets/task_sub_info.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path_operations;
 
 class DownloadCard extends StatefulWidget {

@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:explorer/constants/db_constants.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
@@ -26,6 +27,8 @@ class ShareProvider extends ChangeNotifier {
   late String myDeviceId;
   final List<ShareSpaceItemModel> _sharedItems = [];
 
+  late String myName;
+
   List<ShareSpaceItemModel> get sharedItems {
     var operated = _sharedItems.map((e) {
       e.size = File(e.path).statSync().size;
@@ -36,7 +39,27 @@ class ShareProvider extends ChangeNotifier {
 
   //? i will give this device an id in the first run of the app
   //? and if it is there just don't change it
-  Future<void> giveDeviceAnId() async {
+  Future<void> loadDeviceIdAndName() async {
+    await _loadDeviceID();
+    await _loadMyName();
+  }
+
+  //? to load my saved name
+  Future<void> _loadMyName() async {
+    String? savedName = await SharedPrefHelper.getString(myNameKey);
+
+    if (savedName == null) {
+      myName = myDefaultName;
+      notifyListeners();
+      await SharedPrefHelper.setString(myNameKey, myName);
+      return;
+    }
+    myName = savedName;
+    notifyListeners();
+  }
+
+  //? to load my saved name
+  Future<void> _loadDeviceID() async {
     String? savedId = await SharedPrefHelper.getString(deviceIdKey);
 
     if (savedId == null) {
@@ -45,8 +68,15 @@ class ShareProvider extends ChangeNotifier {
       await SharedPrefHelper.setString(deviceIdKey, myDeviceId);
       return;
     }
+
     myDeviceId = savedId;
     notifyListeners();
+  }
+
+  Future<void> updateMyName(String newName) async {
+    myName = newName;
+    notifyListeners();
+    await SharedPrefHelper.setString(myNameKey, myName);
   }
 
   //? to remove multiple items from share space

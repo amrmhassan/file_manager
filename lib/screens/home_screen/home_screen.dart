@@ -62,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
       await Provider.of<ShareProvider>(context, listen: false)
           .loadSharedItems();
       //? to set the device id
-      await Provider.of<ShareProvider>(context, listen: false).giveDeviceAnId();
+      await Provider.of<ShareProvider>(context, listen: false)
+          .loadDeviceIdAndName();
 
       //* getting storage permission
       bool res = await showPermissionsModal(

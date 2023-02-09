@@ -31,6 +31,7 @@ import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/selected_items_screen/selected_items_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
+import 'package:explorer/screens/share_settings_screen/share_settings_screen.dart';
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
@@ -52,8 +53,8 @@ import 'package:provider/provider.dart';
 // make the video not to be hidden when clicking the eye button next to a video even if the video is playing right now
 // open the task file when clicking over it and open it's folder when clicking the folder icon
 
+//! add settings for the sharing
 //!!! when pausing the downloaded file at it's end(i think when it's downloading the final smaller part) the error happen and it doesn't download till the end
-//!!!
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -128,6 +129,7 @@ class MyApp extends StatelessWidget {
           DownloadManagerScreen.routeName: (context) => DownloadManagerScreen(),
           ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
           SubExplorerScreen.routeName: (context) => SubExplorerScreen(),
+          ShareSettingsScreen.routeName: (context) => ShareSettingsScreen(),
         },
       ),
     );

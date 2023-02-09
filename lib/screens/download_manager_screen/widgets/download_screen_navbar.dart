@@ -25,7 +25,10 @@ class DownloadScreenNavBar extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: kCardBackgroundColor,
-        borderRadius: BorderRadius.circular(largeBorderRadius),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(largeBorderRadius),
+          topRight: Radius.circular(largeBorderRadius),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

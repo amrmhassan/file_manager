@@ -13,7 +13,6 @@ import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.da
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:open_file/open_file.dart' as open_file;
 import 'package:path/path.dart' as path_operations;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

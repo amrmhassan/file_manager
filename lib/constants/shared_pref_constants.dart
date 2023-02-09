@@ -7,6 +7,7 @@ const String showHiddenFilesKey = 'showHiddenFilesKey';
 const String appLightThemeKey = 'appLightThemeKey';
 const String permissionsGrantedKey = 'permissionsGrantedKey';
 const String deviceIdKey = 'deviceIdKey';
+const String myNameKey = 'myNameKey';
 
 //? props keys
 const String activeWishlistIdKey = 'activeWishlistIdKey';

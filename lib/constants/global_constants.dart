@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:explorer/providers/explorer_provider_abstract.dart';
 import 'package:flutter/material.dart';
@@ -50,3 +51,6 @@ const String otherDownloadFolder = 'Other';
 //? storage item
 const double height = 60;
 GlobalKey storageItemKey = GlobalKey();
+
+//? device props constants
+String myDefaultName = 'No Name ${Random().nextInt(99)}';
