@@ -16,7 +16,7 @@ class VideoPlayerSlider extends StatefulWidget {
 }
 
 class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
-  bool touched = false;
+  bool touched = true;
   late CustomFuture customFuture;
 
   void seekerTouched() {
@@ -41,7 +41,6 @@ class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
 
   @override
   void initState() {
-    seekerTouched();
     seekerLeft();
     super.initState();
   }
