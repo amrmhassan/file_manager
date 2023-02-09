@@ -2,13 +2,55 @@
 
 import 'package:explorer/global/widgets/custom_slider/custom_slider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/utils/futures_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class VideoPlayerSlider extends StatelessWidget {
+class VideoPlayerSlider extends StatefulWidget {
   const VideoPlayerSlider({
     super.key,
   });
+
+  @override
+  State<VideoPlayerSlider> createState() => _VideoPlayerSliderState();
+}
+
+class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
+  bool touched = false;
+  late CustomFuture customFuture;
+
+  void seekerTouched() {
+    setState(() {
+      touched = true;
+    });
+  }
+
+  void seekerLeft() {
+    try {
+      customFuture.cancel();
+    } catch (e) {
+      //
+    }
+    customFuture = CustomFuture()
+      ..delayedAction(Duration(seconds: 2), () {
+        setState(() {
+          touched = false;
+        });
+      });
+  }
+
+  @override
+  void initState() {
+    seekerTouched();
+    seekerLeft();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    customFuture.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +60,28 @@ class VideoPlayerSlider extends StatelessWidget {
 
     return mpProvider.videoDuration == null
         ? SizedBox()
-        : CustomSlider(
-            circleRadius: 7,
-            activeThickness: 3,
-            inactiveThickness: 2,
-            inactiveColor: Colors.grey.withOpacity(.5),
-            activeColor: Colors.red,
-            circleColor: Colors.red,
-            min: 0,
-            max: mpProvider.videoDuration!.inMilliseconds.toDouble(),
-            value: mpProvider.videoPosition.inMilliseconds.toDouble(),
-            onChanged: (value) {
-              mpProviderFalse.seekVideo(value);
+        : Listener(
+            onPointerDown: (event) {
+              seekerTouched();
             },
-            subRanges: mpProvider.bufferedTransformer,
+            onPointerUp: (event) {
+              seekerLeft();
+            },
+            child: CustomSlider(
+              circleRadius: touched ? 7 : 0,
+              activeThickness: touched ? 3 : 2,
+              inactiveThickness: 2,
+              inactiveColor: Colors.grey.withOpacity(.5),
+              activeColor: Colors.red,
+              circleColor: Colors.red,
+              min: 0,
+              max: mpProvider.videoDuration!.inMilliseconds.toDouble(),
+              value: mpProvider.videoPosition.inMilliseconds.toDouble(),
+              onChanged: (value) {
+                mpProviderFalse.seekVideo(value);
+              },
+              subRanges: mpProvider.bufferedTransformer,
+            ),
           );
   }
 }
