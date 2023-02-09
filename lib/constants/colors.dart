@@ -9,6 +9,7 @@ Color kLightCardBackgroundColor = Color(0xff474B63);
 Color kInactiveColor = Color(0xff9A9CA3);
 Color kBlueColor = Colors.blue;
 Color kInverseColor = Colors.white;
+Color videoSliderBufferedColor = Colors.white.withOpacity(.4);
 
 //? text colors
 Color kActiveTextColor = Colors.white;

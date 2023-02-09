@@ -3,6 +3,7 @@
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -63,36 +64,63 @@ class _PlayPauseOverLayState extends State<PlayPauseOverLay>
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ButtonWrapper(
-              backgroundColor: Colors.black.withOpacity(.4),
-              borderRadius: 1000,
-              width: largeIconSize * 2,
-              height: largeIconSize * 2,
-              onTap: () {
-                if (mpProviderFalse.isVideoPlaying) {
-                  _controller.forward();
-                } else {
-                  _controller.reverse();
-                }
-                mpProviderFalse.toggleVideoPlay();
-                // if the button played the video then clear the user way from teh overlays after 3 seconds(the minimum when the video is playing)
-                // if (mpProviderFalse.isVideoPlaying && mounted) {
-                //   Future.delayed(Duration(milliseconds: 3 * 1000))
-                //       .then((value) {
-                //     widget.toggleControllerOverLayViewed();
-                //   });
-                // }
-              },
-              child: AnimatedIcon(
-                icon: AnimatedIcons.pause_play,
-                progress: _controller.view,
-                color: Colors.white,
-                size: mediumIconSize,
-              ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                BufferingLoader(),
+                ButtonWrapper(
+                  backgroundColor: Colors.black.withOpacity(.4),
+                  borderRadius: 1000,
+                  width: largeIconSize * 2,
+                  height: largeIconSize * 2,
+                  onTap: () {
+                    if (mpProviderFalse.isVideoPlaying) {
+                      _controller.forward();
+                    } else {
+                      _controller.reverse();
+                    }
+                    mpProviderFalse.toggleVideoPlay();
+                    // if the button played the video then clear the user way from teh overlays after 3 seconds(the minimum when the video is playing)
+                    // if (mpProviderFalse.isVideoPlaying && mounted) {
+                    //   Future.delayed(Duration(milliseconds: 3 * 1000))
+                    //       .then((value) {
+                    //     widget.toggleControllerOverLayViewed();
+                    //   });
+                    // }
+                  },
+                  child: AnimatedIcon(
+                    icon: AnimatedIcons.pause_play,
+                    progress: _controller.view,
+                    color: Colors.white,
+                    size: mediumIconSize,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ],
     );
+  }
+}
+
+class BufferingLoader extends StatelessWidget {
+  const BufferingLoader({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var mpProvider = mpP(context);
+    return mpProvider.isBuffering
+        ? SizedBox(
+            width: largeIconSize * 2 - 5,
+            height: largeIconSize * 2 - 5,
+            child: CircularProgressIndicator(
+              color: Colors.white.withOpacity(.9),
+              strokeWidth: 5,
+            ),
+          )
+        : SizedBox();
   }
 }

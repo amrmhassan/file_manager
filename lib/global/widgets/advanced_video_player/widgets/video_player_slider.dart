@@ -31,6 +31,7 @@ class VideoPlayerSlider extends StatelessWidget {
             onChanged: (value) {
               mpProviderFalse.seekVideo(value);
             },
+            subRanges: mpProvider.bufferedTransformer,
           );
   }
 }

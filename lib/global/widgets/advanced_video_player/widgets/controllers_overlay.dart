@@ -14,6 +14,7 @@ import 'package:explorer/utils/duration_utils.dart';
 import 'package:explorer/utils/futures_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -67,7 +68,9 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
   @override
   void initState() {
     //! activate this
-    // hideMeAfter();
+    if (!kDebugMode) {
+      hideMeAfter();
+    }
     super.initState();
   }
 

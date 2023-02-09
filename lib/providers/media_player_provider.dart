@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:video_player/video_player.dart';
@@ -122,7 +124,20 @@ class MediaPlayerProvider extends ChangeNotifier {
   Duration videoPosition = Duration.zero;
   bool videoHidden = false;
   bool networkVideo = false;
-  // List<DurationRange> bufferedParts = [];
+  List<DurationRange> _bufferedParts = [];
+  bool isBuffering = false;
+  //? to return the ready buffered parts to be viewed into the video player slider
+  List<SubRangeModel> get bufferedTransformer => _bufferedParts
+      .map((e) => SubRangeModel(
+            start: Duration(milliseconds: e.start.inMilliseconds)
+                .inMilliseconds
+                .toDouble(),
+            end: Duration(milliseconds: e.end.inMilliseconds)
+                .inMilliseconds
+                .toDouble(),
+            color: videoSliderBufferedColor,
+          ))
+      .toList();
 
   //? set volume touched
   void setVolumeTouched(bool t) {
@@ -169,7 +184,9 @@ class MediaPlayerProvider extends ChangeNotifier {
       ..play()
       ..addListener(() async {
         videoPosition = videoPlayerController?.value.position ?? Duration.zero;
-        // bufferedParts = [...(videoPlayerController?.value.buffered ?? [])];
+        _bufferedParts = videoPlayerController?.value.buffered ?? [];
+        isBuffering = videoPlayerController?.value.isBuffering ?? false;
+
         notifyListeners();
         if (isVideoPlaying &&
             !(videoPlayerController?.value.isPlaying ?? false)) {
@@ -194,7 +211,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     videoPosition = Duration.zero;
     videoHidden = false;
     bottomVideoControllersHidden = false;
-    // bufferedParts.clear();
+    _bufferedParts.clear();
     notifyListeners();
   }
 
