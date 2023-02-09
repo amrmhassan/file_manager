@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class PeerIcon extends StatelessWidget {

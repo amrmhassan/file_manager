@@ -5,6 +5,8 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/pick_image_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class PickMyIconButton extends StatelessWidget {
@@ -24,6 +26,7 @@ class PickMyIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var shareProvider = shareP(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -41,12 +44,38 @@ class PickMyIconButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(smallBorderRadius),
           ),
           child: Text(
-            'Edit',
+            shareProvider.myImagePath == null ? 'Add Image' : 'Edit',
             style: h4TextStyle.copyWith(
               fontWeight: FontWeight.normal,
             ),
           ),
         ),
+        if (shareProvider.myImagePath != null)
+          Row(
+            children: [
+              HSpace(),
+              ButtonWrapper(
+                onTap: () => sharePF(context).removeImagePath(),
+                padding: EdgeInsets.symmetric(
+                  horizontal: kHPad,
+                  vertical: kVPad / 4,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: kMainIconColor.withOpacity(.3),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(smallBorderRadius),
+                ),
+                child: Text(
+                  'Clear',
+                  style: h4TextStyle.copyWith(
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
       ],
     );
   }

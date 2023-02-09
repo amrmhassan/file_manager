@@ -99,6 +99,13 @@ class ShareProvider extends ChangeNotifier {
     await SharedPrefHelper.setString(myNameKey, myName);
   }
 
+  //?
+  Future removeImagePath() async {
+    myImagePath = null;
+    notifyListeners();
+    await SharedPrefHelper.removeKey(myImageKey);
+  }
+
   //? to remove multiple items from share space
   Future removeMultipleItemsFromShareSpace(List<StorageItemModel> items) async {
     for (var item in items) {
