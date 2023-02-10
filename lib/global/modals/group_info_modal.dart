@@ -52,54 +52,6 @@ class GroupInfoModal extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Your session ID',
-                  style: h4TextStyle,
-                ),
-                HSpace(factor: .2),
-                Expanded(
-                  child: Text(
-                    serverProvider.me(shareProvider).sessionID,
-                    style: h5LiteTextStyle,
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Your Device ID',
-                  style: h4TextStyle,
-                ),
-                HSpace(factor: .2),
-                Expanded(
-                  child: Text(
-                    shareProvider.myDeviceId,
-                    style: h5LiteTextStyle,
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Your Device ID',
-                  style: h4TextStyle,
-                ),
-                HSpace(factor: .2),
-                Expanded(
-                  child: Text(
-                    shareProvider.myDeviceId,
-                    style: h5LiteTextStyle,
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
                   'Connected Devices',
                   style: h4TextStyle,
                 ),
@@ -123,6 +75,38 @@ class GroupInfoModal extends StatelessWidget {
                 Expanded(
                   child: Text(
                     capitalizeWord(serverProvider.myType.name),
+                    style: h5LiteTextStyle,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  'Your session ID',
+                  style: h4TextStyle,
+                ),
+                HSpace(factor: .2),
+                Expanded(
+                  child: Text(
+                    serverProvider.me(shareProvider).sessionID,
+                    style: h5LiteTextStyle,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  'Your Device ID',
+                  style: h4TextStyle,
+                ),
+                HSpace(factor: .2),
+                Expanded(
+                  child: Text(
+                    shareProvider.myDeviceId,
                     style: h5LiteTextStyle,
                     textAlign: TextAlign.end,
                   ),

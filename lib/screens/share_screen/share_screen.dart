@@ -48,15 +48,8 @@ class _ShareScreenState extends State<ShareScreen> {
           serverProvider.httpServer == null
               ? NotSharingView()
               : Builder(builder: (context) {
-                  late PeerModel hostPeer;
-                  try {
-                    hostPeer = serverProvider.peers.firstWhere(
-                      (element) => element.memberType == MemberType.host,
-                    );
-                  } catch (e) {
-                    hostPeer = serverProvider.peers.first;
-                  }
-
+                   PeerModel hostPeer=
+                  serverProvider.getHostPeer;
                   bool iamTheHost =
                       shareProvider.myDeviceId == hostPeer.deviceID;
                   var otherPeersButMe = serverProvider.peers.where(

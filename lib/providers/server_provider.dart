@@ -184,25 +184,25 @@ class ServerProvider extends ChangeNotifier {
     ShareItemsExplorerProvider shareItemsExplorerProvider, [
     bool wifi = true,
   ]) async {
+    //! host device must always be hotspot or wifi
+    //! client device must always be wifi
     hostWithWifi = wifi;
     // notifyListeners();
     try {
+      String? myWifiIp = await getMyIpAddress(wifi);
+      if (myWifiIp == null) {
+        throw CustomException(
+          e: wifi ? 'No Connected' : 'Open Your HotSpot please',
+          s: StackTrace.current,
+          rethrowError: true,
+        );
+      }
       //? opening the server port and setting end points
       httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
       if (memberType == MemberType.host) {
-        String? myWifiIp = await getMyIpAddress(wifi);
-        if (myWifiIp == null) {
-          throw CustomException(
-            e: wifi ? 'No Connected' : 'Open Your HotSpot please',
-            s: StackTrace.current,
-            rethrowError: true,
-          );
-        }
         customServerSocket = CustomServerSocket(myWifiIp, this, shareProvider);
         wsServer = await customServerSocket.getWsConnLink();
         myWSConnLink = getConnLink(myWifiIp, wsServer.port, true);
-        myIp = myWifiIp;
-        myConnLink = 'http://$myWifiIp:$myPort';
       }
 
       CustomRouterSystem customRouterSystem =
@@ -210,8 +210,9 @@ class ServerProvider extends ChangeNotifier {
       httpServer!.listen(customRouterSystem.pipeline);
       //? when above code is success then set the needed stuff like port, other things
       myPort = httpServer!.port;
-
       myType = memberType;
+      myIp = myWifiIp;
+      myConnLink = 'http://$myWifiIp:$myPort';
 
       PeerModel meHost = PeerModel(
         deviceID: shareProvider.myDeviceId,
