@@ -10,7 +10,6 @@ import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/modals/entity_options_modal.dart';
 import 'package:explorer/global/modals/sort_by_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
-import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -37,12 +36,7 @@ Future<bool> showAskForShareSpaceModal(
   );
 
   if (res == null) {
-    serverPF(context).blockDevice(deviceID, false);
-    showSnackBar(
-      context: context,
-      message: 'Block not considering remember',
-      snackBarType: SnackBarType.error,
-    );
+    await serverPF(context).blockDevice(deviceID, false);
   }
 
   return res ?? false;

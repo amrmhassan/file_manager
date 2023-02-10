@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
@@ -30,19 +30,24 @@ class _AskForShareSpaceModalState extends State<AskForShareSpaceModal> {
   @override
   Widget build(BuildContext context) {
     return DoubleButtonsModal(
-      onOk: () {
-        serverPF(context).blockDevice(widget.deviceID, remember);
+      onOk: () async {
+        await serverPF(context).blockDevice(widget.deviceID, remember);
         showSnackBar(
           context: context,
           message: 'Block considering remember $remember',
           snackBarType: SnackBarType.error,
         );
+        // this will tell the parent function that it is blocked
         Navigator.pop(context, false);
       },
-      onCancel: () {
-        serverPF(context).allowDevice(widget.deviceID, remember);
+      onCancel: () async {
+        await serverPF(context).allowDevice(widget.deviceID, remember);
         showSnackBar(
-            context: context, message: 'Allow considering remember $remember');
+          context: context,
+          message: 'Allow considering remember $remember',
+        );
+
+        // this will tell the parent function that it is allowed
         Navigator.pop(context, true);
       },
       autoPop: false,
