@@ -26,6 +26,8 @@ class _ChangeMyNameModalState extends State<ChangeMyNameModal> {
   void initState() {
     nameController.text = sharePF(context).myName;
     name = nameController.text;
+    nameController.selection =
+        TextSelection(baseOffset: 0, extentOffset: nameController.text.length);
     super.initState();
   }
 

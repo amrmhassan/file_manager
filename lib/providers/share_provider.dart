@@ -42,16 +42,6 @@ class ShareProvider extends ChangeNotifier {
     return operated;
   }
 
-  // bool addedToShareSpace(String path){
-
-  // }
-
-  //? this will be called whenever removing from share space and this will add to hidden entities if "remove from share space" clicked
-  //? but it's not directly added to share space
-  // bool _needToBeAddedToHiddenEntities(String path) {
-  //   return !_sharedItems.any((element) => element.path == path);
-  // }
-
   //?
   bool showHideFromShareSpaceButton(Iterable<String> paths) {
     // this will show the button only if the entity is a child of a shared entity, not the entity itself
@@ -256,6 +246,7 @@ class ShareProvider extends ChangeNotifier {
         break;
       }
     }
+    return exist;
     // if false just return false from here
     // if (!exist) return exist;
 
@@ -264,7 +255,6 @@ class ShareProvider extends ChangeNotifier {
     //   exist = false;
     // }
 
-    return exist;
     // var data = await DBHelper.getDataWhere(
     //   shareSpaceItemsTableName,
     //   pathString,

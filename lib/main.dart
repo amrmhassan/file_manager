@@ -39,6 +39,7 @@ import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.d
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
+import 'package:explorer/screens/white_block_list_screen/white_block_list_screen.dart';
 import 'package:explorer/utils/theme_utils.dart';
 
 import 'package:flutter/material.dart';
@@ -132,6 +133,7 @@ class MyApp extends StatelessWidget {
           DownloadManagerScreen.routeName: (context) => DownloadManagerScreen(),
           ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
           ShareSettingsScreen.routeName: (context) => ShareSettingsScreen(),
+          WhiteBlockListScreen.routeName: (context) => WhiteBlockListScreen(),
         },
       ),
     );

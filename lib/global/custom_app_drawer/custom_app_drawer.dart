@@ -8,7 +8,6 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/hive_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
-import 'package:explorer/global/custom_app_drawer/widgets/light_theme_check_box.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/storage_analyzer_button.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/db_helper.dart';

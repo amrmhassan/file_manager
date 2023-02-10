@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/hive_constants.dart';
 import 'package:explorer/helpers/hive_helper.dart';
+import 'package:explorer/models/white_block_list_model.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
@@ -40,15 +41,34 @@ class ServerProvider extends ChangeNotifier {
   late MemberType myType;
   late HttpServer wsServer;
 
-  List<String> allowedPeers = [];
-  List<String> blockedPeers = [];
+  List<WhiteBlockListModel> allowedPeers = [];
+  List<WhiteBlockListModel> blockedPeers = [];
+
+  Future<void> unAllowDevice(String deviceID) async {
+    allowedPeers.removeWhere((element) => element.deviceID == deviceID);
+    notifyListeners();
+    Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
+    await allowedBox.delete(deviceID);
+  }
+
+  Future<void> unblockDevice(String deviceID) async {
+    blockedPeers.removeWhere((element) => element.deviceID == deviceID);
+    notifyListeners();
+    Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();
+    await blockedBox.delete(deviceID);
+  }
+
   Future<void> allowDevice(String deviceID, bool remember) async {
-    allowedPeers.add(deviceID);
+    var model = WhiteBlockListModel(
+      deviceID: deviceID,
+      name: peerModelWithDeviceID(deviceID).name,
+    );
+    allowedPeers.add(model);
     notifyListeners();
     if (remember) {
       //! save if remember
       Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
-      await allowedBox.put(deviceID, deviceID);
+      await allowedBox.put(deviceID, model.toJSON());
     }
   }
 
@@ -58,37 +78,43 @@ class ServerProvider extends ChangeNotifier {
     bool justOneTime = false,
   ]) async {
     if (justOneTime) return;
-    blockedPeers.add(deviceID);
+    var model = WhiteBlockListModel(
+      deviceID: deviceID,
+      name: peerModelWithDeviceID(deviceID).name,
+    );
+    blockedPeers.add(model);
     notifyListeners();
     if (remember) {
       //! save if remember
       Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();
-      await blockedBox.put(deviceID, deviceID);
+      await blockedBox.put(deviceID, model.toJSON());
     }
   }
 
   Future<bool> isPeerAllowed(String deviceID) async {
-    bool stateAllowed = allowedPeers.any((element) => element == deviceID);
+    bool stateAllowed =
+        allowedPeers.any((element) => element.deviceID == deviceID);
     if (stateAllowed) return true;
 
     Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
     bool dbAllowed = allowedBox.containsKey(deviceID);
 
     if (dbAllowed) {
-      allowedPeers.add(deviceID);
+      allowedPeers.add(WhiteBlockListModel.fromJSON(allowedBox.get(deviceID)));
       return true;
     }
     return false;
   }
 
   Future<bool> isPeerBlocked(String deviceID) async {
-    bool stateBlocked = blockedPeers.any((element) => element == deviceID);
+    bool stateBlocked =
+        blockedPeers.any((element) => element.deviceID == deviceID);
     if (stateBlocked) return true;
 
     Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();
     bool dbBlocked = blockedBox.containsKey(deviceID);
     if (dbBlocked) {
-      blockedPeers.add(deviceID);
+      blockedPeers.add(WhiteBlockListModel.fromJSON(blockedBox.get(deviceID)));
       return true;
     }
 
