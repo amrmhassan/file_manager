@@ -48,6 +48,7 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
     required String sessionId,
   }) {
     if (viewedUserSessionId == sessionId) {
+      currentSharedSpaceItems.addAll(addedItems);
       for (var item in addedItems) {
         if (!viewedItems.any((element) => element.path == item.path)) {
           viewedItems.add(item);
@@ -65,6 +66,8 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
     if (viewedUserSessionId == sessionId) {
       for (var itemPath in removedItems) {
         viewedItems.removeWhere((element) => element.path == itemPath);
+        currentSharedSpaceItems
+            .removeWhere((element) => element.path == itemPath);
       }
       notifyListeners();
     }
@@ -76,6 +79,8 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
     currentPath = path;
     viewedItems = items;
     notifyListeners();
+
+    // to check if i am entering a main entity(main shared item not a children of another shared item) directly shared
     if (currentSharedSpaceItems.any((element) => element.path == path)) {
       currentSharedFolderPath = path;
       notifyListeners();

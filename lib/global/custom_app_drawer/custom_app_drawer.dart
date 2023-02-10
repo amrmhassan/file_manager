@@ -45,7 +45,17 @@ class CustomAppDrawer extends StatelessWidget {
               width: largeIconSize * 3,
             ),
             VSpace(factor: 2),
-            LightThemeCheckBox(),
+            // LightThemeCheckBox(),
+
+            AppDrawerItem(
+              iconPath: 'qr-code',
+              title: 'QR Scanner',
+              onTap: () async {
+                showSnackBar(context: context, message: 'Soon');
+                Navigator.pop(context);
+              },
+              onlyDebug: true,
+            ),
             StorageAnalyzerButton(),
             AppDrawerItem(
               iconPath: 'settings',

@@ -29,7 +29,7 @@ class QrCodeViewerScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'Your Qr Code',
+              'No Data Needed',
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
@@ -40,22 +40,28 @@ class QrCodeViewerScreen extends StatelessWidget {
                   padding: EdgeInsets.all(largePadding),
                   borderRadius: 0,
                   onTap: () {
-                    showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) => ModalWrapper(
-                        color: kCardBackgroundColor,
-                        showTopLine: false,
-                        child: Text(
-                          'Connections guides will be here',
-                        ),
-                      ),
-                    );
+                    // showModalBottomSheet(
+                    //   backgroundColor: Colors.transparent,
+                    //   context: context,
+                    //   builder: (context) => ModalWrapper(
+                    //     color: kCardBackgroundColor,
+                    //     showTopLine: false,
+                    //     child: Text(
+                    //       'Connections guides will be here',
+                    //     ),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
                   },
-                  child: Image.asset(
-                    'assets/icons/info.png',
-                    width: mediumIconSize,
-                    color: Colors.white,
+                  // Image.asset(
+                  //   'assets/icons/info.png',
+                  //   width: mediumIconSize,
+                  //   color: Colors.white,
+                  // )
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: kMainIconColor,
+                    size: mediumIconSize,
                   ),
                 ),
                 SizedBox(width: kHPad / 2),
@@ -66,6 +72,8 @@ class QrCodeViewerScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text('You can go back after scanning'),
+                VSpace(),
                 GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -109,42 +117,45 @@ class QrCodeViewerScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '1- Open HotSpot (No data needed)',
+                        serverProvider.hostWithWifi
+                            ? '1- Connect with others on the same wifi'
+                            : '1- Open your hotspot',
                         style: h4TextStyleInactive,
                       ),
+                      if (!serverProvider.hostWithWifi)
+                        Text(
+                          '2- Let other device connect to your HotSpot',
+                          style: h4TextStyleInactive,
+                        ),
                       Text(
-                        '2- Let other device connect to your HotSpot',
-                        style: h4TextStyleInactive,
-                      ),
-                      Text(
-                        '3- Click Join then scan the above QR code',
+                        '${serverProvider.hostWithWifi ? '2' : '3'}- Others click join then scan QR',
                         style: h4TextStyleInactive,
                       ),
                       VSpace(),
                     ],
                   ),
                 ),
-                Text('Web Share:'),
-                PaddingWrapper(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '1- Copy the above link or scan the Qr Code',
-                        style: h4TextStyleInactive,
-                      ),
-                      Text(
-                        '2- Paste it into the other device browser',
-                        style: h4TextStyleInactive,
-                      ),
-                      Text(
-                        '3- Let the magic happen',
-                        style: h4TextStyleInactive,
-                      ),
-                      VSpace(),
-                    ],
-                  ),
-                ),
+                // Text('Web Share:'),
+                // PaddingWrapper(
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text(
+                //         '1- Copy the above link or scan the Qr Code',
+                //         style: h4TextStyleInactive,
+                //       ),
+                //       Text(
+                //         '2- Paste it into the other device browser',
+                //         style: h4TextStyleInactive,
+                //       ),
+                //       Text(
+                //         '3- Let the magic happen',
+                //         style: h4TextStyleInactive,
+                //       ),
+                //       VSpace(),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

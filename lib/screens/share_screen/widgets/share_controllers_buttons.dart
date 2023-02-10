@@ -29,13 +29,14 @@ class ShareControllersButtons extends StatefulWidget {
 }
 
 class _ShareControllersButtonsState extends State<ShareControllersButtons> {
-  Future localOpenServerHandler([bool wifi = true]) async {
+  Future<bool> localOpenServerHandler([bool wifi = true]) async {
     await serverPF(context).openServer(
       sharePF(context),
       MemberType.host,
       shareExpPF(context),
       wifi,
     );
+    return serverPF(context).httpServer != null;
   }
 
   @override
@@ -69,9 +70,11 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                       //? here open the hotspot then show the connection parameters as qr code
                       //? wifi ssid:password:ip:port
                       try {
-                        await localOpenServerHandler(false);
-                        Navigator.pushNamed(
-                            context, QrCodeViewerScreen.routeName);
+                        bool res = await localOpenServerHandler(false);
+                        if (res) {
+                          Navigator.pushNamed(
+                              context, QrCodeViewerScreen.routeName);
+                        }
                       } catch (e, s) {
                         showSnackBar(
                           context: context,
