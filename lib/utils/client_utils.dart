@@ -129,7 +129,7 @@ Future broadcastUnsubscribeClient(
 }
 
 //? get a peer share space
-Future<void> getPeerShareSpace(
+Future<List<ShareSpaceItemModel>?> getPeerShareSpace(
   String sessionID,
   ServerProvider serverProvider,
   ShareProvider shareProvider,
@@ -160,14 +160,16 @@ Future<void> getPeerShareSpace(
       serverProvider: serverProvider,
       shareProvider: shareProvider,
     );
+    shareItemsExplorerProvider.setLoadingItems(false);
+    return items;
   } on DioError catch (e) {
+    shareItemsExplorerProvider.setLoadingItems(false);
     String? reason = e.response?.headers.value(serverRefuseReasonHeaderKey);
     throw CustomException(
       e: reason ?? 'Unknown Reason',
       s: StackTrace.current,
     );
   }
-  shareItemsExplorerProvider.setLoadingItems(false);
 }
 
 //? to broadcast file removal from share space
@@ -262,6 +264,7 @@ Future<void> getFolderContent({
 
     shareItemsExplorerProvider.setLoadingItems(false, false);
   } catch (e, s) {
+    shareItemsExplorerProvider.setLoadingItems(false);
     throw CustomException(
       e: e,
       s: s,

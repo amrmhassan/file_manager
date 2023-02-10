@@ -209,6 +209,9 @@ Future<void> getFolderContentHandler(
         ..add(encodedData);
     }
   } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..close();
     throw CustomException(
       e: e,
       s: s,

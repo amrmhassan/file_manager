@@ -22,6 +22,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as path_operations;
 
 class ShareSpaceVScreen extends StatefulWidget {
   static const String routeName = '/ShareSpaceViewerScreen';
@@ -45,13 +46,15 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         Provider.of<ShareItemsExplorerProvider>(context, listen: false);
 
     try {
-      await client_utils.getPeerShareSpace(
+      var shareItems = await client_utils.getPeerShareSpace(
         remotePeerModel!.sessionID,
         serverProviderFalse,
         shareProviderFalse,
         shareItemsExplorerProvider,
         remotePeerModel!.deviceID,
       );
+
+      shareItemsExplorerProvider.setCurrentSharedItems(shareItems!);
     } catch (e) {
       Navigator.pop(context);
       showSnackBar(
@@ -77,6 +80,11 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   @override
   Widget build(BuildContext context) {
     var shareExpProvider = Provider.of<ShareItemsExplorerProvider>(context);
+    String? parentPath = shareExpProvider.currentSharedFolderPath == null
+        ? null
+        : path_operations.dirname(shareExpProvider.currentSharedFolderPath!);
+    String? viewPath =
+        shareExpProvider.currentPath?.replaceFirst(parentPath ?? '', '');
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
@@ -94,9 +102,9 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
           if (shareExpProvider.currentPath != null)
             CurrentPathViewer(
               sizesExplorer: false,
-              customPath: shareExpProvider.currentPath,
+              customPath: viewPath,
               onCopy: () {
-                copyToClipboard(context, shareExpProvider.currentPath!);
+                copyToClipboard(context, viewPath!);
               },
               onHomeClicked: () {
                 Navigator.pushReplacementNamed(
@@ -105,7 +113,8 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                   arguments: remotePeerModel,
                 );
               },
-              onClickingSubPath: localGetFolderContent,
+              onClickingSubPath: (path) =>
+                  localGetFolderContent(parentPath! + path),
             ),
           shareExpProvider.loadingItems
               ? Expanded(
@@ -210,20 +219,28 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   }
 
   void localGetFolderContent(String path) async {
-    var shareExpProvider =
-        Provider.of<ShareItemsExplorerProvider>(context, listen: false);
+    try {
+      var shareExpProvider =
+          Provider.of<ShareItemsExplorerProvider>(context, listen: false);
 
-    var serverProvider = Provider.of<ServerProvider>(context, listen: false);
-    String userSessionID = shareExpProvider.viewedUserSessionId!;
-    var shareProvider = Provider.of<ShareProvider>(context, listen: false);
-    var shareItemsExplorerProvider =
-        Provider.of<ShareItemsExplorerProvider>(context, listen: false);
-    client_utils.getFolderContent(
-      serverProvider: serverProvider,
-      folderPath: path,
-      shareProvider: shareProvider,
-      userSessionID: userSessionID,
-      shareItemsExplorerProvider: shareItemsExplorerProvider,
-    );
+      var serverProvider = Provider.of<ServerProvider>(context, listen: false);
+      String userSessionID = shareExpProvider.viewedUserSessionId!;
+      var shareProvider = Provider.of<ShareProvider>(context, listen: false);
+      var shareItemsExplorerProvider =
+          Provider.of<ShareItemsExplorerProvider>(context, listen: false);
+      await client_utils.getFolderContent(
+        serverProvider: serverProvider,
+        folderPath: path,
+        shareProvider: shareProvider,
+        userSessionID: userSessionID,
+        shareItemsExplorerProvider: shareItemsExplorerProvider,
+      );
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        message: 'Can\'t get this folder content',
+        snackBarType: SnackBarType.error,
+      );
+    }
   }
 }

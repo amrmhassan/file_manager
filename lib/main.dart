@@ -36,7 +36,6 @@ import 'package:explorer/screens/share_settings_screen/share_settings_screen.dar
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
-import 'package:explorer/screens/sub_explorer_screen/sub_explorer_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
@@ -132,7 +131,6 @@ class MyApp extends StatelessWidget {
           ShareSpaceVScreen.routeName: (context) => ShareSpaceVScreen(),
           DownloadManagerScreen.routeName: (context) => DownloadManagerScreen(),
           ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
-          SubExplorerScreen.routeName: (context) => SubExplorerScreen(),
           ShareSettingsScreen.routeName: (context) => ShareSettingsScreen(),
         },
       ),
