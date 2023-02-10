@@ -6,16 +6,19 @@ import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/providers/server_provider.dart';
+import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/custom_router_system/helpers/server_middleware_model.dart';
 
 Future<MiddlewareReturn> getShareSpaceMiddleware(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
+  ShareProvider shareProvider,
 ) async {
   var headers = request.headers;
   String? deviceID = headers.value(deviceIDHeaderKey);
   String? userName = headers.value(userNameHeaderKey);
+
   if (deviceID == null) {
     response
       ..statusCode = HttpStatus.badRequest

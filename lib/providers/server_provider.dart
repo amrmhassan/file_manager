@@ -51,7 +51,12 @@ class ServerProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> blockDevice(String deviceID, bool remember) async {
+  Future<void> blockDevice(
+    String deviceID,
+    bool remember, [
+    bool justOneTime = false,
+  ]) async {
+    if (justOneTime) return;
     blockedPeers.add(deviceID);
     notifyListeners();
     if (remember) {

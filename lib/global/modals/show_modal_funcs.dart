@@ -36,7 +36,7 @@ Future<bool> showAskForShareSpaceModal(
   );
 
   if (res == null) {
-    await serverPF(context).blockDevice(deviceID, false);
+    await serverPF(context).blockDevice(deviceID, false, true);
   }
 
   return res ?? false;

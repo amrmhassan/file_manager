@@ -27,8 +27,12 @@ CustomRouterSystem addServerRouters(
   customRouterSystem.addMiddleware(
     [getShareSpaceEndPoint],
     HttpMethod.GET,
-    (request, response) =>
-        getShareSpaceMiddleware(request, response, serverProvider),
+    (request, response) => getShareSpaceMiddleware(
+      request,
+      response,
+      serverProvider,
+      shareProvider,
+    ),
   );
 
   //? adding handlers

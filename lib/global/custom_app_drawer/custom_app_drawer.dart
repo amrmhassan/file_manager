@@ -5,12 +5,14 @@ import 'dart:io';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/hive_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/light_theme_check_box.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/storage_analyzer_button.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive_helper.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
@@ -71,6 +73,18 @@ class CustomAppDrawer extends StatelessWidget {
                     title: 'Clear Persist DB',
                     onTap: () async {
                       await DBHelper.clearDb(persistentDbName);
+                      showSnackBar(context: context, message: 'Deleted');
+                      Navigator.pop(context);
+                    },
+                    onlyDebug: true,
+                  ),
+                  AppDrawerItem(
+                    title: 'Clear Devices db',
+                    onTap: () async {
+                      (await HiveHelper(allowedDevicesBoxName).init())
+                          .deleteFromDisk();
+                      (await HiveHelper(blockedDevicesBoxName).init())
+                          .deleteFromDisk();
                       showSnackBar(context: context, message: 'Deleted');
                       Navigator.pop(context);
                     },
