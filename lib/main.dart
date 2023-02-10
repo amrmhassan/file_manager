@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
@@ -65,7 +66,7 @@ void main() async {
   runApp(const MyApp());
 }
 
-bool testing = true;
+bool testing = false;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -106,6 +107,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
+        navigatorKey: navigatorKey,
         routes: {
           HomeScreen.routeName: (context) => HomeScreen(),
           TestScreen.routeName: (context) => TestScreen(),

@@ -5,6 +5,7 @@ import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 import 'package:explorer/utils/custom_router_system/helpers/server_requests_utils.dart';
+import 'package:explorer/utils/server_utils/middlewares.dart';
 
 //! i need to add the logic to authenticate users here
 //! i mean in the main router before entering any Handler
@@ -22,6 +23,15 @@ CustomRouterSystem addServerRouters(
   ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) {
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
+  //? adding middlewares
+  customRouterSystem.addMiddleware(
+    [getShareSpaceEndPoint],
+    HttpMethod.GET,
+    (request, response) =>
+        getShareSpaceMiddleware(request, response, serverProvider),
+  );
+
+  //? adding handlers
   customRouterSystem
     ..addHandler(
       addClientEndPoint,

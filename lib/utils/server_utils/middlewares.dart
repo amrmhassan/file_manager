@@ -3,6 +3,8 @@
 import 'dart:io';
 
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/custom_router_system/helpers/server_middleware_model.dart';
 
@@ -52,6 +54,25 @@ Future<MiddlewareReturn> getShareSpaceMiddleware(
       closeReason: 'User is blocked',
     );
   }
-  await Future.delayed(Duration(seconds: 5));
-  return MiddlewareReturn(request: request, response: response);
+
+  bool res = await showAskForShareSpaceModal(
+    userName,
+    deviceID,
+    navigatorKey.currentContext!,
+  );
+
+  if (res) {
+    return MiddlewareReturn(request: request, response: response);
+  } else {
+    response
+      ..statusCode = HttpStatus.badRequest
+      ..headers.add(serverRefuseReasonHeaderKey, 'You are blocked')
+      ..close();
+    return MiddlewareReturn(
+      request: request,
+      response: response,
+      closed: true,
+      closeReason: 'User is blocked',
+    );
+  }
 }

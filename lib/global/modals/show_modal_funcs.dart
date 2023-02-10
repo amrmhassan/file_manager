@@ -15,25 +15,37 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:qr_flutter/qr_flutter.dart';
 
 //?
-void showAskForShareSpaceModal(String userName, BuildContext context) async {
+Future<bool> showAskForShareSpaceModal(
+  String userName,
+  String deviceID,
+  BuildContext context,
+) async {
   bool? res = await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
-    builder: (context) => AskForShareSpaceModal(userName: userName),
+    builder: (context) => AskForShareSpaceModal(
+      userName: userName,
+      deviceID: deviceID,
+    ),
   );
+
   if (res == null) {
+    serverPF(context).blockDevice(deviceID, false);
     showSnackBar(
       context: context,
-      message: 'Blocked not considering remember',
+      message: 'Block not considering remember',
       snackBarType: SnackBarType.error,
     );
   }
+
+  return res ?? false;
 }
 
 //? show rename modal

@@ -8,15 +8,18 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/home_screen/widgets/custom_check_box.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class AskForShareSpaceModal extends StatefulWidget {
   const AskForShareSpaceModal({
     super.key,
     required this.userName,
+    required this.deviceID,
   });
 
   final String userName;
+  final String deviceID;
 
   @override
   State<AskForShareSpaceModal> createState() => _AskForShareSpaceModalState();
@@ -28,17 +31,18 @@ class _AskForShareSpaceModalState extends State<AskForShareSpaceModal> {
   Widget build(BuildContext context) {
     return DoubleButtonsModal(
       onOk: () {
+        serverPF(context).blockDevice(widget.deviceID, remember);
         showSnackBar(
           context: context,
-          message: 'Blocked considering remember $remember',
+          message: 'Block considering remember $remember',
           snackBarType: SnackBarType.error,
         );
         Navigator.pop(context, false);
       },
       onCancel: () {
+        serverPF(context).allowDevice(widget.deviceID, remember);
         showSnackBar(
-            context: context,
-            message: 'Allowed considering remember $remember');
+            context: context, message: 'Allow considering remember $remember');
         Navigator.pop(context, true);
       },
       autoPop: false,
@@ -64,7 +68,7 @@ class _AskForShareSpaceModalState extends State<AskForShareSpaceModal> {
                 ),
                 HSpace(factor: .4),
                 Text(
-                  'Remember me',
+                  'Remember for later',
                   style: h4TextStyleInactive,
                 ),
               ],
