@@ -147,6 +147,7 @@ Future<void> getPeerShareSpace(
       options: Options(
         headers: {
           deviceIDHeaderKey: shareProvider.myDeviceId,
+          userNameHeaderKey: shareProvider.myName,
         },
         receiveDataWhenStatusError: false,
       ),

@@ -29,6 +29,7 @@ const String sessionIDHeaderKey = 'sessionIDHeaderKey';
 const String filePathHeaderKey = 'filePathHeaderKey';
 const String reqIntentPathHeaderKey = 'reqIntentPathHeaderKey';
 const String deviceIDHeaderKey = 'deviceIDHeaderKey';
+const String userNameHeaderKey = 'userNameHeaderKey';
 const String serverRefuseReasonHeaderKey = 'serverRefuseReasonHeaderKey';
 
 // const String peerImageHeaderKey = 'peerImageHeaderKey';

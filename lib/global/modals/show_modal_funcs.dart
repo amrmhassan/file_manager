@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/global/modals/ask_for_share_space_modal.dart';
 import 'package:explorer/global/modals/entity_info_modal.dart';
 import 'package:explorer/global/modals/current_active_dir_options_modal.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
@@ -9,6 +10,7 @@ import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/modals/entity_options_modal.dart';
 import 'package:explorer/global/modals/sort_by_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -17,6 +19,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:qr_flutter/qr_flutter.dart';
+
+//?
+void showAskForShareSpaceModal(String userName, BuildContext context) async {
+  bool? res = await showModalBottomSheet(
+    backgroundColor: Colors.transparent,
+    context: context,
+    builder: (context) => AskForShareSpaceModal(userName: userName),
+  );
+  if (res == null) {
+    showSnackBar(
+      context: context,
+      message: 'Blocked not considering remember',
+      snackBarType: SnackBarType.error,
+    );
+  }
+}
 
 //? show rename modal
 Future<void> showRenameModal(BuildContext context) async {

@@ -65,7 +65,7 @@ void main() async {
   runApp(const MyApp());
 }
 
-bool testing = false;
+bool testing = true;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -19,6 +19,8 @@ class DoubleButtonsModal extends StatelessWidget {
   final Color? okColor;
   final Color? cancelColor;
   final bool autoPop;
+  final bool reverseButtonsOrder;
+  final Widget? extra;
 
   const DoubleButtonsModal({
     Key? key,
@@ -31,10 +33,49 @@ class DoubleButtonsModal extends StatelessWidget {
     this.okColor,
     this.cancelColor,
     this.autoPop = true,
+    this.reverseButtonsOrder = false,
+    this.extra,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var modalButtons = [
+      Expanded(
+        child: ButtonWrapper(
+          onTap: () {
+            if (onCancel != null) onCancel!();
+            if (autoPop) {
+              Navigator.pop(context);
+            }
+          },
+          padding:
+              EdgeInsets.symmetric(horizontal: kHPad / 2, vertical: kVPad / 2),
+          backgroundColor: cancelColor ?? kBackgroundColor,
+          child: Text(
+            cancelText ?? 'Cancel',
+            style: h4TextStyle.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+      HSpace(),
+      Expanded(
+        child: ButtonWrapper(
+          onTap: () async {
+            onOk();
+            if (autoPop) {
+              Navigator.pop(context);
+            }
+          },
+          padding:
+              EdgeInsets.symmetric(horizontal: kHPad / 2, vertical: kVPad / 2),
+          backgroundColor: okColor ?? kDangerColor,
+          child: Text(
+            okText ?? 'Delete',
+            style: h4TextStyle.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
+    ];
     return ModalWrapper(
       showTopLine: false,
       color: kCardBackgroundColor,
@@ -57,45 +98,11 @@ class DoubleButtonsModal extends StatelessWidget {
                 ),
               ],
             ),
-          VSpace(),
+          if (extra != null) extra! else VSpace(),
           Row(
-            children: [
-              Expanded(
-                child: ButtonWrapper(
-                  onTap: () {
-                    if (onCancel != null) onCancel!();
-                    if (autoPop) {
-                      Navigator.pop(context);
-                    }
-                  },
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kHPad / 2, vertical: kVPad / 2),
-                  backgroundColor: cancelColor ?? kBackgroundColor,
-                  child: Text(
-                    cancelText ?? 'Cancel',
-                    style: h4TextStyle.copyWith(color: Colors.white),
-                  ),
-                ),
-              ),
-              HSpace(),
-              Expanded(
-                child: ButtonWrapper(
-                  onTap: () async {
-                    onOk();
-                    if (autoPop) {
-                      Navigator.pop(context);
-                    }
-                  },
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kHPad / 2, vertical: kVPad / 2),
-                  backgroundColor: okColor ?? kDangerColor,
-                  child: Text(
-                    okText ?? 'Delete',
-                    style: h4TextStyle.copyWith(color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
+            children: reverseButtonsOrder
+                ? modalButtons.reversed.toList()
+                : modalButtons,
           ),
         ],
       ),
