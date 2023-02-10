@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -34,7 +35,6 @@ class ShareSpaceVScreen extends StatefulWidget {
 
 class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   PeerModel? remotePeerModel;
-  bool loadingSharedItems = true;
 
 //? to load shared items
   Future loadSharedItems([String? path]) async {
@@ -44,13 +44,22 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
     var shareItemsExplorerProvider =
         Provider.of<ShareItemsExplorerProvider>(context, listen: false);
 
-    client_utils.getPeerShareSpace(
-      remotePeerModel!.sessionID,
-      serverProviderFalse,
-      shareProviderFalse,
-      shareItemsExplorerProvider,
-      remotePeerModel!.deviceID,
-    );
+    try {
+      await client_utils.getPeerShareSpace(
+        remotePeerModel!.sessionID,
+        serverProviderFalse,
+        shareProviderFalse,
+        shareItemsExplorerProvider,
+        remotePeerModel!.deviceID,
+      );
+    } catch (e) {
+      Navigator.pop(context);
+      showSnackBar(
+        context: context,
+        message: e.toString(),
+        snackBarType: SnackBarType.error,
+      );
+    }
   }
 
   @override
@@ -99,7 +108,19 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
               onClickingSubPath: localGetFolderContent,
             ),
           shareExpProvider.loadingItems
-              ? Expanded(child: Center(child: CircularProgressIndicator()))
+              ? Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      VSpace(),
+                      Text(
+                        'Waiting ...',
+                        style: h4TextStyleInactive,
+                      )
+                    ],
+                  ),
+                )
               : Expanded(
                   child: ListView.builder(
                     itemCount: shareExpProvider.viewedItems.length,

@@ -87,6 +87,13 @@ class CustomRouterSystem {
     }
     // after finishing the previous loop the copiedRequest and copiedResponse will be modified depending the middleware
     // the handler is just one, so i will just need to call a method to do that work
+    runHandler(
+      pipelineRequest,
+      pipelineResponse,
+      path,
+      method,
+      (request, response) => null,
+    );
   }
 
   Future<void> runHandler(
@@ -101,7 +108,6 @@ class CustomRouterSystem {
           (element) => element.path == path && element.method == method);
       await serverHandlerModel.callback(pipeLineRequest, pipLineResponse);
       try {
-        await pipLineResponse.done;
         await pipLineResponse.close();
       } catch (e) {
         printOnDebug(e);

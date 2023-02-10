@@ -33,21 +33,21 @@ class ServerProvider extends ChangeNotifier {
   String? myIp;
   HttpServer? httpServer;
   List<PeerModel> peers = [];
-  List<String> allowedPeers = [];
-  List<String> blockedPeers = [];
   late WebSocketSink myClientWsSink;
   late CustomServerSocket customServerSocket;
 
   late MemberType myType;
   late HttpServer wsServer;
 
+  List<String> allowedPeers = [];
+  List<String> blockedPeers = [];
   Future<void> allowDevice(String deviceID, bool remember) async {
     allowedPeers.add(deviceID);
     notifyListeners();
     if (remember) {
       //! save if remember
-      Box blockedBox = await HiveHelper(allowedDevicesBoxName).init();
-      await blockedBox.put(deviceID, deviceID);
+      Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
+      await allowedBox.put(deviceID, deviceID);
     }
   }
 
@@ -61,12 +61,32 @@ class ServerProvider extends ChangeNotifier {
     }
   }
 
-  bool isPeerAllowed(String deviceID) {
-    return allowedPeers.any((element) => element == deviceID);
+  Future<bool> isPeerAllowed(String deviceID) async {
+    bool stateAllowed = allowedPeers.any((element) => element == deviceID);
+    if (stateAllowed) return true;
+
+    Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
+    bool dbAllowed = allowedBox.containsKey(deviceID);
+
+    if (dbAllowed) {
+      allowedPeers.add(deviceID);
+      return true;
+    }
+    return false;
   }
 
-  bool isPeerBlocked(String deviceID) {
-    return blockedPeers.any((element) => element == deviceID);
+  Future<bool> isPeerBlocked(String deviceID) async {
+    bool stateBlocked = blockedPeers.any((element) => element == deviceID);
+    if (stateBlocked) return true;
+
+    Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();
+    bool dbBlocked = blockedBox.containsKey(deviceID);
+    if (dbBlocked) {
+      blockedPeers.add(deviceID);
+      return true;
+    }
+
+    return false;
   }
 
   bool connectedToDeviceWithId(String deviceID) {

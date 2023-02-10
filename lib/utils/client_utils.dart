@@ -142,7 +142,15 @@ Future<void> getPeerShareSpace(
     shareItemsExplorerProvider.setLoadingItems(true);
     PeerModel peerModel = serverProvider.peerModelWithSessionID(sessionID);
     String connLink = peerModel.getMyLink(getShareSpaceEndPoint);
-    var res = await Dio().get(connLink);
+    var res = await Dio().get(
+      connLink,
+      options: Options(
+        headers: {
+          deviceIDHeaderKey: shareProvider.myDeviceId,
+        },
+        receiveDataWhenStatusError: false,
+      ),
+    );
     var data = res.data;
     List<ShareSpaceItemModel> items =
         (data as List).map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
@@ -153,14 +161,14 @@ Future<void> getPeerShareSpace(
       serverProvider: serverProvider,
       shareProvider: shareProvider,
     );
-    shareItemsExplorerProvider.setLoadingItems(false);
-  } catch (e, s) {
+  } on DioError catch (e) {
+    String? reason = e.response?.headers.value(serverRefuseReasonHeaderKey);
     throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
+      e: reason ?? 'Unknown Reason',
+      s: StackTrace.current,
     );
   }
+  shareItemsExplorerProvider.setLoadingItems(false);
 }
 
 //? to broadcast file removal from share space

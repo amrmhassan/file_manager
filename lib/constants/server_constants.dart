@@ -19,14 +19,17 @@ const String clientLeftEndPoint = '/clientLeft';
 const String getPeerImagePathEndPoint = '/getPeerImagePath';
 
 //? headers keys
-const String pathHeaderKey = 'pathHeaderKey';
-const String entityTypeHeaderKey = 'entityTypeHeaderKey';
-const String ownerIDHeaderKey = 'ownerIDHeaderKey';
-const String newPeersHeaderKey = 'newPeersHeaderKey';
+// const String pathHeaderKey = 'pathHeaderKey';
+// const String entityTypeHeaderKey = 'entityTypeHeaderKey';
+// const String ownerIDHeaderKey = 'ownerIDHeaderKey';
+// const String newPeersHeaderKey = 'newPeersHeaderKey';
 const String folderPathHeaderKey = 'folderPathHeaderKey';
 const String sessionIDHeaderKey = 'sessionIDHeaderKey';
-const String audioPathHeaderKey = 'audioPathHeaderKey';
+// const String audioPathHeaderKey = 'audioPathHeaderKey';
 const String filePathHeaderKey = 'filePathHeaderKey';
 const String reqIntentPathHeaderKey = 'reqIntentPathHeaderKey';
-const String peerImageHeaderKey = 'peerImageHeaderKey';
-const String responseClosedReasonHeaderKey = 'responseClosedReason';
+const String deviceIDHeaderKey = 'deviceIDHeaderKey';
+const String serverRefuseReasonHeaderKey = 'serverRefuseReasonHeaderKey';
+
+// const String peerImageHeaderKey = 'peerImageHeaderKey';
+// const String responseClosedReasonHeaderKey = 'responseClosedReason';

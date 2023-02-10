@@ -21,9 +21,11 @@ class ChangeMyNameModal extends StatefulWidget {
 
 class _ChangeMyNameModalState extends State<ChangeMyNameModal> {
   TextEditingController nameController = TextEditingController();
+  late String name;
   @override
   void initState() {
     nameController.text = sharePF(context).myName;
+    name = nameController.text;
     super.initState();
   }
 
@@ -42,6 +44,11 @@ class _ChangeMyNameModalState extends State<ChangeMyNameModal> {
               autoFocus: true,
               controller: nameController,
               maxLength: 10,
+              onChange: (v) {
+                setState(() {
+                  name = v;
+                });
+              },
               buildCounter: (
                 p0, {
                 required currentLength,
@@ -53,6 +60,7 @@ class _ChangeMyNameModalState extends State<ChangeMyNameModal> {
             VSpace(),
             PaddingWrapper(
               child: ButtonWrapper(
+                active: name.length > 2,
                 onTap: () async {
                   await sharePF(context).updateMyName(nameController.text);
                   Navigator.pop(context);

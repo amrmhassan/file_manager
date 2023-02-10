@@ -14,7 +14,7 @@ class CustomException implements Exception {
 
   CustomException({
     required this.e,
-    required this.s,
+    this.s,
     this.rethrowError = false,
   }) {
     //? save the log
@@ -32,8 +32,8 @@ class CustomException implements Exception {
       //   throw Exception(e);
       // }
       if (kDebugMode) {
-        print(e);
-        print(s);
+        // print(e);
+        // print(s);
       }
     });
   }

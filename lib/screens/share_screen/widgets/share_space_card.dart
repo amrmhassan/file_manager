@@ -54,7 +54,7 @@ class ShareSpaceCard extends StatelessWidget {
                   ),
                   HSpace(),
                   Text(
-                    me ? 'Your Share Space' : '${peerModel.name} Share Space',
+                    me ? 'You' : peerModel.name,
                     style: me ? h3TextStyle : h3InactiveTextStyle,
                     overflow: TextOverflow.ellipsis,
                   ),
