@@ -1,18 +1,17 @@
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/models/server_handler_model.dart';
-import 'package:explorer/models/server_middleware_model.dart';
+import 'package:explorer/utils/custom_router_system/helpers/server_handler_model.dart';
+import 'package:explorer/utils/custom_router_system/helpers/server_middleware_model.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:explorer/utils/server_utils/server_requests_utils.dart';
+import 'package:explorer/utils/custom_router_system/helpers/server_requests_utils.dart';
 
 class CustomRouterSystem {
   List<ServerHandlerModel> handlers = [];
   List<ServerMiddlewareModel> middlewares = [];
 
   void addHandler(
-    
     String path,
     HttpMethod method,
     Function(
