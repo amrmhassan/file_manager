@@ -44,14 +44,14 @@ class ServerProvider extends ChangeNotifier {
   List<WhiteBlockListModel> allowedPeers = [];
   List<WhiteBlockListModel> blockedPeers = [];
 
-  Future<void> unAllowDevice(String deviceID) async {
+  Future<void> removeFromAllowedDevices(String deviceID) async {
     allowedPeers.removeWhere((element) => element.deviceID == deviceID);
     notifyListeners();
     Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
     await allowedBox.delete(deviceID);
   }
 
-  Future<void> unblockDevice(String deviceID) async {
+  Future<void> removeFromBlockedDevices(String deviceID) async {
     blockedPeers.removeWhere((element) => element.deviceID == deviceID);
     notifyListeners();
     Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();

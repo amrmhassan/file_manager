@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -41,11 +43,53 @@ class WhiteBlockListScreen extends StatelessWidget {
                   ))
                 : Expanded(
                     child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
                     itemCount: viewedDevices.length,
-                    itemBuilder: (context, index) => ListTile(
-                      title: Text(
-                        viewedDevices[index].name,
-                        style: h4TextStyle,
+                    itemBuilder: (context, index) => Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.endToStart,
+                      confirmDismiss: (direction) async {
+                        bool? res = await showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (context) => DoubleButtonsModal(
+                            autoPop: false,
+                            onCancel: () {
+                              Navigator.pop(context);
+                            },
+                            onOk: () {
+                              Navigator.pop(context, true);
+                            },
+                            title:
+                                'Delete from ${allowed ? 'allowed' : 'blocked'} list',
+                          ),
+                        );
+                        if (res == true) {
+                          // here just delete
+                          if (allowed) {
+                            serverPF(context).removeFromAllowedDevices(
+                                viewedDevices[index].deviceID);
+                          } else {
+                            serverPF(context).removeFromBlockedDevices(
+                                viewedDevices[index].deviceID);
+                          }
+                        }
+                        return res == true;
+                      },
+                      background: Container(
+                        padding: EdgeInsets.only(right: kHPad),
+                        alignment: Alignment.centerRight,
+                        color: Colors.red,
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          viewedDevices[index].name,
+                          style: h4TextStyle,
+                        ),
                       ),
                     ),
                   ))

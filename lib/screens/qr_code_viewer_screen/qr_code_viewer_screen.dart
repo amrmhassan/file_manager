@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -6,6 +6,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -64,6 +65,47 @@ class QrCodeViewerScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: kHPad / 2),
+              ],
+            ),
+            leftIcon: Row(
+              children: [
+                SizedBox(width: kHPad / 2),
+                ButtonWrapper(
+                  padding: EdgeInsets.all(largePadding),
+                  borderRadius: 0,
+                  onTap: () {
+                    showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      builder: (context) => ModalWrapper(
+                        color: kCardBackgroundColor,
+                        showTopLine: false,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '1- Host Device Can connect over wifi or hotspot',
+                            ),
+                            Text(
+                              '2- Joining Devices must connect over wifi',
+                            ),
+                            Text(
+                              '3- Open hotspot from one device, it will be host',
+                            ),
+                            Text(
+                              '4- Connect others to the hotspot then scan QR',
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Image.asset(
+                    'assets/icons/info.png',
+                    width: mediumIconSize,
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
           ),
