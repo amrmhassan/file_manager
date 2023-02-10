@@ -29,3 +29,4 @@ const String audioPathHeaderKey = 'audioPathHeaderKey';
 const String filePathHeaderKey = 'filePathHeaderKey';
 const String reqIntentPathHeaderKey = 'reqIntentPathHeaderKey';
 const String peerImageHeaderKey = 'peerImageHeaderKey';
+const String responseClosedReasonHeaderKey = 'responseClosedReason';
