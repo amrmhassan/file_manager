@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/hive_constants.dart';
+import 'package:explorer/helpers/hive_helper.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
@@ -14,6 +16,7 @@ import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:explorer/utils/server_utils/handlers/router.dart';
 import 'package:explorer/utils/websocket_utils/custom_server_socket.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -30,11 +33,41 @@ class ServerProvider extends ChangeNotifier {
   String? myIp;
   HttpServer? httpServer;
   List<PeerModel> peers = [];
+  List<String> allowedPeers = [];
+  List<String> blockedPeers = [];
   late WebSocketSink myClientWsSink;
   late CustomServerSocket customServerSocket;
 
   late MemberType myType;
   late HttpServer wsServer;
+
+  Future<void> allowDevice(String deviceID, bool remember) async {
+    allowedPeers.add(deviceID);
+    notifyListeners();
+    if (remember) {
+      //! save if remember
+      Box blockedBox = await HiveHelper(allowedDevicesBoxName).init();
+      await blockedBox.put(deviceID, deviceID);
+    }
+  }
+
+  Future<void> blockDevice(String deviceID, bool remember) async {
+    blockedPeers.add(deviceID);
+    notifyListeners();
+    if (remember) {
+      //! save if remember
+      Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();
+      await blockedBox.put(deviceID, deviceID);
+    }
+  }
+
+  bool isPeerAllowed(String deviceID) {
+    return allowedPeers.any((element) => element == deviceID);
+  }
+
+  bool isPeerBlocked(String deviceID) {
+    return blockedPeers.any((element) => element == deviceID);
+  }
 
   bool connectedToDeviceWithId(String deviceID) {
     return peers.any((element) => element.deviceID == deviceID);
@@ -117,7 +150,7 @@ class ServerProvider extends ChangeNotifier {
 
     CustomRouterSystem customRouterSystem =
         addServerRouters(this, shareProvider, shareItemsExplorerProvider);
-    httpServer!.listen(customRouterSystem.handleListen);
+    httpServer!.listen(customRouterSystem.handlerListen);
     //? when above code is success then set the needed stuff like port, other things
     myPort = httpServer!.port;
 
@@ -144,6 +177,8 @@ class ServerProvider extends ChangeNotifier {
     await httpServer?.close();
     httpServer = null;
     peers.clear();
+    allowedPeers.clear();
+    blockedPeers.clear();
     myConnLink = null;
     myIp = null;
     notifyListeners();

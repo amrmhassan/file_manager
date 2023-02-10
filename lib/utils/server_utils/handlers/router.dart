@@ -23,7 +23,7 @@ CustomRouterSystem addServerRouters(
 ) {
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
   customRouterSystem
-    ..addRouter(
+    ..addHandler(
       addClientEndPoint,
       HttpMethod.POST,
       (request, response) => addClientHandler(
@@ -33,7 +33,7 @@ CustomRouterSystem addServerRouters(
         shareProvider,
       ),
     )
-    ..addRouter(
+    ..addHandler(
       getShareSpaceEndPoint,
       HttpMethod.GET,
       (request, response) => getShareSpaceHandler(
@@ -43,7 +43,7 @@ CustomRouterSystem addServerRouters(
         shareProvider,
       ),
     )
-    ..addRouter(
+    ..addHandler(
       clientAddedEndPoint,
       HttpMethod.POST,
       (request, response) => clientAddedHandler(
@@ -52,7 +52,7 @@ CustomRouterSystem addServerRouters(
         serverProvider,
       ),
     )
-    ..addRouter(
+    ..addHandler(
       clientLeftEndPoint,
       HttpMethod.POST,
       (request, response) => clientLeftHandler(
@@ -61,7 +61,7 @@ CustomRouterSystem addServerRouters(
         serverProvider,
       ),
     )
-    ..addRouter(
+    ..addHandler(
       fileAddedToShareSpaceEndPoint,
       HttpMethod.POST,
       (request, response) => fileAddedHandler(
@@ -70,7 +70,7 @@ CustomRouterSystem addServerRouters(
         shareItemsExplorerProvider,
       ),
     )
-    ..addRouter(
+    ..addHandler(
       fileRemovedFromShareSpaceEndPoint,
       HttpMethod.POST,
       (request, response) => fileRemovedHandler(
@@ -79,7 +79,7 @@ CustomRouterSystem addServerRouters(
         shareItemsExplorerProvider,
       ),
     )
-    ..addRouter(
+    ..addHandler(
       getFolderContentEndPointEndPoint,
       HttpMethod.GET,
       (request, response) => getFolderContentHandler(
@@ -89,22 +89,22 @@ CustomRouterSystem addServerRouters(
         shareProvider,
       ),
     )
-    ..addRouter(
+    ..addHandler(
       streamAudioEndPoint,
       HttpMethod.GET,
       streamAudioHandler,
     )
-    ..addRouter(
+    ..addHandler(
       streamVideoEndPoint,
       HttpMethod.GET,
       streamVideoHandler,
     )
-    ..addRouter(
+    ..addHandler(
       downloadFileEndPoint,
       HttpMethod.GET,
       downloadFileHandler,
     )
-    ..addRouter(
+    ..addHandler(
       wsServerConnLinkEndPoint,
       HttpMethod.GET,
       (request, response) => getWsServerConnLinkHandler(
@@ -113,7 +113,7 @@ CustomRouterSystem addServerRouters(
         serverProvider,
       ),
     )
-    ..addRouter(
+    ..addHandler(
       getPeerImagePathEndPoint,
       HttpMethod.GET,
       (request, response) => getUserImageHandler(

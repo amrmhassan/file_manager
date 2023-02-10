@@ -11,15 +11,11 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class PeerIcon extends StatefulWidget {
-  final bool large;
   final PeerModel peerModel;
-  final bool offline;
 
   const PeerIcon({
     Key? key,
-    this.large = false,
     required this.peerModel,
-    this.offline = false,
   }) : super(key: key);
 
   @override
@@ -83,11 +79,6 @@ class _PeerIconState extends State<PeerIcon> {
   @override
   void initState() {
     super.initState();
-    if (widget.offline) {
-      me = true;
-      return;
-    }
-
     me = serverPF(context).me(sharePF(context)).deviceID ==
         widget.peerModel.deviceID;
     if (!me) {
@@ -102,8 +93,8 @@ class _PeerIconState extends State<PeerIcon> {
           ? EdgeInsets.all(largePadding * 1.5)
           : null,
       clipBehavior: Clip.hardEdge,
-      width: widget.large ? largeIconSize * 3 : 60,
-      height: widget.large ? largeIconSize * 3 : 60,
+      width: 60,
+      height: 60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(1000),
         color: Colors.white.withOpacity(.2),
