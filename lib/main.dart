@@ -45,6 +45,7 @@ import 'package:explorer/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
 //! add the ability to download a folder
 //! add video, audio notification
 //! prevent the app from being killed when it is in the backend

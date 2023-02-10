@@ -28,7 +28,7 @@ class _AddToShareSpaceButtonState extends State<AddToShareSpaceButton> {
       List<StorageItemModel> selectedItems =
           Provider.of<FilesOperationsProvider>(context, listen: false)
               .selectedItems;
-      bool res = await Provider.of<ShareProvider>(context, listen: false)
+      bool res = Provider.of<ShareProvider>(context, listen: false)
           .areAllItemsAtShareSpace(selectedItems);
       setState(() {
         added = res;

@@ -184,10 +184,12 @@ Future<void> getFolderContentHandler(
     if (directory.existsSync()) {
       PeerModel me = serverProvider.me(shareProvider);
       var folderChildren = await compute(getFolderChildren, folderPath);
-      List<Map<String, dynamic>> sharedItems = folderChildren.map((entity) {
+      // hide marked 'hidden' elements
+      List<Map<String, dynamic>> sharedItems = [];
+      for (var entity in folderChildren) {
+        if (shareProvider.hiddenEntitiesPaths.contains(entity.path)) continue;
         FileStat fileStat = entity.statSync();
-
-        return ShareSpaceItemModel(
+        sharedItems.add(ShareSpaceItemModel(
           blockedAt: [],
           entityType: fileStat.type == FileSystemEntityType.file
               ? EntityType.file
@@ -197,8 +199,9 @@ Future<void> getFolderContentHandler(
           ownerSessionID: me.sessionID,
           addedAt: DateTime.now(),
           size: fileStat.size,
-        ).toJSON();
-      }).toList();
+        ).toJSON());
+      }
+
       var encodedData = encodeRequest(json.encode(sharedItems));
 
       response

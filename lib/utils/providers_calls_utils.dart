@@ -4,6 +4,7 @@ import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,4 +61,13 @@ FilesOperationsProvider foPF(BuildContext context) {
 
 FilesOperationsProvider foP(BuildContext context) {
   return Provider.of<FilesOperationsProvider>(context);
+}
+
+//? explorer provider providers
+ExplorerProvider expPF(BuildContext context) {
+  return Provider.of<ExplorerProvider>(context, listen: false);
+}
+
+ExplorerProvider expP(BuildContext context) {
+  return Provider.of<ExplorerProvider>(context);
 }

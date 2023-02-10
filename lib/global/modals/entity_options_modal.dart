@@ -4,6 +4,7 @@ import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/modals/widgets/add_to_favorite_button.dart';
 import 'package:explorer/global/modals/widgets/add_to_other_listy_button.dart';
 import 'package:explorer/global/modals/widgets/add_to_share_space_button.dart';
+import 'package:explorer/global/modals/widgets/hide_from_share_space_button.dart';
 import 'package:explorer/global/modals/widgets/open_in_new_tab_button.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +38,7 @@ class EntityOptionsModal extends StatelessWidget {
         children: [
           VSpace(),
           AddToShareSpaceButton(),
+          HideFromShareSpaceButton(),
           OpenInNewTabButton(),
           AddToFavoriteButton(foProviderFalse: foProviderFalse),
           AddToOtherListyButton(foProviderFalse: foProviderFalse),

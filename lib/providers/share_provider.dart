@@ -4,18 +4,21 @@ import 'dart:io';
 
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
+import 'package:explorer/constants/hive_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
 //! when adding a folder to share space all of it's children will be added to it too
 //! and when exploring inside this folder check if the file is a child of a shared folder then make the "add to share space" button to be remove from share space
 //! and if it is a child of a folder that is excluded from share space just make the opposite
+//? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
 
 enum MemberType {
   host, // who have the hotspot
@@ -26,16 +29,10 @@ class ShareProvider extends ChangeNotifier {
   //# shared space items properties
   late String myDeviceId;
   final List<ShareSpaceItemModel> _sharedItems = [];
+  final List<String> hiddenEntitiesPaths = [];
   String? myImagePath;
 
   late String myName;
-
-//?
-  Future<void> setMyImagePath(String path) async {
-    myImagePath = path;
-    notifyListeners();
-    await SharedPrefHelper.setString(myImageKey, path);
-  }
 
   List<ShareSpaceItemModel> get sharedItems {
     var operated = _sharedItems.map((e) {
@@ -43,6 +40,65 @@ class ShareProvider extends ChangeNotifier {
       return e;
     }).toList();
     return operated;
+  }
+
+  // bool addedToShareSpace(String path){
+
+  // }
+
+  //? this will be called whenever removing from share space and this will add to hidden entities if "remove from share space" clicked
+  //? but it's not directly added to share space
+  // bool _needToBeAddedToHiddenEntities(String path) {
+  //   return !_sharedItems.any((element) => element.path == path);
+  // }
+
+  //?
+  bool showHideFromShareSpaceButton(Iterable<String> paths) {
+    // this will show the button only if the entity is a child of a shared entity, not the entity itself
+    for (var path in paths) {
+      bool inSharedItems = _sharedItems.any(
+          (element) => path.contains(element.path) && path != element.path);
+      if (!inSharedItems) {
+        return false;
+      }
+
+      // if the entity is a child of a hidden item then the button should be viewed also(not the entity itself)
+      if (hiddenEntitiesPaths
+          .any((element) => path.contains(element) && path != element)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //?
+  Future<void> removeFromHiddenEntities(Iterable<String> paths) async {
+    Box box = await HiveHelper(hiddenFromShareSpaceBoxName).init();
+    for (var path in paths) {
+      hiddenEntitiesPaths.remove(path);
+      notifyListeners();
+
+      box.delete(path);
+    }
+  }
+
+  //?
+  Future<void> addToHiddenEntities(Iterable<String> paths) async {
+    Box box = await HiveHelper(hiddenFromShareSpaceBoxName).init();
+
+    for (var path in paths) {
+      if (hiddenEntitiesPaths.contains(path)) continue;
+      hiddenEntitiesPaths.add(path);
+      notifyListeners();
+      await box.put(path, path);
+    }
+  }
+
+  //?
+  Future<void> setMyImagePath(String path) async {
+    myImagePath = path;
+    notifyListeners();
+    await SharedPrefHelper.setString(myImageKey, path);
   }
 
   //? i will give this device an id in the first run of the app
@@ -115,9 +171,14 @@ class ShareProvider extends ChangeNotifier {
 
   //? to remove an item from share space
   Future _removeItemFromShareSpace(String path) async {
+    // bool notDirectlyShared = _needToBeAddedToHiddenEntities(path);
+    // if (notDirectlyShared) {
+    //   addToHiddenEntities(path);
+    // } else {
     _sharedItems.removeWhere((element) => element.path == path);
     notifyListeners();
     await DBHelper.deleteById(path, shareSpaceItemsTableName, persistentDbName);
+    // }
   }
 
   //? add multiple files to share space
@@ -125,6 +186,7 @@ class ShareProvider extends ChangeNotifier {
       List<StorageItemModel> items) async {
     List<ShareSpaceItemModel> addedItems = [];
     for (var item in items) {
+      if (_sharedItems.any((element) => element.path == item.path)) continue;
       addedItems.add(await _addToShareSpace(item));
     }
     return addedItems;
@@ -152,10 +214,10 @@ class ShareProvider extends ChangeNotifier {
   }
 
   //? to check if multiple items are at share space
-  Future<bool> areAllItemsAtShareSpace(List<StorageItemModel> items) async {
+  bool areAllItemsAtShareSpace(List<StorageItemModel> items) {
     bool allItemsExist = true;
     for (var item in items) {
-      bool atShareSpace = await _isItemAtShareSpace(item.path);
+      bool atShareSpace = _isItemAtShareSpace(item.path);
       if (!atShareSpace) {
         allItemsExist = false;
         break;
@@ -164,18 +226,55 @@ class ShareProvider extends ChangeNotifier {
     return allItemsExist;
   }
 
-  //? to check if an item is at share space
-  Future<bool> _isItemAtShareSpace(String path) async {
-    var data = await DBHelper.getDataWhere(
-      shareSpaceItemsTableName,
-      pathString,
-      path,
-      persistentDbName,
-    );
-    return data.isNotEmpty;
+  bool isHiddenFromShareSpace(Iterable<String> paths) {
+    // checking if only one isn't in hidden to return false
+    // if all elements are hidden return true
+    //-- consider just one element
+    // if not exist just return false(not exist)
+    for (var path in paths) {
+      var res = hiddenEntitiesPaths.any((element) => path == element);
+      if (!res) {
+        return res;
+      }
+    }
+    return true;
   }
 
-//? loading shared items from sqlite
+  //? to check if an item is at share space (share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
+
+  bool _isItemAtShareSpace(String path) {
+    //! problem
+    //! if a folder is added to share space
+    //! then sub folder is hidden from share space
+    //! then all of the sub folders can't be added to share space anymore
+
+    // checking for existence in sharedItems
+    bool exist = false;
+    for (var item in _sharedItems) {
+      if (path == item.path) {
+        exist = true;
+        break;
+      }
+    }
+    // if false just return false from here
+    // if (!exist) return exist;
+
+    // checking for existence in hidden items from share space or a parent folder of his
+    // if (isHiddenFromShareSpace(path)) {
+    //   exist = false;
+    // }
+
+    return exist;
+    // var data = await DBHelper.getDataWhere(
+    //   shareSpaceItemsTableName,
+    //   pathString,
+    //   path,
+    //   persistentDbName,
+    // );
+    // return data.isNotEmpty;
+  }
+
+  //? loading shared items from sqlite at app startup
   Future<void> loadSharedItems() async {
     var data =
         await DBHelper.getData(shareSpaceItemsTableName, persistentDbName);
