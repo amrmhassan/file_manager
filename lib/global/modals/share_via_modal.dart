@@ -10,10 +10,13 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/share_button.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void quickSendHandler(BuildContext context) async {
   showModalBottomSheet(
@@ -21,7 +24,10 @@ void quickSendHandler(BuildContext context) async {
     context: context,
     builder: (context) => DoubleButtonsModal(
       onOk: () async {
-        try {} catch (e, s) {
+        try {
+          Provider.of<QuickSendProvider>(context, listen: false)
+              .quickShareFile(foPF(context).selectedItems.first.path, false);
+        } catch (e, s) {
           showSnackBar(
             context: context,
             message: CustomException(
@@ -35,7 +41,10 @@ void quickSendHandler(BuildContext context) async {
       okText: 'HotSpot',
       okColor: kBlueColor,
       onCancel: () async {
-        try {} catch (e, s) {
+        try {
+          Provider.of<QuickSendProvider>(context, listen: false)
+              .quickShareFile(foPF(context).selectedItems.first.path, true);
+        } catch (e, s) {
           showSnackBar(
             context: context,
             message: CustomException(

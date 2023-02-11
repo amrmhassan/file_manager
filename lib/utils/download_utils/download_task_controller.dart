@@ -12,7 +12,6 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/utils/download_utils/custom_dio.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
-import 'package:explorer/utils/files_operations_utils/copy_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:uuid/uuid.dart';
@@ -231,7 +230,6 @@ class DownloadTaskController {
   }
 
   Future<void> _initFileInfo() async {
-    print(url);
     // initializing file length
     length = int.parse((await Dio().get(
       url,

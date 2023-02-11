@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
+import 'package:explorer/utils/send_files_utils/send_file_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:mime/mime.dart';
 
 class QuickSendProvider extends ChangeNotifier {
   String? myIp;
@@ -13,6 +14,9 @@ class QuickSendProvider extends ChangeNotifier {
   HttpServer? httpServer;
 
   Future<void> quickShareFile(String filePath, bool wifi) async {
+    if (httpServer != null) {
+      await closeSend();
+    }
     try {
       myIp = await getMyIpAddress(wifi);
       if (myIp == null) {
@@ -23,22 +27,17 @@ class QuickSendProvider extends ChangeNotifier {
         );
       }
       httpServer = await HttpServer.bind(InternetAddress.anyIPv4, port);
-      fileConnLink = getConnLink(myIp!, port);
 
       if (httpServer == null) {
         throw CustomException(e: 'Error occurred during opening server');
       }
-      httpServer!.listen((HttpRequest req) {
-        var file = File(filePath);
-        int length = file.lengthSync();
-        String? mime = lookupMimeType(filePath);
+      port = httpServer!.port;
+      fileConnLink = getConnLink(myIp!, port);
+      logger.w(fileConnLink);
 
-        req.response.statusCode = HttpStatus.partialContent;
-        req.response.headers
-          ..contentType = ContentType.parse(mime ?? 'audio/mpeg')
-          ..contentLength = length;
-        file.openRead().pipe(req.response);
-      });
+      httpServer!.listen(
+        (event) => serveFileListener(event, filePath),
+      );
     } catch (e) {
       await closeSend();
       rethrow;
