@@ -1,11 +1,17 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/utils/download_utils/custom_dio.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
 class ChunkProgressModel {
@@ -176,8 +182,25 @@ class DownloadTaskController {
     chunksInfo[index] = chunkProgressModel;
   }
 
-  bool _fileAlreadyDownloadedChecker(String filePath) {
-    return File(filePath).existsSync();
+  Future<bool> _fileAlreadyDownloadedChecker(String filePath) async {
+    bool exist = File(filePath).existsSync();
+    bool overwrite = false;
+    if (exist) {
+      await showModalBottomSheet(
+        context: navigatorKey.currentContext!,
+        builder: (context) => DoubleButtonsModal(
+          onOk: () {
+            overwrite = true;
+          },
+          okColor: kBlueColor,
+          okText: 'Overwrite',
+          cancelText: 'Cancel',
+          title: 'File already download',
+          subTitle: 'Overwrite the downloaded file?',
+        ),
+      );
+    }
+    return exist && !overwrite;
   }
 
   Future<void> _initFileInfo() async {
@@ -315,7 +338,7 @@ class DownloadTaskController {
   Future<dynamic> downloadFile() async {
     try {
       //? this function will support continue corrupted downloads later by downloading the stopped chunks
-      if (_fileAlreadyDownloadedChecker(downloadPath)) {
+      if (await _fileAlreadyDownloadedChecker(downloadPath)) {
         return;
       }
       await _initFileInfo();

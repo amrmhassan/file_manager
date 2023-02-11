@@ -60,6 +60,12 @@ import 'package:provider/provider.dart';
 //!!! when pausing the downloaded file at it's end(i think when it's downloading the final smaller part) the error happen and it doesn't download till the end
 //! add AnimatedSwitcher for the fade in image for the user image
 
+// fix the issue of connecting with wifi or hotspot
+// -- host device can open his hotspot or connect with same wifi network
+// -- but client device must connect over his wifi
+
+// when downloading a file and it exists, tell give the user the option to overwrite it or to cancel downloading
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

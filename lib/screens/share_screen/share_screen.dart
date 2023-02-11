@@ -48,10 +48,31 @@ class _ShareScreenState extends State<ShareScreen> {
           serverProvider.httpServer == null
               ? NotSharingView()
               : Builder(builder: (context) {
-                   PeerModel hostPeer=
-                  serverProvider.getHostPeer;
+                  PeerModel? hostPeer = serverProvider.getHostPeer;
+                  if (hostPeer == null) {
+                    return Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(width: double.infinity),
+                          CircularProgressIndicator(
+                            color: kMainIconColor,
+                            strokeWidth: 3,
+                          ),
+                          VSpace(factor: .8),
+                          Text(
+                            'Loading Group Info',
+                            style: h4TextStyleInactive,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
                   bool iamTheHost =
                       shareProvider.myDeviceId == hostPeer.deviceID;
+
                   var otherPeersButMe = serverProvider.peers.where(
                     (element) =>
                         element.deviceID != shareProviderFalse.myDeviceId,

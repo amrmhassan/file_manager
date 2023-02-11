@@ -136,8 +136,13 @@ class ServerProvider extends ChangeNotifier {
   }
 
 //? get the host peer
-  PeerModel get getHostPeer {
-    return peers.firstWhere((element) => element.memberType == MemberType.host);
+  PeerModel? get getHostPeer {
+    try {
+      return peers
+          .firstWhere((element) => element.memberType == MemberType.host);
+    } catch (e) {
+      return null;
+    }
   }
 
   //? all peers but me

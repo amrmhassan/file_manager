@@ -126,6 +126,14 @@ class MediaPlayerProvider extends ChangeNotifier {
   bool networkVideo = false;
   List<DurationRange> _bufferedParts = [];
   bool isBuffering = false;
+  double videoSpeed = 1;
+
+  void setVideoSpeed(double s) {
+    videoSpeed = s;
+    notifyListeners();
+    videoPlayerController?.setPlaybackSpeed(s);
+  }
+
   //? to return the ready buffered parts to be viewed into the video player slider
   List<SubRangeModel> get bufferedTransformer => _bufferedParts
       .map((e) => SubRangeModel(
