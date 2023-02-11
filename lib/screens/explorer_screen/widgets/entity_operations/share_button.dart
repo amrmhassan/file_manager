@@ -1,8 +1,14 @@
-import 'package:explorer/providers/util/explorer_provider.dart';
-import 'package:explorer/providers/files_operations_provider.dart';
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
+import 'package:explorer/global/modals/share_via_modal.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/operation_button.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
+void shareFileHandler(BuildContext context) {
+  foPF(context).shareFiles(expPF(context));
+}
 
 class ShareButton extends StatefulWidget {
   const ShareButton({
@@ -18,10 +24,21 @@ class _ShareButtonState extends State<ShareButton> {
 
   @override
   Widget build(BuildContext context) {
+    var foProviderFalse = foPF(context);
     return OperationButton(
       iconName: 'send',
-      onTap: () => Provider.of<FilesOperationsProvider>(context, listen: false)
-          .shareFiles(Provider.of<ExplorerProvider>(context, listen: false)),
+      onTap: () {
+        if (foProviderFalse.selectedItems.length == 1 &&
+            foProviderFalse.selectedItems.first.entityType == EntityType.file) {
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context) => ShareViewModal(),
+          );
+        } else {
+          shareFileHandler(context);
+        }
+      },
     );
   }
 }

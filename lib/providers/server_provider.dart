@@ -232,6 +232,7 @@ class ServerProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       await closeServer();
+      rethrow;
     }
   }
 

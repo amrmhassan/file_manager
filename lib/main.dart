@@ -3,6 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/providers/download_provider.dart';
+import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -48,7 +49,7 @@ import 'package:provider/provider.dart';
 //? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
 //! add the ability to download a folder
 //! add video, audio notification
-//! prevent the app from being killed when it is in the backend
+//! prevent the app from being killed when it is in the background
 //!
 
 // view buffered places in the video player seeker bar
@@ -96,6 +97,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => ServerProvider()),
         ChangeNotifierProvider(create: (ctx) => ShareItemsExplorerProvider()),
         ChangeNotifierProvider(create: (ctx) => DownloadProvider()),
+        ChangeNotifierProvider(create: (ctx) => QuickSendProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
