@@ -145,6 +145,15 @@ class _RecentScreenState extends State<RecentScreen> {
                 ),
               ),
               AnalyzerOptionsItem(
+                logoName: 'management',
+                onTap: () {
+                  Navigator.pushNamed(context, ShareScreen.routeName);
+                },
+                title: 'Share',
+                color: Colors.white,
+              ),
+              VSpace(),
+              AnalyzerOptionsItem(
                 logoName: 'clock',
                 onTap: () {
                   Navigator.pushNamed(
@@ -179,15 +188,6 @@ class _RecentScreenState extends State<RecentScreen> {
                   Navigator.pushNamed(context, ListyScreen.routeName);
                 },
                 title: 'Listy',
-              ),
-              VSpace(),
-              AnalyzerOptionsItem(
-                logoName: 'management',
-                onTap: () {
-                  Navigator.pushNamed(context, ShareScreen.routeName);
-                },
-                title: 'Share',
-                color: Colors.white,
               ),
               VSpace(),
             ],

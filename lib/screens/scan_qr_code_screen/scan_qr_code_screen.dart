@@ -2,19 +2,13 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/global/modals/qr_result_modal.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:explorer/global/widgets/h_space.dart';
-import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class ScanQRCodeScreen extends StatefulWidget {
   static const String routeName = '/ScanQRCodeScreen';
@@ -38,62 +32,9 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
           await showModalBottomSheet(
             context: context,
             backgroundColor: Colors.transparent,
-            builder: (context) => ModalWrapper(
-                color: kBackgroundColor,
-                showTopLine: false,
-                child: Column(
-                  children: [
-                    Text('Scan Result', style: h3TextStyle),
-                    VSpace(),
-                    SelectableText(
-                      scanData.code.toString(),
-                      style: h4TextStyle,
-                    ),
-                    VSpace(),
-                    Row(
-                      children: [
-                        if (scanData.code?.startsWith('http://') ?? false)
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: ButtonWrapper(
-                                    backgroundColor: kBlueColor,
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: kVPad / 2),
-                                    onTap: () {
-                                      launchUrlString(
-                                        scanData.code!,
-                                        mode: LaunchMode.externalApplication,
-                                      );
-                                    },
-                                    child: Text(
-                                      'Open Website',
-                                      style: h4TextStyleInactive,
-                                    ),
-                                  ),
-                                ),
-                                HSpace(),
-                              ],
-                            ),
-                          ),
-                        Expanded(
-                          child: ButtonWrapper(
-                            backgroundColor: kBlueColor,
-                            padding: EdgeInsets.symmetric(vertical: kVPad / 2),
-                            onTap: () {
-                              copyToClipboard(context, scanData.code ?? '');
-                            },
-                            child: Text(
-                              'Copy',
-                              style: h4TextStyleInactive,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
+            builder: (context) => QrResultModal(
+              code: scanData.code,
+            ),
           );
           await c.resumeCamera();
         } else {
