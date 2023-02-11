@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
@@ -10,23 +10,27 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/share_button.dart';
+import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void quickSendHandler(BuildContext context) async {
   showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: context,
     builder: (context) => DoubleButtonsModal(
+      autoPop: false,
       onOk: () async {
         try {
-          Provider.of<QuickSendProvider>(context, listen: false)
+          Navigator.pop(context);
+          await quickSPF(context)
               .quickShareFile(foPF(context).selectedItems.first.path, false);
+          foPF(context).clearAllSelectedItems(expPF(context));
+          Navigator.pushNamed(context, QrCodeViewerScreen.routeName,
+              arguments: quickSPF(context).fileConnLink);
         } catch (e, s) {
           showSnackBar(
             context: context,
@@ -42,8 +46,13 @@ void quickSendHandler(BuildContext context) async {
       okColor: kBlueColor,
       onCancel: () async {
         try {
-          Provider.of<QuickSendProvider>(context, listen: false)
+          Navigator.pop(context);
+
+          await quickSPF(context)
               .quickShareFile(foPF(context).selectedItems.first.path, true);
+          foPF(context).clearAllSelectedItems(expPF(context));
+          Navigator.pushNamed(context, QrCodeViewerScreen.routeName,
+              arguments: quickSPF(context).fileConnLink);
         } catch (e, s) {
           showSnackBar(
             context: context,

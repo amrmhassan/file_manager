@@ -1,6 +1,7 @@
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -70,4 +71,13 @@ ExplorerProvider expPF(BuildContext context) {
 
 ExplorerProvider expP(BuildContext context) {
   return Provider.of<ExplorerProvider>(context);
+}
+
+//? quick share provider providers
+QuickSendProvider quickSPF(BuildContext context) {
+  return Provider.of<QuickSendProvider>(context, listen: false);
+}
+
+QuickSendProvider quickSP(BuildContext context) {
+  return Provider.of<QuickSendProvider>(context);
 }

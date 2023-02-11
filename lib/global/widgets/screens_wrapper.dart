@@ -1,11 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/advanced_video_player/advanced_video_player.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
+import 'package:explorer/global/widgets/quick_send_open_button.dart';
 import 'package:explorer/global/widgets/show_controllers_button.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player_show_button.dart';
+import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +37,7 @@ class ScreensWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    var mpProvider = mpP(context);
     return Scaffold(
       key: scfKey,
       drawer: drawer,
@@ -88,6 +95,8 @@ class ScreensWrapper extends StatelessWidget {
               if (mpProvider.videoPlayerController != null &&
                   (!mpProvider.videoHidden))
                 AdvancedVideoPlayer(),
+
+              QuickSendOpnButton()
             ],
           ),
         ),

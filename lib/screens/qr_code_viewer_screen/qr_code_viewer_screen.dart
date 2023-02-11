@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -12,6 +12,7 @@ import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -23,6 +24,9 @@ class QrCodeViewerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var serverProvider = Provider.of<ServerProvider>(context);
+    String? quickSendLink =
+        ModalRoute.of(context)?.settings.arguments as String?;
+
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
@@ -133,13 +137,36 @@ class QrCodeViewerScreen extends StatelessWidget {
                           ),
                           child: QrImage(
                             backgroundColor: Colors.white,
-                            data: '${serverProvider.myConnLink!}$dummyEndPoint',
+                            data: quickSendLink ??
+                                '${serverProvider.myConnLink!}$dummyEndPoint',
                           ),
                         ),
                         SelectableText(
-                          serverProvider.myConnLink!,
+                          quickSendLink ?? serverProvider.myConnLink!,
                           style: h3InactiveTextStyle,
                         ),
+                        VSpace(),
+                        if (quickSendLink != null)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ButtonWrapper(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: kHPad,
+                                  vertical: kVPad / 2,
+                                ),
+                                onTap: () async {
+                                  await quickSPF(context).closeSend();
+                                  Navigator.pop(context);
+                                },
+                                backgroundColor: kDangerColor,
+                                child: Text(
+                                  'Close Send',
+                                  style: h4TextStyle,
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),
