@@ -202,6 +202,7 @@ class RecentProvider extends ChangeNotifier {
     var data = await DBHelper.getDataLimit(
       orderProp: createdAtString,
       table: videosRecentFilesTableName,
+      databaseName: tempDbName,
     );
     for (var video in data) {
       videosFiles.add(LocalFileInfo.fromJSON(video));
