@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
@@ -11,8 +12,10 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/utils/download_utils/custom_dio.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
+import 'package:explorer/utils/files_operations_utils/copy_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
+import 'package:uuid/uuid.dart';
 
 class ChunkProgressModel {
   final int size;
@@ -67,7 +70,7 @@ class DownloadTaskController {
 
   // outside props
   final int maximumParallelDownloadThreads;
-  final String downloadPath;
+  String downloadPath;
   final String remoteFilePath;
   final String mySessionID;
   final String myDeviceID;
@@ -182,31 +185,56 @@ class DownloadTaskController {
     chunksInfo[index] = chunkProgressModel;
   }
 
-  Future<bool> _fileAlreadyDownloadedChecker(String filePath) async {
-    bool exist = File(filePath).existsSync();
+  Future<bool> _fileAlreadyDownloadedChecker() async {
+    // this function will block the download process if it was returned true
+    bool exist = File(downloadPath).existsSync();
+
+    // overwrite or rename can be true not both
     bool overwrite = false;
+    bool rename = false;
     if (exist) {
       await showModalBottomSheet(
         context: navigatorKey.currentContext!,
+        backgroundColor: Colors.transparent,
         builder: (context) => DoubleButtonsModal(
           onOk: () {
             overwrite = true;
           },
+          onCancel: () {
+            rename = true;
+          },
           okColor: kBlueColor,
           okText: 'Overwrite',
-          cancelText: 'Cancel',
+          cancelText: 'Rename ',
           title: 'File already download',
-          subTitle: 'Overwrite the downloaded file?',
+          subTitle: 'Overwrite the downloaded file Or rename the new one ?',
         ),
       );
     }
-    return exist && !overwrite;
+
+    // if overwrite then return false to continue download and overwrite the existing file
+    if (overwrite) return false;
+    // if rename, rename the downloaded file local path then continue download
+    if (rename) {
+      // here i will use the rename
+      String fileName = getFileName(downloadPath);
+      String fileExtension = getFileExtension(downloadPath);
+      String dirName = path_operations.dirname(downloadPath);
+      String newPath =
+          '$dirName/$fileName-${Uuid().v4().substring(0, 8)}.$fileExtension';
+      downloadPath = newPath;
+
+      return false;
+    }
+
+    return exist;
   }
 
   Future<void> _initFileInfo() async {
+    print(url);
     // initializing file length
     length = int.parse((await Dio().get(
-      '$url/length',
+      url,
       options: Options(
         headers: {
           reqIntentPathHeaderKey: 'length',
@@ -338,7 +366,7 @@ class DownloadTaskController {
   Future<dynamic> downloadFile() async {
     try {
       //? this function will support continue corrupted downloads later by downloading the stopped chunks
-      if (await _fileAlreadyDownloadedChecker(downloadPath)) {
+      if (await _fileAlreadyDownloadedChecker()) {
         return;
       }
       await _initFileInfo();
@@ -374,10 +402,9 @@ class DownloadTaskController {
   }
 }
 
-
 // first
 // received 9956548
 // initial  0
 
 // second
-// received 
+// received
