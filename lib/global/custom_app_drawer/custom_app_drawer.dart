@@ -16,6 +16,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -50,8 +51,12 @@ class CustomAppDrawer extends StatelessWidget {
               iconPath: 'qr-code',
               title: 'QR Scanner',
               onTap: () async {
-                showSnackBar(context: context, message: 'Soon');
                 Navigator.pop(context);
+                Navigator.pushNamed(
+                  context,
+                  ScanQRCodeScreen.routeName,
+                  arguments: true,
+                );
               },
               onlyDebug: true,
             ),

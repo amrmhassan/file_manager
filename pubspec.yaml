@@ -69,6 +69,7 @@ dependencies:
   async: ^2.10.0
   image_picker: ^0.8.6+1
   flutter_image_compress: ^1.1.3
+  url_launcher: ^6.1.9
 
 dev_dependencies:
   flutter_test:
