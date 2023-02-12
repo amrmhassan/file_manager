@@ -4,8 +4,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/hive_constants.dart';
-import 'package:explorer/helpers/hive_helper.dart';
+import 'package:explorer/helpers/hive/hive_constants.dart';
+
 import 'package:explorer/models/white_block_list_model.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -47,14 +47,14 @@ class ServerProvider extends ChangeNotifier {
   Future<void> removeFromAllowedDevices(String deviceID) async {
     allowedPeers.removeWhere((element) => element.deviceID == deviceID);
     notifyListeners();
-    Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
+    Box allowedBox = await Hive.openBox(HiveBoxes.allowedDevices);
     await allowedBox.delete(deviceID);
   }
 
   Future<void> removeFromBlockedDevices(String deviceID) async {
     blockedPeers.removeWhere((element) => element.deviceID == deviceID);
     notifyListeners();
-    Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();
+    Box blockedBox = await Hive.openBox(HiveBoxes.blockedDevices);
     await blockedBox.delete(deviceID);
   }
 
@@ -67,7 +67,7 @@ class ServerProvider extends ChangeNotifier {
     notifyListeners();
     if (remember) {
       //! save if remember
-      Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
+      Box allowedBox = await Hive.openBox(HiveBoxes.allowedDevices);
       await allowedBox.put(deviceID, model.toJSON());
     }
   }
@@ -86,7 +86,7 @@ class ServerProvider extends ChangeNotifier {
     notifyListeners();
     if (remember) {
       //! save if remember
-      Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();
+      Box blockedBox = await Hive.openBox(HiveBoxes.blockedDevices);
       await blockedBox.put(deviceID, model.toJSON());
     }
   }
@@ -96,7 +96,7 @@ class ServerProvider extends ChangeNotifier {
         allowedPeers.any((element) => element.deviceID == deviceID);
     if (stateAllowed) return true;
 
-    Box allowedBox = await HiveHelper(allowedDevicesBoxName).init();
+    Box allowedBox = await Hive.openBox(HiveBoxes.allowedDevices);
     bool dbAllowed = allowedBox.containsKey(deviceID);
 
     if (dbAllowed) {
@@ -111,7 +111,7 @@ class ServerProvider extends ChangeNotifier {
         blockedPeers.any((element) => element.deviceID == deviceID);
     if (stateBlocked) return true;
 
-    Box blockedBox = await HiveHelper(blockedDevicesBoxName).init();
+    Box blockedBox = await Hive.openBox(HiveBoxes.blockedDevices);
     bool dbBlocked = blockedBox.containsKey(deviceID);
     if (dbBlocked) {
       blockedPeers.add(WhiteBlockListModel.fromJSON(blockedBox.get(deviceID)));
