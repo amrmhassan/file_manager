@@ -185,24 +185,24 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                                     }
                                   },
                                 ),
-                                ModalButtonElement(
-                                  showBottomLine: false,
-                                  inactiveColor: Colors.transparent,
-                                  title: 'Download to...',
-                                  onTap: () async {
-                                    // Provider.of<ClientProvider>(
-                                    //   context,
-                                    //   listen: false,
-                                    // ).downloadFile(
-                                    //   peerModel: peerModel!,
-                                    //   savePath: 'sdcard/amh_download',
-                                    //   remoteFilePath:
-                                    //       shareExpProvider.viewedItems[index].path,
-                                    //   sessionID: me(context).sessionID,
-                                    //   deviceID: me(context).deviceID,
-                                    // );
-                                  },
-                                ),
+                                // ModalButtonElement(
+                                //   showBottomLine: false,
+                                //   inactiveColor: Colors.transparent,
+                                //   title: 'Download to...',
+                                //   onTap: () async {
+                                //     // Provider.of<ClientProvider>(
+                                //     //   context,
+                                //     //   listen: false,
+                                //     // ).downloadFile(
+                                //     //   peerModel: peerModel!,
+                                //     //   savePath: 'sdcard/amh_download',
+                                //     //   remoteFilePath:
+                                //     //       shareExpProvider.viewedItems[index].path,
+                                //     //   sessionID: me(context).sessionID,
+                                //     //   deviceID: me(context).deviceID,
+                                //     // );
+                                //   },
+                                // ),
                               ],
                             ),
                           ),
