@@ -11,6 +11,7 @@ import 'package:explorer/global/custom_app_drawer/widgets/storage_analyzer_butto
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/hive/hive_constants.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
@@ -96,10 +97,8 @@ class CustomAppDrawer extends StatelessWidget {
                   AppDrawerItem(
                     title: 'Clear Devices db',
                     onTap: () async {
-                      (await Hive.openBox(HiveBoxes.allowedDevices))
-                          .deleteFromDisk();
-                      (await Hive.openBox(HiveBoxes.blockedDevices))
-                          .deleteFromDisk();
+                      (await HiveBox.allowedDevices).deleteFromDisk();
+                      (await HiveBox.blockedDevices).deleteFromDisk();
                       showSnackBar(context: context, message: 'Deleted');
                       Navigator.pop(context);
                     },

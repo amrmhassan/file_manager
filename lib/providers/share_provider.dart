@@ -6,8 +6,7 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
-import 'package:explorer/helpers/hive/hive_constants.dart';
-
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
@@ -63,7 +62,7 @@ class ShareProvider extends ChangeNotifier {
 
   //?
   Future<void> removeFromHiddenEntities(Iterable<String> paths) async {
-    Box box = await Hive.openBox(HiveBoxes.hiddenFromShareSpace);
+    Box box = await HiveBox.hiddenFromShareSpace;
     for (var path in paths) {
       hiddenEntitiesPaths.remove(path);
       notifyListeners();
@@ -74,7 +73,7 @@ class ShareProvider extends ChangeNotifier {
 
   //?
   Future<void> addToHiddenEntities(Iterable<String> paths) async {
-    Box box = await Hive.openBox(HiveBoxes.hiddenFromShareSpace);
+    Box box = await HiveBox.hiddenFromShareSpace;
 
     for (var path in paths) {
       if (hiddenEntitiesPaths.contains(path)) continue;

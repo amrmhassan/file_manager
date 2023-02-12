@@ -2,7 +2,7 @@
 
 import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/helpers/hive/hive_constants.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -76,7 +76,7 @@ class DownloadProvider extends ChangeNotifier {
   Future<void> loadTasks() async {
     if (taskLoadedFromDb) return;
     taskLoadedFromDb = true;
-    var box = await Hive.openBox(HiveBoxes.downloadTasks);
+    var box = await HiveBox.downloadTasks;
     List<DownloadTaskModel> loadedTasks = box.values
         .map((e) => DownloadTaskModel.fromJSON(
             (e as Map<dynamic, dynamic>).cast<String, dynamic>()))
@@ -96,7 +96,7 @@ class DownloadProvider extends ChangeNotifier {
   Future<void> removeTaskById(String id) async {
     tasks.removeWhere((element) => element.id == id);
     notifyListeners();
-    var box = await Hive.openBox(HiveBoxes.downloadTasks);
+    var box = await HiveBox.downloadTasks;
     await box.delete(id);
   }
 
@@ -107,7 +107,7 @@ class DownloadProvider extends ChangeNotifier {
         .parent
         .parent
         .deleteSync(recursive: true);
-    var box = await Hive.openBox(HiveBoxes.downloadTasks);
+    var box = await HiveBox.downloadTasks;
     await box.clear();
   }
 
@@ -221,7 +221,7 @@ class DownloadProvider extends ChangeNotifier {
     );
     tasks.add(downloadTaskModel);
     notifyListeners();
-    var box = await Hive.openBox(HiveBoxes.downloadTasks);
+    var box = await HiveBox.downloadTasks;
     await box.put(downloadTaskModel.id, downloadTaskModel.toJSON());
 
     //? this is to start downloading the task if there is no tasks downloading
@@ -253,7 +253,7 @@ class DownloadProvider extends ChangeNotifier {
   Future<void> _updateTask(int index, DownloadTaskModel newTask) async {
     tasks[index] = newTask;
     notifyListeners();
-    var box = await Hive.openBox(HiveBoxes.downloadTasks);
+    var box = await HiveBox.downloadTasks;
     await box.put(newTask.id, newTask.toJSON());
   }
 
