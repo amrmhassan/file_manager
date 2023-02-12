@@ -2,14 +2,25 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/types.dart';
+import 'package:hive/hive.dart';
 
+part 'share_space_item_model.g.dart';
+
+@HiveType(typeId: 6)
 class ShareSpaceItemModel {
+  @HiveField(0)
   final String path;
+  @HiveField(1)
   final EntityType entityType;
+  @HiveField(2)
   final List<String> blockedAt;
+  @HiveField(3)
   final String ownerDeviceID;
+  @HiveField(4)
   String? ownerSessionID;
+  @HiveField(5)
   final DateTime addedAt;
+  @HiveField(6)
   int? size;
 
   ShareSpaceItemModel({

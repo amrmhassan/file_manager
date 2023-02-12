@@ -1,11 +1,20 @@
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
+import 'package:hive/hive.dart';
 
+part 'folder_item_info_model.g.dart';
+
+@HiveType(typeId: 2)
 class FolderItemInfoModel {
+  @HiveField(0)
   final String path;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   int? itemCount;
+  @HiveField(3)
   DateTime dateCaptured;
+  @HiveField(4)
   int? size;
 
   FolderItemInfoModel({

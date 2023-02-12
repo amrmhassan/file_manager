@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/helpers/hive/hive_initiator.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -46,30 +47,14 @@ import 'package:explorer/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// now i am at hive branch
-//? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
-//! add the ability to download a folder
-//! add video, audio notification
-//! prevent the app from being killed when it is in the background
-//!
+//! now i am at branch hive to convert all sqlite db to hive db
+//! see this first https://www.youtube.com/watch?v=MktaceoUzc0
 
-// view buffered places in the video player seeker bar
-// make the fast seeker widget for the video to be much bigger for the landscape mode
-// make the video not to be hidden when clicking the eye button next to a video even if the video is playing right now
-// open the task file when clicking over it and open it's folder when clicking the folder icon
-
-// add settings for the sharing
-//!!! when pausing the downloaded file at it's end(i think when it's downloading the final smaller part) the error happen and it doesn't download till the end
-//! add AnimatedSwitcher for the fade in image for the user image
-
-// fix the issue of connecting with wifi or hotspot
-// -- host device can open his hotspot or connect with same wifi network
-// -- but client device must connect over his wifi
-
-// when downloading a file and it exists, tell give the user the option to overwrite it or to cancel downloading
+//! look for the web_server project in dart mastery folder
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await HiveInitiator().setup();
 
   await setThemeVariables();
   runApp(const MyApp());

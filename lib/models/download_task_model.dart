@@ -4,7 +4,10 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/utils/download_utils/download_task_controller.dart';
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
+import 'package:hive/hive.dart';
 import 'package:path/path.dart' as path_operations;
+
+part 'download_task_model.g.dart';
 //? these tasks will be saved into the sqlite for later download
 //? downloading might be continued in another session so i provided peer model which wont be saved to sqlite
 //? but peer device id will be saved
@@ -18,16 +21,23 @@ enum TaskStatus {
   failed,
 }
 
+@HiveType(typeId: 1)
 class DownloadTaskModel {
+  @HiveField(0)
   final String id;
-  // final PeerModel? peerModel;
+  @HiveField(1)
   final String remoteFilePath;
+  @HiveField(2)
   late String localFilePath;
+  @HiveField(3)
   final DateTime addedAt;
+  @HiveField(4)
   final String remoteDeviceName;
+  @HiveField(5)
   final String remoteDeviceID;
-  DownloadTaskController? downloadTaskController;
+  @HiveField(6)
   final int? size;
+  DownloadTaskController? downloadTaskController;
 
   DateTime? finishedAt;
   TaskStatus taskStatus;
