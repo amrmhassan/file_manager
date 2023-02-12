@@ -201,6 +201,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1"
+  dots_indicator:
+    dependency: transitive
+    description:
+      name: dots_indicator
+      sha256: e59dfc90030ee5a4fd4c53144a8ce97cc7a823c2067b8fb9814960cd1ae63f89
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   draggable_scrollbar:
     dependency: "direct main"
     description:
@@ -376,6 +384,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.17.0"
+  introduction_screen:
+    dependency: "direct main"
+    description:
+      name: introduction_screen
+      sha256: "73965475d6b271846f81c5fce5b459546a4ea36c285408691522437fd6bbeb69"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.4"
   js:
     dependency: transitive
     description:

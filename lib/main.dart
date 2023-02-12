@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -20,6 +21,7 @@ import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
 import 'package:explorer/screens/error_viewing_screen/error_viewing_screen.dart';
+import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
@@ -41,14 +43,16 @@ import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/screens/white_block_list_screen/white_block_list_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/theme_utils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//! fix my share space when connected
 //! before publishing
-//1- video speeds controller
 //2- about developer
+// new features
 //3- deploy
 //? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
 //! add the ability to download a folder
@@ -70,11 +74,16 @@ import 'package:provider/provider.dart';
 // -- but client device must connect over his wifi
 
 // when downloading a file and it exists, tell give the user the option to overwrite it or to cancel downloading
-
+bool firstTimeRunApp = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
+    await setThemeVariables();
+  } catch (e) {
+    printOnDebug('Error with first time app in main() or theme variables');
+  }
 
-  await setThemeVariables();
   runApp(const MyApp());
 }
 
@@ -119,7 +128,9 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
+        initialRoute: testing
+            ? TestScreen.routeName
+            : (firstTimeRunApp ? IntroScreen.routeName : HomeScreen.routeName),
         navigatorKey: navigatorKey,
         routes: {
           HomeScreen.routeName: (context) => HomeScreen(),
@@ -146,6 +157,7 @@ class MyApp extends StatelessWidget {
           ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
           ShareSettingsScreen.routeName: (context) => ShareSettingsScreen(),
           WhiteBlockListScreen.routeName: (context) => WhiteBlockListScreen(),
+          IntroScreen.routeName: (context) => IntroScreen(),
         },
       ),
     );
