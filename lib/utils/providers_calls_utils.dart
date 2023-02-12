@@ -5,6 +5,7 @@ import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -80,4 +81,13 @@ QuickSendProvider quickSPF(BuildContext context) {
 
 QuickSendProvider quickSP(BuildContext context) {
   return Provider.of<QuickSendProvider>(context);
+}
+
+//? analyzer provider providers
+AnalyzerProvider analyzerPF(BuildContext context) {
+  return Provider.of<AnalyzerProvider>(context, listen: false);
+}
+
+AnalyzerProvider analyzerP(BuildContext context) {
+  return Provider.of<AnalyzerProvider>(context);
 }

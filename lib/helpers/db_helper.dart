@@ -86,12 +86,13 @@ class DBHelper {
         ? ''
         : 'ORDER BY $orderProp ${orderASC ? "ASC" : "DESC"}';
     String limitQuery = limit == null ? '' : 'LIMIT $limit';
-    return db.rawQuery("""
+    String fullQuery = """
                     SELECT * 
                     FROM $table
                     $orderQuery
                     $limitQuery
-                    """);
+                    """;
+    return db.rawQuery(fullQuery);
   }
 
   //? to get data from a table where
