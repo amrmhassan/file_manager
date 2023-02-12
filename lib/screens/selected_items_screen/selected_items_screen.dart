@@ -45,6 +45,9 @@ class SelectedItemsScreen extends StatelessWidget {
             (e) => Dismissible(
               onDismissed: (direction) {
                 foPF(context).toggleFromSelectedItems(e, expPF(context));
+                if (foPF(context).selectedItems.isEmpty) {
+                  Navigator.pop(context);
+                }
               },
               direction: DismissDirection.endToStart,
               background: Container(
