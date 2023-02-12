@@ -12,8 +12,11 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Future<void> handleAddOrRemoveFromShareSpace(BuildContext context, bool? added,
-    [List<String>? paths]) async {
+Future<void> handleAddOrRemoveFromShareSpace(
+  BuildContext context,
+  bool? added, [
+  List<String>? paths,
+]) async {
   var foProviderFalse = foPF(context);
   if (added == true) {
     //? remove from share space
@@ -46,8 +49,11 @@ Future<void> handleAddOrRemoveFromShareSpace(BuildContext context, bool? added,
       addedItems: addedItems,
     );
   }
-  foProviderFalse.clearAllSelectedItems(
-      Provider.of<ExplorerProvider>(context, listen: false));
+  //? if paths==null that means that you are doing that from controlling share space screen
+  if (paths == null) {
+    foProviderFalse.clearAllSelectedItems(
+        Provider.of<ExplorerProvider>(context, listen: false));
+  }
 }
 
 class AddToShareSpaceButton extends StatefulWidget {

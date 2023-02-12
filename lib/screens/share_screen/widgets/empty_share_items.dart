@@ -25,7 +25,7 @@ class EmptyShareItems extends StatelessWidget {
         ),
         VSpace(),
         Text(
-          'Share Space is empty\n Add some files to send to people',
+          'Your share Space is empty\n Add some files to send to people',
           textAlign: TextAlign.center,
           style: h4TextStyleInactive,
         ),

@@ -18,6 +18,7 @@ import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/theme_provider.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
+import 'package:explorer/screens/about_us_screen/about_us_screen.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
 import 'package:explorer/screens/error_viewing_screen/error_viewing_screen.dart';
@@ -158,6 +159,7 @@ class MyApp extends StatelessWidget {
           ShareSettingsScreen.routeName: (context) => ShareSettingsScreen(),
           WhiteBlockListScreen.routeName: (context) => WhiteBlockListScreen(),
           IntroScreen.routeName: (context) => IntroScreen(),
+          AboutUsScreen.routeName: (context) => AboutUsScreen(),
         },
       ),
     );
