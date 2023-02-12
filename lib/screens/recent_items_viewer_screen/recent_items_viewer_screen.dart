@@ -9,7 +9,6 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/entity_operations.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

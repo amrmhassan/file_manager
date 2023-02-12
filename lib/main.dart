@@ -46,6 +46,10 @@ import 'package:explorer/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//! before publishing
+//1- video speeds controller
+//2- about developer
+//3- deploy
 //? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
 //! add the ability to download a folder
 //! add video, audio notification
