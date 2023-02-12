@@ -3,16 +3,29 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+part 'local_file_info.g.dart';
+
+@HiveType(typeId: 8)
 class LocalFileInfo {
+  @HiveField(0)
   final String path;
+  @HiveField(1)
   final String parentPath;
+  @HiveField(2)
   final DateTime modified;
+  @HiveField(3)
   final DateTime accessed;
+  @HiveField(4)
   final DateTime changed;
+  @HiveField(5)
   final EntityType entityType;
+  @HiveField(6)
   final String fileBaseName;
+  @HiveField(7)
   final String ext;
+  @HiveField(8)
   final int size;
 
   const LocalFileInfo({

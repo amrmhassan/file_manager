@@ -1,3 +1,4 @@
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
@@ -23,5 +24,6 @@ class HiveInitiator {
     Hive.registerAdapter(RecentOpenedFileModelAdapter());
     Hive.registerAdapter(ShareSpaceItemModelAdapter());
     Hive.registerAdapter(WhiteBlockListModelAdapter());
+    Hive.registerAdapter(LocalFileInfoAdapter());
   }
 }

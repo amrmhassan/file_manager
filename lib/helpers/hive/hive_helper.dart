@@ -18,6 +18,21 @@ class HiveBox {
       Hive.openBox(_HiveBoxesNames.recentOpenedFile);
   static Future<Box> get shareSpaceItem =>
       Hive.openBox(_HiveBoxesNames.shareSpaceItem);
+  // recent boxes
+  static Future<Box> get imagesRecentFilesTableName =>
+      Hive.openBox(_HiveBoxesNames.imagesRecentFilesTableName);
+  static Future<Box> get videosRecentFilesTableName =>
+      Hive.openBox(_HiveBoxesNames.videosRecentFilesTableName);
+  static Future<Box> get musicRecentFilesTableName =>
+      Hive.openBox(_HiveBoxesNames.musicRecentFilesTableName);
+  static Future<Box> get apkRecentFilesTableName =>
+      Hive.openBox(_HiveBoxesNames.apkRecentFilesTableName);
+  static Future<Box> get archivesRecentFilesTableName =>
+      Hive.openBox(_HiveBoxesNames.archivesRecentFilesTableName);
+  static Future<Box> get docsRecentFilesTableName =>
+      Hive.openBox(_HiveBoxesNames.docsRecentFilesTableName);
+  static Future<Box> get downloadsRecentFilesTableName =>
+      Hive.openBox(_HiveBoxesNames.downloadsRecentFilesTableName);
 }
 
 class _HiveBoxesNames {
@@ -31,4 +46,26 @@ class _HiveBoxesNames {
   static const String listy = 'listyBoxName';
   static const String recentOpenedFile = 'recentOpenedFileBoxName';
   static const String shareSpaceItem = 'shareSpaceItemBoxName';
+  // recent boxes
+  static const String imagesRecentFilesTableName = 'imagesRecentFilesTableName';
+  static const String videosRecentFilesTableName = 'videosRecentFilesTableName';
+  static const String musicRecentFilesTableName = 'musicRecentFilesTableName';
+  static const String apkRecentFilesTableName = 'apkRecentFilesTableName';
+  static const String archivesRecentFilesTableName =
+      'archivesRecentFilesTableName';
+  static const String docsRecentFilesTableName = 'docsRecentFilesTableName';
+  static const String downloadsRecentFilesTableName =
+      'downloadsRecentFilesTableName';
 }
+
+// class HiveHelper {
+//   final Box box;
+
+//   const HiveHelper(this.box);
+
+//   Iterable<dynamic> getDataLimit(int limit) {
+//     List<dynamic> data = box.values.toList();
+//     data.sort();
+//     return data.take(limit);
+//   }
+// }

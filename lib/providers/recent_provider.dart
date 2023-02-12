@@ -6,8 +6,10 @@ import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 int recentItemsLimit = 100;
 bool skipHiddenFolders = false;
@@ -199,14 +201,16 @@ class RecentProvider extends ChangeNotifier {
   Future loadVideos() async {
     if (videosFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getDataLimit(
-      orderProp: createdAtString,
-      table: videosRecentFilesTableName,
-      databaseName: tempDbName,
-    );
-    for (var video in data) {
-      videosFiles.add(LocalFileInfo.fromJSON(video));
-    }
+    // var data = await DBHelper.getDataLimit(
+    //   orderProp: createdAtString,
+    //   table: videosRecentFilesTableName,
+    //   databaseName: tempDbName,
+    // );
+    // for (var video in data) {
+    //   videosFiles.add(LocalFileInfo.fromJSON(video));
+    // }
+    videosFiles =
+        (await HiveBox.videosRecentFilesTableName).values.toList().cast();
   }
 
   Future loadMusic() async {
@@ -276,10 +280,11 @@ class RecentProvider extends ChangeNotifier {
       await DBHelper.insert(imagesRecentFilesTableName, jsonOBJ);
     }
 
-    for (var video in videosFiles) {
-      var jsonOBJ = video.toJSON();
-      await DBHelper.insert(videosRecentFilesTableName, jsonOBJ);
-    }
+    // for (var video in videosFiles) {
+    //   var jsonOBJ = video.toJSON();
+    //   await DBHelper.insert(videosRecentFilesTableName, jsonOBJ);
+    // }
+    (await HiveBox.videosRecentFilesTableName).addAll(videosFiles);
     for (var music in musicFiles) {
       var jsonOBJ = music.toJSON();
       await DBHelper.insert(musicRecentFilesTableName, jsonOBJ);
