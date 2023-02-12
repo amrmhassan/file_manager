@@ -57,7 +57,7 @@ class HomeAppBar extends StatelessWidget {
                 ),
               )
             else if (foProvider.selectedItems.isNotEmpty)
-              SelectedItemNumber(foProvider: foProvider),
+              SelectedItemNumber(),
             Spacer(),
             if (expProvider.loadingChildren ||
                 analyzerProvider.savingInfoToSqlite)

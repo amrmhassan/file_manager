@@ -1,12 +1,16 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
+import 'package:explorer/screens/home_screen/widgets/selected_item_number.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +30,34 @@ class SelectedItemsScreen extends StatelessWidget {
               'Selected Items',
               style: h2TextStyle,
             ),
+            rightIcon: Row(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [SelectedItemNumber(tap: false)],
+                ),
+                HSpace(),
+              ],
+            ),
           ),
           VSpace(),
           ...foProvider.selectedItems.map(
             (e) => Dismissible(
+              onDismissed: (direction) {
+                foPF(context).toggleFromSelectedItems(e, expPF(context));
+              },
+              direction: DismissDirection.endToStart,
+              background: Container(
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.only(
+                  right: kHPad,
+                ),
+                color: kDangerColor,
+                child: Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                ),
+              ),
               key: Key(e.path),
               child: StorageItem(
                 storageItemModel: e,
