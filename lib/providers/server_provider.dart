@@ -69,7 +69,7 @@ class ServerProvider extends ChangeNotifier {
     if (remember) {
       //! save if remember
       Box allowedBox = await HiveBox.allowedDevices;
-      await allowedBox.put(deviceID, model.toJSON());
+      await allowedBox.put(deviceID, model);
     }
   }
 
@@ -88,7 +88,7 @@ class ServerProvider extends ChangeNotifier {
     if (remember) {
       //! save if remember
       Box blockedBox = await HiveBox.blockedDevices;
-      await blockedBox.put(deviceID, model.toJSON());
+      await blockedBox.put(deviceID, model);
     }
   }
 

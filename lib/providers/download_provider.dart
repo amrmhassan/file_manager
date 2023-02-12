@@ -222,7 +222,7 @@ class DownloadProvider extends ChangeNotifier {
     tasks.add(downloadTaskModel);
     notifyListeners();
     var box = await HiveBox.downloadTasks;
-    await box.put(downloadTaskModel.id, downloadTaskModel.toJSON());
+    await box.put(downloadTaskModel.id, downloadTaskModel);
 
     //? this is to start downloading the task if there is no tasks downloading
     if (tasksFreeLocal) {
@@ -254,7 +254,7 @@ class DownloadProvider extends ChangeNotifier {
     tasks[index] = newTask;
     notifyListeners();
     var box = await HiveBox.downloadTasks;
-    await box.put(newTask.id, newTask.toJSON());
+    await box.put(newTask.id, newTask);
   }
 
   // this will mark a task with a flag(downloading, finished, etc..)
