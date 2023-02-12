@@ -4,6 +4,7 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/defaults_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
 import 'package:explorer/models/types.dart';
@@ -20,20 +21,23 @@ class ListyProvider extends ChangeNotifier {
 
   //? load listy lists
   Future loadListyLists() async {
-    var data = await DBHelper.getData(listyListTableName, persistentDbName);
-    if (data.isEmpty) {
+    // var data = await DBHelper.getData(listyListTableName, persistentDbName);
+    var box = await HiveBox.listy;
+    if (box.values.isEmpty) {
       _listy = [...defaultListyList];
       notifyListeners();
-      await DBHelper.insert(
-        listyListTableName,
-        defaultListyList.first.toJSON(),
-        persistentDbName,
-      );
+      // await DBHelper.insert(
+      //   listyListTableName,
+      //   defaultListyList.first.toJSON(),
+      //   persistentDbName,
+      // );
+      box.add(defaultListyList.first);
       return;
     }
-    for (var listy in data) {
-      _listy.add(ListyModel.fromJSON(listy));
-    }
+    // for (var listy in data) {
+    //   _listy.add(ListyModel.fromJSON(listy));
+    // }
+    _listy = box.values.toList().cast();
     notifyListeners();
   }
 
@@ -58,11 +62,13 @@ class ListyProvider extends ChangeNotifier {
     );
     _listy.add(listyModel);
     notifyListeners();
-    await DBHelper.insert(
-      listyListTableName,
-      listyModel.toJSON(),
-      persistentDbName,
-    );
+    // await DBHelper.insert(
+    //   listyListTableName,
+    //   listyModel.toJSON(),
+    //   persistentDbName,
+    // );
+    var box = await HiveBox.listy;
+    await box.add(listyModel);
   }
 
   //? to check if an entity is in a list
@@ -100,11 +106,13 @@ class ListyProvider extends ChangeNotifier {
       entityType: entityType,
     );
 
-    await DBHelper.insert(
-      listyItemsTableName,
-      listyItemModel.toJSON(),
-      persistentDbName,
-    );
+    // await DBHelper.insert(
+    //   listyItemsTableName,
+    //   listyItemModel.toJSON(),
+    //   persistentDbName,
+    // );
+    var box = await HiveBox.listyItem;
+    await box.add(listyItemModel);
   }
 
 //? to delete item from listy
@@ -122,13 +130,14 @@ class ListyProvider extends ChangeNotifier {
 
   //? get listy items
   Future<List<ListyItemModel>> getListyItems(String listyTitle) async {
-    var data = await DBHelper.getDataWhereMultiple(
-      listyItemsTableName,
-      [listyTitleString],
-      [listyTitle],
-      persistentDbName,
-    );
-    return data.map((e) => ListyItemModel.fromJSON(e)).toList();
+    // var data = await DBHelper.getDataWhereMultiple(
+    //   listyItemsTableName,
+    //   [listyTitleString],
+    //   [listyTitle],
+    //   persistentDbName,
+    // );
+    var box = await HiveBox.listyItem;
+    return box.values.toList().cast();
   }
 
 //? remove a whole listy

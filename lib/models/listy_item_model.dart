@@ -26,23 +26,23 @@ class ListyItemModel {
     required this.entityType,
   });
 
-  Map<String, String> toJSON() {
-    return {
-      idString: id,
-      pathString: path,
-      listyTitleString: listyTitle,
-      createdAtString: createdAt.toIso8601String(),
-      entityTypeString: entityType.name,
-    };
-  }
+  // Map<String, String> toJSON() {
+  //   return {
+  //     idString: id,
+  //     pathString: path,
+  //     listyTitleString: listyTitle,
+  //     createdAtString: createdAt.toIso8601String(),
+  //     entityTypeString: entityType.name,
+  //   };
+  // }
 
-  static ListyItemModel fromJSON(Map<String, dynamic> jsonOBJ) {
-    return ListyItemModel(
-      id: jsonOBJ[idString],
-      path: jsonOBJ[pathString],
-      listyTitle: jsonOBJ[listyTitleString],
-      createdAt: DateTime.parse(jsonOBJ[createdAtString]),
-      entityType: stringToEnum(jsonOBJ[entityTypeString], EntityType.values),
-    );
-  }
+  // static ListyItemModel fromJSON(Map<String, dynamic> jsonOBJ) {
+  //   return ListyItemModel(
+  //     id: jsonOBJ[idString],
+  //     path: jsonOBJ[pathString],
+  //     listyTitle: jsonOBJ[listyTitleString],
+  //     createdAt: DateTime.parse(jsonOBJ[createdAtString]),
+  //     entityType: stringToEnum(jsonOBJ[entityTypeString], EntityType.values),
+  //   );
+  // }
 }

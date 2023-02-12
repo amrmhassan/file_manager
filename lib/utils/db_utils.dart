@@ -66,7 +66,7 @@ FutureOr<void> onPersistentDataBase(
   int? version,
 ) async {
   //? creating info of the explorer folders
-  await db.execute(FolderItemInfoModel.toSQLString());
+  // await db.execute(FolderItemInfoModel.toSQLString());
   //? creating images thumbnails table
   await db.execute(imagesThumbnailsTableCreation);
   //? creating recently opened files table

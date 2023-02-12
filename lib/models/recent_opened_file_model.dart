@@ -15,17 +15,17 @@ class RecentOpenedFileModel {
     required this.path,
   });
 
-  Map<String, String> toJSON() {
-    return {
-      pathString: path,
-      dateFileOpenedString: dateOpened.toIso8601String(),
-    };
-  }
+  // Map<String, String> toJSON() {
+  //   return {
+  //     pathString: path,
+  //     dateFileOpenedString: dateOpened.toIso8601String(),
+  //   };
+  // }
 
-  static RecentOpenedFileModel fromJSON(Map<String, dynamic> jsonOBJ) {
-    return RecentOpenedFileModel(
-      dateOpened: DateTime.parse(jsonOBJ[dateFileOpenedString]!),
-      path: jsonOBJ[pathString]!,
-    );
-  }
+  // static RecentOpenedFileModel fromJSON(Map<String, dynamic> jsonOBJ) {
+  //   return RecentOpenedFileModel(
+  //     dateOpened: DateTime.parse(jsonOBJ[dateFileOpenedString]!),
+  //     path: jsonOBJ[pathString]!,
+  //   );
+  // }
 }

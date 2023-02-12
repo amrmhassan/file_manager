@@ -19,19 +19,19 @@ class ListyModel {
     required this.createdAt,
   });
 
-  Map<String, String?> toJSON() {
-    return {
-      titleString: title,
-      iconString: icon,
-      createdAtString: createdAt.toIso8601String(),
-    };
-  }
+  // Map<String, String?> toJSON() {
+  //   return {
+  //     titleString: title,
+  //     iconString: icon,
+  //     createdAtString: createdAt.toIso8601String(),
+  //   };
+  // }
 
-  static ListyModel fromJSON(Map<String, dynamic> jsonOBJ) {
-    return ListyModel(
-      title: jsonOBJ[titleString],
-      icon: jsonOBJ[iconString] == dbNull ? null : jsonOBJ[iconString],
-      createdAt: DateTime.parse(jsonOBJ[createdAtString]),
-    );
-  }
+  // static ListyModel fromJSON(Map<String, dynamic> jsonOBJ) {
+  //   return ListyModel(
+  //     title: jsonOBJ[titleString],
+  //     icon: jsonOBJ[iconString] == dbNull ? null : jsonOBJ[iconString],
+  //     createdAt: DateTime.parse(jsonOBJ[createdAtString]),
+  //   );
+  // }
 }

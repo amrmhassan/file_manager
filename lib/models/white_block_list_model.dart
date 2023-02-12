@@ -15,17 +15,17 @@ class WhiteBlockListModel {
     required this.name,
   });
 
-  Map<String, String> toJSON() {
-    return {
-      deviceIDString: deviceID,
-      nameString: name,
-    };
-  }
+  // Map<String, String> toJSON() {
+  //   return {
+  //     deviceIDString: deviceID,
+  //     nameString: name,
+  //   };
+  // }
 
-  static WhiteBlockListModel fromJSON(Map<String, dynamic> obj) {
-    return WhiteBlockListModel(
-      deviceID: obj[deviceIDString],
-      name: obj[nameString],
-    );
-  }
+  // static WhiteBlockListModel fromJSON(Map<String, dynamic> obj) {
+  //   return WhiteBlockListModel(
+  //     deviceID: obj[deviceIDString],
+  //     name: obj[nameString],
+  //   );
+  // }
 }

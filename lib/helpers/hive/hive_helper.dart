@@ -11,6 +11,13 @@ class HiveBox {
       Hive.openBox(_HiveBoxesNames.hiddenFromShareSpace);
   static Future<Box> get analyzerReportInfo =>
       Hive.openBox(_HiveBoxesNames.analyzerReportInfo);
+  static Future<Box> get folderInfo => Hive.openBox(_HiveBoxesNames.folderInfo);
+  static Future<Box> get listyItem => Hive.openBox(_HiveBoxesNames.listyItem);
+  static Future<Box> get listy => Hive.openBox(_HiveBoxesNames.listy);
+  static Future<Box> get recentOpenedFile =>
+      Hive.openBox(_HiveBoxesNames.recentOpenedFile);
+  static Future<Box> get shareSpaceItem =>
+      Hive.openBox(_HiveBoxesNames.shareSpaceItem);
 }
 
 class _HiveBoxesNames {
@@ -19,4 +26,9 @@ class _HiveBoxesNames {
   static const String blockedDevices = 'blockedDevicesBoxName';
   static const String hiddenFromShareSpace = 'hiddenFromShareSpaceBoxName';
   static const String analyzerReportInfo = 'analyzerReportInfoBoxName';
+  static const String folderInfo = 'folderInfoBoxName';
+  static const String listyItem = 'listyItemBoxName';
+  static const String listy = 'listyBoxName';
+  static const String recentOpenedFile = 'recentOpenedFileBoxName';
+  static const String shareSpaceItem = 'shareSpaceItemBoxName';
 }

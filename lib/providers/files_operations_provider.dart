@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/recent_opened_file_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
@@ -313,10 +314,12 @@ class FilesOperationsProvider extends ChangeNotifier {
       path: path,
     );
 
-    await DBHelper.insert(
-      recentlyOpenedFilesTableName,
-      recentOpenedFileModel.toJSON(),
-      persistentDbName,
-    );
+    // await DBHelper.insert(
+    //   recentlyOpenedFilesTableName,
+    //   recentOpenedFileModel.toJSON(),
+    //   persistentDbName,
+    // );
+    var box = await HiveBox.recentOpenedFile;
+    box.add(recentOpenedFileModel);
   }
 }

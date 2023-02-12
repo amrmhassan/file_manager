@@ -194,11 +194,13 @@ class ShareProvider extends ChangeNotifier {
     );
     _sharedItems.add(shareSpaceItemModel);
     notifyListeners();
-    await DBHelper.insert(
-      shareSpaceItemsTableName,
-      shareSpaceItemModel.toJSON(),
-      persistentDbName,
-    );
+    var box = await HiveBox.shareSpaceItem;
+    await box.add(shareSpaceItemModel);
+    // await DBHelper.insert(
+    //   shareSpaceItemsTableName,
+    //   shareSpaceItemModel.toJSON(),
+    //   persistentDbName,
+    // );
     return shareSpaceItemModel;
   }
 
@@ -265,11 +267,13 @@ class ShareProvider extends ChangeNotifier {
 
   //? loading shared items from sqlite at app startup
   Future<void> loadSharedItems() async {
-    var data =
-        await DBHelper.getData(shareSpaceItemsTableName, persistentDbName);
-    for (var item in data) {
-      _sharedItems.add(ShareSpaceItemModel.fromJSON(item));
-    }
+    var box = await HiveBox.shareSpaceItem;
+    _sharedItems.addAll(box.values.toList().cast());
+    // var data =
+    //     await DBHelper.getData(shareSpaceItemsTableName, persistentDbName);
+    // for (var item in data) {
+    //   _sharedItems.add(ShareSpaceItemModel.fromJSON(item));
+    // }
     notifyListeners();
   }
 }

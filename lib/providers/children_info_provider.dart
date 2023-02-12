@@ -1,5 +1,6 @@
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/folder_scroll_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,11 +10,13 @@ class ChildrenItemsProvider extends ChangeNotifier {
   List<FolderItemInfoModel> foldersInfo = [];
   Future<void> addFolderInfo(FolderItemInfoModel folderItemInfoModel) async {
     foldersInfo.add(folderItemInfoModel);
-    await DBHelper.insert(
-      folderInfoTableName,
-      folderItemInfoModel.toJSON(),
-      persistentDbName,
-    );
+    // await DBHelper.insert(
+    //   folderInfoTableName,
+    //   folderItemInfoModel.toJSON(),
+    //   persistentDbName,
+    // );
+    var box = await HiveBox.folderInfo;
+    box.add(folderItemInfoModel);
     notifyListeners();
   }
 
@@ -27,8 +30,10 @@ class ChildrenItemsProvider extends ChangeNotifier {
 
   Future<void> getAndUpdateAllSavedFolders() async {
     foldersInfo.clear();
-    var data = await DBHelper.getData(folderInfoTableName, persistentDbName);
-    foldersInfo = data.map((e) => FolderItemInfoModel.fromJSON(e)).toList();
+    // var data = await DBHelper.getData(folderInfoTableName, persistentDbName);
+    // foldersInfo = data.map((e) => FolderItemInfoModel.fromJSON(e)).toList();
+    var box = await HiveBox.folderInfo;
+    foldersInfo = box.values.toList().cast();
     notifyListeners();
   }
 
