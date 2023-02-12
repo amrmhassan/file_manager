@@ -55,7 +55,7 @@ FutureOr<void> onTempDataBase(
   //? create extension info table
   await db.execute(ExtensionInfo.toSQLString());
   //? creating analyzer reports table
-  await db.execute(AnalyzerReportInfoModel.toSQLString());
+  // await db.execute(AnalyzerReportInfoModel.toSQLString());
   //? creating info of the analyzer folders info
   await db.execute(LocalFolderInfo.toSQLString());
 }

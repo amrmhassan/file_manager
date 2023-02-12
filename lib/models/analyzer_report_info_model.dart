@@ -25,27 +25,27 @@ class AnalyzerReportInfoModel {
     required this.totalFilesSize,
   });
 
-  Map<String, String> toJSON() {
-    return {
-      dateDoneString: dateDone.toIso8601String(),
-      folderCountString: folderCount.toString(),
-      filesCountString: filesCount.toString(),
-      extensionsCountString: extensionsCount.toString(),
-      totalFilesSizeString: totalFilesSize.toString(),
-    };
-  }
+  // Map<String, String> toJSON() {
+  //   return {
+  //     dateDoneString: dateDone.toIso8601String(),
+  //     folderCountString: folderCount.toString(),
+  //     filesCountString: filesCount.toString(),
+  //     extensionsCountString: extensionsCount.toString(),
+  //     totalFilesSizeString: totalFilesSize.toString(),
+  //   };
+  // }
 
-  static AnalyzerReportInfoModel fromJSON(Map<String, dynamic> jsonOBJ) {
-    return AnalyzerReportInfoModel(
-      dateDone: DateTime.parse(jsonOBJ[dateDoneString]),
-      folderCount: int.parse(jsonOBJ[folderCountString]),
-      filesCount: int.parse(jsonOBJ[filesCountString]),
-      extensionsCount: int.parse(jsonOBJ[extensionsCountString]),
-      totalFilesSize: int.parse(jsonOBJ[totalFilesSizeString]),
-    );
-  }
+  // static AnalyzerReportInfoModel fromJSON(Map<String, dynamic> jsonOBJ) {
+  //   return AnalyzerReportInfoModel(
+  //     dateDone: DateTime.parse(jsonOBJ[dateDoneString]),
+  //     folderCount: int.parse(jsonOBJ[folderCountString]),
+  //     filesCount: int.parse(jsonOBJ[filesCountString]),
+  //     extensionsCount: int.parse(jsonOBJ[extensionsCountString]),
+  //     totalFilesSize: int.parse(jsonOBJ[totalFilesSizeString]),
+  //   );
+  // }
 
-  static String toSQLString() {
-    return 'CREATE TABLE $analyzerReportInfoTableName ($dateDoneString TEXT PRIMARY KEY,$folderCountString TEXT, $filesCountString TEXT, $extensionsCountString TEXT, $totalFilesSizeString TEXT)';
-  }
+  // static String toSQLString() {
+  //   return 'CREATE TABLE $analyzerReportInfoTableName ($dateDoneString TEXT PRIMARY KEY,$folderCountString TEXT, $filesCountString TEXT, $extensionsCountString TEXT, $totalFilesSizeString TEXT)';
+  // }
 }

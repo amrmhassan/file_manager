@@ -9,6 +9,8 @@ class HiveBox {
       Hive.openBox(_HiveBoxesNames.downloadTasks);
   static Future<Box> get hiddenFromShareSpace =>
       Hive.openBox(_HiveBoxesNames.hiddenFromShareSpace);
+  static Future<Box> get analyzerReportInfo =>
+      Hive.openBox(_HiveBoxesNames.analyzerReportInfo);
 }
 
 class _HiveBoxesNames {
@@ -16,4 +18,5 @@ class _HiveBoxesNames {
   static const String allowedDevices = 'allowedDevicesBoxName';
   static const String blockedDevices = 'blockedDevicesBoxName';
   static const String hiddenFromShareSpace = 'hiddenFromShareSpaceBoxName';
+  static const String analyzerReportInfo = 'analyzerReportInfoBoxName';
 }

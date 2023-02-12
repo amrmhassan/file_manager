@@ -21,7 +21,6 @@ class HiveInitiator {
     Hive.registerAdapter(ListyItemModelAdapter());
     Hive.registerAdapter(ListyModelAdapter());
     Hive.registerAdapter(RecentOpenedFileModelAdapter());
-    Hive.registerAdapter(RecentOpenedFileModelAdapter());
     Hive.registerAdapter(ShareSpaceItemModelAdapter());
     Hive.registerAdapter(WhiteBlockListModelAdapter());
   }

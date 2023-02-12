@@ -101,7 +101,7 @@ class ServerProvider extends ChangeNotifier {
     bool dbAllowed = allowedBox.containsKey(deviceID);
 
     if (dbAllowed) {
-      allowedPeers.add(WhiteBlockListModel.fromJSON(allowedBox.get(deviceID)));
+      allowedPeers.add(allowedBox.get(deviceID));
       return true;
     }
     return false;
@@ -115,7 +115,7 @@ class ServerProvider extends ChangeNotifier {
     Box blockedBox = await HiveBox.blockedDevices;
     bool dbBlocked = blockedBox.containsKey(deviceID);
     if (dbBlocked) {
-      blockedPeers.add(WhiteBlockListModel.fromJSON(blockedBox.get(deviceID)));
+      blockedPeers.add(blockedBox.get(deviceID));
       return true;
     }
 

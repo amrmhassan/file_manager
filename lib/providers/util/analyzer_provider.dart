@@ -7,6 +7,7 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/providers/analyzer_provider_abstract.dart';
@@ -228,20 +229,17 @@ class AnalyzerProvider extends ChangeNotifier
     );
     reportInfo = analyzerReportInfoModel;
     notifyListeners();
-    await DBHelper.insert(
-      analyzerReportInfoTableName,
-      analyzerReportInfoModel.toJSON(),
-    );
+    var box = await HiveBox.analyzerReportInfo;
+    await box.add(analyzerReportInfoModel);
   }
 
   //? load report info
   Future<void> _getReportInfo() async {
     if (lastAnalyzingReportDate != null) {
       try {
-        var data = await DBHelper.getData(analyzerReportInfoTableName);
-        AnalyzerReportInfoModel analyzerReportInfoModel =
-            AnalyzerReportInfoModel.fromJSON(data.first);
-        reportInfo = analyzerReportInfoModel;
+        var box = await HiveBox.analyzerReportInfo;
+        var test = box.values.toList();
+        reportInfo = box.values.first;
         notifyListeners();
       } catch (e) {
         printOnDebug('No report info yet');

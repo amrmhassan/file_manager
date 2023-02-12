@@ -62,35 +62,35 @@ class DownloadTaskModel {
   }
 
   //! to json
-  Map<String, String> toJSON() {
-    return {
-      remoteDeviceIDString: remoteDeviceID,
-      remoteDeviceNameString: remoteDeviceName,
-      idString: id,
-      remoteFilePathString: remoteFilePath,
-      addedAtString: addedAt.toIso8601String(),
-      sizeString: size == null ? dbNull : size.toString(),
-      countString: count.toString(),
-      taskStatusString: taskStatus.name,
-      finishedAtString:
-          finishedAt == null ? dbNull : finishedAt!.toIso8601String(),
-    };
-  }
-  //! from json
+  // Map<String, String> toJSON() {
+  //   return {
+  //     remoteDeviceIDString: remoteDeviceID,
+  //     remoteDeviceNameString: remoteDeviceName,
+  //     idString: id,
+  //     remoteFilePathString: remoteFilePath,
+  //     addedAtString: addedAt.toIso8601String(),
+  //     sizeString: size == null ? dbNull : size.toString(),
+  //     countString: count.toString(),
+  //     taskStatusString: taskStatus.name,
+  //     finishedAtString:
+  //         finishedAt == null ? dbNull : finishedAt!.toIso8601String(),
+  //   };
+  // }
+  // //! from json
 
-  static DownloadTaskModel fromJSON(Map<String, dynamic> obj) {
-    return DownloadTaskModel(
-      remoteDeviceID: obj[remoteDeviceIDString],
-      remoteDeviceName: obj[remoteDeviceNameString],
-      id: obj[idString],
-      remoteFilePath: obj[remoteFilePathString],
-      addedAt: DateTime.parse(obj[addedAtString]),
-      size: obj[sizeString] == dbNull ? null : int.parse(obj[sizeString]),
-      count: int.parse(obj[countString]),
-      taskStatus: stringToEnum(obj[taskStatusString], TaskStatus.values),
-      finishedAt: obj[finishedAtString] == dbNull
-          ? null
-          : DateTime.parse(obj[finishedAtString]),
-    );
-  }
+  // static DownloadTaskModel fromJSON(Map<String, dynamic> obj) {
+  //   return DownloadTaskModel(
+  //     remoteDeviceID: obj[remoteDeviceIDString],
+  //     remoteDeviceName: obj[remoteDeviceNameString],
+  //     id: obj[idString],
+  //     remoteFilePath: obj[remoteFilePathString],
+  //     addedAt: DateTime.parse(obj[addedAtString]),
+  //     size: obj[sizeString] == dbNull ? null : int.parse(obj[sizeString]),
+  //     count: int.parse(obj[countString]),
+  //     taskStatus: stringToEnum(obj[taskStatusString], TaskStatus.values),
+  //     finishedAt: obj[finishedAtString] == dbNull
+  //         ? null
+  //         : DateTime.parse(obj[finishedAtString]),
+  //   );
+  // }
 }
