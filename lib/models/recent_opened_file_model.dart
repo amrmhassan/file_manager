@@ -1,4 +1,3 @@
-import 'package:explorer/constants/models_constants.dart';
 import 'package:hive/hive.dart';
 
 part 'recent_opened_file_model.g.dart';

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:explorer/constants/files_types_icons.dart';

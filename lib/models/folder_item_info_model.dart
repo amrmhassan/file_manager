@@ -1,5 +1,3 @@
-import 'package:explorer/constants/db_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
 import 'package:hive/hive.dart';
 
 part 'folder_item_info_model.g.dart';

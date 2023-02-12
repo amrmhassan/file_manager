@@ -238,7 +238,6 @@ class AnalyzerProvider extends ChangeNotifier
     if (lastAnalyzingReportDate != null) {
       try {
         var box = await HiveBox.analyzerReportInfo;
-        var test = box.values.toList();
         reportInfo = box.values.first;
         notifyListeners();
       } catch (e) {

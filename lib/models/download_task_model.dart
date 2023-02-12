@@ -1,7 +1,4 @@
-import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
-import 'package:explorer/constants/models_constants.dart';
-import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/utils/download_utils/download_task_controller.dart';
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 import 'package:hive/hive.dart';

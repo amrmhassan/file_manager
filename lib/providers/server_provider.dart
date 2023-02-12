@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/helpers/hive/hive_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 
 import 'package:explorer/models/white_block_list_model.dart';

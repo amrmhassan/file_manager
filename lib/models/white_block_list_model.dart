@@ -1,4 +1,3 @@
-import 'package:explorer/constants/models_constants.dart';
 import 'package:hive/hive.dart';
 
 part 'white_block_list_model.g.dart';

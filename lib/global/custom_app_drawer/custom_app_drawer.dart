@@ -10,7 +10,6 @@ import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/storage_analyzer_button.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/db_helper.dart';
-import 'package:explorer/helpers/hive/hive_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 
 import 'package:explorer/helpers/responsive.dart';
@@ -22,7 +21,6 @@ import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
