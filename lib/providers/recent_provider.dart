@@ -8,7 +8,6 @@ import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
 int recentItemsLimit = 100;
 bool skipHiddenFolders = false;

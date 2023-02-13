@@ -9,7 +9,6 @@ import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

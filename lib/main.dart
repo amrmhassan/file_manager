@@ -3,7 +3,6 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
-import 'package:explorer/helpers/hive/hive_initiator.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -51,6 +50,11 @@ import 'package:explorer/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+//! fix my share space when connected
+//! before publishing
+//2- about developer
+// new features
+//3- deploy
 //? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
 //! add the ability to download a folder
 //! add video, audio notification
@@ -71,11 +75,16 @@ import 'package:provider/provider.dart';
 // -- but client device must connect over his wifi
 
 // when downloading a file and it exists, tell give the user the option to overwrite it or to cancel downloading
-
+bool firstTimeRunApp = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
+    await setThemeVariables();
+  } catch (e) {
+    printOnDebug('Error with first time app in main() or theme variables');
+  }
 
-  await setThemeVariables();
   runApp(const MyApp());
 }
 
