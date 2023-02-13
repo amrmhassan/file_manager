@@ -1,3 +1,4 @@
+import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
@@ -27,5 +28,6 @@ class HiveInitiator {
     Hive.registerAdapter(WhiteBlockListModelAdapter()); //=>7
     Hive.registerAdapter(LocalFileInfoAdapter()); //=>8
     Hive.registerAdapter(LocalFolderInfoAdapter()); //=>9
+    Hive.registerAdapter(ExtensionInfoAdapter()); //=>10
   }
 }

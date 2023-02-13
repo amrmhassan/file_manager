@@ -77,12 +77,14 @@ class ListyProvider extends ChangeNotifier {
     required String listyTitle,
   }) async {
     //! the error happens here
-    var data = await DBHelper.getDataWhereMultiple(
-      listyItemsTableName,
-      [listyTitleString, pathString],
-      [listyTitle, path],
-      persistentDbName,
-    );
+
+    // var data = await DBHelper.getDataWhereMultiple(
+    //   listyItemsTableName,
+    //   [listyTitleString, pathString],
+    //   [listyTitle, path],
+    //   persistentDbName,
+    // );
+    var data = [...(await HiveBox.listyItem).values.toList().cast()];
 
     return data.isNotEmpty;
   }
@@ -120,12 +122,13 @@ class ListyProvider extends ChangeNotifier {
     required String path,
     required String listyTitle,
   }) async {
-    await DBHelper.deleteDataWhereMultiple(
-      listyItemsTableName,
-      [listyTitleString, pathString],
-      [listyTitle, path],
-      persistentDbName,
-    );
+    // await DBHelper.deleteDataWhereMultiple(
+    //   listyItemsTableName,
+    //   [listyTitleString, pathString],
+    //   [listyTitle, path],
+    //   persistentDbName,
+    // );
+    throw UnimplementedError();
   }
 
   //? get listy items
@@ -142,12 +145,13 @@ class ListyProvider extends ChangeNotifier {
 
 //? remove a whole listy
   Future removeListy(String listyTitle) async {
-    await DBHelper.deleteDataWhereMultiple(
-      listyListTableName,
-      [titleString],
-      [listyTitle],
-      persistentDbName,
-    );
+    // await DBHelper.deleteDataWhereMultiple(
+    //   listyListTableName,
+    //   [titleString],
+    //   [listyTitle],
+    //   persistentDbName,
+    // );
+    throw UnimplementedError();
     _listy.removeWhere((element) => element.title == listyTitle);
     notifyListeners();
   }

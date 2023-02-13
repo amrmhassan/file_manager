@@ -155,7 +155,8 @@ class AnalyzerProvider extends ChangeNotifier
           _allExtensionsInfo = message.allExtensionsInfo;
           _loading = false;
           //? if we reached here this mean the storage analyzer report done successfully
-          await DBHelper.clearDb(tempDbName);
+          // await DBHelper.clearDb(tempDbName);
+          //! delete here
           await _saveReportInfo();
           calcSections(_allExtensionsInfo, (sec) {
             recentProvider.setSections(sec);
@@ -191,9 +192,11 @@ class AnalyzerProvider extends ChangeNotifier
 
   //? save extensions info to sqlite
   Future<void> _saveExtensionsInfo() async {
-    for (var extension in storageAnalyzerV4!.allExtensionsInfo) {
-      await DBHelper.insert(extensionInfoTableName, extension.toJSON());
-    }
+    (await HiveBox.extensionInfoTableName)
+        .addAll(storageAnalyzerV4!.allExtensionsInfo);
+    // for (var extension in storageAnalyzerV4!.allExtensionsInfo) {
+    //   await DBHelper.insert(extensionInfoTableName, extension.toJSON());
+    // }
   }
 
   //? save folders sizes to sqlite
@@ -211,10 +214,12 @@ class AnalyzerProvider extends ChangeNotifier
   //? get saved extensions info
   Future<void> _getSavedExtensionsInfo() async {
     try {
-      var data = await DBHelper.getData(extensionInfoTableName);
-      List<ExtensionInfo> ei =
-          data.map((e) => ExtensionInfo.fromJSON(e)).toList();
-      _allExtensionsInfo = ei;
+      // var data = await DBHelper.getData(extensionInfoTableName);
+      // List<ExtensionInfo> ei =
+      //     data.map((e) => ExtensionInfo.fromJSON(e)).toList();
+      _allExtensionsInfo = [
+        ...(await HiveBox.extensionInfoTableName).values.toList().cast()
+      ];
       notifyListeners();
     } catch (e) {
       printOnDebug(e.toString());

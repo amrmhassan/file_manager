@@ -83,25 +83,25 @@ class CustomAppDrawer extends StatelessWidget {
             if (allowDebuggingDrawerElements && kDebugMode)
               Column(
                 children: [
-                  AppDrawerItem(
-                    title: 'Clear Temp DB & Keys',
-                    onTap: () async {
-                      await DBHelper.clearDb(tempDbName);
-                      await SharedPrefHelper.removeAllSavedKeys();
-                      showSnackBar(context: context, message: 'Deleted');
-                      Navigator.pop(context);
-                    },
-                    onlyDebug: true,
-                  ),
-                  AppDrawerItem(
-                    title: 'Clear Persist DB',
-                    onTap: () async {
-                      await DBHelper.clearDb(persistentDbName);
-                      showSnackBar(context: context, message: 'Deleted');
-                      Navigator.pop(context);
-                    },
-                    onlyDebug: true,
-                  ),
+                  // AppDrawerItem(
+                  //   title: 'Clear Temp DB & Keys',
+                  //   onTap: () async {
+                  //     await DBHelper.clearDb(tempDbName);
+                  //     await SharedPrefHelper.removeAllSavedKeys();
+                  //     showSnackBar(context: context, message: 'Deleted');
+                  //     Navigator.pop(context);
+                  //   },
+                  //   onlyDebug: true,
+                  // ),
+                  // AppDrawerItem(
+                  //   title: 'Clear Persist DB',
+                  //   onTap: () async {
+                  //     await DBHelper.clearDb(persistentDbName);
+                  //     showSnackBar(context: context, message: 'Deleted');
+                  //     Navigator.pop(context);
+                  //   },
+                  //   onlyDebug: true,
+                  // ),
                   AppDrawerItem(
                     title: 'Clear Devices db',
                     onTap: () async {

@@ -36,6 +36,12 @@ class HiveBox {
   // local folder info
   static Future<Box> get localFolderInfoTableName =>
       Hive.openBox(_HiveBoxesNames.localFolderInfoTableName);
+
+  static Future<Box> get thumbnailPathTableName =>
+      Hive.openBox(_HiveBoxesNames.thumbnailPathTableName);
+
+  static Future<Box> get extensionInfoTableName =>
+      Hive.openBox(_HiveBoxesNames.extensionInfoTableName);
 }
 
 class _HiveBoxesNames {
@@ -62,6 +68,9 @@ class _HiveBoxesNames {
 
   // local folder info
   static const String localFolderInfoTableName = 'localFolderInfoTableName';
+
+  static const String thumbnailPathTableName = 'thumbnailPathTableName';
+  static const String extensionInfoTableName = 'extensionInfoTableName';
 }
 
 // class HiveHelper {

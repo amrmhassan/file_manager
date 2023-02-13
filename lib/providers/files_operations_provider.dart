@@ -296,15 +296,15 @@ class FilesOperationsProvider extends ChangeNotifier {
   }
 
   //? to copy the db to sdcard to view it
-  void copyDB() async {
-    String dbPath = await DBHelper.getDbPath(tempDbName);
-    File oldDb = File('sdcard/$tempDbName');
-    if (oldDb.existsSync()) {
-      oldDb.deleteSync();
-    }
-    File copiedFile = copyFile(dbPath, 'sdcard');
-    printOnDebug(copiedFile.path);
-  }
+  // void copyDB() async {
+  //   String dbPath = await DBHelper.getDbPath(tempDbName);
+  //   File oldDb = File('sdcard/$tempDbName');
+  //   if (oldDb.existsSync()) {
+  //     oldDb.deleteSync();
+  //   }
+  //   File copiedFile = copyFile(dbPath, 'sdcard');
+  //   printOnDebug(copiedFile.path);
+  // }
 
   //? to add a file to recently opened files
   Future<void> addToRecentlyOpened(String path) async {

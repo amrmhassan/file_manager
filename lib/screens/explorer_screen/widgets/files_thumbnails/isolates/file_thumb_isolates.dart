@@ -7,6 +7,7 @@ import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
@@ -18,14 +19,15 @@ Future<void> getFileThumbnail(
   Function(String path) setThumbnail,
   FileType fileType,
 ) async {
-  var data = await DBHelper.getDataWhere(
-    thumbnailPathTableName,
-    pathString,
-    rawFilePath,
-    persistentDbName,
-  );
+  // var data = await DBHelper.getDataWhere(
+  //   thumbnailPathTableName,
+  //   pathString,
+  //   rawFilePath,
+  //   persistentDbName,
+  // );
+  var data = (await HiveBox.thumbnailPathTableName).get(rawFilePath);
 
-  if (!(data.isEmpty || data.first.values.isEmpty)) {
+  if (!(data == null || data.isEmpty || data.first.values.isEmpty)) {
     String thumbnail = data.first.values.last;
     File thumbFile = File(thumbnail);
     bool exists = thumbFile.existsSync();
@@ -45,14 +47,18 @@ Future<void> getFileThumbnail(
       compressedImagePath = await createAPKThumbnail(rawFilePath);
     }
 
-    await DBHelper.insert(
-      thumbnailPathTableName,
-      {
-        pathString: rawFilePath,
-        thumbnailStringPath: compressedImagePath,
-      },
-      persistentDbName,
-    );
+    // await DBHelper.insert(
+    //   thumbnailPathTableName,
+    //   {
+    //     pathString: rawFilePath,
+    //     thumbnailStringPath: compressedImagePath,
+    //   },
+    //   persistentDbName,
+    // );
+    (await HiveBox.thumbnailPathTableName).put(rawFilePath, {
+      pathString: rawFilePath,
+      thumbnailStringPath: compressedImagePath,
+    });
     setThumbnail(compressedImagePath);
   } catch (e) {
     printOnDebug('cant generate thumbnail');

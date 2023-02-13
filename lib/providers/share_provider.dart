@@ -166,7 +166,8 @@ class ShareProvider extends ChangeNotifier {
     // } else {
     _sharedItems.removeWhere((element) => element.path == path);
     notifyListeners();
-    await DBHelper.deleteById(path, shareSpaceItemsTableName, persistentDbName);
+    // await DBHelper.deleteById(path, shareSpaceItemsTableName, persistentDbName);
+    (await HiveBox.shareSpaceItem).delete(path);
     // }
   }
 
@@ -195,7 +196,7 @@ class ShareProvider extends ChangeNotifier {
     _sharedItems.add(shareSpaceItemModel);
     notifyListeners();
     var box = await HiveBox.shareSpaceItem;
-    await box.add(shareSpaceItemModel);
+    await box.put(shareSpaceItemModel.path, shareSpaceItemModel);
     // await DBHelper.insert(
     //   shareSpaceItemsTableName,
     //   shareSpaceItemModel.toJSON(),
