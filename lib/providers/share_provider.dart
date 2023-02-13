@@ -152,9 +152,9 @@ class ShareProvider extends ChangeNotifier {
   }
 
   //? to remove multiple items from share space
-  Future removeMultipleItemsFromShareSpace(List<StorageItemModel> items) async {
-    for (var item in items) {
-      await _removeItemFromShareSpace(item.path);
+  Future removeMultipleItemsFromShareSpace(Iterable<String> paths) async {
+    for (var item in paths) {
+      await _removeItemFromShareSpace(item);
     }
   }
 

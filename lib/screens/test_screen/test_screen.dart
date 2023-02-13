@@ -17,16 +17,7 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(width: double.infinity),
-          ElevatedButton(
-            onPressed: () async {},
-            child: Text('Ask'),
-          )
-        ],
-      ),
+      child: Container(),
     );
   }
 }

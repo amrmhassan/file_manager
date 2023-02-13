@@ -1,6 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/global/modals/video_speed_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class VideoOptionsModal extends StatelessWidget {
@@ -10,6 +14,7 @@ class VideoOptionsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mpProvider = mpP(context);
     return ModalWrapper(
         clip: Clip.hardEdge,
         showTopLine: false,
@@ -20,11 +25,20 @@ class VideoOptionsModal extends StatelessWidget {
         child: Column(
           children: [
             ModalButtonElement(
-              value: '0.25x',
+              value: mpProvider.videoSpeed == 1
+                  ? 'Normal'
+                  : '${mpProvider.videoSpeed.toStringAsFixed(2)}x',
               title: 'Speed',
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => VideoSpeedsModal(),
+                );
+              },
               showBottomLine: false,
-            )
+            ),
           ],
         ));
   }

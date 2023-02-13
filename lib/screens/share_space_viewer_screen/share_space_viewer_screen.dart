@@ -10,6 +10,7 @@ import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/screens/share_screen/widgets/not_sharing_view.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -36,6 +37,7 @@ class ShareSpaceVScreen extends StatefulWidget {
 
 class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   PeerModel? remotePeerModel;
+  bool me = false;
 
 //? to load shared items
   Future loadSharedItems([String? path]) async {
@@ -72,7 +74,13 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         remotePeerModel =
             ModalRoute.of(context)!.settings.arguments as PeerModel;
       });
-      loadSharedItems();
+      if (remotePeerModel?.deviceID == sharePF(context).myDeviceId) {
+        setState(() {
+          me = true;
+        });
+      } else {
+        loadSharedItems();
+      }
     });
     super.initState();
   }
@@ -93,12 +101,15 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
             title: Text(
               shareExpProvider.loadingItems || (remotePeerModel == null)
                   ? '...'
-                  : '${remotePeerModel!.name} Share Space',
+                  : me
+                      ? 'Your Share Space'
+                      : '${remotePeerModel!.name} Share Space',
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
             ),
           ),
+          if (me) NotSharingView(),
           if (shareExpProvider.currentPath != null)
             CurrentPathViewer(
               sizesExplorer: false,
@@ -116,102 +127,105 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
               onClickingSubPath: (path) =>
                   localGetFolderContent(parentPath! + path),
             ),
-          shareExpProvider.loadingItems
-              ? Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      VSpace(),
-                      Text(
-                        'Waiting ...',
-                        style: h4TextStyleInactive,
-                      )
-                    ],
-                  ),
-                )
-              : Expanded(
-                  child: ListView.builder(
-                    itemCount: shareExpProvider.viewedItems.length,
-                    itemBuilder: (context, index) => StorageItem(
-                      network: true,
-                      onDirTapped: localGetFolderContent,
-                      sizesExplorer: false,
-                      parentSize: 0,
-                      shareSpaceItemModel: shareExpProvider.viewedItems[index],
-                      onFileTapped: (path) {
-                        showModalBottomSheet(
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          builder: (context) => ModalWrapper(
-                            padding: EdgeInsets.symmetric(
-                              vertical: kVPad / 2,
+          if (!me)
+            shareExpProvider.loadingItems
+                ? Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        VSpace(),
+                        Text(
+                          'Waiting ...',
+                          style: h4TextStyleInactive,
+                        )
+                      ],
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: shareExpProvider.viewedItems.length,
+                      itemBuilder: (context, index) => StorageItem(
+                        network: true,
+                        onDirTapped: localGetFolderContent,
+                        sizesExplorer: false,
+                        parentSize: 0,
+                        shareSpaceItemModel:
+                            shareExpProvider.viewedItems[index],
+                        onFileTapped: (path) {
+                          showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) => ModalWrapper(
+                              padding: EdgeInsets.symmetric(
+                                vertical: kVPad / 2,
+                              ),
+                              bottomPaddingFactor: 0,
+                              afterLinePaddingFactor: 0,
+                              showTopLine: false,
+                              color: kBackgroundColor,
+                              child: Column(
+                                children: [
+                                  ModalButtonElement(
+                                    inactiveColor: Colors.transparent,
+                                    title: 'Download Now',
+                                    onTap: () async {
+                                      try {
+                                        await Provider.of<DownloadProvider>(
+                                          context,
+                                          listen: false,
+                                        ).addDownloadTask(
+                                          fileSize: shareExpProvider
+                                              .viewedItems[index].size,
+                                          remoteDeviceID:
+                                              remotePeerModel!.deviceID,
+                                          remoteFilePath: shareExpProvider
+                                              .viewedItems[index].path,
+                                          serverProvider: serverPF(context),
+                                          shareProvider: sharePF(context),
+                                          remoteDeviceName:
+                                              remotePeerModel!.name,
+                                        );
+                                        Navigator.pop(context);
+                                      } catch (e) {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) =>
+                                              DoubleButtonsModal(
+                                            onOk: () {},
+                                            title: e.toString(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  // ModalButtonElement(
+                                  //   showBottomLine: false,
+                                  //   inactiveColor: Colors.transparent,
+                                  //   title: 'Download to...',
+                                  //   onTap: () async {
+                                  //     // Provider.of<ClientProvider>(
+                                  //     //   context,
+                                  //     //   listen: false,
+                                  //     // ).downloadFile(
+                                  //     //   peerModel: peerModel!,
+                                  //     //   savePath: 'sdcard/amh_download',
+                                  //     //   remoteFilePath:
+                                  //     //       shareExpProvider.viewedItems[index].path,
+                                  //     //   sessionID: me(context).sessionID,
+                                  //     //   deviceID: me(context).deviceID,
+                                  //     // );
+                                  //   },
+                                  // ),
+                                ],
+                              ),
                             ),
-                            bottomPaddingFactor: 0,
-                            afterLinePaddingFactor: 0,
-                            showTopLine: false,
-                            color: kBackgroundColor,
-                            child: Column(
-                              children: [
-                                ModalButtonElement(
-                                  inactiveColor: Colors.transparent,
-                                  title: 'Download Now',
-                                  onTap: () async {
-                                    try {
-                                      await Provider.of<DownloadProvider>(
-                                        context,
-                                        listen: false,
-                                      ).addDownloadTask(
-                                        fileSize: shareExpProvider
-                                            .viewedItems[index].size,
-                                        remoteDeviceID:
-                                            remotePeerModel!.deviceID,
-                                        remoteFilePath: shareExpProvider
-                                            .viewedItems[index].path,
-                                        serverProvider: serverPF(context),
-                                        shareProvider: sharePF(context),
-                                        remoteDeviceName: remotePeerModel!.name,
-                                      );
-                                      Navigator.pop(context);
-                                    } catch (e) {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (context) =>
-                                            DoubleButtonsModal(
-                                          onOk: () {},
-                                          title: e.toString(),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                ),
-                                ModalButtonElement(
-                                  showBottomLine: false,
-                                  inactiveColor: Colors.transparent,
-                                  title: 'Download to...',
-                                  onTap: () async {
-                                    // Provider.of<ClientProvider>(
-                                    //   context,
-                                    //   listen: false,
-                                    // ).downloadFile(
-                                    //   peerModel: peerModel!,
-                                    //   savePath: 'sdcard/amh_download',
-                                    //   remoteFilePath:
-                                    //       shareExpProvider.viewedItems[index].path,
-                                    //   sessionID: me(context).sessionID,
-                                    //   deviceID: me(context).deviceID,
-                                    // );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      allowSelect: false,
+                          );
+                        },
+                        allowSelect: false,
+                      ),
                     ),
                   ),
-                ),
           VSpace(),
         ],
       ),

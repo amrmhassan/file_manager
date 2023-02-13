@@ -4,7 +4,6 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
@@ -189,10 +188,11 @@ class RecentProvider extends ChangeNotifier {
 
   Future loadImages() async {
     if (imagesFiles.isNotEmpty) return;
-    var data = await DBHelper.getDataLimit(
-      orderProp: createdAtString,
-      table: imagesRecentFilesTableName,
-    );
+    var data = await DBHelper.getData(imagesRecentFilesTableName);
+    // var data = await DBHelper.getDataLimit(
+    //   orderProp: createdAtString,
+    //   table: imagesRecentFilesTableName,
+    // );
     for (var image in data) {
       imagesFiles.add(LocalFileInfo.fromJSON(image));
     }
@@ -201,11 +201,12 @@ class RecentProvider extends ChangeNotifier {
   Future loadVideos() async {
     if (videosFiles.isNotEmpty) return;
 
+    // var data = await DBHelper.getData(videosRecentFilesTableName);
     // var data = await DBHelper.getDataLimit(
-    //   orderProp: createdAtString,
-    //   table: videosRecentFilesTableName,
-    //   databaseName: tempDbName,
-    // );
+    // //   orderProp: createdAtString,
+    // //   table: videosRecentFilesTableName,
+    // //   databaseName: tempDbName,
+    // // );
     // for (var video in data) {
     //   videosFiles.add(LocalFileInfo.fromJSON(video));
     // }
@@ -216,10 +217,11 @@ class RecentProvider extends ChangeNotifier {
   Future loadMusic() async {
     if (musicFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getDataLimit(
-      orderProp: createdAtString,
-      table: musicRecentFilesTableName,
-    );
+    var data = await DBHelper.getData(musicRecentFilesTableName);
+    // var data = await DBHelper.getDataLimit(
+    //   orderProp: createdAtString,
+    //   table: musicRecentFilesTableName,
+    // );
     for (var music in data) {
       musicFiles.add(LocalFileInfo.fromJSON(music));
     }
@@ -228,10 +230,11 @@ class RecentProvider extends ChangeNotifier {
   Future loadApk() async {
     if (apkFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getDataLimit(
-      orderProp: createdAtString,
-      table: apkRecentFilesTableName,
-    );
+    var data = await DBHelper.getData(apkRecentFilesTableName);
+    // var data = await DBHelper.getDataLimit(
+    //   orderProp: createdAtString,
+    //   table: apkRecentFilesTableName,
+    // );
     for (var apk in data) {
       apkFiles.add(LocalFileInfo.fromJSON(apk));
     }
@@ -240,10 +243,11 @@ class RecentProvider extends ChangeNotifier {
   Future loadArchives() async {
     if (archivesFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getDataLimit(
-      orderProp: createdAtString,
-      table: archivesRecentFilesTableName,
-    );
+    var data = await DBHelper.getData(archivesRecentFilesTableName);
+    // var data = await DBHelper.getDataLimit(
+    //   orderProp: createdAtString,
+    //   table: archivesRecentFilesTableName,
+    // );
     for (var apk in data) {
       archivesFiles.add(LocalFileInfo.fromJSON(apk));
     }
@@ -252,10 +256,11 @@ class RecentProvider extends ChangeNotifier {
   Future loadDocs() async {
     if (docsFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getDataLimit(
-      orderProp: createdAtString,
-      table: docsRecentFilesTableName,
-    );
+    var data = await DBHelper.getData(docsRecentFilesTableName);
+    // var data = await DBHelper.getDataLimit(
+    //   orderProp: createdAtString,
+    //   table: docsRecentFilesTableName,
+    // );
     for (var doc in data) {
       docsFiles.add(LocalFileInfo.fromJSON(doc));
     }
@@ -264,10 +269,11 @@ class RecentProvider extends ChangeNotifier {
   Future loadDownloads() async {
     if (downloadsFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getDataLimit(
-      orderProp: createdAtString,
-      table: downloadsRecentFilesTableName,
-    );
+    var data = await DBHelper.getData(downloadsRecentFilesTableName);
+    // var data = await DBHelper.getDataLimit(
+    //   orderProp: createdAtString,
+    //   table: downloadsRecentFilesTableName,
+    // );
     for (var downloadFile in data) {
       downloadsFiles.add(LocalFileInfo.fromJSON(downloadFile));
     }

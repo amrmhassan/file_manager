@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/helpers/hive/hive_initiator.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
@@ -18,9 +19,11 @@ import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/theme_provider.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
+import 'package:explorer/screens/about_us_screen/about_us_screen.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
 import 'package:explorer/screens/error_viewing_screen/error_viewing_screen.dart';
+import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
@@ -42,19 +45,35 @@ import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/screens/white_block_list_screen/white_block_list_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/theme_utils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-//! now i am at branch hive to convert all sqlite db to hive db
-//! see this first https://www.youtube.com/watch?v=MktaceoUzc0
+//? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
+//! add the ability to download a folder
+//! add video, audio notification
+//! prevent the app from being killed when it is in the background
+//!
 
-//! look for the web_server project in dart mastery folder
+// view buffered places in the video player seeker bar
+// make the fast seeker widget for the video to be much bigger for the landscape mode
+// make the video not to be hidden when clicking the eye button next to a video even if the video is playing right now
+// open the task file when clicking over it and open it's folder when clicking the folder icon
+
+// add settings for the sharing
+//!!! when pausing the downloaded file at it's end(i think when it's downloading the final smaller part) the error happen and it doesn't download till the end
+//! add AnimatedSwitcher for the fade in image for the user image
+
+// fix the issue of connecting with wifi or hotspot
+// -- host device can open his hotspot or connect with same wifi network
+// -- but client device must connect over his wifi
+
+// when downloading a file and it exists, tell give the user the option to overwrite it or to cancel downloading
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await HiveInitiator().setup();
 
   await setThemeVariables();
   runApp(const MyApp());
@@ -101,7 +120,9 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        initialRoute: testing ? TestScreen.routeName : HomeScreen.routeName,
+        initialRoute: testing
+            ? TestScreen.routeName
+            : (firstTimeRunApp ? IntroScreen.routeName : HomeScreen.routeName),
         navigatorKey: navigatorKey,
         routes: {
           HomeScreen.routeName: (context) => HomeScreen(),
@@ -128,6 +149,8 @@ class MyApp extends StatelessWidget {
           ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
           ShareSettingsScreen.routeName: (context) => ShareSettingsScreen(),
           WhiteBlockListScreen.routeName: (context) => WhiteBlockListScreen(),
+          IntroScreen.routeName: (context) => IntroScreen(),
+          AboutUsScreen.routeName: (context) => AboutUsScreen(),
         },
       ),
     );

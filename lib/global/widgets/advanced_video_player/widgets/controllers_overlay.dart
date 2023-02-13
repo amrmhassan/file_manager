@@ -156,8 +156,10 @@ class VideoDurationViewer extends StatelessWidget {
 }
 
 class VideoLowerBackgroundShader extends StatelessWidget {
+  final bool reverse;
   const VideoLowerBackgroundShader({
     super.key,
+    this.reverse = false,
   });
 
   @override
@@ -167,10 +169,15 @@ class VideoLowerBackgroundShader extends StatelessWidget {
       height: Responsive.getHeight(context) / 4,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Colors.black.withOpacity(.4),
-            Colors.transparent,
-          ],
+          colors: reverse
+              ? [
+                  Colors.transparent,
+                  Colors.black.withOpacity(.4),
+                ]
+              : [
+                  Colors.black.withOpacity(.4),
+                  Colors.transparent,
+                ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
         ),
@@ -230,15 +237,22 @@ class VideoUpperControllers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Stack(
       children: [
-        CloseVideoButton(),
-        Spacer(),
-        FadeInRight(
-          preferences: AnimationPreferences(
-            duration: Duration(milliseconds: 350),
-          ),
-          child: SettingsButton(),
+        VideoLowerBackgroundShader(
+          reverse: true,
+        ),
+        Row(
+          children: [
+            CloseVideoButton(),
+            Spacer(),
+            FadeInRight(
+              preferences: AnimationPreferences(
+                duration: Duration(milliseconds: 350),
+              ),
+              child: SettingsButton(),
+            ),
+          ],
         ),
       ],
     );
