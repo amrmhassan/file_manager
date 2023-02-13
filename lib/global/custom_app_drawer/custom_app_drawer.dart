@@ -3,13 +3,12 @@
 import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/storage_analyzer_button.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_collections.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 
 import 'package:explorer/helpers/responsive.dart';
@@ -22,6 +21,7 @@ import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -83,25 +83,25 @@ class CustomAppDrawer extends StatelessWidget {
             if (allowDebuggingDrawerElements && kDebugMode)
               Column(
                 children: [
-                  // AppDrawerItem(
-                  //   title: 'Clear Temp DB & Keys',
-                  //   onTap: () async {
-                  //     await DBHelper.clearDb(tempDbName);
-                  //     await SharedPrefHelper.removeAllSavedKeys();
-                  //     showSnackBar(context: context, message: 'Deleted');
-                  //     Navigator.pop(context);
-                  //   },
-                  //   onlyDebug: true,
-                  // ),
-                  // AppDrawerItem(
-                  //   title: 'Clear Persist DB',
-                  //   onTap: () async {
-                  //     await DBHelper.clearDb(persistentDbName);
-                  //     showSnackBar(context: context, message: 'Deleted');
-                  //     Navigator.pop(context);
-                  //   },
-                  //   onlyDebug: true,
-                  // ),
+                  AppDrawerItem(
+                    title: 'Clear Temp DB & Keys',
+                    onTap: () async {
+                      Navigator.pop(context);
+                      await tempCollection.deleteCollection();
+                      await SharedPrefHelper.removeAllSavedKeys();
+                      showSnackBar(context: context, message: 'Deleted');
+                    },
+                    onlyDebug: true,
+                  ),
+                  AppDrawerItem(
+                    title: 'Clear Persist DB',
+                    onTap: () async {
+                      await persistentCollection.deleteCollection();
+                      showSnackBar(context: context, message: 'Deleted');
+                      Navigator.pop(context);
+                    },
+                    onlyDebug: true,
+                  ),
                   AppDrawerItem(
                     title: 'Clear Devices db',
                     onTap: () async {

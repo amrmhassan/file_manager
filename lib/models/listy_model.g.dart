@@ -20,19 +20,22 @@ class ListyModelAdapter extends TypeAdapter<ListyModel> {
       title: fields[0] as String,
       icon: fields[1] as String,
       createdAt: fields[2] as DateTime,
+      id: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ListyModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.icon)
       ..writeByte(2)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(3)
+      ..write(obj.id);
   }
 
   @override

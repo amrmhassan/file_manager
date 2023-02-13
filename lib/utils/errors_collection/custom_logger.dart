@@ -1,4 +1,3 @@
-import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/utils/errors_collection/error_logger_model.dart';
 
 class CustomLogger {

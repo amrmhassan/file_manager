@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/defaults_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
-import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
@@ -21,22 +18,13 @@ class ListyProvider extends ChangeNotifier {
 
   //? load listy lists
   Future loadListyLists() async {
-    // var data = await DBHelper.getData(listyListTableName, persistentDbName);
     var box = await HiveBox.listy;
     if (box.values.isEmpty) {
       _listy = [...defaultListyList];
       notifyListeners();
-      // await DBHelper.insert(
-      //   listyListTableName,
-      //   defaultListyList.first.toJSON(),
-      //   persistentDbName,
-      // );
       box.add(defaultListyList.first);
       return;
     }
-    // for (var listy in data) {
-    //   _listy.add(ListyModel.fromJSON(listy));
-    // }
     _listy = box.values.toList().cast();
     notifyListeners();
   }
@@ -56,17 +44,13 @@ class ListyProvider extends ChangeNotifier {
       return;
     }
     ListyModel listyModel = ListyModel(
+      id: Uuid().v4(),
       title: title,
       createdAt: createdAt,
       icon: iconPath,
     );
     _listy.add(listyModel);
     notifyListeners();
-    // await DBHelper.insert(
-    //   listyListTableName,
-    //   listyModel.toJSON(),
-    //   persistentDbName,
-    // );
     var box = await HiveBox.listy;
     await box.add(listyModel);
   }
@@ -77,16 +61,14 @@ class ListyProvider extends ChangeNotifier {
     required String listyTitle,
   }) async {
     //! the error happens here
-
-    // var data = await DBHelper.getDataWhereMultiple(
-    //   listyItemsTableName,
-    //   [listyTitleString, pathString],
-    //   [listyTitle, path],
-    //   persistentDbName,
-    // );
-    var data = [...(await HiveBox.listyItem).values.toList().cast()];
+    String id = listyByTitle(listyTitle).id;
+    var data = [...(await HiveBox.customBox(id)).values.toList().cast()];
 
     return data.isNotEmpty;
+  }
+
+  ListyModel listyByTitle(String title) {
+    return _listy.firstWhere((element) => element.title == title);
   }
 
   //? add item to listy
@@ -107,14 +89,9 @@ class ListyProvider extends ChangeNotifier {
       createdAt: DateTime.now(),
       entityType: entityType,
     );
-
-    // await DBHelper.insert(
-    //   listyItemsTableName,
-    //   listyItemModel.toJSON(),
-    //   persistentDbName,
-    // );
-    var box = await HiveBox.listyItem;
-    await box.add(listyItemModel);
+    String id = listyByTitle(listyTitle).id;
+    await (await HiveBox.customBox(id))
+        .put(listyItemModel.path, listyItemModel);
   }
 
 //? to delete item from listy
@@ -122,37 +99,27 @@ class ListyProvider extends ChangeNotifier {
     required String path,
     required String listyTitle,
   }) async {
-    // await DBHelper.deleteDataWhereMultiple(
-    //   listyItemsTableName,
-    //   [listyTitleString, pathString],
-    //   [listyTitle, path],
-    //   persistentDbName,
-    // );
-    throw UnimplementedError();
+    String id = listyByTitle(listyTitle).id;
+
+    (await HiveBox.customBox(id)).delete(path);
   }
 
   //? get listy items
   Future<List<ListyItemModel>> getListyItems(String listyTitle) async {
-    // var data = await DBHelper.getDataWhereMultiple(
-    //   listyItemsTableName,
-    //   [listyTitleString],
-    //   [listyTitle],
-    //   persistentDbName,
-    // );
-    var box = await HiveBox.listyItem;
+    String id = listyByTitle(listyTitle).id;
+
+    var box = await HiveBox.customBox(id);
     return box.values.toList().cast();
   }
 
 //? remove a whole listy
   Future removeListy(String listyTitle) async {
-    // await DBHelper.deleteDataWhereMultiple(
-    //   listyListTableName,
-    //   [titleString],
-    //   [listyTitle],
-    //   persistentDbName,
-    // );
-    throw UnimplementedError();
-    _listy.removeWhere((element) => element.title == listyTitle);
+    int index = _listy.indexWhere((element) => element.title == listyTitle);
+    String id = listyByTitle(listyTitle).id;
+    _listy.removeAt(index);
     notifyListeners();
+
+    (await HiveBox.customBox(id)).deleteFromDisk();
+    (await HiveBox.listy).deleteAt(index);
   }
 }

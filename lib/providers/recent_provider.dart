@@ -1,14 +1,11 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
-import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 int recentItemsLimit = 100;
 bool skipHiddenFolders = false;

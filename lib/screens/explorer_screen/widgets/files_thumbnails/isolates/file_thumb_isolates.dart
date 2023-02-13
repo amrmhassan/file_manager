@@ -2,11 +2,9 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/services.dart';

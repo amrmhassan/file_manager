@@ -12,3 +12,12 @@ CustomHiveCollection tempCollection = CustomHiveCollection(boxes: [
   HiveBox.extensionInfoTableName,
   HiveBox.analyzerReportInfo,
 ]);
+
+CustomHiveCollection persistentCollection = CustomHiveCollection(boxes: [
+  HiveBox.thumbnailPathTableName,
+  HiveBox.recentOpenedFile,
+  HiveBox.listy,
+  HiveBox.listyItem,
+  HiveBox.shareSpaceItem,
+  HiveBox.hiddenFromShareSpace,
+]);

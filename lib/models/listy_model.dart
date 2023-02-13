@@ -10,11 +10,14 @@ class ListyModel {
   final String icon;
   @HiveField(2)
   final DateTime createdAt;
+  @HiveField(3)
+  final String id;
 
   const ListyModel({
     required this.title,
     required this.icon,
     required this.createdAt,
+    required this.id,
   });
 
   // Map<String, String?> toJSON() {
