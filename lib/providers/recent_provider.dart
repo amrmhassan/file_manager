@@ -8,6 +8,7 @@ import 'package:explorer/helpers/db_helper.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 int recentItemsLimit = 100;
 bool skipHiddenFolders = false;
@@ -187,14 +188,17 @@ class RecentProvider extends ChangeNotifier {
 
   Future loadImages() async {
     if (imagesFiles.isNotEmpty) return;
-    var data = await DBHelper.getData(imagesRecentFilesTableName);
+    // var data = await DBHelper.getData(imagesRecentFilesTableName);
     // var data = await DBHelper.getDataLimit(
     //   orderProp: createdAtString,
     //   table: imagesRecentFilesTableName,
     // );
-    for (var image in data) {
-      imagesFiles.add(LocalFileInfo.fromJSON(image));
-    }
+    // for (var image in data) {
+    //   imagesFiles.add(LocalFileInfo.fromJSON(image));
+    // }
+    imagesFiles = [
+      ...(await HiveBox.imagesRecentFilesTableName).values.toList().cast()
+    ];
   }
 
   Future loadVideos() async {
@@ -209,106 +213,135 @@ class RecentProvider extends ChangeNotifier {
     // for (var video in data) {
     //   videosFiles.add(LocalFileInfo.fromJSON(video));
     // }
-    videosFiles =
-        (await HiveBox.videosRecentFilesTableName).values.toList().cast();
+
+    videosFiles = [
+      ...(await HiveBox.videosRecentFilesTableName).values.toList().cast()
+    ];
   }
 
   Future loadMusic() async {
     if (musicFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getData(musicRecentFilesTableName);
+    // var data = await DBHelper.getData(musicRecentFilesTableName);
     // var data = await DBHelper.getDataLimit(
     //   orderProp: createdAtString,
     //   table: musicRecentFilesTableName,
     // );
-    for (var music in data) {
-      musicFiles.add(LocalFileInfo.fromJSON(music));
-    }
+    // for (var music in data) {
+    //   musicFiles.add(LocalFileInfo.fromJSON(music));
+    // }
+
+    musicFiles = [
+      ...(await HiveBox.musicRecentFilesTableName).values.toList().cast()
+    ];
   }
 
   Future loadApk() async {
     if (apkFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getData(apkRecentFilesTableName);
+    // var data = await DBHelper.getData(apkRecentFilesTableName);
     // var data = await DBHelper.getDataLimit(
     //   orderProp: createdAtString,
     //   table: apkRecentFilesTableName,
     // );
-    for (var apk in data) {
-      apkFiles.add(LocalFileInfo.fromJSON(apk));
-    }
+    // for (var apk in data) {
+    //   apkFiles.add(LocalFileInfo.fromJSON(apk));
+    // }
+    apkFiles = [
+      ...(await HiveBox.apkRecentFilesTableName).values.toList().cast()
+    ];
   }
 
   Future loadArchives() async {
     if (archivesFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getData(archivesRecentFilesTableName);
+    // var data = await DBHelper.getData(archivesRecentFilesTableName);
     // var data = await DBHelper.getDataLimit(
     //   orderProp: createdAtString,
     //   table: archivesRecentFilesTableName,
     // );
-    for (var apk in data) {
-      archivesFiles.add(LocalFileInfo.fromJSON(apk));
-    }
+    // for (var apk in data) {
+    //   archivesFiles.add(LocalFileInfo.fromJSON(apk));
+    // }
+    archivesFiles = [
+      ...(await HiveBox.archivesRecentFilesTableName).values.toList().cast()
+    ];
   }
 
   Future loadDocs() async {
     if (docsFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getData(docsRecentFilesTableName);
+    // var data = await DBHelper.getData(docsRecentFilesTableName);
     // var data = await DBHelper.getDataLimit(
     //   orderProp: createdAtString,
     //   table: docsRecentFilesTableName,
     // );
-    for (var doc in data) {
-      docsFiles.add(LocalFileInfo.fromJSON(doc));
-    }
+    // for (var doc in data) {
+    //   docsFiles.add(LocalFileInfo.fromJSON(doc));
+    // }
+    docsFiles = [
+      ...(await HiveBox.docsRecentFilesTableName).values.toList().cast()
+    ];
   }
 
   Future loadDownloads() async {
     if (downloadsFiles.isNotEmpty) return;
 
-    var data = await DBHelper.getData(downloadsRecentFilesTableName);
+    // var data = await DBHelper.getData(downloadsRecentFilesTableName);
     // var data = await DBHelper.getDataLimit(
     //   orderProp: createdAtString,
     //   table: downloadsRecentFilesTableName,
     // );
-    for (var downloadFile in data) {
-      downloadsFiles.add(LocalFileInfo.fromJSON(downloadFile));
-    }
+    // for (var downloadFile in data) {
+    //   downloadsFiles.add(LocalFileInfo.fromJSON(downloadFile));
+    // }
+
+    downloadsFiles = [
+      ...(await HiveBox.downloadsRecentFilesTableName).values.toList().cast()
+    ];
   }
 
 //# save data to sqlite
   Future<void> _saveResultsToSqlite() async {
-    for (var imageFile in imagesFiles) {
-      var jsonOBJ = imageFile.toJSON();
-      await DBHelper.insert(imagesRecentFilesTableName, jsonOBJ);
-    }
+    // for (var imageFile in imagesFiles) {
+    //   var jsonOBJ = imageFile.toJSON();
+    //   await DBHelper.insert(imagesRecentFilesTableName, jsonOBJ);
+    // }
+    (await HiveBox.imagesRecentFilesTableName).addAll(imagesFiles);
 
     // for (var video in videosFiles) {
     //   var jsonOBJ = video.toJSON();
     //   await DBHelper.insert(videosRecentFilesTableName, jsonOBJ);
     // }
     (await HiveBox.videosRecentFilesTableName).addAll(videosFiles);
-    for (var music in musicFiles) {
-      var jsonOBJ = music.toJSON();
-      await DBHelper.insert(musicRecentFilesTableName, jsonOBJ);
-    }
-    for (var apk in apkFiles) {
-      var jsonOBJ = apk.toJSON();
-      await DBHelper.insert(apkRecentFilesTableName, jsonOBJ);
-    }
-    for (var archive in archivesFiles) {
-      var jsonOBJ = archive.toJSON();
-      await DBHelper.insert(archivesRecentFilesTableName, jsonOBJ);
-    }
-    for (var doc in docsFiles) {
-      var jsonOBJ = doc.toJSON();
-      await DBHelper.insert(docsRecentFilesTableName, jsonOBJ);
-    }
-    for (var downloadFile in downloadsFiles) {
-      var jsonOBJ = downloadFile.toJSON();
-      await DBHelper.insert(downloadsRecentFilesTableName, jsonOBJ);
-    }
+    // for (var music in musicFiles) {
+    //   var jsonOBJ = music.toJSON();
+    //   await DBHelper.insert(musicRecentFilesTableName, jsonOBJ);
+    // }
+    (await HiveBox.musicRecentFilesTableName).addAll(musicFiles);
+
+    // for (var apk in apkFiles) {
+    //   var jsonOBJ = apk.toJSON();
+    //   await DBHelper.insert(apkRecentFilesTableName, jsonOBJ);
+    // }
+    (await HiveBox.apkRecentFilesTableName).addAll(apkFiles);
+
+    // for (var archive in archivesFiles) {
+    //   var jsonOBJ = archive.toJSON();
+    //   await DBHelper.insert(archivesRecentFilesTableName, jsonOBJ);
+    // }
+    (await HiveBox.archivesRecentFilesTableName).addAll(archivesFiles);
+
+    // for (var doc in docsFiles) {
+    //   var jsonOBJ = doc.toJSON();
+    //   await DBHelper.insert(docsRecentFilesTableName, jsonOBJ);
+    // }
+    (await HiveBox.docsRecentFilesTableName).addAll(docsFiles);
+
+    // for (var downloadFile in downloadsFiles) {
+    //   var jsonOBJ = downloadFile.toJSON();
+    //   await DBHelper.insert(downloadsRecentFilesTableName, jsonOBJ);
+    // }
+    (await HiveBox.downloadsRecentFilesTableName).addAll(downloadsFiles);
   }
 }

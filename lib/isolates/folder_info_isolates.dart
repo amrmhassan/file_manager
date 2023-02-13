@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/folder_details_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -41,7 +42,8 @@ void updateFolderSizeInSqlite(
     entityType: storageItemModel.entityType,
     size: newSize,
   );
-  await DBHelper.insert(localFolderInfoTableName, localFolderInfo.toJSON());
+  // await DBHelper.insert(localFolderInfoTableName, localFolderInfo.toJSON());
+  (await HiveBox.localFolderInfoTableName).add(localFolderInfo);
 }
 
 //? get all folder children

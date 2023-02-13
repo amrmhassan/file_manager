@@ -102,12 +102,13 @@ class AnalyzerProvider extends ChangeNotifier
     } catch (e) {
       try {
         //* load its data form db if it doesn't exist in the local state
-        var data = await DBHelper.getDataWhere(
-          localFolderInfoTableName,
-          pathString,
-          path,
-        );
-        LocalFolderInfo localFolderInfo = LocalFolderInfo.fromJSON(data.first);
+        // var data = await DBHelper.getDataWhere(
+        //   localFolderInfoTableName,
+        //   pathString,
+        //   path,
+        // );
+        LocalFolderInfo localFolderInfo =
+            (await HiveBox.localFolderInfoTableName).values.first;
         _foldersInfo.add(localFolderInfo);
         return localFolderInfo;
       } catch (e) {
@@ -197,12 +198,14 @@ class AnalyzerProvider extends ChangeNotifier
 
   //? save folders sizes to sqlite
   Future<void> _saveFolderSizes() async {
-    for (var folderInfo in storageAnalyzerV4!.allFolderInfoWithSize) {
-      await DBHelper.insert(
-        localFolderInfoTableName,
-        folderInfo.toJSON(),
-      );
-    }
+    (await HiveBox.localFolderInfoTableName)
+        .addAll(storageAnalyzerV4!.allFolderInfoWithSize);
+    // for (var folderInfo in storageAnalyzerV4!.allFolderInfoWithSize) {
+    //   await DBHelper.insert(
+    //     localFolderInfoTableName,
+    //     folderInfo.toJSON(),
+    //   );
+    // }
   }
 
   //? get saved extensions info

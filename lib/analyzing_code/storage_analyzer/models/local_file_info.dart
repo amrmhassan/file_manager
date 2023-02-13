@@ -40,43 +40,43 @@ class LocalFileInfo {
     required this.ext,
   });
 
-  Map<String, String> toJSON() {
-    return {
-      parentPathString: parentPath,
-      pathString: path,
-      modifiedString: modified.toIso8601String(),
-      accessedString: accessed.toIso8601String(),
-      changedString: changed.toIso8601String(),
-      entityTypeString: entityType.name,
-      fileBaseNameString: fileBaseName,
-      sizeString: size.toString(),
-      extString: ext,
-    };
-  }
+  // Map<String, String> toJSON() {
+  //   return {
+  //     parentPathString: parentPath,
+  //     pathString: path,
+  //     modifiedString: modified.toIso8601String(),
+  //     accessedString: accessed.toIso8601String(),
+  //     changedString: changed.toIso8601String(),
+  //     entityTypeString: entityType.name,
+  //     fileBaseNameString: fileBaseName,
+  //     sizeString: size.toString(),
+  //     extString: ext,
+  //   };
+  // }
 
-  static LocalFileInfo fromJSON(Map<String, dynamic> jsonOBJ) {
-    int size = int.parse(jsonOBJ[sizeString]!);
-    String parentPath = jsonOBJ[parentPathString]!;
-    String path = jsonOBJ[pathString]!;
-    DateTime modified = DateTime.parse(jsonOBJ[modifiedString]!);
-    DateTime accessed = DateTime.parse(jsonOBJ[accessedString]!);
-    DateTime changed = DateTime.parse(jsonOBJ[changedString]!);
-    EntityType entityType =
-        stringToEnum(jsonOBJ[entityTypeString]!, EntityType.values);
-    String fileBaseName = jsonOBJ[fileBaseNameString]!;
-    String ext = jsonOBJ[extString]!;
-    return LocalFileInfo(
-      size: size,
-      parentPath: parentPath,
-      path: path,
-      modified: modified,
-      accessed: accessed,
-      changed: changed,
-      entityType: entityType,
-      fileBaseName: fileBaseName,
-      ext: ext,
-    );
-  }
+  // static LocalFileInfo fromJSON(Map<String, dynamic> jsonOBJ) {
+  //   int size = int.parse(jsonOBJ[sizeString]!);
+  //   String parentPath = jsonOBJ[parentPathString]!;
+  //   String path = jsonOBJ[pathString]!;
+  //   DateTime modified = DateTime.parse(jsonOBJ[modifiedString]!);
+  //   DateTime accessed = DateTime.parse(jsonOBJ[accessedString]!);
+  //   DateTime changed = DateTime.parse(jsonOBJ[changedString]!);
+  //   EntityType entityType =
+  //       stringToEnum(jsonOBJ[entityTypeString]!, EntityType.values);
+  //   String fileBaseName = jsonOBJ[fileBaseNameString]!;
+  //   String ext = jsonOBJ[extString]!;
+  //   return LocalFileInfo(
+  //     size: size,
+  //     parentPath: parentPath,
+  //     path: path,
+  //     modified: modified,
+  //     accessed: accessed,
+  //     changed: changed,
+  //     entityType: entityType,
+  //     fileBaseName: fileBaseName,
+  //     ext: ext,
+  //   );
+  // }
 
   StorageItemModel toStorageItemModel() {
     return StorageItemModel(

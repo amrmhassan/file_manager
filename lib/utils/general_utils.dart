@@ -8,6 +8,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -132,10 +133,11 @@ String capitalizeSentence(String s) {
 
 //? get folder size from sqlite
 Future<LocalFolderInfo?> getFolderSizeFromDb(String path) async {
-  var data =
-      await DBHelper.getDataWhere(localFolderInfoTableName, pathString, path);
+  var data = (await HiveBox.localFolderInfoTableName).values;
+  // var data =
+  //     await DBHelper.getDataWhere(localFolderInfoTableName, pathString, path);
   if (data.isNotEmpty) {
-    LocalFolderInfo? localFolderInfo = LocalFolderInfo.fromJSON(data.first);
+    LocalFolderInfo? localFolderInfo = data.first;
     return localFolderInfo;
   }
   return null;

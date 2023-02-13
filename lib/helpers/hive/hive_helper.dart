@@ -33,6 +33,9 @@ class HiveBox {
       Hive.openBox(_HiveBoxesNames.docsRecentFilesTableName);
   static Future<Box> get downloadsRecentFilesTableName =>
       Hive.openBox(_HiveBoxesNames.downloadsRecentFilesTableName);
+  // local folder info
+  static Future<Box> get localFolderInfoTableName =>
+      Hive.openBox(_HiveBoxesNames.localFolderInfoTableName);
 }
 
 class _HiveBoxesNames {
@@ -56,6 +59,9 @@ class _HiveBoxesNames {
   static const String docsRecentFilesTableName = 'docsRecentFilesTableName';
   static const String downloadsRecentFilesTableName =
       'downloadsRecentFilesTableName';
+
+  // local folder info
+  static const String localFolderInfoTableName = 'localFolderInfoTableName';
 }
 
 // class HiveHelper {

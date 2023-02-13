@@ -55,7 +55,7 @@ FutureOr<void> onTempDataBase(
   //? creating analyzer reports table
   // await db.execute(AnalyzerReportInfoModel.toSQLString());
   //? creating info of the analyzer folders info
-  await db.execute(LocalFolderInfo.toSQLString());
+  // await db.execute(LocalFolderInfo.toSQLString());
 }
 
 //? on create the persistent database
