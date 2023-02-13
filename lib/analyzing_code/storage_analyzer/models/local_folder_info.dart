@@ -4,14 +4,25 @@ import 'package:explorer/constants/db_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/types.dart';
+import 'package:hive/hive.dart';
 
+part 'local_folder_info.g.dart';
+
+@HiveType(typeId: 9)
 class LocalFolderInfo {
+  @HiveField(0)
   final String parentPath;
+  @HiveField(1)
   final String path;
+  @HiveField(2)
   final DateTime modified;
+  @HiveField(3)
   final DateTime accessed;
+  @HiveField(4)
   final DateTime changed;
+  @HiveField(5)
   final EntityType entityType;
+  @HiveField(6)
   final DateTime dateCaptured;
   int? size;
 
