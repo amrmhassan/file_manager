@@ -8,6 +8,7 @@ import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
 import 'package:explorer/models/recent_opened_file_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/models/white_block_list_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -29,5 +30,6 @@ class HiveInitiator {
     Hive.registerAdapter(LocalFileInfoAdapter()); //=>8
     Hive.registerAdapter(LocalFolderInfoAdapter()); //=>9
     Hive.registerAdapter(ExtensionInfoAdapter()); //=>10
+    Hive.registerAdapter(EntityTypeAdapter()); //=>11
   }
 }

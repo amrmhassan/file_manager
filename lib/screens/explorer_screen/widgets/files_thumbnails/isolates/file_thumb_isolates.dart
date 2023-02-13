@@ -27,8 +27,8 @@ Future<void> getFileThumbnail(
   // );
   var data = (await HiveBox.thumbnailPathTableName).get(rawFilePath);
 
-  if (!(data == null || data.isEmpty || data.first.values.isEmpty)) {
-    String thumbnail = data.first.values.last;
+  if (!(data == null)) {
+    String thumbnail = data.values.last;
     File thumbFile = File(thumbnail);
     bool exists = thumbFile.existsSync();
 

@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/helpers/hive/hive_initiator.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
@@ -81,6 +82,7 @@ void main() async {
   try {
     firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
     await setThemeVariables();
+    await HiveInitiator().setup();
   } catch (e) {
     printOnDebug('Error with first time app in main() or theme variables');
   }

@@ -4,6 +4,7 @@
 // import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 // import 'package:explorer/constants/db_constants.dart';
 // import 'package:explorer/constants/models_constants.dart';
+// import 'package:explorer/models/analyzer_report_info_model.dart';
 // import 'package:explorer/utils/errors_collection/custom_logger.dart';
 // import 'package:explorer/utils/errors_collection/error_logger_model.dart';
 // import 'package:sqflite/sqflite.dart';

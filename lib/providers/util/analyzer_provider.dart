@@ -3,10 +3,8 @@ import 'package:disk_space/disk_space.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
-import 'package:explorer/constants/db_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
-import 'package:explorer/helpers/db_helper.dart';
+import 'package:explorer/helpers/hive/hive_collections.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
@@ -157,6 +155,7 @@ class AnalyzerProvider extends ChangeNotifier
           //? if we reached here this mean the storage analyzer report done successfully
           // await DBHelper.clearDb(tempDbName);
           //! delete here
+          await tempCollection.deleteCollection();
           await _saveReportInfo();
           calcSections(_allExtensionsInfo, (sec) {
             recentProvider.setSections(sec);

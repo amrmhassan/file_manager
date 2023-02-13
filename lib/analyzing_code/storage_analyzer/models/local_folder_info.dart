@@ -1,8 +1,5 @@
 //? folder info
 
-import 'package:explorer/constants/db_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
-import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/types.dart';
 import 'package:hive/hive.dart';
 
