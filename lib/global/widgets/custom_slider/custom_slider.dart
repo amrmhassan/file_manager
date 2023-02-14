@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'painter.dart';
+import 'circle_model.dart';
+import 'slider_painter.dart';
 import 'sub_range_model.dart';
+
+CustomCircle defaultThumb = const CustomCircle(color: Colors.red, radius: 10);
 
 class CustomSlider extends StatefulWidget {
   final double listeningAreaHeigh;
@@ -10,27 +13,25 @@ class CustomSlider extends StatefulWidget {
   final double max;
   final double value;
   final Function(double v) onChanged;
-  final double circleRadius;
   final double activeThickness;
   final double inactiveThickness;
-  final Color circleColor;
   final Color activeColor;
   final Color inactiveColor;
   final List<SubRangeModel>? subRanges;
+  final List<CustomCircle>? thumbs;
   final double widthFactor;
 
   const CustomSlider({
     super.key,
     this.listeningAreaColor,
     this.listeningAreaHeigh = 50,
-    this.circleRadius = 10,
     this.activeThickness = 4,
     this.inactiveThickness = 2,
-    this.circleColor = Colors.red,
     this.activeColor = Colors.red,
     this.inactiveColor = Colors.white,
     this.subRanges,
     this.widthFactor = .9,
+    this.thumbs,
     required this.min,
     required this.max,
     required this.value,
@@ -139,11 +140,10 @@ class _CustomSliderState extends State<CustomSlider>
           child: CustomPaint(
             foregroundPainter: SliderPainter(
               thickness: widget.activeThickness,
-              circleColor: widget.circleColor,
               value: innerValue,
               activeColor: widget.activeColor,
               activeThickness: widget.activeThickness,
-              circleRadius: widget.circleRadius,
+              thumbs: widget.thumbs ?? [defaultThumb],
               inactiveColor: widget.inactiveColor,
               inactiveThickness: widget.inactiveThickness,
               subRanges: innerSubRanges,

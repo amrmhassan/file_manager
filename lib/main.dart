@@ -76,6 +76,16 @@ import 'package:provider/provider.dart';
 // -- but client device must connect over his wifi
 
 // when downloading a file and it exists, tell give the user the option to overwrite it or to cancel downloading
+
+Today wednesday  Notifications of video, audio, download
+Fix the problem of killing the app in background
+
+the new approach towards the wifi or hotspot problem is that the sending device will show
+all ips in the qr code, for example
+for better implementation you can just limit the number of interfaces by choosing only who has wlan or wifi or wi-fi, something like that
+http://192.168.1.7:45569||http://192.168.137.78:45569||etc...
+and the receiving device will check for each of these, and the one that creates an error is wrong, and the one that gives response via a certain  is the right one
+
 bool firstTimeRunApp = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

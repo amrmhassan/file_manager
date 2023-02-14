@@ -6,6 +6,7 @@ Future<String?> getMyIpAddress([bool wifi = true]) async {
   // 192.168.43.99   => wlan0 == mostly wifi
   // 192.168.118.237 => wlan1 == mostly hotspot
   try {
+    //! use type: InternetAddressType.IPv4
     var interfaces = await NetworkInterface.list();
     var wifiInterface = interfaces.firstWhere(
         (element) => element.name.contains(wifi ? 'wlan0' : 'wlan1'));
