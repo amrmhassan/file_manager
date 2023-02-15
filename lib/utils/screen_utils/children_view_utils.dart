@@ -1,5 +1,7 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/explorer_provider_abstract.dart';
 import 'package:path/path.dart' as path;
 
@@ -70,15 +72,19 @@ List<StorageItemModel> getFixedEntityList({
       (a, b) => a.path.compareTo(b.path),
     );
   }
+  // logger.i('Sorting done according to ${sortOption.name}');
+
   //? for folders first
   if (prioritizeFolders) {
     //* folders
     List<StorageItemModel> fd = [
-      ...viewedChildren.where((element) => isDir(element.path))
+      ...viewedChildren
+          .where((element) => element.entityType == EntityType.folder)
     ];
     //* files
     List<StorageItemModel> fl = [
-      ...viewedChildren.where((element) => isFile(element.path))
+      ...viewedChildren
+          .where((element) => element.entityType == EntityType.file)
     ];
 
     fixedEntities.addAll(fd);

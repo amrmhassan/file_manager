@@ -49,8 +49,12 @@ class _ChildrenViewListState extends State<ChildrenViewList> {
                             ? EmptyFolder()
                             : SizedBox())
                         : ErrorOpenFolder();
-              } else {
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
+              } else {
+                return ErrorOpenFolder(
+                  msg: snapshot.error.toString(),
+                );
               }
             },
           );

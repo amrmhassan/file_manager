@@ -7,8 +7,11 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 
 class ErrorOpenFolder extends StatelessWidget {
+  final String? msg;
+
   const ErrorOpenFolder({
     Key? key,
+    this.msg,
   }) : super(key: key);
 
   @override
@@ -22,10 +25,11 @@ class ErrorOpenFolder extends StatelessWidget {
         ),
         VSpace(factor: .5),
         Text(
-          'Your Android System Prevent Viewing This Folder',
+          msg ?? 'Your Android System Prevent Viewing This Folder',
           style: h4TextStyleInactive.copyWith(
             color: kInactiveColor,
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

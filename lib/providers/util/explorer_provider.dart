@@ -241,6 +241,8 @@ class ExplorerProvider extends ChangeNotifier
     bool sizesExplorer = false,
   ]) async {
     if (sizesExplorer) {
+      print('first');
+
       List<StorageItemModel> items = [];
 
       for (var i = 0; i < _children.length; i++) {
@@ -273,6 +275,7 @@ class ExplorerProvider extends ChangeNotifier
       );
       return items;
     } else {
+      print('second');
       return getFixedEntityList(
         viewedChildren: _children,
         showHiddenFiles: _showHiddenFiles,
@@ -380,7 +383,6 @@ class ExplorerProvider extends ChangeNotifier
     var sendPort = receivePort.sendPort;
     Isolate.spawn(loadExplorerChildren, sendPort);
     receivePort.listen((message) {
-      print(message);
       if (message is SendPort) {
         globalSendPort = message;
       } else if (message is LoadChildrenMessagesData) {
