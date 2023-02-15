@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
@@ -14,26 +12,26 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 //? to save if granted in the shared prefs
-Future<void> setGranted(bool g) async {
+Future<void> _setGranted(bool g) async {
   await SharedPrefHelper.setBool(permissionsGrantedKey, g);
 }
 
 //? to get the granted
-Future<bool> getGrantedPermissionsSharedPrefs() async {
+Future<bool> _getGrantedPermissionsSharedPrefs() async {
   bool g = await SharedPrefHelper.getBool(permissionsGrantedKey) ?? false;
   return g;
 }
 
 //? to check if to show the dialog or not
-Future<bool> isGranted() async {
+Future<bool> _isGranted() async {
   return (await Permission.storage.isGranted) &&
       (await Permission.manageExternalStorage.isGranted);
 }
 
 //? to check if to show the dialog
-Future<bool> doShowDialog() async {
-  bool granted = await isGranted();
-  bool savedGranted = await getGrantedPermissionsSharedPrefs();
+Future<bool> _doShowDialog() async {
+  bool granted = await _isGranted();
+  bool savedGranted = await _getGrantedPermissionsSharedPrefs();
   bool normalStoragePermissions = await Permission.storage.isGranted;
 
   if (savedGranted && granted) {
@@ -51,9 +49,9 @@ Future<bool> showPermissionsModal({
   required BuildContext context,
   required VoidCallback callback,
 }) async {
-  bool showDialog = await doShowDialog();
+  bool showDialog = await _doShowDialog();
   if (showDialog) {
-    return handleStoragePermissions(context: context, callback: callback);
+    return _handleStoragePermissions(context: context, callback: callback);
   }
   bool res = false;
   await showModalBottomSheet(
@@ -62,7 +60,7 @@ Future<bool> showPermissionsModal({
     builder: (ctx) => DoubleButtonsModal(
       autoPop: false,
       onOk: () async {
-        res = await handleStoragePermissions(
+        res = await _handleStoragePermissions(
           context: context,
           callback: callback,
         );
@@ -83,14 +81,19 @@ Future<bool> showPermissionsModal({
 }
 
 //? handling permissions
-Future<bool> handleStoragePermissions({
+Future<bool> _handleStoragePermissions({
   required BuildContext context,
   required VoidCallback callback,
 }) async {
   if (await Permission.storage.isDenied) {
+    var sdkInt = (await DeviceInfoPlugin().androidInfo).version.sdkInt;
+
     var readPermission = await Permission.storage.request();
     var managePermission = await Permission.manageExternalStorage.request();
-
+    if (sdkInt == 33) {
+      //! this is an exception for sdk 33 because it doesn't allow read permissions (i don't know why )
+      readPermission = PermissionStatus.granted;
+    }
     if (readPermission.isDenied ||
         readPermission.isPermanentlyDenied ||
         managePermission.isDenied ||
@@ -107,6 +110,6 @@ Future<bool> handleStoragePermissions({
   } else {
     callback();
   }
-  await setGranted(true);
+  await _setGranted(true);
   return true;
 }

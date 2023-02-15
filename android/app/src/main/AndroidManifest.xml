@@ -16,7 +16,8 @@
         android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- Camera Permissions -->
     <uses-permission
-        android:name="android.permission.CAMERA" /> This <uses-permission
+        android:name="android.permission.CAMERA" />
+    <uses-permission
         android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- Location permissions -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
