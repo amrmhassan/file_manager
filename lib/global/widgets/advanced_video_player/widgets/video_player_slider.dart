@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/global/widgets/custom_slider/custom_circle.dart';
 import 'package:explorer/global/widgets/custom_slider/custom_slider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/utils/futures_utils.dart';
@@ -67,12 +68,16 @@ class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
               seekerLeft();
             },
             child: CustomSlider(
-              circleRadius: touched ? 7 : 0,
+              thumbs: [
+                CustomCircle(
+                  color: Colors.red,
+                  radius: touched ? 7 : 0,
+                ),
+              ],
               activeThickness: touched ? 3 : 2,
               inactiveThickness: 2,
               inactiveColor: Colors.grey.withOpacity(.5),
               activeColor: Colors.red,
-              circleColor: Colors.red,
               min: 0,
               max: mpProvider.videoDuration!.inMilliseconds.toDouble(),
               value: mpProvider.videoPosition.inMilliseconds.toDouble(),

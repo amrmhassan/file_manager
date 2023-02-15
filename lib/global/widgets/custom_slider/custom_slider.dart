@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'circle_model.dart';
+import 'custom_circle.dart';
 import 'slider_painter.dart';
 import 'sub_range_model.dart';
 

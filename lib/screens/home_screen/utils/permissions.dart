@@ -1,5 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
@@ -60,7 +63,9 @@ Future<bool> showPermissionsModal({
       autoPop: false,
       onOk: () async {
         res = await handleStoragePermissions(
-            context: context, callback: callback);
+          context: context,
+          callback: callback,
+        );
         Navigator.pop(ctx);
       },
       onCancel: () {
