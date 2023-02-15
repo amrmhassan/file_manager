@@ -21,7 +21,7 @@ class QuickSendProvider extends ChangeNotifier {
       myIp = await getMyIpAddress(wifi);
       if (myIp == null) {
         throw CustomException(
-          e: wifi ? 'No Connected' : 'Open Your HotSpot please',
+          e: wifi ? 'Not Connected' : 'Open Your HotSpot please',
           s: StackTrace.current,
           rethrowError: true,
         );

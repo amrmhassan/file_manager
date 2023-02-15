@@ -68,6 +68,7 @@ class _EntitiesListViewBuilderState extends State<EntitiesListViewBuilder> {
         Provider.of<ExplorerProvider>(context, listen: false);
 
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      if (!mounted) return;
       scrollController.removeListener(() {});
 
       scrollController.addListener(() {
