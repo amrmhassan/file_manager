@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:explorer/utils/windows_utils/window_size.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';

@@ -153,7 +153,7 @@ class AboutUsScreen extends StatelessWidget {
                       ),
                       HSpace(),
                       SelectableText(
-                        '+201147497502',
+                        '+201147497***',
                         style: h3LightTextStyle,
                       ),
                     ],

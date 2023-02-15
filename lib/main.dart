@@ -47,6 +47,7 @@ import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/screens/white_block_list_screen/white_block_list_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/theme_utils.dart';
+import 'package:explorer/utils/windows_utils/window_size.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -86,6 +87,10 @@ import 'package:provider/provider.dart';
 // http://192.168.1.7:45569||http://192.168.137.78:45569||etc...
 // and the receiving device will check for each of these, and the one that creates an error is wrong, and the one that gives response via a certain  is the right one
 
+//########################3
+//! add hide icon on video player
+//########################3
+
 bool firstTimeRunApp = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,6 +99,7 @@ void main() async {
     await HiveInitiator().setup();
     firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
     await setThemeVariables();
+    await initWindowSize();
   } catch (e) {
     printOnDebug('Error with first time app in main() or theme variables');
   }
