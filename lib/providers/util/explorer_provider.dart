@@ -241,8 +241,6 @@ class ExplorerProvider extends ChangeNotifier
     bool sizesExplorer = false,
   ]) async {
     if (sizesExplorer) {
-      print('first');
-
       List<StorageItemModel> items = [];
 
       for (var i = 0; i < _children.length; i++) {
@@ -275,7 +273,6 @@ class ExplorerProvider extends ChangeNotifier
       );
       return items;
     } else {
-      print('second');
       return getFixedEntityList(
         viewedChildren: _children,
         showHiddenFiles: _showHiddenFiles,
@@ -347,7 +344,6 @@ class ExplorerProvider extends ChangeNotifier
         filesOperationsProvider: filesOperationsProvider,
       );
     }
-    ;
     //* update the current active tab
     //! update the current active tab to be the same as the new open directory
     // _activeTabPath = path;

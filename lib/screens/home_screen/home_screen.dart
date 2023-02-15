@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:isolate';
-import 'package:explorer/utils/windows_utils/window_size.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           // error red widget that opens the errors logging screen
-          if (kDebugMode)
+          if (kDebugMode && !Platform.isWindows)
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, ErrorViewScreen.routeName);
