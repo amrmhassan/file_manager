@@ -62,7 +62,13 @@ class ListyProvider extends ChangeNotifier {
   }) async {
     //! the error happens here
     String id = listyByTitle(listyTitle).id;
-    var data = [...(await HiveBox.customBox(id)).values.toList().cast()];
+    var data = [
+      ...(await HiveBox.customBox(id))
+          .values
+          .where((element) => element.path == path)
+          .toList()
+          .cast()
+    ];
 
     return data.isNotEmpty;
   }

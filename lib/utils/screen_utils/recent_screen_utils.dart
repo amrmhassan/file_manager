@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
@@ -10,6 +12,9 @@ Future<void> calcSections(
   Function(List<SectionElement> sections) setSections,
   AnalyzerProvider analyzerProvider,
 ) async {
+  //# windows
+  if (Platform.isWindows) return;
+
   int imageSize = 0;
   int audioSize = 0;
   int videoSize = 0;

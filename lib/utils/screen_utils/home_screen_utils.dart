@@ -1,6 +1,8 @@
 //? to catch clicking the phone back button
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
@@ -24,7 +26,7 @@ Future<bool> handlePressPhoneBackButton({
   var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
   bool exit = false;
   String cp = expProvider.currentActiveDir.path;
-  String ip = initialDir.path;
+  String ip = initialDirs.first.path;
   if (cp == ip) {
     if (sizesExplorer) {
       return Future.delayed(Duration.zero).then((value) => true);
@@ -71,6 +73,10 @@ void handlePermissionsGrantedCallback(BuildContext context) async {
     filesOperationsProvider: foProviderFalse,
   );
   settingsProvider.loadAllSettings();
+  // skip analyzing part for windows
+  //# windows
+  if (Platform.isWindows) return;
+
   var recentProvider = Provider.of<RecentProvider>(context, listen: false);
   await Provider.of<AnalyzerProvider>(context, listen: false)
       .handleAnalyzeEvent(recentProvider);

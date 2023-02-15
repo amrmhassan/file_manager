@@ -2,6 +2,7 @@
 
 import 'package:explorer/providers/explorer_provider_abstract.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +66,7 @@ class ExplorerProvider extends ChangeNotifier
   @override
   String? error;
   @override
-  Directory currentActiveDir = initialDir;
+  Directory currentActiveDir = initialDirs.first;
   @override
   StreamSubscription<FileSystemEntity>? streamSub;
   @override
@@ -310,7 +311,7 @@ class ExplorerProvider extends ChangeNotifier
     required FilesOperationsProvider filesOperationsProvider,
   }) {
     setActiveDir(
-      path: initialDir.path,
+      path: initialDirs.first.path,
       analyzerProvider: analyzerProvider,
       sizesExplorer: sizesExplorer,
       filesOperationsProvider: filesOperationsProvider,
@@ -336,6 +337,14 @@ class ExplorerProvider extends ChangeNotifier
     bool sizesExplorer = false,
     required FilesOperationsProvider filesOperationsProvider,
   }) {
+    // because init dirs will always start with "/" path, so if the  current path is "/" and it only has 2 items, so set the current active dir to be the last item, which is the second item
+    if (path == initialDirs.first.path && initialDirs.length <= 2) {
+      return setActiveDir(
+        path: initialDirs.last.path,
+        filesOperationsProvider: filesOperationsProvider,
+      );
+    }
+    ;
     //* update the current active tab
     //! update the current active tab to be the same as the new open directory
     // _activeTabPath = path;
@@ -371,6 +380,7 @@ class ExplorerProvider extends ChangeNotifier
     var sendPort = receivePort.sendPort;
     Isolate.spawn(loadExplorerChildren, sendPort);
     receivePort.listen((message) {
+      print(message);
       if (message is SendPort) {
         globalSendPort = message;
       } else if (message is LoadChildrenMessagesData) {
@@ -382,6 +392,7 @@ class ExplorerProvider extends ChangeNotifier
           loadingChildren = false;
           notifyListeners();
         } else if (message.flag == LoadChildrenMessagesFlags.error) {
+          logger.e(message.data);
           error = error.toString();
           notifyListeners();
         }
@@ -395,13 +406,25 @@ class ExplorerProvider extends ChangeNotifier
     loadingChildren = true;
     _children.clear();
     notifyListeners();
-    if (globalSendPort != null) {
+    if (currentActiveDir.path == initialDirs.first.path) {
+      var validPaths = initialDirs.skip(1).map((e) => {
+            'path': e.path,
+            'type': EntityType.folder,
+          });
+      List<StorageItemModel> mainDisks =
+          pathsToStorageItemsWithType(validPaths);
+      _children.addAll(mainDisks);
+      loadingChildren = false;
+      notifyListeners();
+    } else if (globalSendPort != null) {
+      // _children.addAll(initialDir)
       globalSendPort!.send(currentActiveDir.path);
     }
   }
 
   //? to run watchers
   void _runActiveDirWatchers() {
+    if (currentActiveDir.path == initialDirs.first.path) return;
     DirectoryWatchers directoryWatchers =
         DirectoryWatchers(currentActiveDir: currentActiveDir);
     //* add entity watcher

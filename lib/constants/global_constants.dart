@@ -2,10 +2,17 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:explorer/providers/explorer_provider_abstract.dart';
+import 'package:explorer/utils/windows_utils/disks_capturer.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-final Directory initialDir = Directory('sdcard');
+// const String initialPath = '/';
+final List<Directory> initialDirs = Platform.isWindows
+    ? validWindowsDisks()
+    : [
+        Directory('/'),
+        Directory('sdcard'),
+      ];
 final Logger logger = Logger();
 
 const Duration homePageViewDuration = Duration(milliseconds: 180);

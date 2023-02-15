@@ -2,9 +2,10 @@ import 'dart:isolate';
 
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/utils/general_utils.dart';
 
-String parentPath = 'sdcard';
+String parentPath = initialDirs.skip(1).first.path;
 
 //? to start analyzing the storage
 void runAnalyzeStorageIsolate(SendPort sendPort) {

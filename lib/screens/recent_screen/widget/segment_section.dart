@@ -35,6 +35,7 @@ class _SegmentSectionState extends State<SegmentSection> {
   void initState() {
     if (!widget.sectionElement.animate) percent = widget.sectionElement.percent;
     Future.delayed(Duration.zero).then((value) {
+      if (!mounted) return;
       setState(() {
         percent = widget.sectionElement.percent;
       });

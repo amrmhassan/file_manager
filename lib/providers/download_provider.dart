@@ -76,8 +76,7 @@ class DownloadProvider extends ChangeNotifier {
     if (taskLoadedFromDb) return;
     taskLoadedFromDb = true;
     var box = await HiveBox.downloadTasks;
-    List<DownloadTaskModel> loadedTasks =
-        box.values.toList() as List<DownloadTaskModel>;
+    List<DownloadTaskModel> loadedTasks = box.values.toList().cast();
     List<DownloadTaskModel> parsedTasks = [];
     for (var loadedTask in loadedTasks) {
       if (loadedTask.taskStatus == TaskStatus.downloading ||
