@@ -105,7 +105,9 @@ class CustomRouterSystem {
   ) async {
     try {
       ServerHandlerModel serverHandlerModel = handlers.firstWhere(
-          (element) => element.path == path && element.method == method);
+          //! i made this that way path.contains(element.path)  to route to this function just by having the right url start and pass data after that end point
+          //! of course this is a wrong but i had to(temporary)
+          (element) => path.contains(element.path) && element.method == method);
       await serverHandlerModel.callback(pipeLineRequest, pipLineResponse);
       try {
         await pipLineResponse.close();

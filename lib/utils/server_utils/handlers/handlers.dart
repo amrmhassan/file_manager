@@ -15,6 +15,7 @@ import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
 
+//! window video and audio player can't send header right now , so i will handle window video, audio players manually from the path
 void addClientHandler(
   HttpRequest request,
   HttpResponse response,
@@ -225,8 +226,14 @@ Future<void> streamAudioHandler(
   HttpResponse response,
 ) async {
   try {
-    String audioPath = req.headers.value(filePathHeaderKey)!;
+    String audioPath = req.headers.value(filePathHeaderKey) ?? '';
     audioPath = Uri.decodeComponent(audioPath);
+    if (audioPath.isEmpty) {
+      // this means that the file is being played through a windows app, that can't send header
+      //! you need to edit router to route to this even though the path is different
+      audioPath = req.uri.path.replaceFirst('$streamAudioEndPoint/', '');
+      audioPath = Uri.decodeComponent(audioPath);
+    }
 
     // var headers = req.headers;
 //  i will need them to check for authorization
@@ -270,8 +277,14 @@ Future<void> streamVideoHandler(
   HttpResponse response,
 ) async {
   try {
-    String videoPath = req.headers.value(filePathHeaderKey)!;
+    String videoPath = req.headers.value(filePathHeaderKey) ?? '';
     videoPath = Uri.decodeComponent(videoPath);
+    if (videoPath.isEmpty) {
+      // this means that the file is being played through a windows app, that can't send header
+      //! you need to edit router to route to this even though the path is different
+      videoPath = req.uri.path.replaceFirst('$streamVideoEndPoint/', '');
+      videoPath = Uri.decodeComponent(videoPath);
+    }
 
     // var headers = req.headers;
 //  i will need them to check for authorization
