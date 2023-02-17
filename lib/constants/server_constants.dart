@@ -11,6 +11,7 @@ const String streamAudioEndPoint = '/streamAudio';
 const String streamVideoEndPoint = '/streamVideo';
 const String downloadFileEndPoint = '/downloadFile';
 const String wsServerConnLinkEndPoint = '/wsServerConnLink';
+const String phoneWsServerConnLinkEndPoint = '/phoneWsServerConnLink';
 
 // clients
 const String addClientEndPoint = '/addClient';

@@ -1,31 +1,42 @@
 import 'dart:async';
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
+import 'package:flutter/rendering.dart';
 import 'package:web_socket_channel/io.dart';
 import 'constants.dart';
 
 class CustomClientSocket {
   late String mySessionID;
   Completer<String> mySessionIDCompleter = Completer<String>();
+  final VoidCallback? onServerDisconnected;
+
+  CustomClientSocket({this.onServerDisconnected});
 
   Future<String> getMySessionID() async {
     return mySessionIDCompleter.future;
   }
 
   late IOWebSocketChannel clientChannel;
-  void client(String url, ServerProvider serverProviderFalse) {
+  void client(
+    String url,
+    ServerProvider? serverProviderFalse,
+  ) {
     logger.i('connecting to ws server at $url');
     clientChannel = IOWebSocketChannel.connect(url);
     var streamSubscription = clientChannel.stream.listen(
-      (event) => clientSocketHandler(event, serverProviderFalse),
+      (event) => _clientSocketHandler(event, serverProviderFalse),
     );
     streamSubscription.onDone(
-      () => onServerDisconnected(serverProviderFalse),
+      onServerDisconnected ?? () => _onServerDisconnected(serverProviderFalse),
     );
   }
 
-  void clientSocketHandler(dynamic event, ServerProvider serverProviderFalse) {
+  void _clientSocketHandler(
+      dynamic event, ServerProvider? serverProviderFalse) {
+    if (serverProviderFalse == null) return;
     var payload = (event as String).split('[||]');
     String path = payload[0];
     String msg = payload[1];
@@ -35,14 +46,20 @@ class CustomClientSocket {
     } else if (path == disconnectedIDPath) {
       logger.w('Disconnected Device ID $msg');
     } else if (path == serverDisconnected) {
-      onServerDisconnected(serverProviderFalse);
+      _onServerDisconnected(serverProviderFalse);
     }
   }
 
-  void onServerDisconnected(ServerProvider serverProviderFalse) {
+  void _onServerDisconnected(ServerProvider? serverProviderFalse) {
+    if (serverProviderFalse == null) return;
+
     // here i want to close the server and the share space,
     // reset every thing in the share space
     logger.w('Server Disconnected');
     serverProviderFalse.closeServer();
+    fastSnackBar(
+      msg: 'Host Disconnected',
+      snackBarType: SnackBarType.error,
+    );
   }
 }

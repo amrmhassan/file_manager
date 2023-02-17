@@ -2,12 +2,10 @@
 
 import 'dart:io';
 
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/advanced_video_player/advanced_video_player.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/custom_icon_button.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/quick_send_open_button.dart';

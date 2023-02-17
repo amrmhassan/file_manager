@@ -21,7 +21,6 @@ import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
-import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -4,9 +4,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
+import 'package:explorer/utils/general_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 import 'constants.dart';
@@ -72,6 +75,7 @@ class CustomServerSocket {
         },
         onDone: () {
           logger.w('Device $si disconnected');
+
           var copiedSockets = [...sockets];
           for (var socket in copiedSockets) {
             if (socket.sessionID == si) {
@@ -88,6 +92,7 @@ class CustomServerSocket {
             // _sendToClient(si, disconnectedIDPath, socket.webSocket);
           }
           print('Remaining devices ${sockets.length}');
+          fastSnackBar(msg: 'Device Disconnected');
         },
       );
     }

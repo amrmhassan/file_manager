@@ -10,6 +10,7 @@ import 'package:explorer/utils/connect_laptop_utils/connect_laptop_router.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
+import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
 import 'package:explorer/utils/websocket_utils/custom_server_socket.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -70,6 +71,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
     myIp = null;
     remoteIP = null;
     remotePort = null;
+    myPort = 0;
     notifyListeners();
   }
 
@@ -78,8 +80,18 @@ class ConnectLaptopProvider extends ChangeNotifier {
     String? ip = await _getWorkingIp(code);
     if (ip == null) {
       await _closeServer();
+      return false;
     }
-    return ip != null;
+    String wsConnLink = (await Dio().get(
+            getConnLink(remoteIP!, remotePort!, phoneWsServerConnLinkEndPoint)))
+        .data;
+    CustomClientSocket customClientSocket = CustomClientSocket(
+      onServerDisconnected: () {
+        _closeServer();
+      },
+    );
+    customClientSocket.client(wsConnLink, null);
+    return true;
   }
 
   Future<String?> _getWorkingIp(String code) async {

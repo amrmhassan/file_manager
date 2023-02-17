@@ -12,6 +12,8 @@ class StorageItemModel {
   final DateTime changed;
   final EntityType entityType;
   int? size;
+  String? customTitle;
+  String? customThumbnail;
 
   StorageItemModel({
     required this.parentPath,
@@ -21,6 +23,8 @@ class StorageItemModel {
     required this.changed,
     required this.entityType,
     required this.size,
+    this.customThumbnail,
+    this.customTitle,
   });
 
   LocalFileInfo toLocalFileInfo() {
@@ -36,16 +40,4 @@ class StorageItemModel {
       ext: getFileExtension(path),
     );
   }
-
-  // Map<String, String> toJSON() {
-  //   return {
-  //     parentPathString: parentPath,
-  //     pathString: path,
-  //     modifiedString: modified.toIso8601String(),
-  //     accessedString: accessed.toIso8601String(),
-  //     changedString: changed.toIso8601String(),
-  //     entityTypeString: entityType.name,
-  //     sizeString: size == null ? dbNull : size.toString(),
-  //   };
-  // }
 }
