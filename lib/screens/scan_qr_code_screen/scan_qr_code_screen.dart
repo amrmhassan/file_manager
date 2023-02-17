@@ -43,6 +43,15 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             Navigator.pop(
                 context, scanData.code?.replaceAll(dummyEndPoint, ''));
             await c.stopCamera();
+          } else {
+            // this time it might be for connecting to laptop option
+            String code = scanData.code ?? '';
+            var data = code.split(' ');
+            if (data.length != 2) return;
+            int? last = int.tryParse(data.last);
+            if (last == null) return;
+            Navigator.pop(context, scanData.code);
+            await c.stopCamera();
           }
         }
       });

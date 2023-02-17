@@ -207,7 +207,7 @@ class ServerProvider extends ChangeNotifier {
       if (memberType == MemberType.host) {
         customServerSocket = CustomServerSocket(myWifiIp, this, shareProvider);
         wsServer = await customServerSocket.getWsConnLink();
-        myWSConnLink = getConnLink(myWifiIp, wsServer.port, true);
+        myWSConnLink = getConnLink(myWifiIp, wsServer.port, null, true);
       }
 
       CustomRouterSystem customRouterSystem =

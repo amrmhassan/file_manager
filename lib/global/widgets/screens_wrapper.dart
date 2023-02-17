@@ -49,62 +49,6 @@ class ScreensWrapper extends StatelessWidget {
       //! i make gesture detector to be inkwell to accept clicks even if the area is blank
       body: Column(
         children: [
-          if (Platform.isWindows)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.disappearing,
-                    child: GestureDetector(
-                      onPanUpdate: (details) {
-                        appWindow.startDragging();
-                      },
-                      child: Container(
-                        height: largeIconSize / 1.3,
-                        decoration: BoxDecoration(
-                          color: kBackgroundColor,
-                          borderRadius: BorderRadius.circular(1000),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                ButtonWrapper(
-                  borderRadius: 0,
-                  alignment: Alignment.center,
-                  width: largeIconSize * 2,
-                  height: largeIconSize / 1.3,
-                  onTap: () {
-                    appWindow.minimize();
-                  },
-                  child: Icon(
-                    Icons.minimize,
-                    color: Colors.white,
-                  ),
-                ),
-                ButtonWrapper(
-                  width: largeIconSize * 2,
-                  height: largeIconSize / 1.3,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(
-                        largeBorderRadius,
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    appWindow.close();
-                  },
-                  child: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: smallIconSize,
-                  ),
-                ),
-              ],
-            ),
           Expanded(
             child: InkWell(
               splashColor: Colors.transparent,

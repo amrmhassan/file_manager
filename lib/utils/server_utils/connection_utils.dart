@@ -4,8 +4,9 @@ import 'package:explorer/providers/share_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-String getConnLink(String ip, int port, [bool sockets = false]) {
-  return '${sockets ? 'ws' : 'http'}://$ip:$port';
+String getConnLink(String ip, int port,
+    [String? endPoint, bool webSockets = false]) {
+  return '${webSockets ? 'ws' : 'http'}://$ip:$port${endPoint ?? ''}';
 }
 
 String? getPeerConnLink(PeerModel? peerModel, String endPoint) {
