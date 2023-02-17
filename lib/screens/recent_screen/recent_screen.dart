@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_build_context_synchronously
 
-import 'package:dio/dio.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
@@ -21,10 +19,8 @@ import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
-import 'package:explorer/utils/connect_laptop_utils/connect_laptop_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
-import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -228,20 +224,9 @@ void handleConnectToLaptopButton(BuildContext context) async {
     return;
   }
   var code = await Navigator.pushNamed(context, ScanQRCodeScreen.routeName);
-  if (code is! String) return;
-  String decrypted = SimpleEncryption(code).decrypt();
-  var data = decrypted.split('||');
-  int port = int.parse(data.last);
-  var ips = data.first.split('|');
-  await connectLaptopPF(context).openServer();
 
-  String? ip = await getWorkingIp(
-    ips,
-    port,
-    connectLaptopPF(context),
-  );
-  if (ip == null) {
-    await connectLaptopPF(context).closeServer();
+  bool connected = await connectLaptopPF(context).handleConnect(code);
+  if (!connected) {
     showSnackBar(
         context: context,
         message:

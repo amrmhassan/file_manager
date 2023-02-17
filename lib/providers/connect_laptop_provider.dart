@@ -3,15 +3,15 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_laptop_router.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
+import 'package:explorer/utils/server_utils/connection_utils.dart';
+import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_server_socket.dart';
 import 'package:flutter/cupertino.dart';
-
-//? when adding a new client the client can be added by any of the other clients and the adding client will send a broadcast to all other devices in the network about the new client
-//? for example, adding a new client will be at /addclient and when the client is added in one of the connected devices that device will send a message to every other device in the network with /clientAdded with the new list of the clients in the network
-//? including the new device which will add the clients list to his state to be used later
 
 class ConnectLaptopProvider extends ChangeNotifier {
   int myPort = 0;
@@ -23,7 +23,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
 
   late HttpServer wsServer;
 
-  void connected(String myIp, String remoteIP, int remotePort) {
+  void _connected(String myIp, String remoteIP, int remotePort) {
     _setMyIp(myIp);
     _setRemoteIp(remoteIP);
     _setRemotePort(remotePort);
@@ -42,9 +42,9 @@ class ConnectLaptopProvider extends ChangeNotifier {
     myIp = ip;
   }
 
-  Future<void> openServer() async {
+  Future<void> _openServer() async {
     try {
-      await closeServer();
+      await _closeServer();
 
       //? opening the server port and setting end points
       httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
@@ -57,13 +57,13 @@ class ConnectLaptopProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      await closeServer();
+      await _closeServer();
       rethrow;
     }
   }
 
   //? to close the server
-  Future closeServer() async {
+  Future _closeServer() async {
     logger.i('Closing normal http server');
     await httpServer?.close();
     httpServer = null;
@@ -73,9 +73,45 @@ class ConnectLaptopProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //? to restart the server
-  Future restartServer() async {
-    await httpServer?.close();
-    await openServer();
+  Future<bool> handleConnect(Object? code) async {
+    if (code is! String) return false;
+    String? ip = await _getWorkingIp(code);
+    if (ip == null) {
+      await _closeServer();
+    }
+    return ip != null;
+  }
+
+  Future<String?> _getWorkingIp(String code) async {
+    String decrypted = SimpleEncryption(code).decrypt();
+    var data = decrypted.split('||');
+    int port = int.parse(data.last);
+    var ips = data.first.split('|');
+    Completer<String?> completer = Completer<String?>();
+    await _openServer();
+
+    Dio dio = Dio();
+    dio.options.sendTimeout = 2000;
+    dio.options.connectTimeout = 2000;
+    dio.options.receiveTimeout = 2000;
+
+    for (var ip in ips) {
+      dio
+          .post(
+        getConnLink(ip, port, serverCheckEndPoint),
+        data: myPort,
+      )
+          .then((data) {
+        _connected(data.data, ip, port);
+
+        completer.complete(ip);
+      }).catchError((error) {
+        int index = ips.toList().indexOf(ip);
+        if (index == ips.length - 1) {
+          completer.complete(null);
+        }
+      });
+    }
+    return completer.future;
   }
 }
