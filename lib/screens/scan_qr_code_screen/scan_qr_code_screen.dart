@@ -50,8 +50,8 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             if (data.length != 2) return;
             int? last = int.tryParse(data.last);
             if (last == null) return;
-            Navigator.pop(context, scanData.code);
             await c.stopCamera();
+            Navigator.pop(context, scanData.code);
           }
         }
       });

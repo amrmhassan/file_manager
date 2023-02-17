@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_initiator.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
+import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -131,6 +132,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => ShareItemsExplorerProvider()),
         ChangeNotifierProvider(create: (ctx) => DownloadProvider()),
         ChangeNotifierProvider(create: (ctx) => QuickSendProvider()),
+        ChangeNotifierProvider(create: (ctx) => ConnectLaptopProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

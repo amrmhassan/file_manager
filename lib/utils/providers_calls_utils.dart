@@ -1,3 +1,4 @@
+import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
@@ -90,4 +91,13 @@ AnalyzerProvider analyzerPF(BuildContext context) {
 
 AnalyzerProvider analyzerP(BuildContext context) {
   return Provider.of<AnalyzerProvider>(context);
+}
+
+//? connect laptop provider
+ConnectLaptopProvider connectLaptopPF(BuildContext context) {
+  return Provider.of<ConnectLaptopProvider>(context, listen: false);
+}
+
+ConnectLaptopProvider connectLaptopP(BuildContext context) {
+  return Provider.of<ConnectLaptopProvider>(context);
 }

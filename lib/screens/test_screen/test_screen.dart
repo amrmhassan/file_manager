@@ -3,6 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 
 class TestScreen extends StatefulWidget {
   static const String routeName = '/testing-screen';
@@ -15,9 +16,20 @@ class TestScreen extends StatefulWidget {
 class _TestScreenState extends State<TestScreen> {
   @override
   Widget build(BuildContext context) {
+    var connectPhoneProvider = connectLaptopP(context);
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
-      child: Container(),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+                're data is ${connectPhoneProvider.remoteIP}:${connectPhoneProvider.remotePort}'),
+            Text(
+                'my data is ${connectPhoneProvider.myIp}:${connectPhoneProvider.myPort}'),
+          ],
+        ),
+      ),
     );
   }
 }

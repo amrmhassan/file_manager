@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_build_context_synchronously
 
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/colors.dart';
@@ -19,8 +19,11 @@ import 'package:explorer/screens/recent_screen/widget/storage_segments.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
+import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
+import 'package:explorer/utils/connect_laptop_utils/connect_laptop_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:flutter/material.dart';
@@ -161,32 +164,7 @@ class _RecentScreenState extends State<RecentScreen> {
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'management',
-                onTap: () async {
-                  var code = await Navigator.pushNamed(
-                      context, ScanQRCodeScreen.routeName);
-                  if (code is! String) return;
-                  String decrypted = SimpleEncryption(code).decrypt();
-                  print(decrypted);
-                  var data = decrypted.split('||');
-                  int port = int.parse(data.last);
-                  var ips = data.first.split('|');
-                  print(port);
-                  print(ips);
-
-                  for (var ip in ips) {
-                    try {
-                      var data = await Dio().post(
-                        getConnLink(ip, port, serverCheckEndPoint),
-                        data:
-                            'this is my open port on the server which i will create later',
-                      );
-                      print(data);
-                      break;
-                    } catch (e) {
-                      printOnDebug('checked ip isn\'t the right one');
-                    }
-                  }
-                },
+                onTap: () => handleConnectToLaptopButton(context),
                 title: 'Connect Laptop',
                 color: Colors.white,
               ),
@@ -242,4 +220,32 @@ class _RecentScreenState extends State<RecentScreen> {
       ],
     );
   }
+}
+
+void handleConnectToLaptopButton(BuildContext context) async {
+  if (connectLaptopPF(context).remoteIP != null) {
+    Navigator.pushNamed(context, TestScreen.routeName);
+    return;
+  }
+  var code = await Navigator.pushNamed(context, ScanQRCodeScreen.routeName);
+  if (code is! String) return;
+  String decrypted = SimpleEncryption(code).decrypt();
+  var data = decrypted.split('||');
+  int port = int.parse(data.last);
+  var ips = data.first.split('|');
+  await connectLaptopPF(context).openServer();
+
+  String? ip = await getWorkingIp(
+    ips,
+    port,
+    connectLaptopPF(context),
+  );
+  if (ip == null) {
+    await connectLaptopPF(context).closeServer();
+    showSnackBar(
+        context: context,
+        message:
+            'Please ensure that both devices are connected to either the same Wi-Fi or to the hotspot of one of the devices.');
+  }
+  Navigator.pushNamed(context, TestScreen.routeName);
 }
