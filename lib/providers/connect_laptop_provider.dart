@@ -106,9 +106,9 @@ class ConnectLaptopProvider extends ChangeNotifier {
     await _openServer();
 
     Dio dio = Dio();
-    dio.options.sendTimeout = 2000;
-    dio.options.connectTimeout = 2000;
-    dio.options.receiveTimeout = 2000;
+    // dio.options.sendTimeout = 2000;
+    // dio.options.connectTimeout = 2000;
+    // dio.options.receiveTimeout = 2000;
 
     for (var ip in ips) {
       dio

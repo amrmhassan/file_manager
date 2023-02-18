@@ -6,11 +6,8 @@ import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
-import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/server_provider.dart';
-import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
@@ -81,9 +78,9 @@ Future<void> getPhoneFolderContentHandler(
   HttpResponse response,
 ) async {
   try {
-    var headers = request.headers;
-    String folderPath =
-        Uri.decodeComponent(headers[folderPathHeaderKey]!.first);
+    String folderPath = request.headers.value(folderPathHeaderKey)!;
+
+    folderPath = Uri.decodeComponent(folderPath);
     if (folderPath == initialDirs.first.path) {
       // if it has only 2 children then it means we have only one disk
       if (initialDirs.length <= 2) {
@@ -108,9 +105,10 @@ Future<void> getPhoneFolderContentHandler(
       await handleSendChildrenToClient(folderChildren, folderPath, response);
     }
   } catch (e, s) {
-    logger.e(e);
+    logger.w(e);
     response
       ..statusCode = HttpStatus.internalServerError
+      ..write('Can\'t open this folder')
       ..close();
     throw CustomException(
       e: e,
@@ -145,6 +143,6 @@ Future<void> handleSendChildrenToClient(
 
   response
     ..headers.add('Content-Type', 'application/json; charset=utf-8')
-    ..headers.add(parentFolderPathHeaderKey, folderPath)
+    ..headers.add(parentFolderPathHeaderKey, Uri.encodeComponent(folderPath))
     ..add(encodedData);
 }
