@@ -22,6 +22,9 @@ const String getPeerImagePathEndPoint = '/getPeerImagePath';
 // server checking
 const String serverCheckEndPoint = '/serverCheck';
 
+// connect laptop endpoints
+const String getStorageEndPoint = '/getStorage';
+
 //? headers keys
 const String folderPathHeaderKey = 'folderPathHeaderKey';
 const String sessionIDHeaderKey = 'sessionIDHeaderKey';
@@ -31,3 +34,7 @@ const String deviceIDHeaderKey = 'deviceIDHeaderKey';
 const String userNameHeaderKey = 'userNameHeaderKey';
 const String serverRefuseReasonHeaderKey = 'serverRefuseReasonHeaderKey';
 const String myConnLinkHeaderKey = 'myConnLinkHeaderKey';
+
+// connect laptop headers
+const String freeSpaceHeaderKey = 'freeSpaceHeaderKey';
+const String totalSpaceHeaderKey = 'totalSpaceHeaderKey';

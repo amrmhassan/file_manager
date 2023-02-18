@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
@@ -231,5 +232,9 @@ void handleConnectToLaptopButton(BuildContext context) async {
         message:
             'Please ensure that both devices are connected to either the same Wi-Fi or to the hotspot of one of the devices.');
   }
-  Navigator.pushNamed(context, TestScreen.routeName);
+  try {
+    Navigator.pushNamed(context, TestScreen.routeName);
+  } catch (e) {
+    logger.e(e);
+  }
 }

@@ -9,9 +9,10 @@ import 'package:web_socket_channel/io.dart';
 import 'constants.dart';
 
 class CustomClientSocket {
-  late String mySessionID;
-  Completer<String> mySessionIDCompleter = Completer<String>();
+  final Completer<String> mySessionIDCompleter = Completer<String>();
   final VoidCallback? onServerDisconnected;
+  late String mySessionID;
+  late IOWebSocketChannel clientChannel;
 
   CustomClientSocket({this.onServerDisconnected});
 
@@ -19,7 +20,6 @@ class CustomClientSocket {
     return mySessionIDCompleter.future;
   }
 
-  late IOWebSocketChannel clientChannel;
   void client(
     String url,
     ServerProvider? serverProviderFalse,
@@ -35,7 +35,9 @@ class CustomClientSocket {
   }
 
   void _clientSocketHandler(
-      dynamic event, ServerProvider? serverProviderFalse) {
+    dynamic event,
+    ServerProvider? serverProviderFalse,
+  ) {
     if (serverProviderFalse == null) return;
     var payload = (event as String).split('[||]');
     String path = payload[0];

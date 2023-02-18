@@ -6,13 +6,13 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/utils/connect_laptop_utils/connect_laptop_router.dart';
+import 'package:explorer/utils/connect_laptop_utils/handlers/connect_laptop_router.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
-import 'package:explorer/utils/websocket_utils/custom_server_socket.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:web_socket_channel/io.dart';
 
 class ConnectLaptopProvider extends ChangeNotifier {
   int myPort = 0;
@@ -20,7 +20,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
   String? remoteIP;
   int? remotePort;
   HttpServer? httpServer;
-  late CustomServerSocket customServerSocket;
+  IOWebSocketChannel? ioWebSocketChannel;
 
   late HttpServer wsServer;
 
@@ -78,6 +78,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
   Future<bool> handleConnect(Object? code) async {
     if (code is! String) return false;
     String? ip = await _getWorkingIp(code);
+    logger.i('Working Ip is $ip');
     if (ip == null) {
       await _closeServer();
       return false;
@@ -91,6 +92,8 @@ class ConnectLaptopProvider extends ChangeNotifier {
       },
     );
     customClientSocket.client(wsConnLink, null);
+    ioWebSocketChannel = customClientSocket.clientChannel;
+    notifyListeners();
     return true;
   }
 
@@ -116,11 +119,15 @@ class ConnectLaptopProvider extends ChangeNotifier {
           .then((data) {
         _connected(data.data, ip, port);
 
-        completer.complete(ip);
+        if (!completer.isCompleted) {
+          completer.complete(ip);
+        }
       }).catchError((error) {
         int index = ips.toList().indexOf(ip);
         if (index == ips.length - 1) {
-          completer.complete(null);
+          if (!completer.isCompleted) {
+            completer.complete(null);
+          }
         }
       });
     }
