@@ -20,10 +20,12 @@ const String clientLeftEndPoint = '/clientLeft';
 const String getPeerImagePathEndPoint = '/getPeerImagePath';
 
 // server checking
-const String serverCheckEndPoint = '/serverCheck';
+const String serverCheckEndPoint = '/serverCheckEndPoint';
+const String getDiskNamesEndPoint = '/getDiskNamesEndPoint';
 
 // connect laptop endpoints
 const String getStorageEndPoint = '/getStorage';
+const String getPhoneFolderContentEndPoint = '/getPhoneFolderContentEndPoints';
 
 //? headers keys
 const String folderPathHeaderKey = 'folderPathHeaderKey';
@@ -38,3 +40,4 @@ const String myConnLinkHeaderKey = 'myConnLinkHeaderKey';
 // connect laptop headers
 const String freeSpaceHeaderKey = 'freeSpaceHeaderKey';
 const String totalSpaceHeaderKey = 'totalSpaceHeaderKey';
+const String parentFolderPathHeaderKey = 'parentFolderPathHeaderKey';

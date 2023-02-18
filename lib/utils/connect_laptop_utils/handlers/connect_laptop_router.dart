@@ -8,10 +8,21 @@ CustomRouterSystem connectLaptopRouter(ConnectLaptopProvider connectLaptopPF) {
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
 
   //? adding handlers
-  customRouterSystem.addHandler(
-    getStorageEndPoint,
-    HttpMethod.GET,
-    getStorageInfoHandler,
-  );
+  customRouterSystem
+    ..addHandler(
+      getStorageEndPoint,
+      HttpMethod.GET,
+      getStorageInfoHandler,
+    )
+    ..addHandler(
+      getDiskNamesEndPoint,
+      HttpMethod.GET,
+      getDiskNamesHandler,
+    )
+    ..addHandler(
+      getPhoneFolderContentEndPoint,
+      HttpMethod.GET,
+      getPhoneFolderContentHandler,
+    );
   return customRouterSystem;
 }
