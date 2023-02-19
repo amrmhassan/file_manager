@@ -139,17 +139,18 @@ class ConnectLaptopProvider extends ChangeNotifier {
   }
 
   //# message that will come from the laptop
-  List<LaptopMessageModel> laptopMessages = [];
-  bool messagesViewed = false;
+  List<LaptopMessageModel> _laptopMessages = [];
+
+  List<LaptopMessageModel> get laptopMessages => [..._laptopMessages.reversed];
 
   List<LaptopMessageModel> get viewedLaptopMessages =>
-      laptopMessages.where((element) => element.viewed).toList();
+      _laptopMessages.where((element) => element.viewed).toList();
 
   List<LaptopMessageModel> get notViewedLaptopMessages =>
-      laptopMessages.where((element) => !element.viewed).toList();
+      _laptopMessages.where((element) => !element.viewed).toList();
 
   void addLaptopMessage(String msg) {
-    laptopMessages.add(LaptopMessageModel(
+    _laptopMessages.add(LaptopMessageModel(
       msg: msg,
       at: DateTime.now(),
       id: Uuid().v4(),
@@ -157,22 +158,22 @@ class ConnectLaptopProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void markAllMessagesAsViewed() {
-    laptopMessages = [
-      ...laptopMessages.map((e) {
+  void markAllMessagesAsViewed([bool notify = true]) {
+    _laptopMessages = [
+      ..._laptopMessages.map((e) {
         e.viewed = true;
         return e;
       })
     ];
     try {
-      notifyListeners();
+      if (notify) notifyListeners();
     } catch (e) {
       //
     }
   }
 
   void removeLaptopMessage(String id) {
-    laptopMessages.where((element) => element.id == id);
+    _laptopMessages.removeWhere((element) => element.id == id);
     notifyListeners();
   }
 }

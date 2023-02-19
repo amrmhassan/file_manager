@@ -1,9 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/styles.dart';
+import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -28,15 +33,78 @@ class _LaptopMessagesScreenState extends State<LaptopMessagesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    connectLaptopPF(context).markAllMessagesAsViewed(false);
+
     var connLapProvider = connectLaptopP(context);
+    if (connLapProvider.laptopMessages.isEmpty) {
+      Future.delayed(Duration.zero).then((value) {
+        Navigator.pop(context);
+      });
+    }
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
         children: [
           CustomAppBar(
-            title: Text('Laptop Messages'),
+            title: Text(
+              'Laptop Messages',
+              style: h2TextStyle,
+            ),
           ),
           VSpace(),
+          Expanded(
+              child: ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              var message = connLapProvider.laptopMessages[index];
+
+              return Dismissible(
+                onDismissed: (direction) {
+                  connectLaptopPF(context).removeLaptopMessage(message.id);
+                },
+                key: UniqueKey(),
+                child: Container(
+                  constraints: BoxConstraints(maxHeight: 100),
+                  color: kCardBackgroundColor,
+                  margin: EdgeInsets.only(bottom: smallPadding),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: kHPad,
+                    vertical: kVPad / 2,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          message.msg,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                        ),
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ButtonWrapper(
+                            padding: EdgeInsets.all(largePadding),
+                            onTap: () {
+                              copyToClipboard(context, message.msg);
+                            },
+                            child: Image.asset(
+                              'assets/icons/paste.png',
+                              color: kMainIconColor,
+                              width: smallIconSize,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            itemCount: connLapProvider.laptopMessages.length,
+          ))
         ],
       ),
     );

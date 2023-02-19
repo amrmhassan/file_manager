@@ -17,9 +17,10 @@ class LaptopMessagesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var connLaptopProvider = connectLaptopP(context);
-
     return (connLaptopProvider.httpServer != null &&
-            connLaptopProvider.notViewedLaptopMessages.isNotEmpty)
+            connLaptopProvider.notViewedLaptopMessages.isNotEmpty &&
+            ModalRoute.of(context)?.settings.name !=
+                LaptopMessagesScreen.routeName)
         ? Positioned(
             bottom: Responsive.getHeight(context) / 5,
             right: 0,
