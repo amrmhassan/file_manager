@@ -41,7 +41,7 @@ class ConnectLaptopScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'Your Phone',
+              'Your Windows',
               style: h2TextStyle,
             ),
             leftIcon: IconButton(
@@ -172,7 +172,7 @@ class ConnectLaptopScreen extends StatelessWidget {
                   AnalyzerOptionsItem(
                     enablePadding: false,
                     onTap: () {},
-                    title: 'Phone Listy',
+                    title: 'Windows Listy',
                     logoName: 'list1',
                   ),
                   VSpace(),

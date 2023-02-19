@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -67,6 +68,7 @@ Future<String?> getPhoneClipboard(
 ) async {
   String connLink = getConnLink(connectLaptopProvider.remoteIP!,
       connectLaptopProvider.remotePort!, getClipboardEndPoint);
+  logger.i(connLink);
   var res = await Dio().get(connLink);
   String clipboard = (res.data);
   if (clipboard.isEmpty) {

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/colors.dart';
@@ -34,7 +36,7 @@ class _SendTextToPhoneModalState extends State<SendTextToPhoneModal> {
           await Dio().post(connLink,
               data: data.text,
               options: Options(
-                requestEncoder: (request, options) => request.codeUnits,
+                requestEncoder: (request, options) => utf8.encode(request),
               ));
           showSnackBar(context: context, message: 'Message Sent');
         } catch (e) {

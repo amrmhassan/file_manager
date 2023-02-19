@@ -10,6 +10,12 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
   String? viewedUserDeviceId;
   bool myShareSpace = true;
   bool loadingItems = true;
+
+  bool laptopExploring = false;
+  void setLaptopExploring(bool v) {
+    laptopExploring = v;
+  }
+
   // this will hold the shared items of the device that we are currently viewing it's shared items, this won't be changed for one user until next load of his items
   // when init state of share items viewer screen
   List<ShareSpaceItemModel> currentSharedSpaceItems = [];

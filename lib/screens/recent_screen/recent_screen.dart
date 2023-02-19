@@ -19,7 +19,6 @@ import 'package:explorer/screens/recent_screen/widget/storage_segments.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
-import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
