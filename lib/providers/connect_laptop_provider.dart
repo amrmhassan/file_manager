@@ -6,12 +6,14 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/models/laptop_message_model.dart';
 import 'package:explorer/utils/connect_laptop_utils/handlers/connect_laptop_router.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/io.dart';
 
 class ConnectLaptopProvider extends ChangeNotifier {
@@ -72,6 +74,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
     remoteIP = null;
     remotePort = null;
     myPort = 0;
+    ioWebSocketChannel = null;
     notifyListeners();
   }
 
@@ -88,6 +91,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
         .data;
     CustomClientSocket customClientSocket = CustomClientSocket(
       onServerDisconnected: () {
+        logger.w('Laptop disconnected');
         _closeServer();
       },
     );
@@ -132,5 +136,43 @@ class ConnectLaptopProvider extends ChangeNotifier {
       });
     }
     return completer.future;
+  }
+
+  //# message that will come from the laptop
+  List<LaptopMessageModel> laptopMessages = [];
+  bool messagesViewed = false;
+
+  List<LaptopMessageModel> get viewedLaptopMessages =>
+      laptopMessages.where((element) => element.viewed).toList();
+
+  List<LaptopMessageModel> get notViewedLaptopMessages =>
+      laptopMessages.where((element) => !element.viewed).toList();
+
+  void addLaptopMessage(String msg) {
+    laptopMessages.add(LaptopMessageModel(
+      msg: msg,
+      at: DateTime.now(),
+      id: Uuid().v4(),
+    ));
+    notifyListeners();
+  }
+
+  void markAllMessagesAsViewed() {
+    laptopMessages = [
+      ...laptopMessages.map((e) {
+        e.viewed = true;
+        return e;
+      })
+    ];
+    try {
+      notifyListeners();
+    } catch (e) {
+      //
+    }
+  }
+
+  void removeLaptopMessage(String id) {
+    laptopMessages.where((element) => element.id == id);
+    notifyListeners();
   }
 }

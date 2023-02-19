@@ -14,6 +14,8 @@ import 'package:explorer/utils/server_utils/encoding_utils.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:clipboard/clipboard.dart' as clipboard;
+import 'package:flutter/services.dart';
 
 Future<void> getStorageInfoHandler(
   HttpRequest request,
@@ -87,7 +89,7 @@ Future<void> getPhoneFolderContentHandler(
         folderPath = initialDirs.last.path;
       } else {
         // here this mean i have more than one disk and i need to return only them
-        await handleSendChildrenToClient(
+        await _handleSendChildrenToClient(
           initialDirs.skip(1),
           folderPath,
           response,
@@ -102,7 +104,7 @@ Future<void> getPhoneFolderContentHandler(
     if (directory.existsSync()) {
       var folderChildren = await compute(getFolderChildren, folderPath);
       // hide marked 'hidden' elements
-      await handleSendChildrenToClient(folderChildren, folderPath, response);
+      await _handleSendChildrenToClient(folderChildren, folderPath, response);
     }
   } catch (e, s) {
     logger.w(e);
@@ -118,7 +120,7 @@ Future<void> getPhoneFolderContentHandler(
   }
 }
 
-Future<void> handleSendChildrenToClient(
+Future<void> _handleSendChildrenToClient(
   Iterable<dynamic> paths,
   String folderPath,
   HttpResponse response,
@@ -145,4 +147,41 @@ Future<void> handleSendChildrenToClient(
     ..headers.add('Content-Type', 'application/json; charset=utf-8')
     ..headers.add(parentFolderPathHeaderKey, Uri.encodeComponent(folderPath))
     ..add(encodedData);
+}
+
+Future<void> getClipboardHandler(
+  HttpRequest request,
+  HttpResponse response,
+) async {
+  try {
+    var data = await Clipboard.getData(Clipboard.kTextPlain);
+    response
+      ..write(data?.text ?? '')
+      ..close();
+  } catch (e) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error getting clipboard $e')
+      ..close();
+  }
+}
+
+Future<void> sendTextHandler(
+  HttpRequest request,
+  HttpResponse response,
+) async {
+  try {
+    var data = await request.fold([], (bytes, chunk) => bytes..addAll(chunk));
+    String payload = utf8.decode(data.cast());
+    BuildContext? context = navigatorKey.currentContext;
+    if (context == null) {
+      return;
+    }
+    connectLaptopPF(context).addLaptopMessage(payload);
+  } catch (e) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error getting clipboard $e')
+      ..close();
+  }
 }

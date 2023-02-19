@@ -30,6 +30,7 @@ import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/isolate_testing_screen/isolate_testing_screen.dart';
+import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
 import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_screen.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
@@ -181,6 +182,7 @@ class MyApp extends StatelessWidget {
           WhiteBlockListScreen.routeName: (context) => WhiteBlockListScreen(),
           IntroScreen.routeName: (context) => IntroScreen(),
           AboutUsScreen.routeName: (context) => AboutUsScreen(),
+          LaptopMessagesScreen.routeName: (context) => LaptopMessagesScreen(),
         },
       ),
     );

@@ -36,6 +36,16 @@ CustomRouterSystem connectLaptopRouter(ConnectLaptopProvider connectLaptopPF) {
       streamVideoEndPoint,
       HttpMethod.GET,
       normal_handlers.streamVideoHandler,
+    )
+    ..addHandler(
+      getClipboardEndPoint,
+      HttpMethod.GET,
+      laptop_handlers.getClipboardHandler,
+    )
+    ..addHandler(
+      sendTextEndpoint,
+      HttpMethod.POST,
+      laptop_handlers.sendTextHandler,
     );
   return customRouterSystem;
 }
