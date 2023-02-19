@@ -14,6 +14,7 @@ class AnalyzerOptionsItem extends StatelessWidget {
   final String logoName;
   final Color? color;
   final String? iconPath;
+  final bool enablePadding;
 
   const AnalyzerOptionsItem({
     Key? key,
@@ -22,11 +23,13 @@ class AnalyzerOptionsItem extends StatelessWidget {
     required this.logoName,
     this.color,
     this.iconPath,
+    this.enablePadding = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PaddingWrapper(
+      padding: enablePadding ? null : EdgeInsets.zero,
       child: ButtonWrapper(
         onTap: onTap,
         padding:

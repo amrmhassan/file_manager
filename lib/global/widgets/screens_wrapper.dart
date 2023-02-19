@@ -12,7 +12,6 @@ import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/quick_send_open_button.dart';
 import 'package:explorer/global/widgets/show_controllers_button.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player_show_button.dart';
-import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +105,7 @@ class ScreensWrapper extends StatelessWidget {
                             AdvancedVideoPlayer(),
 
                           QuickSendOpnButton(),
-                          LaptopMessagesButton()
+                          LaptopMessagesButton(),
                         ],
                       ),
                     ),

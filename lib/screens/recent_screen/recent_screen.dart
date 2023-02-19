@@ -10,6 +10,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
+import 'package:explorer/screens/connect_laptop_screen/connect_laptop_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/screens/recent_items_viewer_screen/recent_items_viewer_screen.dart';
@@ -220,7 +221,7 @@ class _RecentScreenState extends State<RecentScreen> {
 
 void handleConnectToLaptopButton(BuildContext context) async {
   if (connectLaptopPF(context).remoteIP != null) {
-    Navigator.pushNamed(context, TestScreen.routeName);
+    Navigator.pushNamed(context, ConnectLaptopScreen.routeName);
     return;
   }
   var code = await Navigator.pushNamed(context, ScanQRCodeScreen.routeName);
@@ -233,7 +234,7 @@ void handleConnectToLaptopButton(BuildContext context) async {
             'Please ensure that both devices are connected to either the same Wi-Fi or to the hotspot of one of the devices.');
   }
   try {
-    Navigator.pushNamed(context, TestScreen.routeName);
+    Navigator.pushNamed(context, ConnectLaptopScreen.routeName);
   } catch (e) {
     logger.e(e);
   }

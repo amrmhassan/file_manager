@@ -47,7 +47,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
 
   Future<void> _openServer() async {
     try {
-      await _closeServer();
+      await closeServer();
 
       //? opening the server port and setting end points
       httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
@@ -60,13 +60,13 @@ class ConnectLaptopProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      await _closeServer();
+      await closeServer();
       rethrow;
     }
   }
 
   //? to close the server
-  Future _closeServer() async {
+  Future closeServer() async {
     logger.i('Closing normal http server');
     await httpServer?.close();
     httpServer = null;
@@ -83,7 +83,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
     String? ip = await _getWorkingIp(code);
     logger.i('Working Ip is $ip');
     if (ip == null) {
-      await _closeServer();
+      await closeServer();
       return false;
     }
     String wsConnLink = (await Dio().get(
@@ -92,7 +92,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
     CustomClientSocket customClientSocket = CustomClientSocket(
       onServerDisconnected: () {
         logger.w('Laptop disconnected');
-        _closeServer();
+        closeServer();
       },
     );
     customClientSocket.client(wsConnLink, null);
@@ -102,6 +102,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
   }
 
   Future<String?> _getWorkingIp(String code) async {
+    List<dynamic> nulls = [];
     String decrypted = SimpleEncryption(code).decrypt();
     var data = decrypted.split('||');
     int port = int.parse(data.last);
@@ -110,9 +111,9 @@ class ConnectLaptopProvider extends ChangeNotifier {
     await _openServer();
 
     Dio dio = Dio();
-    // dio.options.sendTimeout = 2000;
-    // dio.options.connectTimeout = 2000;
-    // dio.options.receiveTimeout = 2000;
+    dio.options.sendTimeout = 5000;
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
 
     for (var ip in ips) {
       dio
@@ -130,12 +131,19 @@ class ConnectLaptopProvider extends ChangeNotifier {
         int index = ips.toList().indexOf(ip);
         if (index == ips.length - 1) {
           if (!completer.isCompleted) {
-            completer.complete(null);
+            nulls.add(null);
+            if (nulls.length == ips.length) {
+              completer.complete(null);
+            }
           }
         }
       });
     }
     return completer.future;
+  }
+
+  String getPhoneConnLink(String? endpoint) {
+    return getConnLink(remoteIP!, remotePort!, endpoint);
   }
 
   //# message that will come from the laptop

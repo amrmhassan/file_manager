@@ -10,7 +10,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 
 class DoubleButtonsModal extends StatelessWidget {
-  final String title;
+  final String? title;
   final String? subTitle;
   final VoidCallback onOk;
   final VoidCallback? onCancel;
@@ -21,11 +21,12 @@ class DoubleButtonsModal extends StatelessWidget {
   final bool autoPop;
   final bool reverseButtonsOrder;
   final Widget? extra;
+  final bool showCancelButton;
 
   const DoubleButtonsModal({
     Key? key,
     required this.onOk,
-    required this.title,
+    this.title,
     this.onCancel,
     this.subTitle,
     this.okText,
@@ -35,29 +36,31 @@ class DoubleButtonsModal extends StatelessWidget {
     this.autoPop = true,
     this.reverseButtonsOrder = false,
     this.extra,
+    this.showCancelButton = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var modalButtons = [
-      Expanded(
-        child: ButtonWrapper(
-          onTap: () {
-            if (onCancel != null) onCancel!();
-            if (autoPop) {
-              Navigator.pop(context);
-            }
-          },
-          padding:
-              EdgeInsets.symmetric(horizontal: kHPad / 2, vertical: kVPad / 2),
-          backgroundColor: cancelColor ?? kBackgroundColor,
-          child: Text(
-            cancelText ?? 'Cancel',
-            style: h4TextStyle.copyWith(color: Colors.white),
+      if (showCancelButton)
+        Expanded(
+          child: ButtonWrapper(
+            onTap: () {
+              if (onCancel != null) onCancel!();
+              if (autoPop) {
+                Navigator.pop(context);
+              }
+            },
+            padding: EdgeInsets.symmetric(
+                horizontal: kHPad / 2, vertical: kVPad / 2),
+            backgroundColor: cancelColor ?? kBackgroundColor,
+            child: Text(
+              cancelText ?? 'Cancel',
+              style: h4TextStyle.copyWith(color: Colors.white),
+            ),
           ),
         ),
-      ),
-      HSpace(),
+      if (showCancelButton) HSpace(),
       Expanded(
         child: ButtonWrapper(
           onTap: () async {
@@ -81,20 +84,25 @@ class DoubleButtonsModal extends StatelessWidget {
       color: kCardBackgroundColor,
       child: Column(
         children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: h3TextStyle,
-              ),
-            ],
-          ),
-          if (subTitle != null)
+          if (title != null)
             Row(
               children: [
                 Text(
-                  subTitle.toString(),
-                  style: h4TextStyleInactive,
+                  title!,
+                  style: h3TextStyle,
+                ),
+              ],
+            ),
+          if (subTitle != null)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    subTitle.toString(),
+                    style: h4TextStyleInactive,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 4,
+                  ),
                 ),
               ],
             ),

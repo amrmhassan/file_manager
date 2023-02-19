@@ -75,7 +75,7 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
 
   //? when getting a shared folder items, they need to be added to the screen
   //? this function will do this job
-  void updatePath(String path, List<ShareSpaceItemModel> items) {
+  void updatePath(String? path, List<ShareSpaceItemModel> items) {
     currentPath = path;
     viewedItems = items;
     notifyListeners();

@@ -46,6 +46,11 @@ CustomRouterSystem connectLaptopRouter(ConnectLaptopProvider connectLaptopPF) {
       sendTextEndpoint,
       HttpMethod.POST,
       laptop_handlers.sendTextHandler,
+    )
+    ..addHandler(
+      getShareSpaceEndPoint,
+      HttpMethod.GET,
+      laptop_handlers.getPhoneShareSpaceHandler,
     );
   return customRouterSystem;
 }

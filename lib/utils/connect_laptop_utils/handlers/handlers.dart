@@ -14,7 +14,6 @@ import 'package:explorer/utils/server_utils/encoding_utils.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:clipboard/clipboard.dart' as clipboard;
 import 'package:flutter/services.dart';
 
 Future<void> getStorageInfoHandler(
@@ -183,5 +182,42 @@ Future<void> sendTextHandler(
       ..statusCode = HttpStatus.internalServerError
       ..write('An error getting clipboard $e')
       ..close();
+  }
+}
+
+Future<void> getPhoneShareSpaceHandler(
+  HttpRequest request,
+  HttpResponse response,
+) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error with context')
+      ..close();
+    return;
+  }
+
+  try {
+    List<Map<String, dynamic>> sharedItemsMap =
+        sharePF(context).sharedItems.map((e) {
+      ShareSpaceItemModel shareSpaceItemModel = e;
+
+      return shareSpaceItemModel.toJSON();
+    }).toList();
+    String jsonResponse = json.encode(sharedItemsMap);
+    response
+      ..headers.contentType = ContentType.json
+      ..add(encodeRequest(jsonResponse));
+  } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error getting clipboard $e')
+      ..close();
+    throw CustomException(
+      e: e,
+      s: s,
+      rethrowError: true,
+    );
   }
 }
