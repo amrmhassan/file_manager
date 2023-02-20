@@ -45,7 +45,7 @@ class _ShareScreenState extends State<ShareScreen> {
         children: [
           ShareSpaceScreenAppBar(),
           VSpace(),
-          serverProvider.httpServer == null
+          serverProvider.myIp == null
               ? NotSharingView()
               : Builder(builder: (context) {
                   PeerModel? hostPeer = serverProvider.getHostPeer;

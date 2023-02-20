@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
@@ -12,6 +14,7 @@ import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
+import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
 
 //! make a function to send utf8 requests and handles them on the server side by reading the utf8
@@ -33,11 +36,11 @@ Future addClient(
         s: StackTrace.current,
       );
     }
-    await serverProviderFalse.openServer(
-      shareProvider,
-      MemberType.client,
-      shareItemsExplorerProvider,
-    );
+    // await serverProviderFalse.openServer(
+    //   shareProvider,
+    //   MemberType.client,
+    //   shareItemsExplorerProvider,
+    // );
     String deviceID = shareProvider.myDeviceId;
     String name = shareProvider.myName;
     String myIp = serverProviderFalse.myIp!;
@@ -333,4 +336,53 @@ Future<String?> connectToWsServer(
       rethrowError: true,
     );
   }
+}
+
+//# new way of initiating connection
+
+Future<String?> shareSpaceGetWorkingLink(
+  String code,
+  ServerProvider serverProviderFalse,
+  ShareProvider shareProviderFalse,
+  ShareItemsExplorerProvider shareItemsExplorerProviderFalse,
+) async {
+  List<dynamic> nulls = [];
+  String decrypted = SimpleEncryption(code).decrypt();
+  var data = decrypted.split('||');
+  int port = int.parse(data.last);
+  var ips = data.first.split('|');
+  Completer<String?> completer = Completer<String?>();
+
+  await serverProviderFalse.openServer(
+    shareProviderFalse,
+    MemberType.client,
+    shareItemsExplorerProviderFalse,
+  );
+
+  Dio dio = Dio();
+  // dio.options.sendTimeout = 5000;
+  // dio.options.connectTimeout = 5000;
+  // dio.options.receiveTimeout = 5000;
+
+  for (var ip in ips) {
+    dio
+        .post(
+      getConnLink(ip, port, serverCheckEndPoint),
+      data: serverProviderFalse.myPort,
+    )
+        .then((data) {
+      // here is teh right thing, the server response have the
+      serverProviderFalse.setMyIpAsClient(data.data);
+      logger.i('My ip is ${serverProviderFalse.myIp}, got from server');
+
+      completer.complete('$ip:$port');
+    }).catchError((error) {
+      logger.e(error);
+      nulls.add(null);
+      if (nulls.length == ips.length) {
+        completer.complete(null);
+      }
+    });
+  }
+  return completer.future;
 }

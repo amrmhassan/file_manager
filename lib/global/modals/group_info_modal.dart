@@ -12,6 +12,7 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class GroupInfoModal extends StatelessWidget {
@@ -84,35 +85,36 @@ class GroupInfoModal extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Your session ID',
+                  'Your Ip',
                   style: h4TextStyle,
                 ),
                 HSpace(factor: .2),
                 Expanded(
                   child: Text(
-                    serverProvider.me(shareProvider).sessionID,
+                    serverProvider.myIp!,
                     style: h5LiteTextStyle,
                     textAlign: TextAlign.end,
                   ),
                 ),
               ],
             ),
-            Row(
-              children: [
-                Text(
-                  'Your Device ID',
-                  style: h4TextStyle,
-                ),
-                HSpace(factor: .2),
-                Expanded(
-                  child: Text(
-                    shareProvider.myDeviceId,
-                    style: h5LiteTextStyle,
-                    textAlign: TextAlign.end,
+            if (kDebugMode)
+              Row(
+                children: [
+                  Text(
+                    'Your Port',
+                    style: h4TextStyle,
                   ),
-                ),
-              ],
-            ),
+                  HSpace(factor: .2),
+                  Expanded(
+                    child: Text(
+                      serverProvider.myPort.toString(),
+                      style: h5LiteTextStyle,
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
+              ),
             VSpace(),
             ButtonWrapper(
               padding: EdgeInsets.symmetric(

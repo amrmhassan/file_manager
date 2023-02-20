@@ -11,7 +11,6 @@ import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:explorer/utils/server_utils/handlers/router.dart';
@@ -35,14 +34,47 @@ class ServerProvider extends ChangeNotifier {
   HttpServer? httpServer;
   List<PeerModel> peers = [];
   late WebSocketSink myClientWsSink;
-  late CustomServerSocket customServerSocket;
+  CustomServerSocket? customServerSocket;
   bool hostWithWifi = false;
 
   late MemberType myType;
-  late HttpServer wsServer;
+  HttpServer? wsServer;
 
   List<WhiteBlockListModel> allowedPeers = [];
   List<WhiteBlockListModel> blockedPeers = [];
+
+  void setMyIpAsClient(String ip) {
+    myIp = ip;
+    notifyListeners();
+  }
+
+  void firstConnected(
+    String myIp,
+    ShareProvider shareProvider,
+    MemberType memberType,
+  ) {
+    this.myIp = myIp;
+    // then add a client
+    addMyPeerModel(myIp, shareProvider, memberType);
+  }
+
+  void addMyPeerModel(
+    String ip,
+    ShareProvider shareProvider,
+    MemberType memberType,
+  ) {
+    PeerModel meHost = PeerModel(
+      deviceID: shareProvider.myDeviceId,
+      joinedAt: DateTime.now(),
+      name: shareProvider.myName,
+      memberType: memberType,
+      ip: ip,
+      port: myPort,
+      sessionID: Uuid().v4(),
+    );
+    peers.add(meHost);
+    notifyListeners();
+  }
 
   Future<void> removeFromAllowedDevices(String deviceID) async {
     allowedPeers.removeWhere((element) => element.deviceID == deviceID);
@@ -135,6 +167,11 @@ class ServerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setMyWSConnLink(String wsLink) {
+    myWSConnLink = wsLink;
+    notifyListeners();
+  }
+
 //? get the host peer
   PeerModel? get getHostPeer {
     try {
@@ -178,37 +215,28 @@ class ServerProvider extends ChangeNotifier {
 
   Future<void> closeWsServer() async {
     logger.i('Closing ws Server');
-    await customServerSocket.sendCloseMsg();
-    await wsServer.close();
+    await customServerSocket?.sendCloseMsg();
+    await wsServer?.close();
   }
 
   //? send file
   Future<void> openServer(
     ShareProvider shareProvider,
     MemberType memberType,
-    ShareItemsExplorerProvider shareItemsExplorerProvider, [
-    bool wifi = true,
-  ]) async {
-    //! host device must always be hotspot or wifi
-    //! client device must always be wifi
-    hostWithWifi = wifi;
-    // notifyListeners();
+    ShareItemsExplorerProvider shareItemsExplorerProvider,
+  ) async {
     try {
-      String? myWifiIp = await getMyIpAddress(wifi);
-      if (myWifiIp == null) {
+      await closeServer();
+      var myPossibleIPs = (await getPossibleIpAddress());
+      if (myPossibleIPs == null) {
         throw CustomException(
-          e: wifi ? 'No Connected' : 'Open Your HotSpot please',
+          e: 'You are not connected to any network!',
           s: StackTrace.current,
           rethrowError: true,
         );
       }
       //? opening the server port and setting end points
       httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
-      if (memberType == MemberType.host) {
-        customServerSocket = CustomServerSocket(myWifiIp, this, shareProvider);
-        wsServer = await customServerSocket.getWsConnLink();
-        myWSConnLink = getConnLink(myWifiIp, wsServer.port, null, true);
-      }
 
       CustomRouterSystem customRouterSystem =
           addServerRouters(this, shareProvider, shareItemsExplorerProvider);
@@ -216,19 +244,8 @@ class ServerProvider extends ChangeNotifier {
       //? when above code is success then set the needed stuff like port, other things
       myPort = httpServer!.port;
       myType = memberType;
-      myIp = myWifiIp;
-      myConnLink = 'http://$myWifiIp:$myPort';
+      myConnLink = connLinkQrFromIterable(myPossibleIPs, myPort);
 
-      PeerModel meHost = PeerModel(
-        deviceID: shareProvider.myDeviceId,
-        joinedAt: DateTime.now(),
-        name: shareProvider.myName,
-        memberType: memberType,
-        ip: myIp!,
-        port: myPort,
-        sessionID: Uuid().v4(),
-      );
-      peers.add(meHost);
       notifyListeners();
     } catch (e) {
       await closeServer();

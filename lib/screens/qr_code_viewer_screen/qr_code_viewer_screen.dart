@@ -137,8 +137,7 @@ class QrCodeViewerScreen extends StatelessWidget {
                           ),
                           child: QrImage(
                             backgroundColor: Colors.white,
-                            data: quickSendLink ??
-                                '${serverProvider.myConnLink!}$dummyEndPoint',
+                            data: quickSendLink ?? serverProvider.myConnLink!,
                           ),
                         ),
                         SelectableText(

@@ -1,18 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/screens/home_screen/home_screen.dart';
+import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
+import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
 import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
+import 'package:explorer/utils/websocket_utils/custom_server_socket.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
 
 //! window video and audio player can't send header right now , so i will handle window video, audio players manually from the path
@@ -404,4 +411,83 @@ Future<void> getUserImageHandler(
     ..contentLength = bytes.length
     ..add(bytes)
     ..close();
+}
+
+//# connect to phone handlers
+void serverCheckHandler(
+  HttpRequest request,
+  HttpResponse response,
+  ServerProvider serverProvider,
+  ShareProvider shareProvider,
+) async {
+  String remoteIp = request.connectionInfo!.remoteAddress.address;
+  String myIp = (request.headers.value('host')!).split(':').first;
+  int remoteServerPort = int.parse(utf8.decode(await request.single));
+  logger.i(
+      'remote $remoteIp:$remoteServerPort++local $myIp:${serverProvider.myPort}');
+
+  // i made this because if laptop is connected to a wifi and the phone is connected to laptop hotspot
+  // when the phone checks for the laptop ip which is on wifi, it responds
+  // so i think in this case the phone has access to wifi ips, and this mean that he can access router page even if the phone is connected to laptop hotspot
+  // so if the remote ip is the same as my ip this means that i getting a request through myself(my phone through wifi that i am connected to, when phone is connected to my hotspot)
+  if (remoteIp == myIp) {
+    response.statusCode = HttpStatus.badRequest;
+    response.write(
+        'You are connected to me through wifi, while you are connected to my hotspot');
+    response.close();
+    return;
+  }
+  // if (serverProvider.myIp != null) {
+  //   //! this shouldn't return the user because the user will need to know his ip
+  //   //this mean that i am already connected to a device and i know my ip
+  //   // so i will reply with negative response
+  //   response
+  //     ..statusCode = HttpStatus.badRequest
+  //     ..write('Host already connected once')
+  //     ..close();
+  //   return;
+  // }
+
+  //? 1] the first user will give me my ip
+  //? 2] i will set my ip as he provided me with it
+  //? 3] i will give him his ip
+
+  //? 4] other users will give me my ip, i will compare it with my ip provided from the first user
+  //? 5] if it is diff then this is bad, and no connection will be established
+  //? 6] if not, then i will provide the user with his ip (done)
+
+  if (myIp != serverProvider.myIp && serverProvider.myIp != null) {
+    response
+      ..statusCode = HttpStatus.badRequest
+      ..write('You aren\'t connected to the same network')
+      ..close();
+  }
+  if (serverProvider.myIp == null) {
+    serverProvider.firstConnected(myIp, shareProvider, MemberType.host);
+    //!
+    var customServerSocket =
+        CustomServerSocket(myIp, serverProvider, shareProvider);
+    var wsServer = await customServerSocket.getWsConnLink();
+    var myWSConnLink = getConnLink(myIp, wsServer.port, null, true);
+
+    serverProvider.setMyServerSocket(customServerSocket);
+    serverProvider.setMyWSConnLink(myWSConnLink);
+  }
+  //!
+// i know my port, but i don't know which of my ips will work
+// so client will provide my ip for me,
+// and i will get his port from his
+// and i will provide him with his working ip
+
+  response
+    ..write(remoteIp)
+    ..close();
+
+  if (navigatorKey.currentContext == null) return;
+  try {
+    Navigator.popUntil(navigatorKey.currentContext!,
+        (route) => route.settings.name == ShareScreen.routeName);
+  } catch (e) {
+    logger.e(e);
+  }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/qr_result_modal.dart';
@@ -45,13 +46,17 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             await c.stopCamera();
           } else {
             // this time it might be for connecting to laptop option
-            String code = scanData.code ?? '';
+            String code = (scanData.code ?? '')..replaceAll(dummyEndPoint, '');
             var data = code.split(' ');
             if (data.length != 2) return;
             int? last = int.tryParse(data.last);
             if (last == null) return;
             await c.stopCamera();
-            Navigator.pop(context, scanData.code);
+            try {
+              Navigator.pop(context, scanData.code);
+            } catch (e) {
+              logger.e(e);
+            }
           }
         }
       });

@@ -38,6 +38,16 @@ CustomRouterSystem addServerRouters(
   //? adding handlers
   customRouterSystem
     ..addHandler(
+      serverCheckEndPoint,
+      HttpMethod.POST,
+      (request, response) => serverCheckHandler(
+        request,
+        response,
+        serverProvider,
+        shareProvider,
+      ),
+    )
+    ..addHandler(
       addClientEndPoint,
       HttpMethod.POST,
       (request, response) => addClientHandler(

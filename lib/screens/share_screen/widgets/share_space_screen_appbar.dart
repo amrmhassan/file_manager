@@ -29,14 +29,12 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
         Provider.of<ServerProvider>(context, listen: false);
     return CustomAppBar(
       title: Text(
-        serverProvider.httpServer == null
-            ? 'Your Share Space'
-            : 'Group Share Space',
+        serverProvider.myIp == null ? 'Your Share Space' : 'Group Share Space',
         style: h2TextStyle.copyWith(
           color: kActiveTextColor,
         ),
       ),
-      rightIcon: serverProvider.httpServer == null ||
+      rightIcon: serverProvider.myIp == null ||
               serverProvider.myType == MemberType.client
           ? null
           : Row(
@@ -59,7 +57,7 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
                 SizedBox(width: kHPad / 2),
               ],
             ),
-      leftIcon: serverProvider.httpServer != null
+      leftIcon: serverProvider.myIp != null
           ? Row(
               children: [
                 SizedBox(width: kHPad / 2),
