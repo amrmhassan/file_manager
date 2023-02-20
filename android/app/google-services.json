@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "110733373918",
+    "project_id": "advanced-file-manager-8b7ab",
+    "storage_bucket": "advanced-file-manager-8b7ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110733373918:android:36468fb560d723fffb6d4f",
+        "android_client_info": {
+          "package_name": "com.amh.file_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110733373918-kid351i6vin90om577l3dt6dpb2j1gqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb9ASghY530PZ7Q6BhKBT9aMygn7AuzV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110733373918-kid351i6vin90om577l3dt6dpb2j1gqb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

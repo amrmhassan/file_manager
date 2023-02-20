@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'dart:async';
-import 'dart:io';
 import 'dart:isolate';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +13,6 @@ import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
-import 'package:explorer/screens/error_viewing_screen/error_viewing_screen.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
@@ -24,7 +22,6 @@ import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
-import 'package:flutter/foundation.dart';
 
 //* this is the home page controller
 PageController pageController = PageController();
@@ -121,17 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           // error red widget that opens the errors logging screen
-          if (kDebugMode && !Platform.isWindows)
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, ErrorViewScreen.routeName);
-              },
-              child: Container(
-                width: 20,
-                height: 100,
-                color: Colors.red,
-              ),
-            ),
         ],
       ),
     );

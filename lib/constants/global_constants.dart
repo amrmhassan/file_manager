@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:explorer/providers/explorer_provider_abstract.dart';
+import 'package:explorer/utils/errors_collection/custom_logger_model.dart';
 import 'package:explorer/utils/windows_utils/disks_capturer.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 // const String initialPath = '/';
 final List<Directory> initialDirs = Platform.isWindows
@@ -13,7 +13,7 @@ final List<Directory> initialDirs = Platform.isWindows
         Directory('/'),
         Directory('sdcard'),
       ];
-final Logger logger = Logger();
+final CustomLoggerModel logger = CustomLoggerModel();
 
 const Duration homePageViewDuration = Duration(milliseconds: 180);
 

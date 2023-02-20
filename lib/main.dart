@@ -2,6 +2,7 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/firebase_options.dart';
 import 'package:explorer/helpers/hive/hive_initiator.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
@@ -24,7 +25,6 @@ import 'package:explorer/screens/about_us_screen/about_us_screen.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/connect_laptop_screen/connect_laptop_screen.dart';
 import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
-import 'package:explorer/screens/error_viewing_screen/error_viewing_screen.dart';
 import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/ext_files_screen/ext_files_screen.dart';
@@ -51,6 +51,9 @@ import 'package:explorer/screens/white_block_list_screen/white_block_list_screen
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/theme_utils.dart';
 import 'package:explorer/utils/windows_utils/window_size.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -88,6 +91,14 @@ import 'package:provider/provider.dart';
 bool firstTimeRunApp = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   try {
     await HiveInitiator().setup();
@@ -169,7 +180,6 @@ class MyApp extends StatelessWidget {
           ScanQRCodeScreen.routeName: (context) => ScanQRCodeScreen(),
           ShareSpaceVScreen.routeName: (context) => ShareSpaceVScreen(),
           DownloadManagerScreen.routeName: (context) => DownloadManagerScreen(),
-          ErrorViewScreen.routeName: (context) => ErrorViewScreen(),
           ShareSettingsScreen.routeName: (context) => ShareSettingsScreen(),
           WhiteBlockListScreen.routeName: (context) => WhiteBlockListScreen(),
           IntroScreen.routeName: (context) => IntroScreen(),
