@@ -8,7 +8,6 @@ import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
-import 'package:explorer/global/widgets/v_p_space.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/types.dart';
@@ -19,6 +18,7 @@ import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -130,6 +130,14 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
               ),
               onTap: () async {
                 try {
+                  var res = await getPossibleIpAddress();
+                  if (res == null || res.isEmpty) {
+                    logger.e('You are not connected to any network!');
+                    throw CustomException(
+                      e: 'You are not connected to any network!',
+                      s: StackTrace.current,
+                    );
+                  }
                   //? open qr scanner camera and scan the qr code which has
                   //? hotspot ssid:password:ip:port
                   //? or if we are connected through wifi, i will use the
@@ -158,7 +166,10 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                       logger.i('Working Ip is $workingLink');
                       if (workingLink == null) {
                         await serverPF(context).closeServer();
-                        return;
+                        throw CustomException(
+                          e: 'You aren\'t connected on the same network',
+                          s: StackTrace.current,
+                        );
                       }
                       await client_utils.addClient(
                         'http://$workingLink',
@@ -171,8 +182,12 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                     //? here just open the link and start adding a client
                   }
                 } catch (e, s) {
-                  showSnackBar(context: context, message: e.toString());
-                  throw CustomException(e: e, s: s);
+                  showSnackBar(
+                    context: context,
+                    message: e.toString(),
+                    snackBarType: SnackBarType.error,
+                  );
+                  CustomException(e: e, s: s);
                 }
               },
               backgroundColor: kBlueColor,

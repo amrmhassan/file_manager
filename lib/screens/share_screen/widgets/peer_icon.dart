@@ -38,6 +38,7 @@ class _PeerIconState extends State<PeerIcon> {
 
   void getRemoteImage() async {
     var image = await client_utils.getPeerImage(widget.peerModel.connLink);
+    if (!mounted) return;
     setState(() {
       peerImage = image;
     });

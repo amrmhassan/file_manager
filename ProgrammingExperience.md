@@ -1,0 +1,1 @@
+# always use logging from the start of the program

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print
+// ignore_for_file: prefer_const_constructors
 
 import 'dart:async';
 import 'dart:io';
@@ -52,15 +52,15 @@ class CustomServerSocket {
     ServerProvider serverProviderFalse,
     ShareProvider shareProviderFalse,
   ) async {
-    var server = await HttpServer.bind(InternetAddress.anyIPv4, 0);
+    var server = await HttpServer.bind(myIp, 0);
     websocketServer = server.transform(WebSocketTransformer());
 
     connLinkCompleter.complete(server);
-    logger.w('ws server listening at ${server.port}');
+    logger.i('ws server listening at ${server.address.address}:${server.port}');
 
     await for (var socket in websocketServer) {
       String si = Uuid().v4();
-      print('Device Connected With si: $si');
+      logger.i('Device Connected With si: $si');
       sockets.add(SocketConnModel(
         sessionID: si,
         webSocket: socket,
@@ -68,11 +68,11 @@ class CustomServerSocket {
       _sendToClient(si, yourIDPath, socket);
 
       socket.listen(
-        (event) {
+        (event) async {
           // here the server(host) will receive joining requests
-          print('Message from client $si => $event');
+          logger.i('Message from client $si => $event');
         },
-        onDone: () {
+        onDone: () async {
           logger.w('Device $si disconnected');
 
           var copiedSockets = [...sockets];
@@ -80,17 +80,22 @@ class CustomServerSocket {
             if (socket.sessionID == si) {
               sockets.removeWhere((element) => element.sessionID == si);
               serverProviderFalse.peerLeft(si);
-              client_utils.broadcastUnsubscribeClient(
-                serverProviderFalse,
-                shareProviderFalse,
-                si,
-              );
+              try {
+                await client_utils.broadcastUnsubscribeClient(
+                  serverProviderFalse,
+                  shareProviderFalse,
+                  si,
+                );
+              } catch (e) {
+                logger.e(e);
+              }
+
               continue;
             }
 
             // _sendToClient(si, disconnectedIDPath, socket.webSocket);
           }
-          print('Remaining devices ${sockets.length}');
+          logger.i('Remaining devices ${sockets.length}');
           fastSnackBar(msg: 'Device Disconnected');
         },
       );
@@ -98,6 +103,7 @@ class CustomServerSocket {
   }
 
   void _sendToClient(String msg, String path, WebSocket socket) {
+    logger.i('Sending to socket client path:$path msg:$msg');
     socket.add('$path[||]$msg');
   }
 }

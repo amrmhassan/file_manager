@@ -139,10 +139,11 @@ class QrCodeViewerScreen extends StatelessWidget {
                             data: quickSendLink ?? serverProvider.myConnLink!,
                           ),
                         ),
-                        SelectableText(
-                          quickSendLink ?? serverProvider.myConnLink!,
-                          style: h3InactiveTextStyle,
-                        ),
+                        if (quickSendLink != null)
+                          SelectableText(
+                            quickSendLink,
+                            style: h3InactiveTextStyle,
+                          ),
                         VSpace(),
                         if (quickSendLink != null)
                           Row(
@@ -183,18 +184,15 @@ class QrCodeViewerScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        serverProvider.hostWithWifi
-                            ? '1- Connect with others on the same wifi'
-                            : '1- Open your hotspot',
+                        '1- Connect the devices to the same network',
                         style: h4TextStyleInactive,
                       ),
-                      if (!serverProvider.hostWithWifi)
-                        Text(
-                          '2- Let other device connect to your HotSpot',
-                          style: h4TextStyleInactive,
-                        ),
                       Text(
-                        '${serverProvider.hostWithWifi ? '2' : '3'}- Others click join then scan QR',
+                        '2- Network can be router(wifi) or one of the devices hotspot',
+                        style: h4TextStyleInactive,
+                      ),
+                      Text(
+                        '3- Others click join then scan QR code',
                         style: h4TextStyleInactive,
                       ),
                       VSpace(),

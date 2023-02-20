@@ -55,21 +55,12 @@ import 'package:explorer/utils/windows_utils/window_size.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-//! fix my share space when connected
-//! before publishing
-//2- about developer
-// new features
-//3- deploy
-//? share space mean the main items that are in the main view of peer share space, this doesn't include the children of a shared folder or so
 //! add the ability to download a folder
 //! add video, audio notification
 //! prevent the app from being killed when it is in the background
 //!
 
 // view buffered places in the video player seeker bar
-// make the fast seeker widget for the video to be much bigger for the landscape mode
-// make the video not to be hidden when clicking the eye button next to a video even if the video is playing right now
-// open the task file when clicking over it and open it's folder when clicking the folder icon
 
 // add settings for the sharing
 //!!! when pausing the downloaded file at it's end(i think when it's downloading the final smaller part) the error happen and it doesn't download till the end

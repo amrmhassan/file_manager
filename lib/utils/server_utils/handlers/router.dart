@@ -1,8 +1,10 @@
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
+import 'package:explorer/utils/custom_router_system/helpers/server_middleware_model.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 import 'package:explorer/utils/custom_router_system/helpers/server_requests_utils.dart';
 import 'package:explorer/utils/server_utils/middlewares.dart';
@@ -24,19 +26,21 @@ CustomRouterSystem addServerRouters(
 ) {
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
   //? adding middlewares
-  customRouterSystem.addMiddleware(
-    [getShareSpaceEndPoint],
-    HttpMethod.GET,
-    (request, response) => getShareSpaceMiddleware(
-      request,
-      response,
-      serverProvider,
-      shareProvider,
-    ),
-  );
-
-  //? adding handlers
   customRouterSystem
+    ..addMiddleware([], null, (request, response) async {
+      logger.i('Got Request ${request.method} - ${request.uri.path}');
+      return MiddlewareReturn(request: request, response: response);
+    })
+    ..addMiddleware(
+      [getShareSpaceEndPoint],
+      HttpMethod.GET,
+      (request, response) => getShareSpaceMiddleware(
+        request,
+        response,
+        serverProvider,
+        shareProvider,
+      ),
+    )
     ..addHandler(
       serverCheckEndPoint,
       HttpMethod.POST,

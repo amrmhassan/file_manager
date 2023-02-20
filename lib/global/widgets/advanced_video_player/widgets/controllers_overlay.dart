@@ -210,6 +210,13 @@ class VideoMuteFullScreenControllers extends StatelessWidget {
             CustomIconButton(
               color: Colors.white.withOpacity(.8),
               onTap: () {
+                mpProviderFalse.toggleHideVideo();
+              },
+              iconData: FontAwesomeIcons.eyeSlash,
+            ),
+            CustomIconButton(
+              color: Colors.white.withOpacity(.8),
+              onTap: () {
                 mpProviderFalse.toggleMuteVideo();
               },
               iconData: mpProvider.videoMuted

@@ -4,7 +4,7 @@ import 'package:explorer/utils/custom_router_system/helpers/server_requests_util
 
 class ServerMiddlewareModel {
   final List<String> paths;
-  final HttpMethod httpMethod;
+  final HttpMethod? httpMethod;
   final Future<MiddlewareReturn> Function(
       HttpRequest request, HttpResponse response) callback;
 

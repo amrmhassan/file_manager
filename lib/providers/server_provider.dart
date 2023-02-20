@@ -35,7 +35,6 @@ class ServerProvider extends ChangeNotifier {
   List<PeerModel> peers = [];
   late WebSocketSink myClientWsSink;
   CustomServerSocket? customServerSocket;
-  bool hostWithWifi = false;
 
   late MemberType myType;
   HttpServer? wsServer;
@@ -158,16 +157,19 @@ class ServerProvider extends ChangeNotifier {
   }
 
   void setMyWsChannel(WebSocketSink s) {
+    logger.i('setting ws sink (WebSocketSink) variable');
     myClientWsSink = s;
     notifyListeners();
   }
 
   void setMyServerSocket(CustomServerSocket s) {
+    logger.i('setting ws server (CustomServerSocket) variable');
     customServerSocket = s;
     notifyListeners();
   }
 
   void setMyWSConnLink(String wsLink) {
+    logger.i('setting ws conn link');
     myWSConnLink = wsLink;
     notifyListeners();
   }
@@ -209,6 +211,7 @@ class ServerProvider extends ChangeNotifier {
 
   //? remove peer
   void peerLeft(String sessionID) {
+    logger.i("peer $sessionID left");
     peers.removeWhere((element) => element.sessionID == sessionID);
     notifyListeners();
   }
@@ -231,8 +234,9 @@ class ServerProvider extends ChangeNotifier {
   ) async {
     try {
       await closeServer();
-      var myPossibleIPs = (await getPossibleIpAddress());
-      if (myPossibleIPs == null) {
+      var myPossibleIPs = await getPossibleIpAddress();
+      if (myPossibleIPs == null || myPossibleIPs.isEmpty) {
+        logger.e('You are not connected to any network!');
         throw CustomException(
           e: 'You are not connected to any network!',
           s: StackTrace.current,
@@ -240,7 +244,9 @@ class ServerProvider extends ChangeNotifier {
         );
       }
       //? opening the server port and setting end points
+      logger.i('Opening server');
       httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
+      logger.i('Http Server listening on ${httpServer?.port}');
 
       CustomRouterSystem customRouterSystem =
           addServerRouters(this, shareProvider, shareItemsExplorerProvider);
@@ -252,6 +258,7 @@ class ServerProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
+      logger.e(e);
       await closeServer();
       rethrow;
     }
@@ -259,7 +266,9 @@ class ServerProvider extends ChangeNotifier {
 
   //? to close the server
   Future closeServer() async {
-    logger.i('Closing normal http server');
+    if (httpServer != null) {
+      logger.i('Closing normal http server');
+    }
     await httpServer?.close();
     httpServer = null;
     peers.clear();

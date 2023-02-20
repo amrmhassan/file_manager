@@ -43,7 +43,7 @@ class CustomRouterSystem {
 
   void addMiddleware(
     List<String> paths,
-    HttpMethod method,
+    HttpMethod? method,
     Future<MiddlewareReturn> Function(
       HttpRequest request,
       HttpResponse response,
@@ -70,7 +70,8 @@ class CustomRouterSystem {
     List<ServerMiddlewareModel> appliedMiddlewares = middlewares
         .where((element) =>
             (element.paths.contains(path) || element.paths.isEmpty) &&
-            element.httpMethod == method)
+                element.httpMethod == method ||
+            element.httpMethod == null)
         .toList();
     for (var middleware in appliedMiddlewares) {
       var middlewareReturn =

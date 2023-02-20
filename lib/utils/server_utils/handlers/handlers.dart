@@ -423,7 +423,7 @@ void serverCheckHandler(
   String myIp = (request.headers.value('host')!).split(':').first;
   int remoteServerPort = int.parse(utf8.decode(await request.single));
   logger.i(
-      'remote $remoteIp:$remoteServerPort++local $myIp:${serverProvider.myPort}');
+      'got server check with remote $remoteIp:$remoteServerPort \nlocal $myIp:${serverProvider.myPort}');
 
   // i made this because if laptop is connected to a wifi and the phone is connected to laptop hotspot
   // when the phone checks for the laptop ip which is on wifi, it responds
@@ -436,17 +436,6 @@ void serverCheckHandler(
     response.close();
     return;
   }
-  // if (serverProvider.myIp != null) {
-  //   //! this shouldn't return the user because the user will need to know his ip
-  //   //this mean that i am already connected to a device and i know my ip
-  //   // so i will reply with negative response
-  //   response
-  //     ..statusCode = HttpStatus.badRequest
-  //     ..write('Host already connected once')
-  //     ..close();
-  //   return;
-  // }
-
   //? 1] the first user will give me my ip
   //? 2] i will set my ip as he provided me with it
   //? 3] i will give him his ip
@@ -456,12 +445,14 @@ void serverCheckHandler(
   //? 6] if not, then i will provide the user with his ip (done)
 
   if (myIp != serverProvider.myIp && serverProvider.myIp != null) {
+    logger.w('devices are\'nt connected to the same network');
     response
       ..statusCode = HttpStatus.badRequest
       ..write('You aren\'t connected to the same network')
       ..close();
   }
   if (serverProvider.myIp == null) {
+    logger.i('setting my ip(host) to be $myIp');
     serverProvider.firstConnected(myIp, shareProvider, MemberType.host);
     //!
     var customServerSocket =

@@ -124,7 +124,7 @@ Future broadcastUnsubscribeClient(
     }
   } catch (e, s) {
     logger.e(e);
-    throw CustomException(
+    CustomException(
       e: e,
       s: s,
       rethrowError: true,
