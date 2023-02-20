@@ -29,6 +29,7 @@ class CustomServerSocket {
   }
   Completer<HttpServer> connLinkCompleter = Completer<HttpServer>();
 
+//! add disconnect socket here
   Future<void> sendCloseMsg() async {
     for (var socket in sockets) {
       try {

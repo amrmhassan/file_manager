@@ -220,6 +220,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     videoHidden = false;
     bottomVideoControllersHidden = false;
     _bufferedParts.clear();
+    videoSpeed = 1;
     notifyListeners();
   }
 

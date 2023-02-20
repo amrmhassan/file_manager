@@ -21,7 +21,9 @@ class DoubleButtonsModal extends StatelessWidget {
   final bool autoPop;
   final bool reverseButtonsOrder;
   final Widget? extra;
+  final TextStyle? titleStyle;
   final bool showCancelButton;
+  final Widget? titleIcon;
 
   const DoubleButtonsModal({
     Key? key,
@@ -37,6 +39,8 @@ class DoubleButtonsModal extends StatelessWidget {
     this.reverseButtonsOrder = false,
     this.extra,
     this.showCancelButton = true,
+    this.titleStyle,
+    this.titleIcon,
   }) : super(key: key);
 
   @override
@@ -87,9 +91,10 @@ class DoubleButtonsModal extends StatelessWidget {
           if (title != null)
             Row(
               children: [
+                if (titleIcon != null) titleIcon!,
                 Text(
                   title!,
-                  style: h3TextStyle,
+                  style: titleStyle ?? h3TextStyle,
                 ),
               ],
             ),

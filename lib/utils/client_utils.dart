@@ -123,6 +123,7 @@ Future broadcastUnsubscribeClient(
       );
     }
   } catch (e, s) {
+    logger.e(e);
     throw CustomException(
       e: e,
       s: s,
@@ -360,9 +361,9 @@ Future<String?> shareSpaceGetWorkingLink(
   );
 
   Dio dio = Dio();
-  // dio.options.sendTimeout = 5000;
-  // dio.options.connectTimeout = 5000;
-  // dio.options.receiveTimeout = 5000;
+  dio.options.sendTimeout = 5000;
+  dio.options.connectTimeout = 5000;
+  dio.options.receiveTimeout = 5000;
 
   for (var ip in ips) {
     dio
@@ -377,7 +378,6 @@ Future<String?> shareSpaceGetWorkingLink(
 
       completer.complete('$ip:$port');
     }).catchError((error) {
-      logger.e(error);
       nulls.add(null);
       if (nulls.length == ips.length) {
         completer.complete(null);

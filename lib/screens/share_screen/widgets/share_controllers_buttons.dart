@@ -6,7 +6,10 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
+import 'package:explorer/global/widgets/v_p_space.dart';
+import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/share_provider.dart';
@@ -30,15 +33,6 @@ class ShareControllersButtons extends StatefulWidget {
 }
 
 class _ShareControllersButtonsState extends State<ShareControllersButtons> {
-  Future<bool> localOpenServerHandler() async {
-    await serverPF(context).openServer(
-      sharePF(context),
-      MemberType.host,
-      shareExpPF(context),
-    );
-    return serverPF(context).httpServer != null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -53,22 +47,12 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
                 vertical: kVPad / 2,
               ),
               onTap: () async {
-                try {
-                  bool res = await localOpenServerHandler();
-                  if (res) {
-                    await Navigator.pushNamed(
-                        context, QrCodeViewerScreen.routeName);
-                  }
-                } catch (e, s) {
-                  showSnackBar(
-                    context: context,
-                    message: CustomException(
-                      e: e,
-                      s: s,
-                    ).toString(),
-                    snackBarType: SnackBarType.error,
-                  );
-                }
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => HostNoteModal(),
+                );
+
                 // ConnectivityResult connRes =
                 //     await Connectivity().checkConnectivity();
                 //! allow me [start]
@@ -201,6 +185,71 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class HostNoteModal extends StatelessWidget {
+  const HostNoteModal({
+    super.key,
+  });
+  Future<bool> localOpenServerHandler(BuildContext context) async {
+    await serverPF(context).openServer(
+      sharePF(context),
+      MemberType.host,
+      shareExpPF(context),
+    );
+    return serverPF(context).httpServer != null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DoubleButtonsModal(
+      onOk: () async {
+        try {
+          bool res = await localOpenServerHandler(context);
+          if (res) {
+            await Navigator.pushNamed(
+              context,
+              QrCodeViewerScreen.routeName,
+            );
+          }
+        } catch (e, s) {
+          showSnackBar(
+            context: context,
+            message: CustomException(
+              e: e,
+              s: s,
+            ).toString(),
+            snackBarType: SnackBarType.error,
+          );
+        }
+      },
+      showCancelButton: false,
+      title: '',
+      okColor: kBlueColor,
+      okText: 'Continue',
+      subTitle:
+          'You must connect devices to the same network (wifi or hotspot of one of the devices) first',
+      titleIcon: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                'assets/icons/warning.png',
+                width: mediumIconSize,
+              ),
+              HSpace(),
+              Text(
+                'Note',
+                style: h3TextStyle,
+              )
+            ],
+          ),
+          VSpace(),
+        ],
       ),
     );
   }

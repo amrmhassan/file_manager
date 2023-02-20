@@ -219,6 +219,10 @@ class ServerProvider extends ChangeNotifier {
     await wsServer?.close();
   }
 
+  Future<void> kickOutPeer(String ip, BuildContext context) async {
+    showSnackBar(context: context, message: "soon");
+  }
+
   //? send file
   Future<void> openServer(
     ShareProvider shareProvider,

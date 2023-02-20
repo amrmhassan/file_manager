@@ -11,7 +11,6 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
-import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';

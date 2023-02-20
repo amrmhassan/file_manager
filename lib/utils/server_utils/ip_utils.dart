@@ -1,6 +1,7 @@
 //? get my wifi address
 import 'dart:io';
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 
 Future<String?> getMyIpAddress([bool wifi = true]) async {
@@ -33,7 +34,7 @@ Future<Iterable<String>?> getPossibleIpAddress([bool wifi = true]) async {
     //! use type: InternetAddressType.IPv4, leave 192 thing because other devices like emulators uses ipv4 with 0.0.0.0 networks
     var interfaces =
         await NetworkInterface.list(type: InternetAddressType.IPv4);
-
+    logger.i('I have ${interfaces.length} interfaces');
     // List<String> wifiString = [
     //   'wi-fi',
     //   'local',
