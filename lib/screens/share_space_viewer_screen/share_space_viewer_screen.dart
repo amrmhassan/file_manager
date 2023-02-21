@@ -11,6 +11,7 @@ import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
+import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/share_screen/widgets/not_sharing_view.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
@@ -40,9 +41,8 @@ class ShareSpaceVScreen extends StatefulWidget {
 }
 
 class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
-  PeerModel? remotePeerModel;
   bool me = false;
-  bool laptop = false;
+  late ShareSpaceVScreenData data;
 
 //? to load shared items
   Future loadSharedItems([String? path]) async {
@@ -54,15 +54,15 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
 
     try {
       List<ShareSpaceItemModel> shareItems = [];
-      if (remotePeerModel!.phone) {
+      if (data.laptop) {
         await localGetFolderContent('/', true);
       } else {
         shareItems = (await client_utils.getPeerShareSpace(
-              remotePeerModel!.sessionID,
+              data.peerModel!.sessionID,
               serverProviderFalse,
               shareProviderFalse,
               shareItemsExplorerProvider,
-              remotePeerModel!.deviceID,
+              data.peerModel!.deviceID,
             )) ??
             [];
       }
@@ -82,13 +82,11 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
-      var argument = ModalRoute.of(context)!.settings.arguments;
+      data =
+          ModalRoute.of(context)!.settings.arguments as ShareSpaceVScreenData;
       // bool means that it is from files explorer from windows device
-      if (argument is bool) {
+      if (data.peerModel == null) {
         shareExpPF(context).setLaptopExploring(true);
-        setState(() {
-          laptop = true;
-        });
         connect_laptop_utils.getPhoneFolderContent(
           folderPath: '/',
           shareItemsExplorerProvider: shareExpPF(context),
@@ -96,12 +94,9 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         );
       } else {
         setState(() {
-          remotePeerModel =
-              ModalRoute.of(context)!.settings.arguments as PeerModel;
-          laptop = remotePeerModel?.phone ?? false;
-          shareExpPF(context).setLaptopExploring(laptop);
+          shareExpPF(context).setLaptopExploring(data.laptop);
         });
-        if (remotePeerModel?.deviceID == sharePF(context).myDeviceId) {
+        if (data.peerModel?.deviceID == sharePF(context).myDeviceId) {
           setState(() {
             me = true;
           });
@@ -128,13 +123,13 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              laptop
+              data.laptop
                   ? 'Phone'
-                  : shareExpProvider.loadingItems || (remotePeerModel == null)
+                  : shareExpProvider.loadingItems || (data.peerModel == null)
                       ? '...'
                       : me
                           ? 'Your Share Space'
-                          : '${remotePeerModel!.name} Share Space',
+                          : '${data.peerModel!.name} Share Space',
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
@@ -152,7 +147,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                 Navigator.pushReplacementNamed(
                   context,
                   ShareSpaceVScreen.routeName,
-                  arguments: remotePeerModel ?? laptop,
+                  arguments: data,
                 );
               },
               onClickingSubPath: (path) => localGetFolderContent(path),
@@ -208,13 +203,13 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                                           fileSize: shareExpProvider
                                               .viewedItems[index].size,
                                           remoteDeviceID:
-                                              remotePeerModel!.deviceID,
+                                              data.peerModel!.deviceID,
                                           remoteFilePath: shareExpProvider
                                               .viewedItems[index].path,
                                           serverProvider: serverPF(context),
                                           shareProvider: sharePF(context),
                                           remoteDeviceName:
-                                              remotePeerModel!.name,
+                                              data.peerModel!.name,
                                         );
                                         Navigator.pop(context);
                                       } catch (e) {
@@ -249,7 +244,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
     bool shareSpace = false,
   ]) async {
     try {
-      if (laptop) {
+      if (data.laptop) {
         await connect_laptop_utils.getPhoneFolderContent(
           folderPath: path,
           shareItemsExplorerProvider: shareExpPF(context),

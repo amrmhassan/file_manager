@@ -15,7 +15,6 @@ class PeerModel {
   final int port;
   final String sessionID;
   late String connLink;
-  final bool phone;
 
   PeerModel({
     required this.deviceID,
@@ -25,7 +24,6 @@ class PeerModel {
     required this.ip,
     required this.port,
     required this.sessionID,
-    this.phone = false,
   }) {
     connLink = getConnLink(ip, port);
   }

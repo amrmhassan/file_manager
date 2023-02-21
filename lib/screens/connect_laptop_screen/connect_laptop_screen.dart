@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
+import 'package:flutter/rendering.dart';
 
 class ConnectLaptopScreen extends StatelessWidget {
   static const String routeName = '/ConnectLaptopScreen';
@@ -75,7 +77,11 @@ class ConnectLaptopScreen extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         ShareSpaceVScreen.routeName,
-                        arguments: true,
+                        arguments: ShareSpaceVScreenData(
+                          peerModel: null,
+                          laptop: true,
+                          dataType: ShareSpaceVScreenDataType.filesExploring,
+                        ),
                       );
                     },
                     title: 'Files Explorer',
@@ -91,15 +97,18 @@ class ConnectLaptopScreen extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         ShareSpaceVScreen.routeName,
-                        arguments: PeerModel(
-                          deviceID: 'null',
-                          joinedAt: DateTime.now(),
-                          name: 'Phone',
-                          memberType: MemberType.client,
-                          ip: phoneConnProvider.remoteIP!,
-                          port: phoneConnProvider.remotePort!,
-                          sessionID: 'null',
-                          phone: true,
+                        arguments: ShareSpaceVScreenData(
+                          peerModel: PeerModel(
+                            deviceID: 'null',
+                            joinedAt: DateTime.now(),
+                            name: 'Phone',
+                            memberType: MemberType.client,
+                            ip: phoneConnProvider.remoteIP!,
+                            port: phoneConnProvider.remotePort!,
+                            sessionID: 'null',
+                          ),
+                          laptop: true,
+                          dataType: ShareSpaceVScreenDataType.shareSpace,
                         ),
                       );
                     },
