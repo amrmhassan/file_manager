@@ -9,7 +9,6 @@ import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/models/types.dart';
@@ -43,6 +42,7 @@ class ShareSpaceVScreen extends StatefulWidget {
 class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   bool me = false;
   late ShareSpaceVScreenData data;
+  bool loading = true;
 
 //? to load shared items
   Future loadSharedItems([String? path]) async {
@@ -77,10 +77,15 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         snackBarType: SnackBarType.error,
       );
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
   void initState() {
+    super.initState();
+
     Future.delayed(Duration.zero).then((value) {
       data =
           ModalRoute.of(context)!.settings.arguments as ShareSpaceVScreenData;
@@ -105,11 +110,20 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         }
       }
     });
-    super.initState();
   }
+
+  String get title => shareExpP(context).loadingItems || loading
+      ? '...'
+      : data.laptop
+          ? 'Laptop'
+          : me
+              ? 'Your Share Space'
+              : '${data.peerModel!.name} Share Space';
 
   @override
   Widget build(BuildContext context) {
+    // data = ModalRoute.of(context)!.settings.arguments as ShareSpaceVScreenData;
+
     var shareExpProvider = Provider.of<ShareItemsExplorerProvider>(context);
     String? parentPath = shareExpProvider.currentSharedFolderPath == null
         ? null
@@ -123,13 +137,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              data.laptop
-                  ? 'Phone'
-                  : shareExpProvider.loadingItems || (data.peerModel == null)
-                      ? '...'
-                      : me
-                          ? 'Your Share Space'
-                          : '${data.peerModel!.name} Share Space',
+              title,
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
@@ -153,7 +161,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
               onClickingSubPath: (path) => localGetFolderContent(path),
             ),
           if (!me)
-            shareExpProvider.loadingItems
+            shareExpProvider.loadingItems || loading || loading
                 ? Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -169,6 +177,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                   )
                 : Expanded(
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       itemCount: shareExpProvider.viewedItems.length,
                       itemBuilder: (context, index) => StorageItem(
                         network: true,

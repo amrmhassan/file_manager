@@ -149,6 +149,11 @@ CustomRouterSystem addServerRouters(
         response,
         shareProvider,
       ),
+    )
+    ..addHandler(
+      getListyEndPoint,
+      HttpMethod.GET,
+      getUserListyHandler,
     );
   return customRouterSystem;
 }

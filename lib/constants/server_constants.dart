@@ -29,6 +29,7 @@ const String getPhoneFolderContentEndPoint = '/getPhoneFolderContentEndPoint';
 const String areYouAliveEndPoint = '/areYouAliveEndPoint';
 const String getClipboardEndPoint = '/getClipboardEndPoint';
 const String sendTextEndpoint = '/sendTextEndpoint';
+const String getListyEndPoint = '/getListyEndPoint';
 
 //? headers keys
 const String folderPathHeaderKey = 'folderPathHeaderKey';

@@ -117,6 +117,7 @@ class CustomRouterSystem {
         printOnDebug('Can\'nt close the response stream');
       }
     } catch (e) {
+      logger.e(e);
       // if here that means that the user entered a path that doesn't exist
       if (onNotFound != null) {
         onNotFound(pipeLineRequest, pipLineResponse);

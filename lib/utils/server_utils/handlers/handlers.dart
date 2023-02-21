@@ -8,11 +8,13 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
 import 'package:explorer/utils/server_utils/server_feedback_utils.dart';
@@ -480,4 +482,25 @@ void serverCheckHandler(
   } catch (e) {
     logger.e(e);
   }
+}
+
+//! just move this to laptop router and handlers
+Future<void> getUserListyHandler(
+  HttpRequest request,
+  HttpResponse response,
+) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error with context')
+      ..close();
+    return;
+  }
+  var listyList = listyPF(context).listyList;
+  var data = listyList.map((e) => e.toJSON()).toList();
+  var encodedData = encodeRequest(json.encode(data));
+  response
+    ..add(encodedData)
+    ..close();
 }

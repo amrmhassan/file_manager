@@ -20,7 +20,6 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
-import 'package:flutter/rendering.dart';
 
 class ConnectLaptopScreen extends StatelessWidget {
   static const String routeName = '/ConnectLaptopScreen';

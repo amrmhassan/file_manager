@@ -1,6 +1,7 @@
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -100,4 +101,13 @@ ConnectLaptopProvider connectLaptopPF(BuildContext context) {
 
 ConnectLaptopProvider connectLaptopP(BuildContext context) {
   return Provider.of<ConnectLaptopProvider>(context);
+}
+
+//? listy provider
+ListyProvider listyPF(BuildContext context) {
+  return Provider.of<ListyProvider>(context, listen: false);
+}
+
+ListyProvider listyP(BuildContext context) {
+  return Provider.of<ListyProvider>(context);
 }

@@ -1,3 +1,4 @@
+import 'package:explorer/constants/models_constants.dart';
 import 'package:hive/hive.dart';
 
 part 'listy_model.g.dart';
@@ -20,13 +21,14 @@ class ListyModel {
     required this.id,
   });
 
-  // Map<String, String?> toJSON() {
-  //   return {
-  //     titleString: title,
-  //     iconString: icon,
-  //     createdAtString: createdAt.toIso8601String(),
-  //   };
-  // }
+  Map<String, String?> toJSON() {
+    return {
+      titleString: title,
+      iconString: icon,
+      createdAtString: createdAt.toIso8601String(),
+      idString: id,
+    };
+  }
 
   // static ListyModel fromJSON(Map<String, dynamic> jsonOBJ) {
   //   return ListyModel(
