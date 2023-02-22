@@ -45,3 +45,4 @@ const String myConnLinkHeaderKey = 'myConnLinkHeaderKey';
 const String freeSpaceHeaderKey = 'freeSpaceHeaderKey';
 const String totalSpaceHeaderKey = 'totalSpaceHeaderKey';
 const String parentFolderPathHeaderKey = 'parentFolderPathHeaderKey';
+const String myServerPortHeaderKey = 'myServerPortHeaderKey';

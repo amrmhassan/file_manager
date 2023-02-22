@@ -70,8 +70,7 @@ class CustomRouterSystem {
     List<ServerMiddlewareModel> appliedMiddlewares = middlewares
         .where((element) =>
             (element.paths.contains(path) || element.paths.isEmpty) &&
-                element.httpMethod == method ||
-            element.httpMethod == null)
+            (element.httpMethod == method || element.httpMethod == null))
         .toList();
     for (var middleware in appliedMiddlewares) {
       var middlewareReturn =
@@ -82,7 +81,8 @@ class CustomRouterSystem {
       String? closeReason = (await middlewareReturn).closeReason;
       //! when a middleware closes a response it might pass closed reason to the to the return and if so , i won't continue the pipeline and return from here
       if (closed) {
-        logger.w('Response Closed with reason: $closeReason');
+        logger.w(
+            'Response Closed with reason: $closeReason asked ${request.uri.path}');
         return;
       }
     }
@@ -93,7 +93,10 @@ class CustomRouterSystem {
       pipelineResponse,
       path,
       method,
-      (request, response) => null,
+      (request, response) => response
+        ..statusCode = HttpStatus.notFound
+        ..write('Not Found')
+        ..close(),
     );
   }
 
@@ -117,7 +120,7 @@ class CustomRouterSystem {
         printOnDebug('Can\'nt close the response stream');
       }
     } catch (e) {
-      logger.e(e);
+      logger.e('Not found path request 404 ${pipeLineRequest.uri.path}');
       // if here that means that the user entered a path that doesn't exist
       if (onNotFound != null) {
         onNotFound(pipeLineRequest, pipLineResponse);

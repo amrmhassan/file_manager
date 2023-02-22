@@ -158,13 +158,13 @@ class _RecentScreenState extends State<RecentScreen> {
                 color: Colors.white,
               ),
               VSpace(),
-              // AnalyzerOptionsItem(
-              //   logoName: 'management',
-              //   onTap: () => handleConnectToLaptopButton(context),
-              //   title: 'Connect Laptop',
-              //   color: Colors.white,
-              // ),
-              // VSpace(),
+              AnalyzerOptionsItem(
+                logoName: 'management',
+                onTap: () => handleConnectToLaptopButton(context),
+                title: 'Connect Laptop',
+                color: Colors.white,
+              ),
+              VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'clock',
                 onTap: () {

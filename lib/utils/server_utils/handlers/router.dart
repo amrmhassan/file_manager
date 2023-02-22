@@ -27,6 +27,22 @@ CustomRouterSystem addServerRouters(
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
   //? adding middlewares
   customRouterSystem
+    ..addMiddleware(
+      [
+        getShareSpaceEndPoint,
+        clientLeftEndPoint,
+        fileAddedToShareSpaceEndPoint,
+        fileRemovedFromShareSpaceEndPoint,
+        getFolderContentEndPointEndPoint,
+        getListyEndPoint,
+      ],
+      null,
+      (request, response) => checkIfConnectedMiddleWare(
+        request,
+        response,
+        serverProvider,
+      ),
+    )
     ..addMiddleware([], null, (request, response) async {
       logger.i('Got Request ${request.method} - ${request.uri.path}');
       return MiddlewareReturn(request: request, response: response);
@@ -40,6 +56,13 @@ CustomRouterSystem addServerRouters(
         serverProvider,
         shareProvider,
       ),
+    )
+    ..addHandler(
+      areYouAliveEndPoint,
+      HttpMethod.GET,
+      (request, response) => response
+        ..write('Yes i am a live')
+        ..close(),
     )
     ..addHandler(
       serverCheckEndPoint,

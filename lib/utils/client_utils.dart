@@ -8,6 +8,7 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
+import 'package:explorer/models/working_ip_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -55,7 +56,8 @@ Future addClient(
         sessionIDString: mySessionID,
       },
     );
-  } catch (e, s) {
+  } on DioError catch (e, s) {
+    logger.e(e.response?.data);
     throw CustomException(
       e: e,
       s: s,
@@ -83,7 +85,9 @@ Future<Uint8List?> getPeerImage(String connLink) async {
     }
 
     return Uint8List.fromList(bytes);
-  } catch (e) {
+  } on DioError catch (e) {
+    logger.e(e.response?.data);
+
     return null;
   }
 }
@@ -95,8 +99,12 @@ Future unsubscribeMe(ServerProvider serverProviderFalse) async {
   //! if client just leave it as it is
   //! or close the server instead
   if (serverProviderFalse.myType == MemberType.client) {
-    serverProviderFalse.myClientWsSink
-        .close(null, 'user normally left the group');
+    try {
+      serverProviderFalse.myClientWsSink
+          .close(null, 'user normally left the group');
+    } catch (e) {
+      logger.e(e);
+    }
   } else if (serverProviderFalse.myType == MemberType.host) {
     serverProviderFalse.closeWsServer();
   }
@@ -119,11 +127,12 @@ Future broadcastUnsubscribeClient(
         '${getConnLink(peer.ip, peer.port)}$clientLeftEndPoint',
         data: {
           sessionIDString: customSessionID,
+          myServerPortHeaderKey: serverProviderFalse.myPort,
         },
       );
     }
-  } catch (e, s) {
-    logger.e(e);
+  } on DioError catch (e, s) {
+    logger.e(e.response?.data);
     CustomException(
       e: e,
       s: s,
@@ -150,6 +159,7 @@ Future<List<ShareSpaceItemModel>?> getPeerShareSpace(
         headers: {
           deviceIDHeaderKey: shareProvider.myDeviceId,
           userNameHeaderKey: shareProvider.myName,
+          myServerPortHeaderKey: serverProvider.myPort,
         },
         receiveDataWhenStatusError: false,
       ),
@@ -194,11 +204,15 @@ Future<void> broadCastFileRemovalFromShareSpace({
       headers: {
         ownerSessionIDString: me.sessionID,
         ownerDeviceIDString: me.deviceID,
+        myServerPortHeaderKey: serverProvider.myPort,
+
         // 'Content-Type': 'application/json; charset=utf-8',
       },
       data: paths,
     );
-  } catch (e, s) {
+  } on DioError catch (e, s) {
+    logger.e(e.response?.data);
+
     throw CustomException(
       e: e,
       s: s,
@@ -225,6 +239,8 @@ Future<void> broadCastFileAddedToShareSpace({
       headers: {
         ownerSessionIDString: me.sessionID,
         ownerDeviceIDString: me.deviceID,
+        myServerPortHeaderKey: serverProvider.myPort,
+
         // 'Content-Type': 'application/json; charset=utf-8',
       },
       data: addedItems.map((e) {
@@ -232,7 +248,9 @@ Future<void> broadCastFileAddedToShareSpace({
         return e.toJSON();
       }).toList(),
     );
-  } catch (e, s) {
+  } on DioError catch (e, s) {
+    logger.e(e.response?.data);
+
     throw CustomException(
       e: e,
       s: s,
@@ -259,6 +277,7 @@ Future<void> getFolderContent({
         headers: {
           folderPathHeaderKey: Uri.encodeComponent(folderPath),
           sessionIDHeaderKey: me.sessionID,
+          myServerPortHeaderKey: serverProvider.myPort,
         },
       ),
     );
@@ -267,7 +286,9 @@ Future<void> getFolderContent({
     shareItemsExplorerProvider.updatePath(folderPath, items);
 
     shareItemsExplorerProvider.setLoadingItems(false, false);
-  } catch (e, s) {
+  } on DioError catch (e, s) {
+    logger.e(e.response?.data);
+
     shareItemsExplorerProvider.setLoadingItems(false);
     throw CustomException(
       e: e,
@@ -304,7 +325,9 @@ Future<void> _broadcast({
         ),
       );
     }
-  } catch (e, s) {
+  } on DioError catch (e, s) {
+    logger.e(e.response?.data);
+
     throw CustomException(
       e: e,
       s: s,
@@ -323,6 +346,11 @@ Future<String?> connectToWsServer(
     CustomClientSocket clientSocket = CustomClientSocket();
     String wsConnLink = (await Dio().get(
       '$connLink$wsServerConnLinkEndPoint',
+      options: Options(
+        headers: {
+          myServerPortHeaderKey: serverProviderFalse.myPort,
+        },
+      ),
     ))
         .data;
 
@@ -330,7 +358,8 @@ Future<String?> connectToWsServer(
     String mySessionID = await clientSocket.getMySessionID();
     serverProviderFalse.setMyWsChannel(clientSocket.clientChannel.sink);
     return mySessionID;
-  } catch (e, s) {
+  } on DioError catch (e, s) {
+    logger.e(e.response?.data);
     throw CustomException(
       e: e,
       s: s,
@@ -347,36 +376,56 @@ Future<String?> shareSpaceGetWorkingLink(
   ShareProvider shareProviderFalse,
   ShareItemsExplorerProvider shareItemsExplorerProviderFalse,
 ) async {
+  var res = await getWorkingIpFromCode(
+    code: code,
+    runBeforeCall: () async => await serverProviderFalse.openServer(
+      shareProviderFalse,
+      MemberType.client,
+      shareItemsExplorerProviderFalse,
+    ),
+    myPort: serverProviderFalse.myPort,
+  );
+  if (res == null) return null;
+  serverProviderFalse.setMyIpAsClient(res.myIp);
+
+  return '${res.serverIp}:${res.serverPort}';
+}
+
+Future<WorkingIpModel?> getWorkingIpFromCode({
+  required String code,
+  required Future<void> Function() runBeforeCall,
+  required int myPort,
+  int? timeout,
+}) async {
+  // this will return a working ip from the server with the port(connLink)
+  // and on done will return my working ip that the server replied with
   List<dynamic> nulls = [];
   String decrypted = SimpleEncryption(code).decrypt();
   var data = decrypted.split('||');
   int port = int.parse(data.last);
   var ips = data.first.split('|');
-  Completer<String?> completer = Completer<String?>();
+  Completer<WorkingIpModel?> completer = Completer<WorkingIpModel?>();
 
-  await serverProviderFalse.openServer(
-    shareProviderFalse,
-    MemberType.client,
-    shareItemsExplorerProviderFalse,
-  );
+  await runBeforeCall();
 
   Dio dio = Dio();
-  dio.options.sendTimeout = 5000;
-  dio.options.connectTimeout = 5000;
-  dio.options.receiveTimeout = 5000;
+  dio.options.sendTimeout = timeout ?? 5000;
+  dio.options.connectTimeout = timeout ?? 5000;
+  dio.options.receiveTimeout = timeout ?? 5000;
 
   for (var ip in ips) {
+    String connLink = getConnLink(ip, port, serverCheckEndPoint);
     dio
         .post(
-      getConnLink(ip, port, serverCheckEndPoint),
-      data: serverProviderFalse.myPort,
+      connLink,
+      data: myPort,
     )
-        .then((data) {
+        .then((data) async {
       // here is teh right thing, the server response have the
-      serverProviderFalse.setMyIpAsClient(data.data);
-      logger.i('My ip is ${serverProviderFalse.myIp}, got from server');
+      logger.i('My ip is ${data.data}, got from server');
 
-      completer.complete('$ip:$port');
+      completer.complete(WorkingIpModel(
+          myIp: data.data, myPort: myPort, serverIp: ip, serverPort: port));
     }).catchError((error) {
       nulls.add(null);
       if (nulls.length == ips.length) {

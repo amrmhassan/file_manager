@@ -79,3 +79,43 @@ Future<MiddlewareReturn> getShareSpaceMiddleware(
     );
   }
 }
+
+Future<MiddlewareReturn> checkIfConnectedMiddleWare(
+  HttpRequest request,
+  HttpResponse response,
+  ServerProvider serverProvider,
+) async {
+  String? ip = request.connectionInfo?.remoteAddress.address;
+  int? port = int.tryParse(request.headers.value(myServerPortHeaderKey) ?? '');
+  // if data not provided, just return
+  if (ip == null || port == null) {
+    response
+      ..statusCode = HttpStatus.forbidden
+      ..write('Fu** you hacker, we caught you and hacked your fuc** device')
+      ..close();
+    return MiddlewareReturn(
+      request: request,
+      response: response,
+      closed: true,
+      closeReason: 'loser hacker',
+    );
+  }
+  // if he isn't connected, just return
+  bool connected = serverProvider.ifPeerConnected(ip, port);
+  if (!connected) {
+    response
+      ..statusCode = HttpStatus.forbidden
+      ..write('Fu** you hacker, we caught you and hacked your fuc** device')
+      ..close();
+    return MiddlewareReturn(
+      request: request,
+      response: response,
+      closed: true,
+      closeReason: 'loser hacker',
+    );
+  }
+  return MiddlewareReturn(
+    request: request,
+    response: response,
+  );
+}
