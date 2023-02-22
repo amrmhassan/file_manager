@@ -13,6 +13,9 @@ class AppDrawerItem extends StatelessWidget {
   final VoidCallback onTap;
   final String? iconPath;
   final bool onlyDebug;
+  final bool allowBadge;
+  final String? badgeContent;
+  final Color? badgeColor;
 
   const AppDrawerItem({
     Key? key,
@@ -20,6 +23,9 @@ class AppDrawerItem extends StatelessWidget {
     required this.onTap,
     this.iconPath,
     this.onlyDebug = false,
+    this.allowBadge = false,
+    this.badgeColor,
+    this.badgeContent,
   }) : super(key: key);
 
   @override
@@ -38,6 +44,24 @@ class AppDrawerItem extends StatelessWidget {
                 title,
                 style: h4TextStyle.copyWith(color: kInactiveColor),
               ),
+              trailing: allowBadge
+                  ? Container(
+                      alignment: Alignment.center,
+                      width: largeIconSize * .9,
+                      height: largeIconSize * .9,
+                      decoration: BoxDecoration(
+                        color: badgeColor ?? kBlueColor,
+                        borderRadius: BorderRadius.circular(
+                          1000,
+                        ),
+                      ),
+                      child: Text(
+                        badgeContent ?? '0',
+                        style: h4TextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : null,
             ),
           )
         : SizedBox();
