@@ -93,10 +93,11 @@ class CustomRouterSystem {
       pipelineResponse,
       path,
       method,
-      (request, response) => response
-        ..statusCode = HttpStatus.notFound
-        ..write('Not Found')
-        ..close(),
+      // (request, response) => response
+      //   ..statusCode = HttpStatus.notFound
+      //   ..write('Not Found')
+      //   ..close(),
+      null,
     );
   }
 

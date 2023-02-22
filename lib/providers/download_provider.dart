@@ -2,7 +2,9 @@
 
 import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -181,11 +183,11 @@ class DownloadProvider extends ChangeNotifier {
 
   // when adding a new download task i want to check if there is any task downloading now or not
   // this will be called when the user wants to download a file from the other device storage
-  Future<void> addDownloadTask({
+  Future<void> addDownloadTaskFromPeer({
     required String remoteFilePath,
     required int? fileSize,
-    required String remoteDeviceID,
-    required String remoteDeviceName,
+    required String? remoteDeviceID,
+    required String? remoteDeviceName,
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
   }) async {
@@ -201,8 +203,9 @@ class DownloadProvider extends ChangeNotifier {
             .i('Task doesn\'t exit and it will be added to be downloaded soon');
       } else {
         throw CustomException(
-            e: 'Task already added and ${task.taskStatus.name}',
-            s: StackTrace.current);
+          e: 'Task already added and ${task.taskStatus.name}',
+          s: StackTrace.current,
+        );
       }
     }
     bool tasksFreeLocal = tasksFree;
@@ -212,8 +215,8 @@ class DownloadProvider extends ChangeNotifier {
       addedAt: DateTime.now(),
       size: fileSize,
       taskStatus: TaskStatus.pending,
-      remoteDeviceID: remoteDeviceID,
-      remoteDeviceName: remoteDeviceName,
+      remoteDeviceID: remoteDeviceID ?? laptopID,
+      remoteDeviceName: remoteDeviceName ?? laptopName,
     );
     tasks.add(downloadTaskModel);
     notifyListeners();
@@ -284,9 +287,18 @@ class DownloadProvider extends ChangeNotifier {
     // String? customDownloadPath,
   }) async {
     try {
-      PeerModel me = serverProvider.me(shareProvider);
-      PeerModel remotePeer = serverProvider
-          .peerModelWithDeviceID(downloadTaskModel.remoteDeviceID);
+      late PeerModel me;
+      late PeerModel remotePeer;
+      late String laptopDownloadUrl;
+      bool laptop = downloadTaskModel.remoteDeviceID == laptopID;
+      if (downloadTaskModel.remoteDeviceID != laptopID) {
+        me = serverProvider.me(shareProvider);
+        remotePeer = serverProvider
+            .peerModelWithDeviceID(downloadTaskModel.remoteDeviceID);
+      } else {
+        laptopDownloadUrl = connectLaptopPF(navigatorKey.currentContext!)
+            .getPhoneConnLink(downloadFileEndPoint);
+      }
 
       downloading = true;
       notifyListeners();
@@ -302,10 +314,12 @@ class DownloadProvider extends ChangeNotifier {
       rdu.DownloadTaskController downloadTaskController =
           rdu.DownloadTaskController(
         downloadPath: downloadTaskModel.localFilePath,
-        myDeviceID: me.deviceID,
-        mySessionID: me.sessionID,
+        myDeviceID: laptop ? laptopID : me.deviceID,
+        mySessionID: laptop ? laptopID : me.sessionID,
         remoteFilePath: downloadTaskModel.remoteFilePath,
-        url: remotePeer.getMyLink(downloadFileEndPoint),
+        url: laptop
+            ? laptopDownloadUrl
+            : remotePeer.getMyLink(downloadFileEndPoint),
         setProgress: (int received) {
           _updateTaskPercent(downloadTaskModel.id, received);
         },
@@ -319,7 +333,6 @@ class DownloadProvider extends ChangeNotifier {
       _setTaskController(downloadTaskModel.id, downloadTaskController);
       // ignore: unused_local_variable
       var res = await downloadTaskController.downloadFile();
-      logger.e('res $res');
 
       if (res == 0) {
         // zero return mean that the download isn't finished, paused

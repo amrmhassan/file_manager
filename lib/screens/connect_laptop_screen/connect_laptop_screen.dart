@@ -171,7 +171,7 @@ class ConnectLaptopScreen extends StatelessWidget {
                   VSpace(),
                   AnalyzerOptionsItem(
                     enablePadding: false,
-                    onTap: () {},
+                    onTap: () async {},
                     title: 'Send File',
                     logoName: 'link',
                     color: kMainIconColor,

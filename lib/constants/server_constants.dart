@@ -30,6 +30,7 @@ const String areYouAliveEndPoint = '/areYouAliveEndPoint';
 const String getClipboardEndPoint = '/getClipboardEndPoint';
 const String sendTextEndpoint = '/sendTextEndpoint';
 const String getListyEndPoint = '/getListyEndPoint';
+const String startDownloadFileEndPoint = '/startDownloadFileEndPoint';
 
 //? headers keys
 const String folderPathHeaderKey = 'folderPathHeaderKey';
@@ -46,3 +47,4 @@ const String freeSpaceHeaderKey = 'freeSpaceHeaderKey';
 const String totalSpaceHeaderKey = 'totalSpaceHeaderKey';
 const String parentFolderPathHeaderKey = 'parentFolderPathHeaderKey';
 const String myServerPortHeaderKey = 'myServerPortHeaderKey';
+const String fileSizeHeaderKey = 'fileSizeHeaderKey';

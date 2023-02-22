@@ -86,17 +86,20 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration.zero).then((value) {
+    Future.delayed(Duration.zero).then((value) async {
       data =
           ModalRoute.of(context)!.settings.arguments as ShareSpaceVScreenData;
       // bool means that it is from files explorer from windows device
       if (data.peerModel == null) {
         shareExpPF(context).setLaptopExploring(true);
-        connect_laptop_utils.getLaptopFolderContent(
+        await connect_laptop_utils.getLaptopFolderContent(
           folderPath: '/',
           shareItemsExplorerProvider: shareExpPF(context),
           connectLaptopProvider: connectLaptopPF(context),
         );
+        setState(() {
+          loading = false;
+        });
       } else {
         setState(() {
           shareExpPF(context).setLaptopExploring(data.laptop);
@@ -208,7 +211,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                                         await Provider.of<DownloadProvider>(
                                           context,
                                           listen: false,
-                                        ).addDownloadTask(
+                                        ).addDownloadTaskFromPeer(
                                           fileSize: shareExpProvider
                                               .viewedItems[index].size,
                                           remoteDeviceID:

@@ -221,3 +221,45 @@ Future<void> getPhoneShareSpaceHandler(
     );
   }
 }
+
+Future<void> startDownloadFileHandler(
+  HttpRequest request,
+  HttpResponse response,
+) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error with context')
+      ..close();
+    return;
+  }
+
+  try {
+    String filePath = await decodeRequest(request, false);
+    filePath = filePath.replaceAll('\\', '/');
+    int fileSize = int.parse(request.headers.value(fileSizeHeaderKey)!);
+    String remoteFilepath = filePath;
+
+    var downProvider = downPF(context);
+
+    await downProvider.addDownloadTaskFromPeer(
+      remoteFilePath: remoteFilepath,
+      fileSize: fileSize,
+      serverProvider: serverPF(context),
+      shareProvider: sharePF(context),
+      remoteDeviceID: null,
+      remoteDeviceName: null,
+    );
+  } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error downloading file')
+      ..close();
+    throw CustomException(
+      e: e,
+      s: s,
+      rethrowError: true,
+    );
+  }
+}

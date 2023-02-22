@@ -375,7 +375,7 @@ class DownloadTaskController {
       _handleSplitFileTask();
       try {
         await _downloadChunks();
-        logger.e('received $received length $length');
+        logger.i('received $received length $length');
 
         if ((received) != length) {
           // zero return mean that the  isn't finished, paused
