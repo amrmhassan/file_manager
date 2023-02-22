@@ -21,7 +21,7 @@ Future<Map<String, int>> getPhoneStorageInfo(BuildContext context) async {
   };
 }
 
-Future<void> getPhoneFolderContent({
+Future<void> getLaptopFolderContent({
   required String folderPath,
   required ShareItemsExplorerProvider shareItemsExplorerProvider,
   required ConnectLaptopProvider connectLaptopProvider,
@@ -52,7 +52,7 @@ Future<void> getPhoneFolderContent({
     shareItemsExplorerProvider.updatePath(
         folderPathRetrieved.isEmpty ? null : folderPathRetrieved, items);
 
-    shareItemsExplorerProvider.setLoadingItems(false, false);
+    shareItemsExplorerProvider.setLoadingItems(false, true);
   } catch (e, s) {
     shareItemsExplorerProvider.setLoadingItems(false);
     throw CustomException(

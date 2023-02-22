@@ -92,7 +92,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
       // bool means that it is from files explorer from windows device
       if (data.peerModel == null) {
         shareExpPF(context).setLaptopExploring(true);
-        connect_laptop_utils.getPhoneFolderContent(
+        connect_laptop_utils.getLaptopFolderContent(
           folderPath: '/',
           shareItemsExplorerProvider: shareExpPF(context),
           connectLaptopProvider: connectLaptopPF(context),
@@ -254,7 +254,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   ]) async {
     try {
       if (data.laptop) {
-        await connect_laptop_utils.getPhoneFolderContent(
+        await connect_laptop_utils.getLaptopFolderContent(
           folderPath: path,
           shareItemsExplorerProvider: shareExpPF(context),
           connectLaptopProvider: connectLaptopPF(context),
@@ -278,6 +278,8 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
           shareItemsExplorerProvider: shareItemsExplorerProvider,
         );
       }
+      logger.i(
+          'Folder content loaded with length${shareExpPF(context).viewedItems.length}');
     } catch (e) {
       logger.e(e);
       showSnackBar(
@@ -286,5 +288,8 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         snackBarType: SnackBarType.error,
       );
     }
+    setState(() {
+      loading = false;
+    });
   }
 }

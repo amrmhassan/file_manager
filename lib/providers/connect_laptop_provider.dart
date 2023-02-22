@@ -102,9 +102,9 @@ class ConnectLaptopProvider extends ChangeNotifier {
   }
 
   Future<String?> _getWorkingIp(String code) async {
+    await _openServer();
     var res = await getWorkingIpFromCode(
       code: code,
-      runBeforeCall: () async => await _openServer(),
       myPort: myPort,
     );
     if (res == null) return null;

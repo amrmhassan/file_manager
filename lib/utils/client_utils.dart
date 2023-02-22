@@ -376,13 +376,13 @@ Future<String?> shareSpaceGetWorkingLink(
   ShareProvider shareProviderFalse,
   ShareItemsExplorerProvider shareItemsExplorerProviderFalse,
 ) async {
+  await serverProviderFalse.openServer(
+    shareProviderFalse,
+    MemberType.client,
+    shareItemsExplorerProviderFalse,
+  );
   var res = await getWorkingIpFromCode(
     code: code,
-    runBeforeCall: () async => await serverProviderFalse.openServer(
-      shareProviderFalse,
-      MemberType.client,
-      shareItemsExplorerProviderFalse,
-    ),
     myPort: serverProviderFalse.myPort,
   );
   if (res == null) return null;
@@ -393,7 +393,6 @@ Future<String?> shareSpaceGetWorkingLink(
 
 Future<WorkingIpModel?> getWorkingIpFromCode({
   required String code,
-  required Future<void> Function() runBeforeCall,
   required int myPort,
   int? timeout,
 }) async {
@@ -405,8 +404,6 @@ Future<WorkingIpModel?> getWorkingIpFromCode({
   int port = int.parse(data.last);
   var ips = data.first.split('|');
   Completer<WorkingIpModel?> completer = Completer<WorkingIpModel?>();
-
-  await runBeforeCall();
 
   Dio dio = Dio();
   dio.options.sendTimeout = timeout ?? 5000;
