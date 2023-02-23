@@ -64,3 +64,6 @@ GlobalKey storageItemKey = GlobalKey();
 
 //? device props constants
 String myDefaultName = 'No Name ${Random().nextInt(99)}';
+
+//? downloads settings
+int maxParallelDownloadTasksDefault = 2;

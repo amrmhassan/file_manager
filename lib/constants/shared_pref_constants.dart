@@ -17,3 +17,4 @@ const String activeWishlistIdKey = 'activeWishlistIdKey';
 const String expEntitiesAnimDurationKey = 'expEntitiesAnimDurationKey';
 const String expEntitiesAnimeTypeKey = 'expEntitiesAnimeTypeKey';
 const String expEntitiesMagnitudeKey = 'expEntitiesMagnitudeKey';
+const String maxParallelDownloadsKey = 'maxParallelDownloadsKey';

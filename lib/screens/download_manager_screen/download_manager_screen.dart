@@ -1,9 +1,12 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/active_screen.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/done_screen.dart';
@@ -54,6 +57,25 @@ class _DownloadManagerScreenState extends State<DownloadManagerScreen> {
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
+            ),
+            rightIcon: Row(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ButtonWrapper(
+                      onTap: () {},
+                      child: Image.asset(
+                        'assets/icons/settings.png',
+                        width: smallIconSize,
+                        color: kMainIconColor,
+                      ),
+                      padding: EdgeInsets.all(largePadding),
+                    ),
+                  ],
+                ),
+                HSpace(factor: .5),
+              ],
             ),
           ),
           Expanded(

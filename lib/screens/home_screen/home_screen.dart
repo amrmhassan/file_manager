@@ -2,15 +2,13 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
-import 'package:explorer/providers/share_provider.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
-import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
@@ -51,17 +49,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     Future.delayed(Duration.zero).then((value) async {
       var recentProvider = Provider.of<RecentProvider>(context, listen: false);
-      await Provider.of<ExplorerProvider>(context, listen: false)
-          .loadSortOptions();
-      await Provider.of<AnalyzerProvider>(context, listen: false)
-          .loadInitialAppData(recentProvider);
-      await Provider.of<ListyProvider>(context, listen: false).loadListyLists();
-      //? to load the shared space items
-      await Provider.of<ShareProvider>(context, listen: false)
-          .loadSharedItems();
-      //? to set the device id
-      await Provider.of<ShareProvider>(context, listen: false)
-          .loadDeviceIdAndName();
+      await expPF(context).loadSortOptions();
+      //?
+      await analyzerPF(context).loadInitialAppData(recentProvider);
+      //?
+      await listyPF(context).loadListyLists();
+      //?
+      await sharePF(context).loadSharedItems();
+      //?
+      await sharePF(context).loadDeviceIdAndName();
+      //?
+      await downPF(context).loadDownloadSettings();
 
       //* getting storage permission
       bool res = await showPermissionsModal(

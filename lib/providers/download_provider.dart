@@ -2,8 +2,10 @@
 
 import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -29,6 +31,7 @@ import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 class DownloadProvider extends ChangeNotifier {
   List<DownloadTaskModel> tasks = [];
   bool taskLoadedFromDb = false;
+  late int maxDownloadsAtAtime;
 
   bool downloading = false;
   double? downloadSpeed;
@@ -51,6 +54,18 @@ class DownloadProvider extends ChangeNotifier {
 
   Iterable<DownloadTaskModel> get _pendingTasks =>
       tasks.where((element) => element.taskStatus == TaskStatus.pending);
+
+  void updateMaxParallelDownloads(int n) async {
+    maxDownloadsAtAtime = n;
+    notifyListeners();
+    await SharedPrefHelper.setString(maxParallelDownloadsKey, n.toString());
+  }
+
+  Future<void> loadDownloadSettings() async {
+    maxDownloadsAtAtime = int.parse(
+        await SharedPrefHelper.getString(maxParallelDownloadsKey) ??
+            '$maxParallelDownloadTasksDefault');
+  }
 
   Future<bool> continueFailedTasks(
       DownloadTaskModel downloadTaskModel,
@@ -172,15 +187,14 @@ class DownloadProvider extends ChangeNotifier {
   // ! when loading tasks from the sqlite don't load all tasks, just load the tasks that need to be download or whose status isn't finished,
   //! and only load the finished tasks when the user wants to see them
 
-  // to check if there is no tasks in the queue or all the tasks are finished or failed
-  bool get tasksFree =>
-      tasks.isEmpty ||
-      tasks.every(
-        (element) =>
-            element.taskStatus == TaskStatus.finished ||
-            element.taskStatus == TaskStatus.failed,
-      );
+  //! i am here
+  bool get allowDownloadNextTask =>
+      tasks
+          .where((element) => element.taskStatus == TaskStatus.downloading)
+          .length <=
+      maxDownloadsAtAtime;
 
+  //! add a function to handle running tasks, and start the next one
   // when adding a new download task i want to check if there is any task downloading now or not
   // this will be called when the user wants to download a file from the other device storage
   Future<void> addDownloadTaskFromPeer({
@@ -208,7 +222,8 @@ class DownloadProvider extends ChangeNotifier {
         );
       }
     }
-    bool tasksFreeLocal = tasksFree;
+    // to check if there is no tasks in the queue or all the tasks are finished or failed
+
     DownloadTaskModel downloadTaskModel = DownloadTaskModel(
       id: Uuid().v4(),
       remoteFilePath: remoteFilePath,
@@ -224,7 +239,7 @@ class DownloadProvider extends ChangeNotifier {
     await box.put(downloadTaskModel.id, downloadTaskModel);
 
     //? this is to start downloading the task if there is no tasks downloading
-    if (tasksFreeLocal) {
+    if (allowDownloadNextTask) {
       _startDownloadTask(
         shareProvider: shareProvider,
         serverProvider: serverProvider,
@@ -238,13 +253,15 @@ class DownloadProvider extends ChangeNotifier {
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
   }) {
-    if (tasks.any((element) => element.taskStatus == TaskStatus.pending)) {
+    if (!allowDownloadNextTask) return;
+    var tasksToDownload = tasks.where((element) =>
+        element.taskStatus == TaskStatus.pending ||
+        element.taskStatus == TaskStatus.paused);
+    if (tasksToDownload.isNotEmpty) {
       _startDownloadTask(
         serverProvider: serverProvider,
         shareProvider: shareProvider,
-        downloadTaskModel: tasks.firstWhere(
-          (element) => element.taskStatus == TaskStatus.pending,
-        ),
+        downloadTaskModel: tasksToDownload.first,
       );
     }
   }

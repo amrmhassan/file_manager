@@ -120,8 +120,10 @@ class QrCodeViewerScreen extends StatelessWidget {
                 VSpace(),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pop(context);
-                    copyToClipboard(context, serverProvider.myConnLink!);
+                    if (quickSendLink != null) {
+                      Navigator.pop(context);
+                      copyToClipboard(context, serverProvider.myConnLink!);
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: kHPad),
