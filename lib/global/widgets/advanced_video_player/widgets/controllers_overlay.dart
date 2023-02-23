@@ -166,16 +166,16 @@ class VideoLowerBackgroundShader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: Responsive.getHeight(context) / 4,
+      height: Responsive.getHeight(context) / 3,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: reverse
               ? [
                   Colors.transparent,
-                  Colors.black.withOpacity(.4),
+                  Colors.black.withOpacity(.6),
                 ]
               : [
-                  Colors.black.withOpacity(.4),
+                  Colors.black.withOpacity(.9),
                   Colors.transparent,
                 ],
           begin: Alignment.bottomCenter,
