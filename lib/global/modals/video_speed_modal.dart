@@ -14,15 +14,16 @@ class VideoSpeedsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ModalWrapper(
-        clip: Clip.hardEdge,
-        showTopLine: false,
-        color: kCardBackgroundColor,
-        afterLinePaddingFactor: .4,
-        padding: EdgeInsets.zero,
-        bottomPaddingFactor: .3,
-        child: Column(
+    return ModalWrapper(
+      clip: Clip.hardEdge,
+      showTopLine: false,
+      color: kCardBackgroundColor,
+      afterLinePaddingFactor: .4,
+      padding: EdgeInsets.zero,
+      bottomPaddingFactor: .3,
+      child: Expanded(
+        child: ListView(
+          physics: BouncingScrollPhysics(),
           children: List.generate(8, (index) => (index + 1) * .25)
               .map((e) => ListTile(
                     onTap: () {
