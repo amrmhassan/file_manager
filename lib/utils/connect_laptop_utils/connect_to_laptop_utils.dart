@@ -77,3 +77,21 @@ Future<String?> getPhoneClipboard(
     return clipboard;
   }
 }
+
+Future<void> startDownloadFile(
+  String filePath,
+  int fileSize,
+  BuildContext context,
+) async {
+  String connLink =
+      connectLaptopPF(context).getPhoneConnLink(startDownloadFileEndPoint);
+  await Dio().post(
+    connLink,
+    data: filePath,
+    options: Options(
+      headers: {
+        fileSizeHeaderKey: fileSize,
+      },
+    ),
+  );
+}

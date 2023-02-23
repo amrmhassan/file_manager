@@ -60,6 +60,7 @@ void getShareSpaceHandler(
   ServerProvider serverProvider,
   ShareProvider shareProvider,
 ) {
+  print('Here');
   try {
     List<Map<String, dynamic>> sharedItemsMap =
         shareProvider.sharedItems.map((e) {
@@ -395,13 +396,15 @@ Future<void> getUserImageHandler(
   HttpResponse response,
   ShareProvider shareProvider,
 ) async {
-  bool exist = File(shareProvider.myImagePath!).existsSync();
-  if (shareProvider.myImagePath == null || !exist) {
-    response
-      ..statusCode = HttpStatus.notFound
-      ..write('Not Found')
-      ..close();
-    return;
+  if (shareProvider.myImagePath == null) {
+    bool exist = File(shareProvider.myImagePath!).existsSync();
+    if (!exist) {
+      response
+        ..statusCode = HttpStatus.notFound
+        ..write('Not Found')
+        ..close();
+      return;
+    }
   }
   File file = File(shareProvider.myImagePath!);
   var bytes = file.readAsBytesSync();

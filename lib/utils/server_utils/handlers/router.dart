@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
+import 'package:explorer/helpers/router_system/router.dart';
+import 'package:explorer/helpers/router_system/server.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -179,4 +184,130 @@ CustomRouterSystem addServerRouters(
       getUserListyHandler,
     );
   return customRouterSystem;
+}
+
+Future<HttpServer> testingRunServerWithCustomServer(
+  ServerProvider serverProvider,
+  ShareProvider shareProvider,
+  ShareItemsExplorerProvider shareItemsExplorerProvider,
+) async {
+  var router = CustomRouter()
+      .addGlobalMiddleWare((request, response) {
+        print(request.uri.path);
+        return ReqResTracker(request, response);
+      })
+      .get(
+        areYouAliveEndPoint,
+        [],
+        (request, response) => response
+          ..write('Yes i am a live')
+          ..close(),
+      )
+      .post(
+        serverCheckEndPoint,
+        [],
+        (request, response) => serverCheckHandler(
+          request,
+          response,
+          serverProvider,
+          shareProvider,
+        ),
+      )
+      .post(
+        addClientEndPoint,
+        [],
+        (request, response) => addClientHandler(
+          request,
+          response,
+          serverProvider,
+          shareProvider,
+        ),
+      )
+      .get(
+        getShareSpaceEndPoint,
+        [],
+        (request, response) => getShareSpaceHandler(
+          request,
+          response,
+          serverProvider,
+          shareProvider,
+        ),
+      )
+      .post(
+        clientAddedEndPoint,
+        [],
+        (request, response) => clientAddedHandler(
+          request,
+          response,
+          serverProvider,
+        ),
+      )
+      .post(
+          clientLeftEndPoint,
+          [],
+          (request, response) => clientLeftHandler(
+                request,
+                response,
+                serverProvider,
+              ))
+      .post(
+        fileAddedToShareSpaceEndPoint,
+        [],
+        (request, response) => fileAddedHandler(
+          request,
+          response,
+          shareItemsExplorerProvider,
+        ),
+      )
+      .post(
+        fileRemovedFromShareSpaceEndPoint,
+        [],
+        (request, response) => fileRemovedHandler(
+          request,
+          response,
+          shareItemsExplorerProvider,
+        ),
+      )
+      .get(
+        getFolderContentEndPointEndPoint,
+        [],
+        (request, response) => getFolderContentHandler(
+          request,
+          response,
+          serverProvider,
+          shareProvider,
+        ),
+      )
+      .get(streamAudioEndPoint, [], streamAudioHandler)
+      .get(streamVideoEndPoint, [], streamVideoHandler)
+      .get(downloadFileEndPoint, [], downloadFileHandler)
+      .get(
+        wsServerConnLinkEndPoint,
+        [],
+        (request, response) => getWsServerConnLinkHandler(
+          request,
+          response,
+          serverProvider,
+        ),
+      )
+      .get(
+        getPeerImagePathEndPoint,
+        [],
+        (request, response) => getUserImageHandler(
+          request,
+          response,
+          shareProvider,
+        ),
+      )
+      .get(
+        getListyEndPoint,
+        [],
+        getUserListyHandler,
+      );
+  CustomServer customServer = CustomServer(
+    router,
+    InternetAddress.anyIPv4,
+    0,
+  );
+  return await customServer.bind();
 }

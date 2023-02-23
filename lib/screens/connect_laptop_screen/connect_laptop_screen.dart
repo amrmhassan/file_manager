@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -20,6 +21,9 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
+import 'package:file_picker/file_picker.dart' as file_picker;
+import 'dart:io';
+
 
 class ConnectLaptopScreen extends StatelessWidget {
   static const String routeName = '/ConnectLaptopScreen';
@@ -171,7 +175,19 @@ class ConnectLaptopScreen extends StatelessWidget {
                   VSpace(),
                   AnalyzerOptionsItem(
                     enablePadding: false,
-                    onTap: () async {},
+                    onTap: () async {
+                      var res = await file_picker.FilePicker.platform
+                          .pickFiles(allowMultiple: false);
+                      if (res != null && res.files.isNotEmpty) {
+                        String? path = res.files.first.path;
+                        if (path == null) return;
+                        int fileSize = File(path).lengthSync();
+                        await startDownloadFile(path, fileSize, context);
+                        logger.i('sending file $path to phone');
+                        showSnackBar(
+                            context: context, message: 'Sending file to phone');
+                      }
+                    },
                     title: 'Send File',
                     logoName: 'link',
                     color: kMainIconColor,

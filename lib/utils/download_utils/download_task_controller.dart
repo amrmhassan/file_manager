@@ -89,7 +89,7 @@ class DownloadTaskController {
     required this.setSpeed,
     required this.remoteDeviceID,
     required this.remoteDeviceName,
-    this.maximumParallelDownloadThreads = 20,
+    this.maximumParallelDownloadThreads = 5,
   });
 
   // void _resetRunTimeVariables() {

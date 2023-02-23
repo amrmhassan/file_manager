@@ -249,12 +249,17 @@ class ServerProvider extends ChangeNotifier {
       }
       //? opening the server port and setting end points
       logger.i('Opening server');
-      httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
-      logger.i('Http Server listening on ${httpServer?.port}');
+      // httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
 
-      CustomRouterSystem customRouterSystem =
-          addServerRouters(this, shareProvider, shareItemsExplorerProvider);
-      httpServer!.listen(customRouterSystem.pipeline);
+      // CustomRouterSystem customRouterSystem =
+      //     addServerRouters(this, shareProvider, shareItemsExplorerProvider);
+      httpServer = await testingRunServerWithCustomServer(
+        this,
+        shareProvider,
+        shareItemsExplorerProvider,
+      );
+      logger.i('Http Server listening on ${httpServer?.port}');
+      // httpServer!.listen(customRouterSystem.pipeline);
       //? when above code is success then set the needed stuff like port, other things
       myPort = httpServer!.port;
       myType = memberType;
