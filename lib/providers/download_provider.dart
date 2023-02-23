@@ -191,7 +191,7 @@ class DownloadProvider extends ChangeNotifier {
   bool get allowDownloadNextTask =>
       tasks
           .where((element) => element.taskStatus == TaskStatus.downloading)
-          .length <=
+          .length <
       maxDownloadsAtAtime;
 
   //! add a function to handle running tasks, and start the next one

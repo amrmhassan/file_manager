@@ -12,6 +12,10 @@ class BaseOverLay extends StatelessWidget {
     required this.toggleControllerOverLayViewed,
   });
 
+  // speed modal scroll
+  // seeker overlay in landscape mode
+  // fast seekers video in portrait mode height
+
   @override
   Widget build(BuildContext context) {
     return Stack(

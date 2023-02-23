@@ -66,4 +66,4 @@ GlobalKey storageItemKey = GlobalKey();
 String myDefaultName = 'No Name ${Random().nextInt(99)}';
 
 //? downloads settings
-int maxParallelDownloadTasksDefault = 2;
+int maxParallelDownloadTasksDefault = 1;

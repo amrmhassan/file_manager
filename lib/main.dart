@@ -85,6 +85,8 @@ import 'package:provider/provider.dart';
 // and the receiving device will check for each of these, and the one that creates an error is wrong, and the one that gives response via a certain  is the right one
 
 //! add a middleware to check if the connecting ip is saved in my provider or not, and if not close the refuse connection
+//! handle back button when viewing a video => and add an icon to let it play in background
+
 bool firstTimeRunApp = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

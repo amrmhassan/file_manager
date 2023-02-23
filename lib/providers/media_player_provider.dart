@@ -236,6 +236,18 @@ class MediaPlayerProvider extends ChangeNotifier {
     }
   }
 
+  void pauseVideo() {
+    isVideoPlaying = false;
+    notifyListeners();
+    videoPlayerController?.pause();
+  }
+
+  void resumeVideo() {
+    isVideoPlaying = true;
+    notifyListeners();
+    videoPlayerController?.play();
+  }
+
   //? add to current position
   void addToPosition(double p) async {
     Duration? currentPosition = await videoPlayerController?.position;

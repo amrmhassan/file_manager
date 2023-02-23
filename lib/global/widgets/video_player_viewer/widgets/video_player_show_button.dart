@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +25,8 @@ class VideoPlayerShowButton extends StatelessWidget {
             ),
             child: ButtonWrapper(
               onTap: () {
-                Provider.of<MediaPlayerProvider>(context, listen: false)
-                    .toggleHideVideo();
+                mpPF(context).toggleHideVideo();
+                mpPF(context).resumeVideo();
               },
               width: largeIconSize * 1.3,
               height: largeIconSize * 1.3,

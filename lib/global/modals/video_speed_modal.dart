@@ -14,34 +14,36 @@ class VideoSpeedsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ModalWrapper(
-      clip: Clip.hardEdge,
-      showTopLine: false,
-      color: kCardBackgroundColor,
-      afterLinePaddingFactor: .4,
-      padding: EdgeInsets.zero,
-      bottomPaddingFactor: .3,
-      child: Column(
-        children: List.generate(8, (index) => (index + 1) * .25)
-            .map((e) => ListTile(
-                  onTap: () {
-                    mpPF(context).setVideoSpeed(e);
-                    Navigator.pop(context);
-                  },
-                  leading: Opacity(
-                    opacity: mpP(context).videoSpeed == e ? 1 : 0,
-                    child: Image.asset(
-                      'assets/icons/check.png',
-                      color: kMainIconColor,
-                      width: smallIconSize,
+    return SingleChildScrollView(
+      child: ModalWrapper(
+        clip: Clip.hardEdge,
+        showTopLine: false,
+        color: kCardBackgroundColor,
+        afterLinePaddingFactor: .4,
+        padding: EdgeInsets.zero,
+        bottomPaddingFactor: .3,
+        child: Column(
+          children: List.generate(8, (index) => (index + 1) * .25)
+              .map((e) => ListTile(
+                    onTap: () {
+                      mpPF(context).setVideoSpeed(e);
+                      Navigator.pop(context);
+                    },
+                    leading: Opacity(
+                      opacity: mpP(context).videoSpeed == e ? 1 : 0,
+                      child: Image.asset(
+                        'assets/icons/check.png',
+                        color: kMainIconColor,
+                        width: smallIconSize,
+                      ),
                     ),
-                  ),
-                  title: Text(
-                    e == 1 ? 'Normal' : '${e.toStringAsFixed(2)}x',
-                    style: h4TextStyle,
-                  ),
-                ))
-            .toList(),
+                    title: Text(
+                      e == 1 ? 'Normal' : '${e.toStringAsFixed(2)}x',
+                      style: h4TextStyle,
+                    ),
+                  ))
+              .toList(),
+        ),
       ),
     );
   }
