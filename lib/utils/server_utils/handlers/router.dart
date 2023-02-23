@@ -193,7 +193,6 @@ Future<HttpServer> testingRunServerWithCustomServer(
 ) async {
   var router = CustomRouter()
       .addGlobalMiddleWare((request, response) {
-        print(request.uri.path);
         return ReqResTracker(request, response);
       })
       .get(

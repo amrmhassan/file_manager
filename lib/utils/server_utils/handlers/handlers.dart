@@ -60,7 +60,6 @@ void getShareSpaceHandler(
   ServerProvider serverProvider,
   ShareProvider shareProvider,
 ) {
-  print('Here');
   try {
     List<Map<String, dynamic>> sharedItemsMap =
         shareProvider.sharedItems.map((e) {
