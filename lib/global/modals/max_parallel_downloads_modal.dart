@@ -24,33 +24,37 @@ class MaximumParallelDownloadModal extends StatelessWidget {
       showTopLine: false,
       padding: EdgeInsets.symmetric(vertical: 0, horizontal: kHPad),
       color: kCardBackgroundColor,
-      child: Column(
-        children: List.generate(
-            5,
-            (index) => ListTile(
-                  leading: Opacity(
-                    opacity: (index + 1) == downloadProvider.maxDownloadsAtAtime
-                        ? 1
-                        : 0,
-                    child: Image.asset(
-                      'assets/icons/check.png',
-                      color: kMainIconColor,
-                      width: smallIconSize,
+      child: Expanded(
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          children: List.generate(
+              8,
+              (index) => ListTile(
+                    leading: Opacity(
+                      opacity:
+                          (index + 1) == downloadProvider.maxDownloadsAtAtime
+                              ? 1
+                              : 0,
+                      child: Image.asset(
+                        'assets/icons/check.png',
+                        color: kMainIconColor,
+                        width: smallIconSize,
+                      ),
                     ),
-                  ),
-                  onTap: () {
-                    downPF(context).updateMaxParallelDownloads(
-                      index + 1,
-                      serverPF(context),
-                      sharePF(context),
-                    );
-                    Navigator.pop(context);
-                  },
-                  title: Text(
-                    (index + 1).toString(),
-                    style: h3LightTextStyle,
-                  ),
-                )),
+                    onTap: () {
+                      downPF(context).updateMaxParallelDownloads(
+                        index + 1,
+                        serverPF(context),
+                        sharePF(context),
+                      );
+                      Navigator.pop(context);
+                    },
+                    title: Text(
+                      (index + 1).toString(),
+                      style: h3LightTextStyle,
+                    ),
+                  )),
+        ),
       ),
     );
   }

@@ -61,9 +61,7 @@ class FinishedTaskInfo extends StatelessWidget {
                   okText: 'Also File',
                   onOk: () async {
                     // this will delete the task and the file associated with it
-                    try {
-                      File(downloadTaskModel.localFilePath).deleteSync();
-                    } catch (e) {
+                    try {} catch (e) {
                       showSnackBar(
                         context: context,
                         message: 'File does\'t exist already ',
@@ -74,14 +72,16 @@ class FinishedTaskInfo extends StatelessWidget {
                       context: context,
                       message: 'Task Deleted',
                     );
-                    await downPF(context).removeTaskById(downloadTaskModel.id);
+                    downPF(context).deleteTaskCompletely(downloadTaskModel.id,
+                        alsoFile: true);
                   },
                   onCancel: () async {
                     showSnackBar(
                       context: context,
                       message: 'Task Deleted',
                     );
-                    await downPF(context).removeTaskById(downloadTaskModel.id);
+                    downPF(context).deleteTaskCompletely(downloadTaskModel.id,
+                        alsoFile: false);
                   },
                 );
               },

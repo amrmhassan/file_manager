@@ -247,8 +247,7 @@ class DownloadTaskController {
   void _initTempDir() {
     // getting the chunks number for the final file
     // making the temp dir for that will hold the temp files
-    tempDir =
-        Directory('${path_operations.dirname(downloadPath)}/.$fileName-tmp');
+    tempDir = Directory(getTempDirPath(downloadPath, fileName));
     if (!tempDir.existsSync()) {
       tempDir.createSync();
     }
@@ -396,6 +395,22 @@ class DownloadTaskController {
         s: s,
         rethrowError: true,
       );
+    }
+  }
+
+  static String getTempDirPath(String localDownloadPath, String fName) {
+    return '${path_operations.dirname(localDownloadPath)}/.$fName-tmp';
+  }
+
+  static Future<void> deleteTaskFromStorage(String localFilePath) async {
+    var file = File(localFilePath);
+    if (await file.exists()) {
+      await file.delete();
+    } else {
+      // delete the tmp dir of that task
+      String fileName = path_operations.basename(localFilePath);
+      String tmpDirPath = getTempDirPath(localFilePath, fileName);
+      await Directory(tmpDirPath).delete(recursive: true);
     }
   }
 }

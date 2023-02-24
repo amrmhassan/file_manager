@@ -3,10 +3,12 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/max_parallel_downloads_modal.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +53,34 @@ class DownloadSettingsScreen extends StatelessWidget {
               downloadProvider.maxDownloadsAtAtime.toString(),
               style: h4TextStyleInactive,
             ),
-          )
+          ),
+          VSpace(),
+          ListTile(
+            leading: Image.asset(
+              'assets/icons/delete.png',
+              width: mediumIconSize,
+              color: kDangerColor,
+            ),
+            onTap: () {
+              showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) => DoubleButtonsModal(
+                  onOk: () {
+                    downPF(context).clearAllTasks();
+                    showSnackBar(context: context, message: 'Deleted');
+                  },
+                  title: 'Confirm Delete?',
+                  subTitle:
+                      'This will delete all tasks with all files from the storage and stop downloading ones.',
+                ),
+              );
+            },
+            title: Text(
+              'Delete all downloads with files',
+              style: h4LightTextStyle,
+            ),
+          ),
         ],
       ),
     );

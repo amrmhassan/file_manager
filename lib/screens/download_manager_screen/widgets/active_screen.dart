@@ -57,6 +57,7 @@ class ActiveScreen extends StatelessWidget {
                 : PaddingWrapper(
                     padding: EdgeInsets.symmetric(horizontal: kHPad / 2),
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       itemCount: activeTasks.length,
                       itemBuilder: (context, index) => DownloadCard(
                         downloadTaskModel: activeTasks[index],

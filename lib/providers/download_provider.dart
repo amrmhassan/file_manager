@@ -132,20 +132,38 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeTaskById(String id) async {
+  Future<void> _removeTaskById(String id) async {
     tasks.removeWhere((element) => element.id == id);
     notifyListeners();
     var box = await HiveBox.downloadTasks;
     await box.delete(id);
   }
 
-  void clearAllTasks() async {
+  Future<void> deleteTaskCompletely(
+    String taskID, {
+    bool alsoFile = false,
+  }) async {
+    int index = tasks.indexWhere((element) => element.id == taskID);
+    if (alsoFile) {
+      await rdu.DownloadTaskController.deleteTaskFromStorage(
+        tasks[index].localFilePath,
+      );
+    }
+    await _pauseTaskDownload(index);
+    await _removeTaskById(taskID);
+  }
+
+  Future<void> clearAllTasks() async {
     tasks.clear();
     notifyListeners();
-    File(getSaveFilePath(FileType.video, 'fileName'))
-        .parent
-        .parent
-        .deleteSync(recursive: true);
+    // File(getSaveFilePath(FileType.video, 'fileName'))
+    //     .parent
+    //     .parent
+    //     .deleteSync(recursive: true);
+    for (var task in _downloadingTasks) {
+      await deleteTaskCompletely(task.id);
+    }
+    Directory(checkMainDownloadFolder()).deleteSync(recursive: true);
     var box = await HiveBox.downloadTasks;
     await box.clear();
   }
@@ -173,11 +191,11 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
-  void _pauseTaskDownload(int index, {bool pending = false}) {
+  Future<void> _pauseTaskDownload(int index, {bool pending = false}) async {
     tasks[index].downloadTaskController!.cancelTask();
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = pending ? TaskStatus.pending : TaskStatus.paused;
-    _updateTask(index, newTask);
+    await _updateTask(index, newTask);
   }
 
   void _resumeTaskDownload(

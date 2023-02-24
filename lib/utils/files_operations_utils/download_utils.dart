@@ -49,7 +49,7 @@ String getSaveFilePath(FileType fileType, String fileName) {
 
 //? for checking each sub download folder
 String _folderPathCheck(String folderName) {
-  String mainDownloadPath = _checkMainDownloadFolder();
+  String mainDownloadPath = checkMainDownloadFolder();
   Directory directory = Directory('$mainDownloadPath/$folderName');
   if (!directory.existsSync()) {
     directory.createSync();
@@ -58,7 +58,7 @@ String _folderPathCheck(String folderName) {
 }
 
 //? for checking the main download folder
-String _checkMainDownloadFolder() {
+String checkMainDownloadFolder() {
   String mainPath = 'sdcard/$mainDownloadFolder';
   Directory mainDir = Directory(mainPath);
   if (!mainDir.existsSync()) {
