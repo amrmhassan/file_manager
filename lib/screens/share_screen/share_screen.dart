@@ -12,7 +12,6 @@ import 'package:explorer/screens/share_screen/widgets/not_sharing_view.dart';
 import 'package:explorer/screens/share_screen/widgets/share_screen_navbar.dart';
 import 'package:explorer/screens/share_screen/widgets/share_space_card.dart';
 import 'package:explorer/screens/share_screen/widgets/share_space_screen_appbar.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

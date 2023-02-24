@@ -67,7 +67,10 @@ class DownloadSettingsScreen extends StatelessWidget {
                 context: context,
                 builder: (context) => DoubleButtonsModal(
                   onOk: () {
-                    downPF(context).clearAllTasks();
+                    downPF(context).clearAllTasks(
+                      serverPF(context),
+                      sharePF(context),
+                    );
                     showSnackBar(context: context, message: 'Deleted');
                   },
                   title: 'Confirm Delete?',

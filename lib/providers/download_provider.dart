@@ -10,7 +10,6 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/server_constants.dart';
 
 import 'package:explorer/models/download_task_model.dart';
@@ -140,7 +139,9 @@ class DownloadProvider extends ChangeNotifier {
   }
 
   Future<void> deleteTaskCompletely(
-    String taskID, {
+    String taskID,
+    ServerProvider serverProvider,
+    ShareProvider shareProvider, {
     bool alsoFile = false,
   }) async {
     int index = tasks.indexWhere((element) => element.id == taskID);
@@ -151,9 +152,14 @@ class DownloadProvider extends ChangeNotifier {
     }
     await _pauseTaskDownload(index);
     await _removeTaskById(taskID);
+    _downloadNextTask(
+      serverProvider: serverProvider,
+      shareProvider: shareProvider,
+    );
   }
 
-  Future<void> clearAllTasks() async {
+  Future<void> clearAllTasks(
+      ServerProvider serverProvider, ShareProvider shareProvider) async {
     tasks.clear();
     notifyListeners();
     // File(getSaveFilePath(FileType.video, 'fileName'))
@@ -161,7 +167,7 @@ class DownloadProvider extends ChangeNotifier {
     //     .parent
     //     .deleteSync(recursive: true);
     for (var task in _downloadingTasks) {
-      await deleteTaskCompletely(task.id);
+      await deleteTaskCompletely(task.id, serverProvider, shareProvider);
     }
     Directory(checkMainDownloadFolder()).deleteSync(recursive: true);
     var box = await HiveBox.downloadTasks;
@@ -191,7 +197,7 @@ class DownloadProvider extends ChangeNotifier {
   }
 
   Future<void> _pauseTaskDownload(int index, {bool pending = false}) async {
-    tasks[index].downloadTaskController!.cancelTask();
+    tasks[index].downloadTaskController?.cancelTask();
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = pending ? TaskStatus.pending : TaskStatus.paused;
     await _updateTask(index, newTask);

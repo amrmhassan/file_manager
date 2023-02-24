@@ -4,7 +4,6 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DownloadPercentBar extends StatelessWidget {

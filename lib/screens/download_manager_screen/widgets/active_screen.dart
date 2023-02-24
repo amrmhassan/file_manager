@@ -28,7 +28,8 @@ class ActiveScreen extends StatelessWidget {
           if (kDebugMode)
             ElevatedButton(
                 onPressed: () {
-                  downPF(context).clearAllTasks();
+                  downPF(context)
+                      .clearAllTasks(serverPF(context), sharePF(context));
                 },
                 child: Text('Clear All')),
           if (downloadProvider.downloadSpeed != null)

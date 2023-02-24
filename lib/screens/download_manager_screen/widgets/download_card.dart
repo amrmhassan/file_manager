@@ -63,11 +63,9 @@ class _DownloadCardState extends State<DownloadCard> {
       return SizedBox();
     }
     return Dismissible(
-      // widget.downloadTaskModel.taskStatus == TaskStatus.finished
-      //     ? DismissDirection.none
-      //     :
-
-      direction: DismissDirection.endToStart,
+      direction: widget.downloadTaskModel.taskStatus == TaskStatus.finished
+          ? DismissDirection.none
+          : DismissDirection.endToStart,
       background: Container(
         padding:
             EdgeInsets.symmetric(horizontal: kHPad / 2, vertical: kVPad / 2),
@@ -104,8 +102,11 @@ class _DownloadCardState extends State<DownloadCard> {
           //! here i want to delete a task, from storage and from state
           downPF(context).deleteTaskCompletely(
             widget.downloadTaskModel.id,
+            serverPF(context),
+            sharePF(context),
             alsoFile: true,
           );
+
           showSnackBar(context: context, message: 'Deleted');
         }
         return false;

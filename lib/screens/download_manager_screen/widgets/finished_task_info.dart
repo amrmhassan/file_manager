@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
-import 'dart:io';
-
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
@@ -72,16 +70,24 @@ class FinishedTaskInfo extends StatelessWidget {
                       context: context,
                       message: 'Task Deleted',
                     );
-                    downPF(context).deleteTaskCompletely(downloadTaskModel.id,
-                        alsoFile: true);
+                    downPF(context).deleteTaskCompletely(
+                      downloadTaskModel.id,
+                      serverPF(context),
+                      sharePF(context),
+                      alsoFile: true,
+                    );
                   },
                   onCancel: () async {
                     showSnackBar(
                       context: context,
                       message: 'Task Deleted',
                     );
-                    downPF(context).deleteTaskCompletely(downloadTaskModel.id,
-                        alsoFile: false);
+                    downPF(context).deleteTaskCompletely(
+                      downloadTaskModel.id,
+                      serverPF(context),
+                      sharePF(context),
+                      alsoFile: false,
+                    );
                   },
                 );
               },
