@@ -67,7 +67,7 @@ class _DownloadManagerScreenState extends State<DownloadManagerScreen> {
                     ButtonWrapper(
                       onTap: () {
                         Navigator.pushNamed(
-                            context, DownloadSettingsScreen.routeName);
+                            context, DownloadSetScreen.routeName);
                       },
                       child: Image.asset(
                         'assets/icons/settings.png',

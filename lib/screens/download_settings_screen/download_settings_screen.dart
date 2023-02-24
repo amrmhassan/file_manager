@@ -12,9 +12,9 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
-class DownloadSettingsScreen extends StatelessWidget {
+class DownloadSetScreen extends StatelessWidget {
   static const String routeName = '/DownloadSettingsScreen';
-  const DownloadSettingsScreen({super.key});
+  const DownloadSetScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -23,6 +23,7 @@ import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/screens/about_us_screen/about_us_screen.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
+import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_coming_soon.dart';
 import 'package:explorer/screens/connect_laptop_screen/connect_laptop_screen.dart';
 import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
 import 'package:explorer/screens/download_settings_screen/download_settings_screen.dart';
@@ -189,8 +190,8 @@ class MyApp extends StatelessWidget {
           AboutUsScreen.routeName: (context) => AboutUsScreen(),
           LaptopMessagesScreen.routeName: (context) => LaptopMessagesScreen(),
           ConnectLaptopScreen.routeName: (context) => ConnectLaptopScreen(),
-          DownloadSettingsScreen.routeName: (context) =>
-              DownloadSettingsScreen(),
+          DownloadSetScreen.routeName: (context) => DownloadSetScreen(),
+          ConnLaptopComingSoon.routeName: (context) => ConnLaptopComingSoon(),
         },
       ),
     );
