@@ -19,6 +19,7 @@ import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -56,10 +57,17 @@ class _DownloadCardState extends State<DownloadCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.downloadTaskModel.size == 0 &&
+        widget.downloadTaskModel.count == 0) {
+      //! this is an error, for files with 0 size and 0 count
+      return SizedBox();
+    }
     return Dismissible(
-      direction: widget.downloadTaskModel.taskStatus == TaskStatus.finished
-          ? DismissDirection.none
-          : DismissDirection.endToStart,
+      // widget.downloadTaskModel.taskStatus == TaskStatus.finished
+      //     ? DismissDirection.none
+      //     :
+
+      direction: DismissDirection.endToStart,
       background: Container(
         padding:
             EdgeInsets.symmetric(horizontal: kHPad / 2, vertical: kVPad / 2),
@@ -77,7 +85,7 @@ class _DownloadCardState extends State<DownloadCard> {
           ),
         ),
       ),
-      key: UniqueKey(),
+      key: Key(widget.downloadTaskModel.id),
       confirmDismiss: (direction) async {
         var confirm = await showModalBottomSheet(
           backgroundColor: Colors.transparent,
@@ -122,6 +130,10 @@ class _DownloadCardState extends State<DownloadCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (kDebugMode) Text(widget.downloadTaskModel.taskStatus.name),
+            if (kDebugMode)
+              Text(
+                  'Size:${widget.downloadTaskModel.size}, count ${widget.downloadTaskModel.count}'),
             Row(
               children: [
                 Expanded(

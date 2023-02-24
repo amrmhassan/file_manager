@@ -403,14 +403,18 @@ class DownloadTaskController {
   }
 
   static Future<void> deleteTaskFromStorage(String localFilePath) async {
-    var file = File(localFilePath);
-    if (await file.exists()) {
-      await file.delete();
-    } else {
-      // delete the tmp dir of that task
-      String fileName = path_operations.basename(localFilePath);
-      String tmpDirPath = getTempDirPath(localFilePath, fileName);
-      await Directory(tmpDirPath).delete(recursive: true);
+    try {
+      var file = File(localFilePath);
+      if (await file.exists()) {
+        await file.delete();
+      } else {
+        // delete the tmp dir of that task
+        String fileName = path_operations.basename(localFilePath);
+        String tmpDirPath = getTempDirPath(localFilePath, fileName);
+        await Directory(tmpDirPath).delete(recursive: true);
+      }
+    } catch (e) {
+      logger.e(e);
     }
   }
 }

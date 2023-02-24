@@ -174,14 +174,13 @@ class DownloadProvider extends ChangeNotifier {
     ShareProvider shareProvider,
   ) {
     int index = tasks.indexWhere((element) => element.id == taskID);
-    TaskStatus taskStatus = tasks[index].taskStatus;
-    if (taskStatus == TaskStatus.paused) {
+    if (tasks[index].taskStatus == TaskStatus.paused) {
       _resumeTaskDownload(
         index,
         serverProvider,
         shareProvider,
       );
-    } else if (taskStatus == TaskStatus.downloading) {
+    } else if (tasks[index].taskStatus == TaskStatus.downloading) {
       _downloadNextTask(
         serverProvider: serverProvider,
         shareProvider: shareProvider,
