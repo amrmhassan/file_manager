@@ -26,12 +26,6 @@ class ShareScreen extends StatefulWidget {
 
 class _ShareScreenState extends State<ShareScreen> {
   @override
-  void initState() {
-    downPF(context).loadTasks();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var serverProvider = Provider.of<ServerProvider>(context);
 

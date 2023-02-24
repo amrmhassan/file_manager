@@ -12,6 +12,7 @@ import 'package:explorer/screens/download_manager_screen/widgets/active_screen.d
 import 'package:explorer/screens/download_manager_screen/widgets/done_screen.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_error_screen.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_screen_navbar.dart';
+import 'package:explorer/screens/download_settings_screen/download_settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class DownloadManagerScreen extends StatefulWidget {
@@ -64,7 +65,10 @@ class _DownloadManagerScreenState extends State<DownloadManagerScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ButtonWrapper(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, DownloadSettingsScreen.routeName);
+                      },
                       child: Image.asset(
                         'assets/icons/settings.png',
                         width: smallIconSize,

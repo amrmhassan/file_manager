@@ -60,6 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
       await sharePF(context).loadDeviceIdAndName();
       //?
       await downPF(context).loadDownloadSettings();
+      //?
+      downPF(context).loadTasks();
 
       //* getting storage permission
       bool res = await showPermissionsModal(

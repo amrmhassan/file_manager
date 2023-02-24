@@ -55,10 +55,35 @@ class DownloadProvider extends ChangeNotifier {
   Iterable<DownloadTaskModel> get _pendingTasks =>
       tasks.where((element) => element.taskStatus == TaskStatus.pending);
 
-  void updateMaxParallelDownloads(int n) async {
+//  fix this function here, after testing it first
+  void updateMaxParallelDownloads(
+    int n,
+    ServerProvider serverProvider,
+    ShareProvider shareProvider,
+  ) async {
+    int previousValue = maxDownloadsAtAtime;
     maxDownloadsAtAtime = n;
     notifyListeners();
     await SharedPrefHelper.setString(maxParallelDownloadsKey, n.toString());
+    if (n > previousValue) {
+      _pendingTasks.take(n - previousValue).forEach((element) {
+        _startDownloadTask(
+          serverProvider: serverProvider,
+          shareProvider: shareProvider,
+          downloadTaskModel: element,
+        );
+      });
+    } else if (n < previousValue) {
+      _downloadingTasks.skip(maxDownloadsAtAtime).forEach((element) {
+        // togglePauseResumeTask(element.id, serverProvider, shareProvider);
+        _markTasksAsPending(element.id);
+      });
+    }
+  }
+
+  Future<void> _markTasksAsPending(String taskID) async {
+    int index = tasks.indexWhere((element) => element.id == taskID);
+    _pauseTaskDownload(index, pending: true);
   }
 
   Future<void> loadDownloadSettings() async {
@@ -97,7 +122,8 @@ class DownloadProvider extends ChangeNotifier {
     List<DownloadTaskModel> parsedTasks = [];
     for (var loadedTask in loadedTasks) {
       if (loadedTask.taskStatus == TaskStatus.downloading ||
-          loadedTask.taskStatus == TaskStatus.paused) {
+          loadedTask.taskStatus == TaskStatus.paused ||
+          loadedTask.taskStatus == TaskStatus.pending) {
         loadedTask.taskStatus = TaskStatus.failed;
       }
       parsedTasks.add(loadedTask);
@@ -138,14 +164,19 @@ class DownloadProvider extends ChangeNotifier {
         shareProvider,
       );
     } else if (taskStatus == TaskStatus.downloading) {
+      _downloadNextTask(
+        serverProvider: serverProvider,
+        shareProvider: shareProvider,
+        skipAllow: true,
+      );
       _pauseTaskDownload(index);
     }
   }
 
-  void _pauseTaskDownload(int index) {
+  void _pauseTaskDownload(int index, {bool pending = false}) {
     tasks[index].downloadTaskController!.cancelTask();
     DownloadTaskModel newTask = tasks[index];
-    newTask.taskStatus = TaskStatus.paused;
+    newTask.taskStatus = pending ? TaskStatus.pending : TaskStatus.paused;
     _updateTask(index, newTask);
   }
 
@@ -154,15 +185,22 @@ class DownloadProvider extends ChangeNotifier {
     ServerProvider serverProvider,
     ShareProvider shareProvider,
   ) {
-    DownloadTaskModel newTask = tasks[index];
-    newTask.taskStatus = TaskStatus.downloading;
+    if (allowDownloadNextTask) {
+      DownloadTaskModel newTask = tasks[index];
+      newTask.taskStatus = TaskStatus.downloading;
 
-    _updateTask(index, newTask);
-    _startDownloadTask(
-      serverProvider: serverProvider,
-      shareProvider: shareProvider,
-      downloadTaskModel: newTask,
-    );
+      _updateTask(index, newTask);
+      _startDownloadTask(
+        serverProvider: serverProvider,
+        shareProvider: shareProvider,
+        downloadTaskModel: newTask,
+      );
+    } else {
+      DownloadTaskModel newTask = tasks[index];
+      newTask.taskStatus = TaskStatus.pending;
+
+      _updateTask(index, newTask);
+    }
   }
 
   void _setTaskController(
@@ -252,11 +290,11 @@ class DownloadProvider extends ChangeNotifier {
   void _downloadNextTask({
     required ServerProvider serverProvider,
     required ShareProvider shareProvider,
+    bool skipAllow = false,
   }) {
-    if (!allowDownloadNextTask) return;
-    var tasksToDownload = tasks.where((element) =>
-        element.taskStatus == TaskStatus.pending ||
-        element.taskStatus == TaskStatus.paused);
+    if (!allowDownloadNextTask && !skipAllow) return;
+    var tasksToDownload =
+        tasks.where((element) => element.taskStatus == TaskStatus.pending);
     if (tasksToDownload.isNotEmpty) {
       _startDownloadTask(
         serverProvider: serverProvider,
