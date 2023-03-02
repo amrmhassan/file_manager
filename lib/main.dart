@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/firebase_options.dart';
@@ -51,8 +52,9 @@ import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.d
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/screens/white_block_list_screen/white_block_list_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/notifications/contorller.dart';
+import 'package:explorer/utils/notifications/notification_init.dart';
 import 'package:explorer/utils/theme_utils.dart';
-import 'package:explorer/utils/windows_utils/window_size.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -111,7 +113,7 @@ void main() async {
     await HiveInitiator().setup();
     firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
     await setThemeVariables();
-    await initWindowSize();
+    initializeNotification();
   } catch (e) {
     printOnDebug('Error with first time app in main() or theme variables');
   }
@@ -121,8 +123,27 @@ void main() async {
 
 bool testing = false;
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+      onNotificationCreatedMethod:
+          NotificationController.onNotificationCreatedMethod,
+      onNotificationDisplayedMethod:
+          NotificationController.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod:
+          NotificationController.onDismissActionReceivedMethod,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 
@@ -27,14 +30,22 @@ class _TestScreenState extends State<TestScreen> {
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-                're data is ${connectPhoneProvider.remoteIP}:${connectPhoneProvider.remotePort}'),
-            Text(
-                'my data is ${connectPhoneProvider.myIp}:${connectPhoneProvider.myPort}'),
-          ],
+        child: ElevatedButton(
+          onPressed: () {
+            int progress = 0;
+            Timer.periodic(Duration(milliseconds: 1000), (timer) {
+              progress++;
+              if (progress > 100) {
+                closeNotification();
+                timer.cancel();
+                return;
+              }
+              sendNotification(progress);
+            });
+          },
+          child: Text(
+            'Push',
+          ),
         ),
       ),
     );
