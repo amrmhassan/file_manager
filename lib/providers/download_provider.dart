@@ -6,6 +6,7 @@ import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';

@@ -1,4 +1,5 @@
 import 'package:explorer/constants/files_types_icons.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/download_utils/download_task_controller.dart';
 import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 import 'package:hive/hive.dart';
@@ -9,14 +10,6 @@ part 'download_task_model.g.dart';
 //? downloading might be continued in another session so i provided peer model which wont be saved to sqlite
 //? but peer device id will be saved
 //? so if peer model is null then this task is being continued in another session
-
-enum TaskStatus {
-  pending,
-  paused,
-  downloading,
-  finished,
-  failed,
-}
 
 @HiveType(typeId: 1)
 class DownloadTaskModel {

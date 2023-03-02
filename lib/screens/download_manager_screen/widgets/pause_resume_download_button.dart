@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/models/download_task_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 

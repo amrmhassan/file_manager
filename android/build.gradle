@@ -15,6 +15,7 @@ buildscript {
 
         // Add the dependency for the Performance Monitoring Gradle plugin
         classpath 'com.google.firebase:perf-plugin:1.4.2'
+        
     }
 }
 

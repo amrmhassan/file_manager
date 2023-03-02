@@ -31,5 +31,6 @@ class HiveInitiator {
     Hive.registerAdapter(LocalFolderInfoAdapter()); //=>9
     Hive.registerAdapter(ExtensionInfoAdapter()); //=>10
     Hive.registerAdapter(EntityTypeAdapter()); //=>11
+    Hive.registerAdapter(TaskStatusAdapter()); //=>12
   }
 }

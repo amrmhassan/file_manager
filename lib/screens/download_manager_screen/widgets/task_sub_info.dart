@@ -1,5 +1,6 @@
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/models/download_task_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
