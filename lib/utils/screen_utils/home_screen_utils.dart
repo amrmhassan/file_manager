@@ -105,8 +105,8 @@ void handleOpenTabFromOtherScreen(
     context,
     listen: false,
   );
-  Navigator.pop(context);
-  Navigator.pop(context);
+  Navigator.popUntil(
+      context, (route) => route.settings.name == HomeScreen.routeName);
   try {
     expProviderFalse.openTab(path, foProviderFalse);
   } catch (e) {

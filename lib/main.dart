@@ -90,6 +90,7 @@ import 'package:provider/provider.dart';
 
 // fix the open download folder button on download card on mobile
 // fix viewwing the file hint in windows
+// fix continuing faild task from laptop
 
 bool firstTimeRunApp = false;
 void main() async {
