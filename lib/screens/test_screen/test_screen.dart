@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 

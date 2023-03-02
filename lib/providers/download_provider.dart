@@ -6,7 +6,6 @@ import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
-import 'package:explorer/main.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
@@ -249,7 +248,7 @@ class DownloadProvider extends ChangeNotifier {
     tasks[index] = newTask;
     notifyListeners();
     int percent = ((count / (newTask.size ?? 1)) * 100).toInt();
-    QuickNotification.sendNotification(
+    QuickNotification.sendDownloadNotification(
       percent,
       taskID,
       basename(newTask.localFilePath),
@@ -421,7 +420,7 @@ class DownloadProvider extends ChangeNotifier {
       // ignore: unused_local_variable
       var res = await downloadTaskController.downloadFile();
 
-      QuickNotification.closeNotification(downloadTaskModel.id);
+      QuickNotification.closeDownloadNotification(downloadTaskModel.id);
 
       if (res == 0) {
         // zero return mean that the download isn't finished, paused

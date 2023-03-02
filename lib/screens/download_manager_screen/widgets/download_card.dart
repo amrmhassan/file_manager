@@ -8,7 +8,6 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
-import 'package:explorer/main.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_percent_bar.dart';
@@ -109,7 +108,8 @@ class _DownloadCardState extends State<DownloadCard> {
             alsoFile: true,
           );
 
-          QuickNotification.closeNotification(widget.downloadTaskModel.id);
+          QuickNotification.closeDownloadNotification(
+              widget.downloadTaskModel.id);
 
           showSnackBar(context: context, message: 'Deleted');
         }

@@ -52,9 +52,9 @@ import 'package:explorer/screens/whats_app_files_screen/whats_app_files_screen.d
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/screens/white_block_list_screen/white_block_list_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:explorer/utils/notifications/contorller.dart';
+import 'package:explorer/utils/notifications/notification_contorller.dart';
+import 'package:explorer/utils/notifications/notification_id_mapper.dart';
 import 'package:explorer/utils/notifications/notification_init.dart';
-import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:explorer/utils/theme_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
