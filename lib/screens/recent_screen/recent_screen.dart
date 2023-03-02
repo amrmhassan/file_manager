@@ -24,6 +24,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_coming_soon.dart';
 
 class RecentScreen extends StatefulWidget {
   const RecentScreen({
@@ -160,11 +161,11 @@ class _RecentScreenState extends State<RecentScreen> {
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'laptop-icon',
-                // onTap: () => Navigator.pushNamed(
-                //   context,
-                //   ConnLaptopComingSoon.routeName,
-                // ),
-                onTap: () => handleConnectToLaptopButton(context),
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  ConnLaptopComingSoon.routeName,
+                ),
+                // onTap: () => handleConnectToLaptopButton(context),
                 title: 'Connect Laptop',
                 color: Colors.white,
               ),
