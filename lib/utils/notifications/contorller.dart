@@ -1,5 +1,8 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:flutter/material.dart';
 
 class NotificationController {
   /// Use this method to detect when a new notification or a schedule is created
@@ -21,6 +24,15 @@ class NotificationController {
   static Future<void> onDismissActionReceivedMethod(
       ReceivedAction receivedAction) async {
     // Your code goes here
+    logger.e('Dismissing the download');
+    BuildContext? context = navigatorKey.currentContext;
+    if (context == null) return;
+
+    downPF(context).togglePauseResumeTask(
+      receivedAction.summary!,
+      serverPF(context),
+      sharePF(context),
+    );
   }
 
   /// Use this method to detect when the user taps on a notification or action button
@@ -35,7 +47,7 @@ class NotificationController {
     //     (route) =>
     //         (route.settings.name != '/notification-page') || route.isFirst,
     //     arguments: receivedAction);
-    logger.e('message');
-    logger.e(receivedAction.summary);
+    logger.i('message');
+    logger.i(receivedAction.summary);
   }
 }

@@ -8,6 +8,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/main.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_percent_bar.dart';
@@ -17,6 +18,7 @@ import 'package:explorer/screens/download_manager_screen/widgets/pause_resume_do
 import 'package:explorer/screens/download_manager_screen/widgets/task_sub_info.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -106,6 +108,8 @@ class _DownloadCardState extends State<DownloadCard> {
             sharePF(context),
             alsoFile: true,
           );
+
+          QuickNotification.closeNotification(widget.downloadTaskModel.id);
 
           showSnackBar(context: context, message: 'Deleted');
         }

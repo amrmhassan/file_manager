@@ -396,7 +396,7 @@ Future<void> getUserImageHandler(
   ShareProvider shareProvider,
 ) async {
   if (shareProvider.myImagePath == null) {
-    bool exist = File(shareProvider.myImagePath!).existsSync();
+    bool exist = File(shareProvider.myImagePath ?? '').existsSync();
     if (!exist) {
       response
         ..statusCode = HttpStatus.notFound

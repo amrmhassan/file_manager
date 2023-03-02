@@ -6,9 +6,12 @@ import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
+import 'package:explorer/main.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:explorer/constants/server_constants.dart';
@@ -245,6 +248,12 @@ class DownloadProvider extends ChangeNotifier {
     newTask.count = count;
     tasks[index] = newTask;
     notifyListeners();
+    int percent = ((count / (newTask.size ?? 1)) * 100).toInt();
+    QuickNotification.sendNotification(
+      percent,
+      taskID,
+      basename(newTask.localFilePath),
+    );
   }
   // ! when loading tasks from the sqlite don't load all tasks, just load the tasks that need to be download or whose status isn't finished,
   //! and only load the finished tasks when the user wants to see them
@@ -411,6 +420,8 @@ class DownloadProvider extends ChangeNotifier {
       _setTaskController(downloadTaskModel.id, downloadTaskController);
       // ignore: unused_local_variable
       var res = await downloadTaskController.downloadFile();
+
+      QuickNotification.closeNotification(downloadTaskModel.id);
 
       if (res == 0) {
         // zero return mean that the download isn't finished, paused

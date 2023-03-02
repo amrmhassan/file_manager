@@ -36,11 +36,16 @@ class _TestScreenState extends State<TestScreen> {
             Timer.periodic(Duration(milliseconds: 1000), (timer) {
               progress++;
               if (progress > 100) {
-                closeNotification();
+                // QuickNotification.closeNotification(
+                //   NotificationsIDS.downloadNotification,
+                // );
                 timer.cancel();
                 return;
               }
-              sendNotification(progress);
+              // QuickNotification.sendNotification(
+              //   progress,
+              //   NotificationsIDS.downloadNotification,
+              // );
             });
           },
           child: Text(
