@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -52,6 +53,7 @@ class DownloadTaskController {
   final int chunkSize = 1024 * 1024 * 8;
   int get chunksNumber => (length / chunkSize).ceil();
   bool continuingDownload = false;
+  Completer<int?> downloaderCompleter = Completer<int?>();
   // temp dir info
   late Directory tempDir;
   late String tempDirPath;
@@ -171,6 +173,7 @@ class DownloadTaskController {
   void cancelTask() {
     try {
       _customCancelToken.cancel();
+      downloaderCompleter.complete(null);
     } catch (e) {
       logger.i('Download Cancelled', null, StackTrace.current);
     }
@@ -305,6 +308,9 @@ class DownloadTaskController {
             );
 
             setProgress(received);
+            if (received == length) {
+              downloaderCompleter.complete(received);
+            }
             DateTime after = DateTime.now();
             int diff = after.difference(before).inMilliseconds;
             //! i subtracted the initialReceived to avoid miss speed measuring=> never tested yet
@@ -338,10 +344,11 @@ class DownloadTaskController {
     );
   }
 
-  Future<void> _downloadChunks() async {
+  Future<int?> _downloadChunks() async {
     for (var downloadPatch in listOfDownloads) {
-      await Future.wait(downloadPatch);
+      Future.wait(downloadPatch);
     }
+    return downloaderCompleter.future;
   }
 
   Future<void> _collectTheFinalFile() async {
@@ -373,10 +380,11 @@ class DownloadTaskController {
       _createChunksInfoFile();
       _handleSplitFileTask();
       try {
-        await _downloadChunks();
+        logger.i('Downloading chunks');
+        var res = await _downloadChunks();
         logger.i('received $received length $length');
 
-        if ((received) != length) {
+        if ((received) != length || res == null) {
           // zero return mean that the  isn't finished, paused
           return 0;
         }

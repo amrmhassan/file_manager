@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
@@ -57,7 +58,7 @@ class DownloadProvider extends ChangeNotifier {
   Iterable<DownloadTaskModel> get _pendingTasks =>
       tasks.where((element) => element.taskStatus == TaskStatus.pending);
 
-//  fix this function here, after testing it first
+  //  fix this function here, after testing it first
   void updateMaxParallelDownloads(
     int n,
     ServerProvider serverProvider,
@@ -240,7 +241,7 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _updateTaskPercent(String taskID, int count) {
+  void _updateTaskPercent(String taskID, int count) async {
     //don't save this into the box, to prevent so many db reads, which will slow down the process
     int index = tasks.indexWhere((element) => element.id == taskID);
     DownloadTaskModel newTask = tasks[index];
@@ -248,6 +249,19 @@ class DownloadProvider extends ChangeNotifier {
     tasks[index] = newTask;
     notifyListeners();
     int percent = ((count / (newTask.size ?? 1)) * 100).toInt();
+    // if (count == newTask.size) {
+    //   try {
+    //     await _markDownloadTask(
+    //       taskID,
+    //       TaskStatus.finished,
+    //       serverPF(navigatorKey.currentContext!),
+    //       sharePF(navigatorKey.currentContext!),
+    //     );
+    //   } catch (e) {
+    //     logger.e(e);
+    //   }
+    // } else {
+    // }
     QuickNotification.sendDownloadNotification(
       percent,
       taskID,
@@ -341,6 +355,11 @@ class DownloadProvider extends ChangeNotifier {
     notifyListeners();
     var box = await HiveBox.downloadTasks;
     await box.put(newTask.id, newTask);
+
+    // to close the notification if the notification download task isn't downloading
+    if (newTask.taskStatus != TaskStatus.downloading) {
+      QuickNotification.closeDownloadNotification(newTask.id);
+    }
   }
 
   // this will mark a task with a flag(downloading, finished, etc..)
@@ -417,11 +436,8 @@ class DownloadProvider extends ChangeNotifier {
         remoteDeviceName: downloadTaskModel.remoteDeviceName,
       );
       _setTaskController(downloadTaskModel.id, downloadTaskController);
-      // ignore: unused_local_variable
+
       var res = await downloadTaskController.downloadFile();
-
-      QuickNotification.closeDownloadNotification(downloadTaskModel.id);
-
       if (res == 0) {
         // zero return mean that the download isn't finished, paused
 
