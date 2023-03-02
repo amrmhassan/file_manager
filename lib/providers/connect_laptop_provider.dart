@@ -10,11 +10,13 @@ import 'package:explorer/models/laptop_message_model.dart';
 import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/connect_laptop_utils/handlers/connect_laptop_router.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ConnectLaptopProvider extends ChangeNotifier {
   int myPort = 0;
@@ -23,8 +25,15 @@ class ConnectLaptopProvider extends ChangeNotifier {
   int? remotePort;
   HttpServer? httpServer;
   IOWebSocketChannel? ioWebSocketChannel;
+  WebSocketSink? myClientWsSink;
 
   late HttpServer wsServer;
+
+  void setMyWsChannel(WebSocketSink s) {
+    logger.i('setting ws sink (WebSocketSink) variable');
+    myClientWsSink = s;
+    notifyListeners();
+  }
 
   void _connected(String myIp, String remoteIP, int remotePort) {
     _setMyIp(myIp);
@@ -75,6 +84,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
     remotePort = null;
     myPort = 0;
     ioWebSocketChannel = null;
+    myClientWsSink?.close();
     notifyListeners();
   }
 
@@ -92,11 +102,15 @@ class ConnectLaptopProvider extends ChangeNotifier {
     CustomClientSocket customClientSocket = CustomClientSocket(
       onServerDisconnected: () {
         logger.w('Laptop disconnected');
+        fastSnackBar(msg: 'Laptop disconnected');
         closeServer();
       },
     );
     customClientSocket.client(wsConnLink, null);
     ioWebSocketChannel = customClientSocket.clientChannel;
+    //! set the channel here
+    myClientWsSink = customClientSocket.clientChannel.sink;
+
     notifyListeners();
     return true;
   }

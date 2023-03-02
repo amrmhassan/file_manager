@@ -10,7 +10,6 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
-import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_coming_soon.dart';
 import 'package:explorer/screens/connect_laptop_screen/connect_laptop_screen.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
@@ -165,7 +164,7 @@ class _RecentScreenState extends State<RecentScreen> {
                 //   context,
                 //   ConnLaptopComingSoon.routeName,
                 // ),
-                onTap:  () => handleConnectToLaptopButton(context),
+                onTap: () => handleConnectToLaptopButton(context),
                 title: 'Connect Laptop',
                 color: Colors.white,
               ),

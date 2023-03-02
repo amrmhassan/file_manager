@@ -24,7 +24,6 @@ import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_sc
 import 'package:file_picker/file_picker.dart' as file_picker;
 import 'dart:io';
 
-
 class ConnectLaptopScreen extends StatelessWidget {
   static const String routeName = '/ConnectLaptopScreen';
   const ConnectLaptopScreen({super.key});
@@ -51,7 +50,19 @@ class ConnectLaptopScreen extends StatelessWidget {
             ),
             leftIcon: IconButton(
               onPressed: () {
-                connectLaptopPF(context).closeServer();
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => DoubleButtonsModal(
+                    onOk: () {
+                      connectLaptopPF(context).closeServer();
+                    },
+                    okText: 'Close',
+                    title: 'Close Connection',
+                    subTitle:
+                        'Do you really want to close the connection with phone?',
+                  ),
+                );
               },
               icon: Icon(
                 Icons.close,

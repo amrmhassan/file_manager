@@ -14,7 +14,9 @@ class CustomClientSocket {
   late String mySessionID;
   late IOWebSocketChannel clientChannel;
 
-  CustomClientSocket({this.onServerDisconnected});
+  CustomClientSocket({
+    this.onServerDisconnected,
+  });
 
   Future<String> getMySessionID() async {
     return mySessionIDCompleter.future;
@@ -48,7 +50,11 @@ class CustomClientSocket {
     } else if (path == disconnectedIDPath) {
       logger.w('Disconnected Device ID $msg');
     } else if (path == serverDisconnected) {
-      _onServerDisconnected(serverProviderFalse);
+      if (onServerDisconnected == null) {
+        _onServerDisconnected(serverProviderFalse);
+      } else {
+        onServerDisconnected!();
+      }
     }
   }
 

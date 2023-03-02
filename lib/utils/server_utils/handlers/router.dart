@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
 import 'package:explorer/helpers/router_system/router.dart';
