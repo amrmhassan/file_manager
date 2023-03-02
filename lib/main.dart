@@ -68,30 +68,6 @@ import 'package:provider/provider.dart';
 //! prevent the app from being killed when it is in the background
 //!
 
-// view buffered places in the video player seeker bar
-
-// add settings for the sharing
-//!!! when pausing the downloaded file at it's end(i think when it's downloading the final smaller part) the error happen and it doesn't download till the end
-//! add AnimatedSwitcher for the fade in image for the user image
-
-// fix the issue of connecting with wifi or hotspot
-// -- host device can open his hotspot or connect with same wifi network
-// -- but client device must connect over his wifi
-
-// when downloading a file and it exists, tell give the user the option to overwrite it or to cancel downloading
-
-// Today wednesday  Notifications of video, audio, download
-// Fix the problem of killing the app in background
-
-// the new approach towards the wifi or hotspot problem is that the sending device will show
-// all ips in the qr code, for example
-// for better implementation you can just limit the number of interfaces by choosing only who has wlan or wifi or wi-fi,local area(for windows) something like that
-// http://192.168.1.7:45569||http://192.168.137.78:45569||etc...
-// and the receiving device will check for each of these, and the one that creates an error is wrong, and the one that gives response via a certain  is the right one
-
-//! handle back button when viewing a video => and add an icon to let it play in background
-
-// fix the open download folder button on download card on mobile
 // fix viewwing the file hint in windows
 // fix continuing faild task from laptop
 
