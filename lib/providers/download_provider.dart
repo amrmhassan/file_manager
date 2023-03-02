@@ -127,7 +127,7 @@ class DownloadProvider extends ChangeNotifier {
       }
       parsedTasks.add(loadedTask);
     }
-    tasks = loadedTasks;
+    tasks = [...parsedTasks];
     notifyListeners();
   }
 
@@ -344,12 +344,11 @@ class DownloadProvider extends ChangeNotifier {
     int index = tasks.indexWhere((element) => element.id == downloadTaskID);
     DownloadTaskModel newTask = tasks[index];
     newTask.taskStatus = taskStatus;
-    if (taskStatus == TaskStatus.finished) {
-      newTask.finishedAt = DateTime.now();
-    }
+
     _updateTask(index, newTask);
 
     if (taskStatus == TaskStatus.finished) {
+      newTask.finishedAt = DateTime.now();
       _downloadNextTask(
         serverProvider: serverProvider,
         shareProvider: shareProvider,
