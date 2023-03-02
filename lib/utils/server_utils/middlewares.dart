@@ -1,20 +1,32 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:io';
 
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
+import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
 import 'package:explorer/providers/server_provider.dart';
-import 'package:explorer/providers/share_provider.dart';
-import 'package:explorer/utils/custom_router_system/helpers/server_middleware_model.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:flutter/material.dart';
 
-Future<MiddlewareReturn> getShareSpaceMiddleware(
+Future<ReqResTracker> getShareSpaceMiddleware(
   HttpRequest request,
   HttpResponse response,
-  ServerProvider serverProvider,
-  ShareProvider shareProvider,
 ) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error with context')
+      ..close();
+    return ReqResTracker(
+      request,
+      response,
+      closed: true,
+      closeReason: 'Context error',
+    );
+  }
   var headers = request.headers;
   String? deviceID = headers.value(deviceIDHeaderKey);
   String? userName = headers.value(userNameHeaderKey);
@@ -24,9 +36,9 @@ Future<MiddlewareReturn> getShareSpaceMiddleware(
       ..statusCode = HttpStatus.badRequest
       ..headers.add(serverRefuseReasonHeaderKey, 'No device id provided')
       ..close();
-    return MiddlewareReturn(
-      request: request,
-      response: response,
+    return ReqResTracker(
+      request,
+      response,
       closed: true,
       closeReason: 'No device id provided',
     );
@@ -36,23 +48,23 @@ Future<MiddlewareReturn> getShareSpaceMiddleware(
       ..statusCode = HttpStatus.badRequest
       ..headers.add(serverRefuseReasonHeaderKey, 'No User name provided')
       ..close();
-    return MiddlewareReturn(
-      request: request,
-      response: response,
+    return ReqResTracker(
+      request,
+      response,
       closed: true,
       closeReason: 'No user name provided',
     );
   }
-  if (await serverProvider.isPeerAllowed(deviceID)) {
-    return MiddlewareReturn(request: request, response: response);
-  } else if (await serverProvider.isPeerBlocked(deviceID)) {
+  if (await serverPF(context).isPeerAllowed(deviceID)) {
+    return ReqResTracker(request, response);
+  } else if (await serverPF(context).isPeerBlocked(deviceID)) {
     response
       ..statusCode = HttpStatus.badRequest
       ..headers.add(serverRefuseReasonHeaderKey, 'You are blocked')
       ..close();
-    return MiddlewareReturn(
-      request: request,
-      response: response,
+    return ReqResTracker(
+      request,
+      response,
       closed: true,
       closeReason: 'User is blocked',
     );
@@ -65,22 +77,22 @@ Future<MiddlewareReturn> getShareSpaceMiddleware(
   );
 
   if (res) {
-    return MiddlewareReturn(request: request, response: response);
+    return ReqResTracker(request, response);
   } else {
     response
       ..statusCode = HttpStatus.badRequest
       ..headers.add(serverRefuseReasonHeaderKey, 'You are blocked')
       ..close();
-    return MiddlewareReturn(
-      request: request,
-      response: response,
+    return ReqResTracker(
+      request,
+      response,
       closed: true,
       closeReason: 'User is blocked',
     );
   }
 }
 
-Future<MiddlewareReturn> checkIfConnectedMiddleWare(
+Future<ReqResTracker> checkIfConnectedMiddleWare(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
@@ -93,9 +105,9 @@ Future<MiddlewareReturn> checkIfConnectedMiddleWare(
       ..statusCode = HttpStatus.forbidden
       ..write('Fu** you hacker, we caught you and hacked your fuc** device')
       ..close();
-    return MiddlewareReturn(
-      request: request,
-      response: response,
+    return ReqResTracker(
+      request,
+      response,
       closed: true,
       closeReason: 'loser hacker',
     );
@@ -107,15 +119,15 @@ Future<MiddlewareReturn> checkIfConnectedMiddleWare(
       ..statusCode = HttpStatus.forbidden
       ..write('Fu** you hacker, we caught you and hacked your fuc** device')
       ..close();
-    return MiddlewareReturn(
-      request: request,
-      response: response,
+    return ReqResTracker(
+      request,
+      response,
       closed: true,
       closeReason: 'loser hacker',
     );
   }
-  return MiddlewareReturn(
-    request: request,
-    response: response,
+  return ReqResTracker(
+    request,
+    response,
   );
 }

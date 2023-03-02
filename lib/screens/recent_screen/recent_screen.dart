@@ -161,11 +161,11 @@ class _RecentScreenState extends State<RecentScreen> {
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'laptop-icon',
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  ConnLaptopComingSoon.routeName,
-                ),
-                // onTap:  () => handleConnectToLaptopButton(context),
+                // onTap: () => Navigator.pushNamed(
+                //   context,
+                //   ConnLaptopComingSoon.routeName,
+                // ),
+                onTap:  () => handleConnectToLaptopButton(context),
                 title: 'Connect Laptop',
                 color: Colors.white,
               ),

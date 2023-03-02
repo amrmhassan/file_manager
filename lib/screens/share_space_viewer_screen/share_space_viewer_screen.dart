@@ -215,13 +215,15 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                                           fileSize: shareExpProvider
                                               .viewedItems[index].size,
                                           remoteDeviceID:
-                                              data.peerModel!.deviceID,
+                                              data.peerModel?.deviceID ??
+                                                  laptopID,
                                           remoteFilePath: shareExpProvider
                                               .viewedItems[index].path,
                                           serverProvider: serverPF(context),
                                           shareProvider: sharePF(context),
                                           remoteDeviceName:
-                                              data.peerModel!.name,
+                                              data.peerModel?.name ??
+                                                  laptopName,
                                         );
                                         Navigator.pop(context);
                                       } catch (e) {

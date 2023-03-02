@@ -11,6 +11,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class DownloadSetScreen extends StatelessWidget {
   static const String routeName = '/DownloadSettingsScreen';
@@ -55,35 +56,36 @@ class DownloadSetScreen extends StatelessWidget {
             ),
           ),
           VSpace(),
-          ListTile(
-            leading: Image.asset(
-              'assets/icons/delete.png',
-              width: mediumIconSize,
-              color: kDangerColor,
+          if (kDebugMode)
+            ListTile(
+              leading: Image.asset(
+                'assets/icons/delete.png',
+                width: mediumIconSize,
+                color: kDangerColor,
+              ),
+              onTap: () {
+                showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) => DoubleButtonsModal(
+                    onOk: () {
+                      downPF(context).clearAllTasks(
+                        serverPF(context),
+                        sharePF(context),
+                      );
+                      showSnackBar(context: context, message: 'Deleted');
+                    },
+                    title: 'Confirm Delete?',
+                    subTitle:
+                        'This will delete all tasks with all files from the storage and stop downloading ones.',
+                  ),
+                );
+              },
+              title: Text(
+                'Delete all downloads with files',
+                style: h4LightTextStyle,
+              ),
             ),
-            onTap: () {
-              showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) => DoubleButtonsModal(
-                  onOk: () {
-                    downPF(context).clearAllTasks(
-                      serverPF(context),
-                      sharePF(context),
-                    );
-                    showSnackBar(context: context, message: 'Deleted');
-                  },
-                  title: 'Confirm Delete?',
-                  subTitle:
-                      'This will delete all tasks with all files from the storage and stop downloading ones.',
-                ),
-              );
-            },
-            title: Text(
-              'Delete all downloads with files',
-              style: h4LightTextStyle,
-            ),
-          ),
         ],
       ),
     );
