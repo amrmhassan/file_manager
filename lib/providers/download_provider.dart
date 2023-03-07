@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';

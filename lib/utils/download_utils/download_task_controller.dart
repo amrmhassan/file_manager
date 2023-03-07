@@ -53,7 +53,6 @@ class DownloadTaskController {
   final int chunkSize = 1024 * 1024 * 8;
   int get chunksNumber => (length / chunkSize).ceil();
   bool continuingDownload = false;
-  Completer<int?> downloaderCompleter = Completer<int?>();
   // temp dir info
   late Directory tempDir;
   late String tempDirPath;
@@ -173,7 +172,6 @@ class DownloadTaskController {
   void cancelTask() {
     try {
       _customCancelToken.cancel();
-      downloaderCompleter.complete(null);
     } catch (e) {
       logger.i('Download Cancelled', null, StackTrace.current);
     }
@@ -262,6 +260,7 @@ class DownloadTaskController {
     // [12|34][5|678][345|6][2345|]
     // when i ==0 => i am pointing to the first  chunk then the start should be from the downloaded part ==> count+(i*chunkSize) = 2+(0*4) =2 ,, end = (i+1)*chunkSize = 4
     // when i ==1 => i am pointing to the second chunk then the start should be from the downloaded part ==> count+(i*chunkSize) = 1+(1*4) =5 ,, end = (i+1)*chunkSize = 8
+
     int loopEnd = continuingDownload ? chunksInfo.length : chunksNumber;
     for (var i = 0; i < loopEnd; i++) {
       late int start;
@@ -293,13 +292,12 @@ class DownloadTaskController {
         "Accept": "application/octet-stream",
       };
       CustomDio customDio = CustomDio();
-      customDio.timeOutMilliSecond = 5000;
-
       futures.add(
         customDio.download(
           url,
           chunksInfo[i].filePath,
           cancelToken: _customCancelToken,
+          startByte: chunksInfo[i].count,
           onReceiveProgress: (_, total, chunkSize) {
             _updateChunkProgress(chunksInfo[i].filePath, chunkSize);
             received = chunksInfo.fold(
@@ -308,9 +306,7 @@ class DownloadTaskController {
             );
 
             setProgress(received);
-            if (received == length) {
-              downloaderCompleter.complete(received);
-            }
+            if (received == length) {}
             DateTime after = DateTime.now();
             int diff = after.difference(before).inMilliseconds;
             //! i subtracted the initialReceived to avoid miss speed measuring=> never tested yet
@@ -344,11 +340,10 @@ class DownloadTaskController {
     );
   }
 
-  Future<int?> _downloadChunks() async {
+  Future<void> _downloadChunks() async {
     for (var downloadPatch in listOfDownloads) {
-      Future.wait(downloadPatch);
+      await Future.wait(downloadPatch);
     }
-    return downloaderCompleter.future;
   }
 
   Future<void> _collectTheFinalFile() async {
@@ -381,10 +376,10 @@ class DownloadTaskController {
       _handleSplitFileTask();
       try {
         logger.i('Downloading chunks');
-        var res = await _downloadChunks();
+        await _downloadChunks();
         logger.i('received $received length $length');
 
-        if ((received) != length || res == null) {
+        if ((received) != length) {
           // zero return mean that the  isn't finished, paused
           return 0;
         }
@@ -426,10 +421,3 @@ class DownloadTaskController {
     }
   }
 }
-
-// first
-// received 9956548
-// initial  0
-
-// second
-// received

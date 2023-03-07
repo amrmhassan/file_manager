@@ -7,8 +7,10 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:flutter/material.dart';
 
 class EmptyShareItems extends StatelessWidget {
+  final String? title;
   const EmptyShareItems({
     Key? key,
+    this.title,
   }) : super(key: key);
 
   @override
@@ -25,7 +27,8 @@ class EmptyShareItems extends StatelessWidget {
         ),
         VSpace(),
         Text(
-          'Your share Space is empty\n Add some files to send to people',
+          title ??
+              'Your share Space is empty\n Add some files to send to people',
           textAlign: TextAlign.center,
           style: h4TextStyleInactive,
         ),

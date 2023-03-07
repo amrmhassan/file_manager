@@ -396,16 +396,20 @@ Future<void> getUserImageHandler(
   ShareProvider shareProvider,
 ) async {
   if (shareProvider.myImagePath == null) {
-    bool exist = File(shareProvider.myImagePath ?? '').existsSync();
-    if (!exist) {
-      response
-        ..statusCode = HttpStatus.notFound
-        ..write('Not Found')
-        ..close();
-      return;
-    }
+    response
+      ..statusCode = HttpStatus.notFound
+      ..write('Not Found')
+      ..close();
+    return;
   }
   File file = File(shareProvider.myImagePath!);
+  if (!file.existsSync()) {
+    response
+      ..statusCode = HttpStatus.notFound
+      ..write('image path deleted or moved')
+      ..close();
+    return;
+  }
   var bytes = file.readAsBytesSync();
 
   response

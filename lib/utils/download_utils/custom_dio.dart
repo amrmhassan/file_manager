@@ -1,26 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:explorer/utils/general_utils.dart';
-
 class CustomDio {
-  // bool _timeoutReached = false;
-  int? timeOutMilliSecond;
-
-  // void timeoutChecker() {
-  //   Future.delayed(Duration(milliseconds: timeOutMilliSecond!)).then((value) {
-  //     if (_timeoutReached) {
-  //       logger.e('Download timeout reached');
-  //       throw CustomException(
-  //         e: 'Download timeout reached',
-  //         s: StackTrace.current,
-  //       );
-  //     }
-
-  //     timeoutChecker();
-  //   });
-  // }
-
   Future<int> download(
     String url,
     String savePath, {
@@ -28,11 +9,8 @@ class CustomDio {
     CustomCancelToken? cancelToken,
     bool deleteIfExist = false,
     Map<String, dynamic>? headers,
+    int? startByte,
   }) async {
-    // if (timeOutMilliSecond != null) {
-    //   timeoutChecker();
-    // }
-
     if (deleteIfExist) {
       File file = File(savePath);
       if (file.existsSync()) {
@@ -40,6 +18,7 @@ class CustomDio {
       }
     }
 
+//! the error with downloading is here in this function
     Completer<int> completer = Completer<int>();
     Uri uri = Uri.parse(url);
     HttpClient httpClient = HttpClient();
@@ -52,7 +31,10 @@ class CustomDio {
     int length =
         int.parse(response.headers.value(HttpHeaders.contentLengthHeader)!);
     var raf = await File(savePath).open(mode: FileMode.append);
-
+    if (received == length) {
+      raf.closeSync();
+      completer.complete(received);
+    }
     late StreamSubscription responseSubscription;
     responseSubscription = response.listen((chunk) {
       if (cancelToken != null) {
@@ -69,14 +51,12 @@ class CustomDio {
       if (onReceiveProgress != null) {
         onReceiveProgress(received, length, chunk.length);
       }
+
       if (received == length) {
         raf.closeSync();
         completer.complete(received);
         responseSubscription.cancel();
       }
-      // if (timeOutMilliSecond != null) {
-      //   _timeoutReached = false;
-      // }
     });
 
     return completer.future;
@@ -88,6 +68,5 @@ class CustomCancelToken {
   bool get isCancelled => _isCancelled;
   void cancel() {
     _isCancelled = true;
-    printOnDebug('cancelled');
   }
 }

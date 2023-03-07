@@ -59,17 +59,20 @@ import 'package:explorer/utils/theme_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 //! add the ability to download a folder
 //! add video, audio notification
-//! prevent the app from being killed when it is in the background
+//! prevent the app from being killed when it is in the background 
 //!
 
 // fix viewwing the file hint in windows
 // fix continuing faild task from laptop
+
+// fix notification still viewed after file downloaded
+
+//! add download folder, then allow selecting for multiple downloads in sharespace viewer screen, then sorting, then" download to "
 
 bool firstTimeRunApp = false;
 DownloadsNotificationIDSMapper notificationMapper =
@@ -80,9 +83,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   if (kDebugMode) {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+  }
+  if (kReleaseMode) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);

@@ -12,6 +12,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/screens/share_screen/widgets/empty_share_items.dart';
 import 'package:explorer/screens/share_screen/widgets/not_sharing_view.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
 import 'package:explorer/providers/download_provider.dart';
@@ -178,75 +179,80 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                       ],
                     ),
                   )
-                : Expanded(
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: shareExpProvider.viewedItems.length,
-                      itemBuilder: (context, index) => StorageItem(
-                        network: true,
-                        onDirTapped: localGetFolderContent,
-                        sizesExplorer: false,
-                        parentSize: 0,
-                        shareSpaceItemModel:
-                            shareExpProvider.viewedItems[index],
-                        onFileTapped: (path) {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            context: context,
-                            builder: (context) => ModalWrapper(
-                              padding: EdgeInsets.symmetric(
-                                vertical: kVPad / 2,
-                              ),
-                              bottomPaddingFactor: 0,
-                              afterLinePaddingFactor: 0,
-                              showTopLine: false,
-                              color: kBackgroundColor,
-                              child: Column(
-                                children: [
-                                  ModalButtonElement(
-                                    inactiveColor: Colors.transparent,
-                                    title: 'Download Now',
-                                    onTap: () async {
-                                      try {
-                                        await Provider.of<DownloadProvider>(
-                                          context,
-                                          listen: false,
-                                        ).addDownloadTaskFromPeer(
-                                          fileSize: shareExpProvider
-                                              .viewedItems[index].size,
-                                          remoteDeviceID:
-                                              data.peerModel?.deviceID ??
-                                                  laptopID,
-                                          remoteFilePath: shareExpProvider
-                                              .viewedItems[index].path,
-                                          serverProvider: serverPF(context),
-                                          shareProvider: sharePF(context),
-                                          remoteDeviceName:
-                                              data.peerModel?.name ??
-                                                  laptopName,
-                                        );
-                                        Navigator.pop(context);
-                                      } catch (e) {
-                                        showModalBottomSheet(
-                                          context: context,
-                                          builder: (context) =>
-                                              DoubleButtonsModal(
-                                            onOk: () {},
-                                            title: e.toString(),
-                                          ),
-                                        );
-                                      }
-                                    },
+                : shareExpProvider.viewedItems.isEmpty
+                    ? Expanded(
+                        child: EmptyShareItems(
+                        title: 'Other user share space is emptys',
+                      ))
+                    : Expanded(
+                        child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: shareExpProvider.viewedItems.length,
+                          itemBuilder: (context, index) => StorageItem(
+                            network: true,
+                            onDirTapped: localGetFolderContent,
+                            sizesExplorer: false,
+                            parentSize: 0,
+                            shareSpaceItemModel:
+                                shareExpProvider.viewedItems[index],
+                            onFileTapped: (path) {
+                              showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (context) => ModalWrapper(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: kVPad / 2,
                                   ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        allowSelect: false,
+                                  bottomPaddingFactor: 0,
+                                  afterLinePaddingFactor: 0,
+                                  showTopLine: false,
+                                  color: kBackgroundColor,
+                                  child: Column(
+                                    children: [
+                                      ModalButtonElement(
+                                        inactiveColor: Colors.transparent,
+                                        title: 'Download Now',
+                                        onTap: () async {
+                                          try {
+                                            await Provider.of<DownloadProvider>(
+                                              context,
+                                              listen: false,
+                                            ).addDownloadTaskFromPeer(
+                                              fileSize: shareExpProvider
+                                                  .viewedItems[index].size,
+                                              remoteDeviceID:
+                                                  data.peerModel?.deviceID ??
+                                                      laptopID,
+                                              remoteFilePath: shareExpProvider
+                                                  .viewedItems[index].path,
+                                              serverProvider: serverPF(context),
+                                              shareProvider: sharePF(context),
+                                              remoteDeviceName:
+                                                  data.peerModel?.name ??
+                                                      laptopName,
+                                            );
+                                            Navigator.pop(context);
+                                          } catch (e) {
+                                            showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) =>
+                                                  DoubleButtonsModal(
+                                                onOk: () {},
+                                                title: e.toString(),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            allowSelect: false,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
           VSpace(),
         ],
       ),
