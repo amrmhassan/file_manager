@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
@@ -57,6 +59,7 @@ import 'package:explorer/utils/notifications/notification_contorller.dart';
 import 'package:explorer/utils/notifications/notification_id_mapper.dart';
 import 'package:explorer/utils/notifications/notification_init.dart';
 import 'package:explorer/utils/theme_utils.dart';
+import 'package:external_path/external_path.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -101,6 +104,13 @@ void main() async {
     firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
     await setThemeVariables();
     initializeNotification();
+    //?
+    // sdcard setting
+    var path = await ExternalPath.getExternalStorageDirectories();
+    path.insert(0, '/');
+    initialDirs = path.map((e) => Directory(e)).toList();
+
+    //?
   } catch (e) {
     printOnDebug('Error with first time app in main() or theme variables');
     logger.e(e);

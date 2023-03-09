@@ -97,25 +97,27 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                 color: kActiveTextColor,
               ),
             ),
-            leftIcon: Row(
-              children: [
-                HSpace(),
-                ButtonWrapper(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      ConnLaptopComingSoon.routeName,
-                      arguments: false, // first time
-                    );
-                  },
-                  child: Image.asset(
-                    'assets/icons/info.png',
-                    width: mediumIconSize,
-                    color: kMainIconColor,
+            leftIcon: justQrScanner == true
+                ? null
+                : Row(
+                    children: [
+                      HSpace(),
+                      ButtonWrapper(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            ConnLaptopComingSoon.routeName,
+                            arguments: false, // first time
+                          );
+                        },
+                        child: Image.asset(
+                          'assets/icons/info.png',
+                          width: mediumIconSize,
+                          color: kMainIconColor,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
           Expanded(
             child: Column(

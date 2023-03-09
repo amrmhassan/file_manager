@@ -8,7 +8,7 @@ import 'package:logger/logger.dart';
 String laptopName = 'Laptop';
 String laptopID = 'laptop_id';
 // const String initialPath = '/';
-final List<Directory> initialDirs = [
+List<Directory> initialDirs = [
   Directory('/'),
   Directory('sdcard'),
 ];
@@ -66,5 +66,4 @@ String myDefaultName = 'No Name ${Random().nextInt(99)}';
 int maxParallelDownloadTasksDefault = 1;
 
 //? links
-const String laptopClientDownloadLink =
-    'https://firebasestorage.googleapis.com/v0/b/advanced-file-manager-8b7ab.appspot.com/o/laptop%2Fwindows_client.exe?alt=media&token=516c4906-ae51-4776-a2df-0e2570be1af4';
+const String laptopClientDownloadLink = 'https://amh-file-manager.web.app';

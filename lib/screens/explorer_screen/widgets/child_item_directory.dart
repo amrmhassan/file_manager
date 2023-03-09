@@ -235,7 +235,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.fileName,
+                                widget.storageItemModel?.customTitle ??
+                                    widget.fileName,
                                 style: h4LightTextStyle,
                                 maxLines: 1,
                                 // overflow: TextOverflow.ellipsis,

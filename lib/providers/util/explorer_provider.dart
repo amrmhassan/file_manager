@@ -411,6 +411,14 @@ class ExplorerProvider extends ChangeNotifier
           });
       List<StorageItemModel> mainDisks =
           pathsToStorageItemsWithType(validPaths);
+      //? handle main disks custom name
+      for (var disk in mainDisks) {
+        if (disk.path.endsWith('0')) {
+          disk.customTitle = 'Internal Storage';
+        } else {
+          disk.customTitle = 'SD Card';
+        }
+      }
       _children.addAll(mainDisks);
       loadingChildren = false;
       notifyListeners();
