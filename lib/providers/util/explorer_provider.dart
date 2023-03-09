@@ -415,8 +415,12 @@ class ExplorerProvider extends ChangeNotifier
       for (var disk in mainDisks) {
         if (disk.path.endsWith('0')) {
           disk.customTitle = 'Internal Storage';
+          disk.customThumbnail = 'assets/icons/phone.png';
+          disk.hideDate = true;
         } else {
           disk.customTitle = 'SD Card';
+          disk.customThumbnail = 'assets/icons/sd-card.png';
+          disk.hideDate = true;
         }
       }
       _children.addAll(mainDisks);

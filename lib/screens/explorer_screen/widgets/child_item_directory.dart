@@ -186,6 +186,16 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     Directory dir = Directory(path);
     bool exists = dir.existsSync();
 
+    var directorySecondaryInfo = widget.sizesExplorer
+        ? handleConvertSize(widget.storageItemModel?.size ?? 0)
+        : widget.storageItemModel?.hideDate == true || fileStat == null
+            ? ''
+            : DateFormat('yyyy-MM-dd').format(fileStat!.changed);
+    var directoryInfoSeparator =
+        widget.storageItemModel?.hideDate == true ? '' : ' | ';
+    var directoryPrimaryInfo =
+        childrenNumber == null ? '...' : '$childrenNumber Items';
+
     return !exists && widget.storageItemModel != null
         ? SizedBox()
         : Stack(
@@ -215,8 +225,13 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                           clipBehavior: Clip.none,
                           children: [
                             Image.asset(
-                              'assets/icons/folder_colorful.png',
+                              widget.storageItemModel?.customThumbnail ??
+                                  'assets/icons/folder_colorful.png',
                               width: largeIconSize,
+                              color: widget.storageItemModel?.customThumbnail !=
+                                      null
+                                  ? kMainIconColor
+                                  : null,
                             ),
                             if (isFavorite && widget.allowShowingFavIcon)
                               Positioned(
@@ -247,9 +262,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                       children: [
                                         error == null
                                             ? Text(
-                                                childrenNumber == null
-                                                    ? '...'
-                                                    : '$childrenNumber Items',
+                                                directoryPrimaryInfo,
                                                 style: h5InactiveTextStyle
                                                     .copyWith(
                                                   height: 1,
@@ -266,22 +279,15 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                           Row(
                                             children: [
                                               Text(
-                                                ' | ',
+                                                directoryInfoSeparator,
                                                 style: h5InactiveTextStyle
                                                     .copyWith(height: 1),
                                               ),
                                               Text(
-                                                widget.sizesExplorer
-                                                    ? handleConvertSize(widget
-                                                            .storageItemModel!
-                                                            .size ??
-                                                        0)
-                                                    : DateFormat('yyyy-MM-dd')
-                                                        .format(
-                                                            fileStat!.changed),
+                                                directorySecondaryInfo,
                                                 style: h5InactiveTextStyle
                                                     .copyWith(height: 1),
-                                              )
+                                              ),
                                             ],
                                           ),
                                       ],

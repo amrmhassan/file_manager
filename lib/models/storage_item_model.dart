@@ -14,6 +14,7 @@ class StorageItemModel {
   int? size;
   String? customTitle;
   String? customThumbnail;
+  bool? hideDate;
 
   StorageItemModel({
     required this.parentPath,
@@ -25,6 +26,7 @@ class StorageItemModel {
     required this.size,
     this.customThumbnail,
     this.customTitle,
+    this.hideDate,
   });
 
   LocalFileInfo toLocalFileInfo() {
