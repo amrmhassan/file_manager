@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/isolates/folder_info_isolates.dart';
 import 'package:explorer/models/recent_opened_file_model.dart';
@@ -210,6 +211,8 @@ class FilesOperationsProvider extends ChangeNotifier {
 
 //? add to selected items
   void _addToSelectedItems(StorageItemModel s) {
+    // to skip selecting main disks
+    if (initialDirs.map((e) => e.path).contains(s.path)) return;
     if (!_selectedItems.any((element) => element.path == s.path)) {
       _selectedItems.add(s);
       notifyListeners();

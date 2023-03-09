@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/models/share_space_item_model.dart';
@@ -11,6 +12,7 @@ import 'package:explorer/screens/explorer_screen/widgets/animation_wrapper.dart'
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:path/path.dart' as path_operations;
@@ -96,6 +98,7 @@ class _StorageItemState extends State<StorageItem> {
     var foProviderFalse =
         Provider.of<FilesOperationsProvider>(context, listen: false);
     var foProvider = Provider.of<FilesOperationsProvider>(context);
+    var expProviderFalse = expPF(context);
 
     return Stack(
       children: [
@@ -134,7 +137,9 @@ class _StorageItemState extends State<StorageItem> {
                     }
                   }
                 : null,
-            onLongPress: widget.allowSelect
+            onLongPress: widget.allowSelect &&
+                    expProviderFalse.currentActiveDir.path !=
+                        initialDirs.first.path
                 ? () {
                     var expProvider =
                         Provider.of<ExplorerProvider>(context, listen: false);
