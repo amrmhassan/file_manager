@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/defaults_constants.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
@@ -18,15 +19,19 @@ class ListyProvider extends ChangeNotifier {
 
   //? load listy lists
   Future loadListyLists() async {
-    var box = await HiveBox.listy;
-    if (box.values.isEmpty) {
-      _listy = [...defaultListyList];
+    try {
+      var box = await HiveBox.listy;
+      if (box.values.isEmpty) {
+        _listy = [...defaultListyList];
+        notifyListeners();
+        box.add(defaultListyList.first);
+        return;
+      }
+      _listy = box.values.toList().cast();
       notifyListeners();
-      box.add(defaultListyList.first);
-      return;
+    } catch (e) {
+      logger.e(e);
     }
-    _listy = box.values.toList().cast();
-    notifyListeners();
   }
 
 //? to create a new listy

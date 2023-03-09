@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/firebase_options.dart';
+import 'package:explorer/helpers/background/services.dart';
 import 'package:explorer/helpers/hive/hive_initiator.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
@@ -64,10 +67,10 @@ import 'package:provider/provider.dart';
 
 //! add the ability to download a folder
 //! add video, audio notification
-//! prevent the app from being killed when it is in the background 
+//! prevent the app from being killed when it is in the background
 //!
 
-// fix viewwing the file hint in windows  
+// fix viewwing the file hint in windows
 // fix continuing faild task from laptop
 
 // fix notification still viewed after file downloaded
@@ -80,6 +83,8 @@ DownloadsNotificationIDSMapper notificationMapper =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -101,6 +106,7 @@ void main() async {
     initializeNotification();
   } catch (e) {
     printOnDebug('Error with first time app in main() or theme variables');
+    logger.e(e);
   }
 
   runApp(const MyApp());

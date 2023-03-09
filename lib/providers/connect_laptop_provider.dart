@@ -18,6 +18,8 @@ import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+int connectLaptopPort = 0;
+
 class ConnectLaptopProvider extends ChangeNotifier {
   int myPort = 0;
   String? myIp;
@@ -63,6 +65,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
 
       //? when above code is success then set the needed stuff like port, other things
       myPort = httpServer!.port;
+      connectLaptopPort = myPort;
 
       CustomRouterSystem customRouterSystem = connectLaptopRouter(this);
       httpServer!.listen(customRouterSystem.pipeline);
