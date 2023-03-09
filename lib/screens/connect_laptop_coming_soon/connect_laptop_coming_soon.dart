@@ -4,12 +4,15 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:explorer/global/widgets/h_line.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
+import 'package:explorer/screens/recent_screen/recent_screen.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ConnLaptopComingSoon extends StatelessWidget {
   static const String routeName = '/ConnLaptopComingSoon';
@@ -17,6 +20,9 @@ class ConnLaptopComingSoon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool firstTime =
+        ModalRoute.of(context)?.settings.arguments as bool? ?? false;
+    print(firstTime);
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: SizedBox(
@@ -38,47 +44,71 @@ class ConnLaptopComingSoon extends StatelessWidget {
             VSpace(factor: 2),
             PaddingWrapper(
               child: Text(
-                'We are working on update that will allow you to fully control your windows device from your phone and vice versa',
+                'Now you can control your windows storage from your phone and vice versa',
                 style: h4TextStyleInactive,
                 textAlign: TextAlign.center,
               ),
             ),
             VSpace(),
+            Spacer(),
             PaddingWrapper(
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(width: double.infinity),
-                    Text('Features:', style: h3TextStyle),
-                    VSpace(),
-                    Text('1- Remote files explorer', style: h4TextStyle),
-                    Text('2- Share space explorer', style: h4TextStyle),
-                    Text('3- Clipboard control', style: h4TextStyle),
-                    Text('4- Sending files', style: h4TextStyle),
-                    Text('5- Sending text messages', style: h4TextStyle),
                     Text(
-                        '6- Viewing video, audio without downloading on mobile',
-                        style: h4TextStyle),
-                    VSpace(),
-                    HLine(
-                      thickness: 1,
-                      color: kMainIconColor.withOpacity(.5),
-                    ),
-                    Text(
-                      'You can do this from phone to windows or vice versa 😎',
+                      'First, you need to download windows client and install it on your windows device',
                       style: h3TextStyle,
                       textAlign: TextAlign.center,
                     ),
+                    VSpace(),
                   ],
                 ),
               ),
             ),
-            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    launchUrlString(
+                      'https://firebasestorage.googleapis.com/v0/b/advanced-file-manager-8b7ab.appspot.com/o/laptop%2Fwindows_client.exe?alt=media&token=516c4906-ae51-4776-a2df-0e2570be1af4',
+                      mode: LaunchMode.externalApplication,
+                    );
+                    if (firstTime) {
+                      handleConnectToLaptopButton(context, true);
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(
+                    'Download',
+                  ),
+                ),
+                HSpace(),
+                ElevatedButton(
+                  onPressed: () {
+                    copyToClipboard(context,
+                        'https://firebasestorage.googleapis.com/v0/b/advanced-file-manager-8b7ab.appspot.com/o/laptop%2Fwindows_client.exe?alt=media&token=516c4906-ae51-4776-a2df-0e2570be1af4');
+                    if (firstTime) {
+                      handleConnectToLaptopButton(context, true);
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(
+                    'Copy Link',
+                  ),
+                ),
+              ],
+            ),
+            VSpace(factor: .1),
             Text(
-              'Stay Tuned ❤',
-              style: h2TextStyle,
+              '40 MB',
+              style: h3InactiveTextStyle,
+              textAlign: TextAlign.center,
             ),
             VSpace(),
           ],

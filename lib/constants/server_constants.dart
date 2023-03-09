@@ -31,6 +31,7 @@ const String getClipboardEndPoint = '/getClipboardEndPoint';
 const String sendTextEndpoint = '/sendTextEndpoint';
 const String getListyEndPoint = '/getListyEndPoint';
 const String startDownloadFileEndPoint = '/startDownloadFileEndPoint';
+const String getFolderContentRecrusiveEndPoint = '/getFolderContentRecrusive';
 
 //? headers keys
 const String folderPathHeaderKey = 'folderPathHeaderKey';

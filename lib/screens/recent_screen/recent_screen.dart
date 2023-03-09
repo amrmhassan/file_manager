@@ -2,11 +2,13 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/shimmer_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
@@ -20,11 +22,11 @@ import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
+import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_coming_soon.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_coming_soon.dart';
 
 class RecentScreen extends StatefulWidget {
   const RecentScreen({
@@ -161,11 +163,21 @@ class _RecentScreenState extends State<RecentScreen> {
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'laptop-icon',
-                // onTap: () => Navigator.pushNamed(
-                //   context,
-                //   ConnLaptopComingSoon.routeName,
-                // ),
-                onTap: () => handleConnectToLaptopButton(context),
+                onTap: () async {
+                  bool downloaded = (await SharedPrefHelper.getBool(
+                          downloadWindowsClientKey)) ??
+                      false;
+                  if (downloaded) {
+                    handleConnectToLaptopButton(context);
+                  } else {
+                    Navigator.pushNamed(
+                      context,
+                      ConnLaptopComingSoon.routeName,
+                      arguments: true,
+                    );
+                  }
+                  SharedPrefHelper.setBool(downloadWindowsClientKey, true);
+                },
                 title: 'Connect Laptop',
                 color: Colors.white,
               ),
@@ -223,12 +235,18 @@ class _RecentScreenState extends State<RecentScreen> {
   }
 }
 
-void handleConnectToLaptopButton(BuildContext context) async {
+void handleConnectToLaptopButton(
+  BuildContext context, [
+  bool replace = false,
+]) async {
   if (connectLaptopPF(context).remoteIP != null) {
     Navigator.pushNamed(context, ConnectLaptopScreen.routeName);
     return;
   }
-  var code = await Navigator.pushNamed(context, ScanQRCodeScreen.routeName);
+
+  var code = await (replace
+      ? Navigator.pushReplacementNamed(context, ScanQRCodeScreen.routeName)
+      : Navigator.pushNamed(context, ScanQRCodeScreen.routeName));
 
   bool connected = await connectLaptopPF(context).handleConnect(code);
   if (!connected) {

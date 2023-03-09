@@ -1,8 +1,10 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/main.dart';
+import 'package:flutter/material.dart';
 
 class NotificationsIDS {
-  static int downloadNotification = 10;
+  static const int audioNitificationID = 100;
+  static const int videoNotificationID = 102;
 }
 
 class QuickNotification {
@@ -49,5 +51,56 @@ class QuickNotification {
   static void closeDownloadNotification(String id) {
     int notiID = notificationMapper.notificationID(id);
     AwesomeNotifications().cancel(notiID);
+  }
+
+  static void sendAudioNotification(
+    String fileName,
+  ) {
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        // This is just a basic example. For real apps, you must show some
+        // friendly dialog box before call the request method.
+        // This is very important to not harm the user experience
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          autoDismissible: false,
+          id: NotificationsIDS.audioNitificationID,
+          channelKey: 'basic_channel',
+          title: fileName,
+          body: fileName,
+          locked: true,
+          fullScreenIntent: true,
+          notificationLayout: NotificationLayout.MediaPlayer,
+        ),
+        actionButtons: [
+          NotificationActionButton(
+            key: 'pause',
+            label: 'Pause',
+            color: Colors.red,
+            enabled: true,
+            isDangerousOption: true,
+            requireInputText: true,
+            showInCompactView: true,
+          ),
+          NotificationActionButton(
+            key: 'forward',
+            label: 'Pause',
+            actionType: ActionType.KeepOnTop,
+          ),
+          NotificationActionButton(
+            key: 'backward',
+            label: 'Pause',
+            actionType: ActionType.KeepOnTop,
+          ),
+        ],
+      );
+    });
+  }
+
+  static void closeAudioNotification() {
+    AwesomeNotifications().cancel(NotificationsIDS.audioNitificationID);
   }
 }

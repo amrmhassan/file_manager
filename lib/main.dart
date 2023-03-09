@@ -67,7 +67,7 @@ import 'package:provider/provider.dart';
 //! prevent the app from being killed when it is in the background 
 //!
 
-// fix viewwing the file hint in windows
+// fix viewwing the file hint in windows  
 // fix continuing faild task from laptop
 
 // fix notification still viewed after file downloaded

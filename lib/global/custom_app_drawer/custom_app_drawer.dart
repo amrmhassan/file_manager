@@ -105,8 +105,8 @@ class CustomAppDrawer extends StatelessWidget {
                     title: 'Clear Temp DB & Keys',
                     onTap: () async {
                       Navigator.pop(context);
-                      await tempCollection.deleteCollection();
                       await SharedPrefHelper.removeAllSavedKeys();
+                      await tempCollection.deleteCollection();
                       showSnackBar(context: context, message: 'Deleted');
                     },
                     onlyDebug: true,

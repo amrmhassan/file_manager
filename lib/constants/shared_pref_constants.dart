@@ -18,3 +18,6 @@ const String expEntitiesAnimDurationKey = 'expEntitiesAnimDurationKey';
 const String expEntitiesAnimeTypeKey = 'expEntitiesAnimeTypeKey';
 const String expEntitiesMagnitudeKey = 'expEntitiesMagnitudeKey';
 const String maxParallelDownloadsKey = 'maxParallelDownloadsKey';
+
+//? other keys
+const String downloadWindowsClientKey = 'downloadWindowsClientKey';

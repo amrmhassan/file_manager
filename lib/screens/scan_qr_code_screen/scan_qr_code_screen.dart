@@ -3,10 +3,14 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/qr_result_modal.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_coming_soon.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -92,6 +96,25 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
+            ),
+            leftIcon: Row(
+              children: [
+                HSpace(),
+                ButtonWrapper(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      ConnLaptopComingSoon.routeName,
+                      arguments: false, // first time
+                    );
+                  },
+                  child: Image.asset(
+                    'assets/icons/info.png',
+                    width: mediumIconSize,
+                    color: kMainIconColor,
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(

@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
+import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:path/path.dart';
 import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 
@@ -47,6 +49,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   //? pause playing
   Future<void> pausePlaying() async {
     await _audioPlayer.pause();
+    QuickNotification.closeAudioNotification();
 
     audioPlaying = false;
     notifyListeners();
@@ -87,7 +90,14 @@ class MediaPlayerProvider extends ChangeNotifier {
         }
         notifyListeners();
       });
-      await _audioPlayer.play();
+      _audioPlayer.play();
+      if (network) {
+        String fileName = basename(fileRemotePath!);
+        QuickNotification.sendAudioNotification(fileName);
+      } else {
+        String fileName = basename(path);
+        QuickNotification.sendAudioNotification(fileName);
+      }
     } catch (e) {
       audioPlaying = false;
       fullSongDuration = null;
