@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
@@ -22,7 +23,6 @@ class ConnLaptopComingSoon extends StatelessWidget {
   Widget build(BuildContext context) {
     bool firstTime =
         ModalRoute.of(context)?.settings.arguments as bool? ?? false;
-    print(firstTime);
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: SizedBox(
@@ -74,7 +74,7 @@ class ConnLaptopComingSoon extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     launchUrlString(
-                      'https://firebasestorage.googleapis.com/v0/b/advanced-file-manager-8b7ab.appspot.com/o/laptop%2Fwindows_client.exe?alt=media&token=516c4906-ae51-4776-a2df-0e2570be1af4',
+                      laptopClientDownloadLink,
                       mode: LaunchMode.externalApplication,
                     );
                     if (firstTime) {
@@ -90,8 +90,10 @@ class ConnLaptopComingSoon extends StatelessWidget {
                 HSpace(),
                 ElevatedButton(
                   onPressed: () {
-                    copyToClipboard(context,
-                        'https://firebasestorage.googleapis.com/v0/b/advanced-file-manager-8b7ab.appspot.com/o/laptop%2Fwindows_client.exe?alt=media&token=516c4906-ae51-4776-a2df-0e2570be1af4');
+                    copyToClipboard(
+                      context,
+                      laptopClientDownloadLink,
+                    );
                     if (firstTime) {
                       handleConnectToLaptopButton(context, true);
                     } else {

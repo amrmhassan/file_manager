@@ -64,3 +64,7 @@ String myDefaultName = 'No Name ${Random().nextInt(99)}';
 
 //? downloads settings
 int maxParallelDownloadTasksDefault = 1;
+
+//? links
+const String laptopClientDownloadLink =
+    'https://firebasestorage.googleapis.com/v0/b/advanced-file-manager-8b7ab.appspot.com/o/laptop%2Fwindows_client.exe?alt=media&token=516c4906-ae51-4776-a2df-0e2570be1af4';
