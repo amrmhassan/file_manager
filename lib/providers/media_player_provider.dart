@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
-import 'package:explorer/helpers/background/services.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart';
 import 'package:video_player/video_player.dart';
@@ -14,10 +12,6 @@ import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 
 class MediaPlayerProvider extends ChangeNotifier {
   //# services
-  ServiceInstance? audioServiceVar;
-  void setAudioService(ServiceInstance i) {
-    audioServiceVar = i;
-  }
   //# services
 
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -68,7 +62,6 @@ class MediaPlayerProvider extends ChangeNotifier {
   Future<void> pausePlaying() async {
     await _audioPlayer.pause();
     QuickNotification.closeAudioNotification();
-    audioServiceVar?.stopSelf();
 
     audioPlaying = false;
     notifyListeners();
