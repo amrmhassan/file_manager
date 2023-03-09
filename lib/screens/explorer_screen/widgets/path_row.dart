@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
@@ -28,10 +29,15 @@ class PathRow extends StatelessWidget {
     var expProvider = Provider.of<ExplorerProvider>(context);
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
-    List<String> folders =
-        (customPath ?? expProvider.currentActiveDir.path).split('/');
-    var analyzerProvider =
-        Provider.of<AnalyzerProvider>(context, listen: false);
+    String path = customPath ?? expProvider.currentActiveDir.path;
+    initialDirs.skip(1).forEach((mainDisk) {
+      path = path.replaceFirst(
+        mainDisk.path,
+        mainDisksMapper[mainDisk.path] ?? mainDisk.path,
+      );
+    });
+    path = path.replaceAll('//', '/');
+    List<String> folders = path.split('/');
 
     return GestureDetector(
       onLongPress: onCopy ??
@@ -45,34 +51,12 @@ class PathRow extends StatelessWidget {
                 children: [
                   PathEntityText(
                     pathEntity: entry.value,
-                    onTap: () {
-                      if (entry.key != folders.length - 1) {
-                        String newPath =
-                            folders.sublist(0, entry.key + 1).join('/');
-                        if (onClickingSubPath != null) {
-                          onClickingSubPath!(newPath);
-                        } else {
-                          var foProviderFalse =
-                              Provider.of<FilesOperationsProvider>(
-                            context,
-                            listen: false,
-                          );
-                          expProviderFalse.setActiveDir(
-                            sizesExplorer: sizesExplorer,
-                            path: newPath,
-                            analyzerProvider: analyzerProvider,
-                            filesOperationsProvider: foProviderFalse,
-                          );
-                        }
-                      } else {
-                        if (onCopy != null) {
-                          onCopy!();
-                        } else {
-                          copyToClipboard(
-                              context, expProviderFalse.currentActiveDir.path);
-                        }
-                      }
-                    },
+                    onTap: () => onRowClickedHandler(
+                      context,
+                      entry,
+                      folders,
+                      expProviderFalse,
+                    ),
                   ),
                   if (entry.key != folders.length - 1)
                     Image.asset(
@@ -87,5 +71,42 @@ class PathRow extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void onRowClickedHandler(
+    BuildContext context,
+    MapEntry<int, String> entry,
+    List<String> folders,
+    ExplorerProvider expProviderFalse,
+  ) {
+    var analyzerProvider =
+        Provider.of<AnalyzerProvider>(context, listen: false);
+    if (entry.key != folders.length - 1) {
+      String newPath = folders.sublist(0, entry.key + 1).join('/');
+      mainDisksMapper.forEach((key, value) {
+        newPath = newPath.replaceFirst(value, key);
+      });
+
+      if (onClickingSubPath != null) {
+        onClickingSubPath!(newPath);
+      } else {
+        var foProviderFalse = Provider.of<FilesOperationsProvider>(
+          context,
+          listen: false,
+        );
+        expProviderFalse.setActiveDir(
+          sizesExplorer: sizesExplorer,
+          path: newPath,
+          analyzerProvider: analyzerProvider,
+          filesOperationsProvider: foProviderFalse,
+        );
+      }
+    } else {
+      if (onCopy != null) {
+        onCopy!();
+      } else {
+        copyToClipboard(context, expProviderFalse.currentActiveDir.path);
+      }
+    }
   }
 }

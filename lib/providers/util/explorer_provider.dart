@@ -24,6 +24,8 @@ import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
 import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 
+Map<String, String> mainDisksMapper = {};
+
 class ExplorerProvider extends ChangeNotifier
     implements ExplorerProviderAbstract {
   // this will indicate that the mode is just to view the downloaded file or folder
@@ -414,11 +416,11 @@ class ExplorerProvider extends ChangeNotifier
       //? handle main disks custom name
       for (var disk in mainDisks) {
         if (disk.path.endsWith('0')) {
-          disk.customTitle = 'Internal Storage';
+          mainDisksMapper[disk.path] = 'Internal Storage';
           disk.customThumbnail = 'assets/icons/phone.png';
           disk.hideDate = true;
         } else {
-          disk.customTitle = 'SD Card';
+          mainDisksMapper[disk.path] = 'SD Card';
           disk.customThumbnail = 'assets/icons/sd-card.png';
           disk.hideDate = true;
         }

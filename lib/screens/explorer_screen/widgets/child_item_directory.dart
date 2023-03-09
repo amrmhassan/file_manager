@@ -17,6 +17,7 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
@@ -250,7 +251,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.storageItemModel?.customTitle ??
+                                mainDisksMapper[
+                                        widget.storageItemModel?.path] ??
                                     widget.fileName,
                                 style: h4LightTextStyle,
                                 maxLines: 1,

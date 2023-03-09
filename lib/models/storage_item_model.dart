@@ -12,7 +12,6 @@ class StorageItemModel {
   final DateTime changed;
   final EntityType entityType;
   int? size;
-  String? customTitle;
   String? customThumbnail;
   bool? hideDate;
 
@@ -25,7 +24,6 @@ class StorageItemModel {
     required this.entityType,
     required this.size,
     this.customThumbnail,
-    this.customTitle,
     this.hideDate,
   });
 
