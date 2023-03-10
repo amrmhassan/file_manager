@@ -38,7 +38,6 @@ class PathRow extends StatelessWidget {
     });
     path = path.replaceAll('//', '/');
     List<String> folders = path.split('/');
-    logger.i(path);
 
     return GestureDetector(
       onLongPress: onCopy ??

@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/providers/explorer_provider_abstract.dart';
 import 'package:explorer/providers/media_player_provider.dart';
-import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -411,25 +411,7 @@ class ExplorerProvider extends ChangeNotifier
     _children.clear();
     notifyListeners();
     if (currentActiveDir.path == initialDirs.first.path) {
-      var validPaths = initialDirs.skip(1).map((e) => {
-            'path': e.path,
-            'type': EntityType.folder,
-          });
-      List<StorageItemModel> mainDisks =
-          pathsToStorageItemsWithType(validPaths);
-      //? handle main disks custom name
-      for (var disk in mainDisks) {
-        if (disk.path.endsWith('0')) {
-          mainDisksMapper[disk.path] = 'Internal Storage';
-          disk.customThumbnail = 'assets/icons/phone.png';
-          disk.hideDate = true;
-        } else {
-          mainDisksMapper[disk.path] = 'SD Card';
-          disk.customThumbnail = 'assets/icons/sd-card.png';
-          disk.hideDate = true;
-        }
-      }
-      _children.addAll(mainDisks);
+      _children.addAll(explorerMainDisks);
       loadingChildren = false;
       notifyListeners();
     } else if (globalSendPort != null) {

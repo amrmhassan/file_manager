@@ -1,5 +1,4 @@
 import 'dart:isolate';
-import 'dart:math';
 import 'package:disk_space/disk_space.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';

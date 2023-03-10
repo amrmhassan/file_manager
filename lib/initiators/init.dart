@@ -35,7 +35,8 @@ Future initBeforeRunApp() async {
     firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
     await setThemeVariables();
     initializeNotification();
-    await mainDisksInit();
+    await initialDirsInit();
+    initMainDisksCustomInfo();
   } catch (e) {
     printOnDebug('Error with first time app in main() or theme variables');
     logger.e(e);
