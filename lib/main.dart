@@ -28,6 +28,7 @@ import 'package:provider/provider.dart';
 //! show the video name in video player
 //! show full file name and wrap it if it was long
 //! add disks_desktop 1.0.1
+//! when downloading a thing, check if the size is equal to zero to skip it, but first create the file or the folder
 
 void main() async {
   await initBeforeRunApp();

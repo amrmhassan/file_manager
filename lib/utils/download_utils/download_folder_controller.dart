@@ -143,6 +143,9 @@ class DownloadFolderController extends DownloadTaskController {
   Future downloadFile([bool ask = true]) async {
     await getEntitiesPaths();
     await createDownloadFolders();
+    // i returned this value not to notifiy the download provider that the download is paused
+    if (size == 0) return Future.value(10);
+
     await downloadFiles();
     if (folderDownloadCancelled) {
       return Future.value(0);

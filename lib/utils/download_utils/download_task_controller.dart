@@ -381,6 +381,8 @@ class DownloadTaskController {
       _handleSplitFileTask();
       try {
         await _downloadChunks();
+        // i returned this value not to notifiy the download provider that the download is paused
+        if (length == 0) return 10;
 
         if ((received) != length) {
           // zero return mean that the  isn't finished, paused
