@@ -2,7 +2,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
-import 'dart:math';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/settings_provider.dart';
