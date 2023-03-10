@@ -40,6 +40,9 @@ String getSaveFilePath(FileType fileType, String fileName) {
     case FileType.batch:
       downloadFolder = _folderPathCheck(docDownloadFolder);
       break;
+    case FileType.folder:
+      downloadFolder = _folderPathCheck(foldersDownloadFolder);
+      break;
     default:
       downloadFolder = _folderPathCheck(otherDownloadFolder);
       break;

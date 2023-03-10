@@ -51,6 +51,7 @@ const String docDownloadFolder = 'Documents';
 const String imageDownloadFolder = 'Images';
 const String videoDownloadFolder = 'Video';
 const String otherDownloadFolder = 'Other';
+const String foldersDownloadFolder = 'Folders';
 
 //? storage item
 const double height = 60;

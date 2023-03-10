@@ -13,6 +13,7 @@ enum FileType {
   excel,
   powerPoint,
   text,
+  folder,
 }
 
 List<String> docsExt = [

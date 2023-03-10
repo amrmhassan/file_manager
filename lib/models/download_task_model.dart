@@ -35,6 +35,8 @@ class DownloadTaskModel {
   TaskStatus taskStatus;
   @HiveField(9)
   int count;
+  @HiveField(10)
+  EntityType entityType;
 
   DownloadTaskModel({
     required this.remoteDeviceName,
@@ -43,6 +45,7 @@ class DownloadTaskModel {
     required this.remoteFilePath,
     required this.addedAt,
     required this.size,
+    required this.entityType,
     this.downloadTaskController,
     this.finishedAt,
     this.count = 0,
@@ -50,7 +53,9 @@ class DownloadTaskModel {
     // this.peerModel,
   }) {
     String fileName = path_operations.basename(remoteFilePath);
-    FileType fileType = getFileTypeFromPath(remoteFilePath);
+    FileType fileType = entityType == EntityType.folder
+        ? FileType.folder
+        : getFileTypeFromPath(remoteFilePath);
     localFilePath = getSaveFilePath(fileType, fileName);
   }
 

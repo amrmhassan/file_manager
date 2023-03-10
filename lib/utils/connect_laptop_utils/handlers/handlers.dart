@@ -243,12 +243,13 @@ Future<void> startDownloadFileHandler(
 
     var downProvider = downPF(context);
 
-    await downProvider.addDownloadTaskFromPeer(
-      remoteFilePath: remoteFilepath,
-      fileSize: fileSize,
+    await downProvider.addDownloadTask(
+      remoteEntityPath: remoteFilepath,
+      size: fileSize,
       serverProvider: serverPF(context),
       shareProvider: sharePF(context),
       remoteDeviceID: null,
+      entityType: EntityType.folder,
       remoteDeviceName: null,
     );
   } catch (e, s) {

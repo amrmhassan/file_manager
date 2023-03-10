@@ -7,6 +7,7 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/utils/download_utils/download_folder_controller.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
@@ -280,12 +281,34 @@ class DownloadProvider extends ChangeNotifier {
   //! add a function to handle running tasks, and start the next one
   // when adding a new download task i want to check if there is any task downloading now or not
   // this will be called when the user wants to download a file from the other device storage
-  Future<void> addDownloadTaskFromPeer({
+
+  Future<void> addDownloadTask({
+    required String remoteEntityPath,
+    required int? size,
+    required String? remoteDeviceID,
+    required String? remoteDeviceName,
+    required ServerProvider serverProvider,
+    required ShareProvider shareProvider,
+    required EntityType entityType,
+  }) async {
+    _addDownloadFileTaskFromPeer(
+      remoteFilePath: remoteEntityPath,
+      fileSize: size,
+      remoteDeviceID: remoteDeviceID,
+      remoteDeviceName: remoteDeviceName,
+      serverProvider: serverProvider,
+      shareProvider: shareProvider,
+      entityType: entityType,
+    );
+  }
+
+  Future<void> _addDownloadFileTaskFromPeer({
     required String remoteFilePath,
     required int? fileSize,
     required String? remoteDeviceID,
     required String? remoteDeviceName,
     required ServerProvider serverProvider,
+    required EntityType entityType,
     required ShareProvider shareProvider,
   }) async {
     DownloadTaskModel? task;
@@ -315,6 +338,7 @@ class DownloadProvider extends ChangeNotifier {
       taskStatus: TaskStatus.pending,
       remoteDeviceID: remoteDeviceID ?? laptopID,
       remoteDeviceName: remoteDeviceName ?? laptopName,
+      entityType: entityType,
     );
     tasks.add(downloadTaskModel);
     notifyListeners();
@@ -413,29 +437,54 @@ class DownloadProvider extends ChangeNotifier {
         serverProvider,
         shareProvider,
       );
-
-      //? new way of downloading with multiple streams for faster downloading speed
-      rdu.DownloadTaskController downloadTaskController =
-          rdu.DownloadTaskController(
-        downloadPath: downloadTaskModel.localFilePath,
-        myDeviceID: laptop ? laptopID : me.deviceID,
-        mySessionID: laptop ? laptopID : me.sessionID,
-        remoteFilePath: downloadTaskModel.remoteFilePath,
-        url: laptop
-            ? laptopDownloadUrl
-            : remotePeer.getMyLink(downloadFileEndPoint),
-        setProgress: (int received) {
-          _updateTaskPercent(downloadTaskModel.id, received);
-        },
-        setSpeed: (speed) {
-          downloadSpeed = speed;
-          notifyListeners();
-        },
-        remoteDeviceID: downloadTaskModel.remoteDeviceID,
-        remoteDeviceName: downloadTaskModel.remoteDeviceName,
-      );
-      _setTaskController(downloadTaskModel.id, downloadTaskController);
-
+      late rdu.DownloadTaskController downloadTaskController;
+      if (downloadTaskModel.entityType == EntityType.file) {
+        //? new way of downloading with multiple streams for faster downloading speed
+        downloadTaskController = rdu.DownloadTaskController(
+          downloadPath: downloadTaskModel.localFilePath,
+          myDeviceID: laptop ? laptopID : me.deviceID,
+          mySessionID: laptop ? laptopID : me.sessionID,
+          remoteFilePath: downloadTaskModel.remoteFilePath,
+          url: laptop
+              ? laptopDownloadUrl
+              : remotePeer.getMyLink(downloadFileEndPoint),
+          setProgress: (int received) {
+            _updateTaskPercent(downloadTaskModel.id, received);
+          },
+          setSpeed: (speed) {
+            downloadSpeed = speed;
+            notifyListeners();
+          },
+          remoteDeviceID: downloadTaskModel.remoteDeviceID,
+          remoteDeviceName: downloadTaskModel.remoteDeviceName,
+        );
+        _setTaskController(downloadTaskModel.id, downloadTaskController);
+      } else {
+        //! the part need work is this part
+        //! you just need to handle downloading the folder from this new controller
+        //! you need to create all sub folders first
+        //! then download files, one at a time
+        //! that's it
+        //? here add the download folder controller that will inherit form the download task controller
+        DownloadFolderController downloadFolderController =
+            DownloadFolderController(
+          downloadPath: downloadTaskModel.localFilePath,
+          myDeviceID: laptop ? laptopID : me.deviceID,
+          mySessionID: laptop ? laptopID : me.sessionID,
+          remoteFilePath: downloadTaskModel.remoteFilePath,
+          url: laptop
+              ? laptopDownloadUrl
+              : remotePeer.getMyLink(getFolderContentRecrusiveEndPoint),
+          setProgress: (p) {},
+          setSpeed: (speed) {},
+          remoteDeviceID: downloadTaskModel.remoteDeviceID,
+          remoteDeviceName: downloadTaskModel.remoteDeviceName,
+        );
+        _setTaskController(
+          downloadTaskModel.id,
+          downloadFolderController,
+        );
+      }
       var res = await downloadTaskController.downloadFile();
       if (res == 0) {
         // zero return mean that the download isn't finished, paused

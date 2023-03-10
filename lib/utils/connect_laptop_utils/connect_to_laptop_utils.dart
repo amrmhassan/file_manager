@@ -8,6 +8,8 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
+import 'package:explorer/providers/server_provider.dart';
+import 'package:explorer/providers/share_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/share_space_item_model.dart';
@@ -103,9 +105,13 @@ Future<void> startDownloadFile(
   );
 }
 
-Future<void> downloadFolder(
-  String folderPath,
-) async {
+Future<void> downloadFolder({
+  required String remoteDeviceID,
+  required String remoteFilePath,
+  required ServerProvider serverProvider,
+  required ShareProvider shareProvider,
+  required String remoteDeviceName,
+}) async {
   late BuildContext modalContext;
   try {
     showModalBottomSheet(
@@ -134,7 +140,7 @@ Future<void> downloadFolder(
       connLink,
       options: Options(
         headers: {
-          folderPathHeaderKey: Uri.encodeComponent(folderPath),
+          folderPathHeaderKey: Uri.encodeComponent(remoteFilePath),
         },
       ),
     );
@@ -149,6 +155,18 @@ Future<void> downloadFolder(
         in items.where((element) => element.entityType == EntityType.folder)) {
       logger.i('${item.path}=>${item.entityType}=>${item.size}');
     }
+    int size = items.fold(
+        0, (previousValue, element) => previousValue + (element.size ?? 0));
+
+    downPF(navigatorKey.currentContext!).addDownloadTask(
+      remoteEntityPath: remoteFilePath,
+      size: size,
+      remoteDeviceID: remoteDeviceID,
+      remoteDeviceName: remoteDeviceName,
+      serverProvider: serverProvider,
+      shareProvider: shareProvider,
+      entityType: EntityType.folder,
+    );
   } on DioError catch (e) {
     logger.i(e.response?.data);
     logger.i(e.message);

@@ -23,6 +23,7 @@ class DownloadTaskModelAdapter extends TypeAdapter<DownloadTaskModel> {
       remoteFilePath: fields[1] as String,
       addedAt: fields[3] as DateTime,
       size: fields[6] as int?,
+      entityType: fields[10] as EntityType,
       finishedAt: fields[7] as DateTime?,
       count: fields[9] as int,
       taskStatus: fields[8] as TaskStatus,
@@ -32,7 +33,7 @@ class DownloadTaskModelAdapter extends TypeAdapter<DownloadTaskModel> {
   @override
   void write(BinaryWriter writer, DownloadTaskModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -52,7 +53,9 @@ class DownloadTaskModelAdapter extends TypeAdapter<DownloadTaskModel> {
       ..writeByte(8)
       ..write(obj.taskStatus)
       ..writeByte(9)
-      ..write(obj.count);
+      ..write(obj.count)
+      ..writeByte(10)
+      ..write(obj.entityType);
   }
 
   @override

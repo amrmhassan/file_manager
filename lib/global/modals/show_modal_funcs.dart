@@ -240,18 +240,25 @@ void showDownloadFromShareSpaceModal(
             onTap: () async {
               if (shareSpaceItemModel.entityType == EntityType.folder) {
                 Navigator.pop(context);
-                await downloadFolder(shareSpaceItemModel.path);
+                await downloadFolder(
+                  remoteDeviceID: peerModel?.deviceID ?? laptopID,
+                  remoteDeviceName: peerModel?.name ?? laptopName,
+                  remoteFilePath: shareSpaceItemModel.path,
+                  serverProvider: serverPF(context),
+                  shareProvider: sharePF(context),
+                );
               } else {
                 try {
                   await Provider.of<DownloadProvider>(
                     context,
                     listen: false,
-                  ).addDownloadTaskFromPeer(
-                    fileSize: shareSpaceItemModel.size,
+                  ).addDownloadTask(
+                    size: shareSpaceItemModel.size,
                     remoteDeviceID: peerModel?.deviceID ?? laptopID,
-                    remoteFilePath: shareSpaceItemModel.path,
+                    remoteEntityPath: shareSpaceItemModel.path,
                     serverProvider: serverPF(context),
                     shareProvider: sharePF(context),
+                    entityType: EntityType.file,
                     remoteDeviceName: peerModel?.name ?? laptopName,
                   );
                   Navigator.pop(context);
