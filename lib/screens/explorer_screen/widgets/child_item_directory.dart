@@ -254,10 +254,14 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                 mainDisksMapper[
                                         widget.storageItemModel?.path] ??
                                     widget.fileName,
-                                style: h4LightTextStyle,
-                                maxLines: 1,
+                                style: h4LightTextStyle.copyWith(
+                                  height: 1.2,
+                                  fontSize: 13,
+                                ),
+                                // maxLines: 1,
                                 // overflow: TextOverflow.ellipsis,
                               ),
+                              VSpace(factor: .3),
                               widget.storageItemModel == null
                                   ? SizedBox()
                                   : Row(
