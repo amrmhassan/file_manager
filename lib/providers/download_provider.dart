@@ -407,6 +407,14 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
+  void setTaskSize(int s, String id) {
+    int index = tasks.indexWhere((element) => element.id == id);
+    DownloadTaskModel taskModel = tasks[index];
+    taskModel.size = s;
+
+    _updateTask(index, taskModel);
+  }
+
   // this will start downloading a task immediately
   Future<void> _startDownloadTask({
     required ServerProvider serverProvider,
@@ -472,8 +480,7 @@ class DownloadProvider extends ChangeNotifier {
         //! that's it
         //! you might need to look for the polymerphism principle to make both come from the same controller, but the controller will handle the way of downloading
         //? here add the download folder controller that will inherit form the download task controller
-        DownloadFolderController downloadFolderController =
-            DownloadFolderController(
+        downloadTaskController = DownloadFolderController(
           downloadPath: downloadTaskModel.localFilePath,
           myDeviceID: laptop ? laptopID : me.deviceID,
           mySessionID: laptop ? laptopID : me.sessionID,
@@ -481,16 +488,19 @@ class DownloadProvider extends ChangeNotifier {
           url: laptop
               ? laptopDownloadUrl
               : remotePeer.getMyLink(getFolderContentRecrusiveEndPoint),
-          setProgress: (p) {},
+          setProgress: (p) {
+            _updateTaskPercent(downloadTaskModel.id, p);
+          },
           setSpeed: (speed) {},
           remoteDeviceID: downloadTaskModel.remoteDeviceID,
           remoteDeviceName: downloadTaskModel.remoteDeviceName,
         );
         _setTaskController(
           downloadTaskModel.id,
-          downloadFolderController,
+          downloadTaskController,
         );
       }
+
       var res = await downloadTaskController.downloadFile();
       if (res == 0) {
         // zero return mean that the download isn't finished, paused
@@ -510,18 +520,14 @@ class DownloadProvider extends ChangeNotifier {
       } else {
         throw Exception('Error occurred during download');
       }
-    } catch (e, s) {
+    } catch (e) {
       await _markDownloadTask(
         downloadTaskModel.id,
         TaskStatus.failed,
         serverProvider,
         shareProvider,
       );
-      throw CustomException(
-        e: e,
-        s: s,
-        rethrowError: true,
-      );
+      logger.e(e);
     }
   }
 }

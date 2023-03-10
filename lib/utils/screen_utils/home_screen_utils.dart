@@ -36,9 +36,6 @@ Future<bool> handlePressPhoneBackButton({
     mediaPlayerProvider:
         Provider.of<MediaPlayerProvider>(context, listen: false),
   );
-  logger.i('canGoBack $canGoBack');
-  logger.i('sizesExplorer $sizesExplorer');
-  logger.i('exitCounter $exitCounter');
 
   bool exit = false;
   if (!canGoBack) {

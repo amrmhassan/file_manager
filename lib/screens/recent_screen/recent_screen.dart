@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/shimmer_wrapper.dart';
@@ -248,7 +249,8 @@ void handleConnectToLaptopButton(
       ? Navigator.pushReplacementNamed(context, ScanQRCodeScreen.routeName)
       : Navigator.pushNamed(context, ScanQRCodeScreen.routeName));
 
-  bool connected = await connectLaptopPF(context).handleConnect(code);
+  bool connected = await connectLaptopPF(navigatorKey.currentContext ?? context)
+      .handleConnect(code);
   if (!connected) {
     showSnackBar(
         context: context,

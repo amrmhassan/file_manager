@@ -26,7 +26,7 @@ class DownloadTaskModel {
   @HiveField(5)
   final String remoteDeviceID;
   @HiveField(6)
-  final int? size;
+  int? size;
   DownloadTaskController? downloadTaskController;
 
   @HiveField(7)

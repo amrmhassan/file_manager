@@ -252,7 +252,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         );
       }
       logger.i(
-          'Folder content loaded with length${shareExpPF(context).viewedItems.length}');
+          'Folder content loaded with length ${shareExpPF(context).viewedItems.length}');
     } catch (e) {
       logger.e(e);
       showSnackBar(

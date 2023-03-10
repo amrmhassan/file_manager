@@ -79,6 +79,7 @@ class DownloadTaskController {
   final Function(double speed) setSpeed;
   final String remoteDeviceName;
   final String remoteDeviceID;
+  final Function(int chunkSize)? onReceived;
 
   DownloadTaskController({
     required this.downloadPath,
@@ -91,6 +92,7 @@ class DownloadTaskController {
     required this.remoteDeviceID,
     required this.remoteDeviceName,
     this.maximumParallelDownloadThreads = 5,
+    this.onReceived,
   });
 
   // void _resetRunTimeVariables() {
@@ -307,7 +309,9 @@ class DownloadTaskController {
             );
 
             setProgress(received);
-            if (received == length) {}
+            if (onReceived != null) {
+              onReceived!(chunkSize);
+            }
             DateTime after = DateTime.now();
             int diff = after.difference(before).inMilliseconds;
             //! i subtracted the initialReceived to avoid miss speed measuring=> never tested yet

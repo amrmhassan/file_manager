@@ -112,64 +112,13 @@ Future<void> downloadFolder({
   required ShareProvider shareProvider,
   required String remoteDeviceName,
 }) async {
-  late BuildContext modalContext;
-  try {
-    showModalBottomSheet(
-      backgroundColor: Colors.transparent,
-      context: navigatorKey.currentContext!,
-      builder: (context) {
-        modalContext = context;
-        return ModalWrapper(
-            showTopLine: false,
-            color: kCardBackgroundColor,
-            child: Column(
-              children: [
-                CircularProgressIndicator(
-                  color: kMainIconColor,
-                  strokeWidth: 2,
-                ),
-                VSpace(),
-                Text('Loading Info'),
-              ],
-            ));
-      },
-    );
-    String connLink = connectLaptopPF(navigatorKey.currentContext!)
-        .getPhoneConnLink(getFolderContentRecrusiveEndPoint);
-    var res = await Dio().get(
-      connLink,
-      options: Options(
-        headers: {
-          folderPathHeaderKey: Uri.encodeComponent(remoteFilePath),
-        },
-      ),
-    );
-    try {
-      Navigator.pop(modalContext);
-    } catch (e) {
-      logger.e(e);
-    }
-    var data = res.data as List;
-    var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
-    for (var item
-        in items.where((element) => element.entityType == EntityType.folder)) {
-      logger.i('${item.path}=>${item.entityType}=>${item.size}');
-    }
-    int size = items.fold(
-        0, (previousValue, element) => previousValue + (element.size ?? 0));
-
-    downPF(navigatorKey.currentContext!).addDownloadTask(
-      remoteEntityPath: remoteFilePath,
-      size: size,
-      remoteDeviceID: remoteDeviceID,
-      remoteDeviceName: remoteDeviceName,
-      serverProvider: serverProvider,
-      shareProvider: shareProvider,
-      entityType: EntityType.folder,
-    );
-  } on DioError catch (e) {
-    logger.i(e.response?.data);
-    logger.i(e.message);
-    logger.i(e.type);
-  }
+  downPF(navigatorKey.currentContext!).addDownloadTask(
+    remoteEntityPath: remoteFilePath,
+    size: null,
+    remoteDeviceID: remoteDeviceID,
+    remoteDeviceName: remoteDeviceName,
+    serverProvider: serverProvider,
+    shareProvider: shareProvider,
+    entityType: EntityType.folder,
+  );
 }
