@@ -152,6 +152,7 @@ class DownloadProvider extends ChangeNotifier {
     if (alsoFile) {
       await rdu.DownloadTaskController.deleteTaskFromStorage(
         tasks[index].localFilePath,
+        tasks[index].entityType == EntityType.folder,
       );
     }
     await _pauseTaskDownload(index);
@@ -508,6 +509,7 @@ class DownloadProvider extends ChangeNotifier {
       }
 
       var res = await downloadTaskController.downloadFile();
+      QuickNotification.closeDownloadNotification(downloadTaskModel.id);
       if (res == 0) {
         // zero return mean that the download isn't finished, paused
 

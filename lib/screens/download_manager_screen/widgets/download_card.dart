@@ -39,23 +39,6 @@ class DownloadCard extends StatefulWidget {
 class _DownloadCardState extends State<DownloadCard> {
   final ScrollController _downloadCardScrollController = ScrollController();
 
-  void navigateToFile() {
-    File file = File(widget.downloadTaskModel.localFilePath);
-    if (file.existsSync()) {
-      handleOpenTabFromOtherScreen(
-        path_operations.dirname(widget.downloadTaskModel.localFilePath),
-        context,
-        widget.downloadTaskModel.localFilePath,
-      );
-    } else {
-      showSnackBar(
-        context: context,
-        message: 'file doesn\'t exist',
-        snackBarType: SnackBarType.error,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.downloadTaskModel.size == 0 &&
@@ -183,5 +166,39 @@ class _DownloadCardState extends State<DownloadCard> {
         ),
       ),
     );
+  }
+
+  void navigateToFile() {
+    if (widget.downloadTaskModel.entityType == EntityType.folder) {
+      Directory directory = Directory(widget.downloadTaskModel.localFilePath);
+      if (directory.existsSync()) {
+        handleOpenTabFromOtherScreen(
+          path_operations.dirname(widget.downloadTaskModel.localFilePath),
+          context,
+          widget.downloadTaskModel.localFilePath,
+        );
+      } else {
+        showSnackBar(
+          context: context,
+          message: 'folder doesn\'t exist',
+          snackBarType: SnackBarType.error,
+        );
+      }
+    } else {
+      File file = File(widget.downloadTaskModel.localFilePath);
+      if (file.existsSync()) {
+        handleOpenTabFromOtherScreen(
+          path_operations.dirname(widget.downloadTaskModel.localFilePath),
+          context,
+          widget.downloadTaskModel.localFilePath,
+        );
+      } else {
+        showSnackBar(
+          context: context,
+          message: 'file doesn\'t exist',
+          snackBarType: SnackBarType.error,
+        );
+      }
+    }
   }
 }

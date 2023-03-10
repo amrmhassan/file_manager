@@ -1,3 +1,4 @@
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:path/path.dart' as path_operations;
 
 class TabModel {
@@ -7,6 +8,6 @@ class TabModel {
   TabModel({
     required this.path,
   }) {
-    title = path_operations.basename(path);
+    title = mainDisksMapper[path] ?? path_operations.basename(path);
   }
 }

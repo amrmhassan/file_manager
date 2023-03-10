@@ -124,7 +124,7 @@ class DownloadFolderController extends DownloadTaskController {
           setProgress(count);
         },
       );
-      await currentDownloadingFile?.downloadFile();
+      await currentDownloadingFile?.downloadFile(false);
       if (folderDownloadCancelled) break;
     }
   }
@@ -140,7 +140,7 @@ class DownloadFolderController extends DownloadTaskController {
   }
 
   @override
-  Future downloadFile() async {
+  Future downloadFile([bool ask = true]) async {
     await getEntitiesPaths();
     await createDownloadFolders();
     await downloadFiles();

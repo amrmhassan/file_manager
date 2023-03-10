@@ -367,10 +367,10 @@ class DownloadTaskController {
   }
 
   //? to download a file as chunks each chunk is at most equals the chunkSize
-  Future<dynamic> downloadFile() async {
+  Future<dynamic> downloadFile([bool ask = true]) async {
     try {
       //? this function will support continue corrupted downloads later by downloading the stopped chunks
-      if (await _fileAlreadyDownloadedChecker()) {
+      if (await _fileAlreadyDownloadedChecker(ask)) {
         return;
       }
       await _initFileInfo();
@@ -380,9 +380,7 @@ class DownloadTaskController {
       _createChunksInfoFile();
       _handleSplitFileTask();
       try {
-        logger.i('Downloading chunks');
         await _downloadChunks();
-        logger.i('received $received length $length');
 
         if ((received) != length) {
           // zero return mean that the  isn't finished, paused
@@ -410,7 +408,14 @@ class DownloadTaskController {
     return '${path_operations.dirname(localDownloadPath)}/.$fName-tmp';
   }
 
-  static Future<void> deleteTaskFromStorage(String localFilePath) async {
+  static Future<void> deleteTaskFromStorage(
+    String localFilePath, [
+    bool folder = false,
+  ]) async {
+    if (folder) {
+      var dir = Directory(localFilePath);
+      await dir.delete(recursive: true);
+    }
     try {
       var file = File(localFilePath);
       if (await file.exists()) {
