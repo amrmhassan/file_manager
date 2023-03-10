@@ -424,8 +424,13 @@ class DownloadProvider extends ChangeNotifier {
         remotePeer = serverProvider
             .peerModelWithDeviceID(downloadTaskModel.remoteDeviceID);
       } else {
-        laptopDownloadUrl = connectLaptopPF(navigatorKey.currentContext!)
-            .getPhoneConnLink(downloadFileEndPoint);
+        if (downloadTaskModel.entityType == EntityType.folder) {
+          laptopDownloadUrl = connectLaptopPF(navigatorKey.currentContext!)
+              .getPhoneConnLink(getFolderContentRecrusiveEndPoint);
+        } else {
+          laptopDownloadUrl = connectLaptopPF(navigatorKey.currentContext!)
+              .getPhoneConnLink(downloadFileEndPoint);
+        }
       }
 
       downloading = true;
@@ -465,6 +470,7 @@ class DownloadProvider extends ChangeNotifier {
         //! you need to create all sub folders first
         //! then download files, one at a time
         //! that's it
+        //! you might need to look for the polymerphism principle to make both come from the same controller, but the controller will handle the way of downloading
         //? here add the download folder controller that will inherit form the download task controller
         DownloadFolderController downloadFolderController =
             DownloadFolderController(

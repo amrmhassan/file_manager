@@ -185,9 +185,10 @@ class DownloadTaskController {
     chunksInfo[index] = chunkProgressModel;
   }
 
-  Future<bool> _fileAlreadyDownloadedChecker() async {
+  Future<bool> _fileAlreadyDownloadedChecker([bool ask = true]) async {
     // this function will block the download process if it was returned true
     bool exist = File(downloadPath).existsSync();
+    if (!ask && exist) return true;
 
     // overwrite or rename can be true not both
     bool overwrite = false;
