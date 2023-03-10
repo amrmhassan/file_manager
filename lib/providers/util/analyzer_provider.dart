@@ -1,8 +1,10 @@
 import 'dart:isolate';
+import 'dart:math';
 import 'package:disk_space/disk_space.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/hive/hive_collections.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
@@ -133,7 +135,13 @@ class AnalyzerProvider extends ChangeNotifier
     _loading = true;
     _currentFolder = 'Starting...';
     notifyListeners();
-    Isolate isolate = await Isolate.spawn(runAnalyzeStorageIsolate, sendPort);
+    Isolate isolate = await Isolate.spawn(
+      (message) => runAnalyzeStorageIsolate(message),
+      {
+        'sendPort': sendPort,
+        'parentPath': initialDirs.skip(1).first.path,
+      },
+    );
     receivePort.listen(
       (message) async {
         if (message is AdvancedStorageAnalyzer) {

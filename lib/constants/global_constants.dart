@@ -7,11 +7,8 @@ import 'package:logger/logger.dart';
 
 String laptopName = 'Laptop';
 String laptopID = 'laptop_id';
-// const String initialPath = '/';
-List<Directory> initialDirs = [
-  Directory('/'),
-  Directory('sdcard'),
-];
+
+late List<Directory> initialDirs;
 final Logger logger = Logger();
 // final CustomLoggerModel logger = CustomLoggerModel();
 

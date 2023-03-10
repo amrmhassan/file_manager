@@ -9,6 +9,7 @@ Future mainDisksInit() async {
   var path = await ExternalPath.getExternalStorageDirectories();
   path.insert(0, '/');
   initialDirs = path.map((e) => Directory(e)).toList();
+  logger.i('main disks set');
 
   //?
 }

@@ -55,6 +55,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    var initialRoute = testing
+        ? TestScreen.routeName
+        : (firstTimeRunApp ? IntroScreen.routeName : HomeScreen.routeName);
+
     return MultiProvider(
       providers: mainProviders,
       child: MaterialApp(
@@ -73,9 +77,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
-        initialRoute: testing
-            ? TestScreen.routeName
-            : (firstTimeRunApp ? IntroScreen.routeName : HomeScreen.routeName),
+        initialRoute: initialRoute,
         navigatorKey: navigatorKey,
         routes: mainRoutes,
       ),
