@@ -27,6 +27,7 @@ class IntroScreen extends StatelessWidget {
           Colors.white.withOpacity(.4),
           Colors.white.withOpacity(.4),
           Colors.white.withOpacity(.4),
+          Colors.white.withOpacity(.4),
         ],
         color: Colors.black26,
         spacing: const EdgeInsets.symmetric(horizontal: 3.0),
@@ -62,6 +63,32 @@ class IntroScreen extends StatelessWidget {
             style: h4LiteTextStyle,
           )),
       pages: [
+        PageViewModel(
+          reverse: true,
+          titleWidget: Column(
+            children: [
+              VSpace(factor: 3),
+              Text(
+                'Connect Windows',
+                style: h1TextStyle,
+              ),
+            ],
+          ),
+          bodyWidget: Text(
+            'Gain full control over your windows device and vice versa',
+            style: h3InactiveTextStyle,
+            textAlign: TextAlign.center,
+          ),
+          image: Column(
+            children: [
+              VSpace(factor: 2),
+              Image.asset(
+                'assets/icons/connection.png',
+                width: Responsive.getWidthPercentage(context, .5),
+              ),
+            ],
+          ),
+        ),
         PageViewModel(
           reverse: true,
           titleWidget: Column(

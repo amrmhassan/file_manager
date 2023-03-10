@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/settings_provider.dart';
@@ -24,12 +25,26 @@ Future<bool> handlePressPhoneBackButton({
   required bool sizesExplorer,
 }) {
   var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
+  var foProviderFalse = Provider.of<FilesOperationsProvider>(
+    context,
+    listen: false,
+  );
+
+  bool canGoBack = expProvider.goBack(
+    sizesExplorer: sizesExplorer,
+    analyzerProvider: Provider.of<AnalyzerProvider>(context, listen: false),
+    filesOperationsProvider: foProviderFalse,
+    mediaPlayerProvider:
+        Provider.of<MediaPlayerProvider>(context, listen: false),
+  );
+  logger.i('canGoBack $canGoBack');
+  logger.i('sizesExplorer $sizesExplorer');
+  logger.i('exitCounter $exitCounter');
+
   bool exit = false;
-  String cp = expProvider.currentActiveDir.path;
-  String ip = initialDirs.first.path;
-  if (cp == ip) {
+  if (!canGoBack) {
     if (sizesExplorer) {
-      return Future.delayed(Duration.zero).then((value) => true);
+      return Future.value(true);
     }
     exitCounter++;
     incrementExitCounter();
@@ -42,17 +57,7 @@ Future<bool> handlePressPhoneBackButton({
   } else {
     exit = false;
   }
-  var foProviderFalse = Provider.of<FilesOperationsProvider>(
-    context,
-    listen: false,
-  );
-  expProvider.goBack(
-    sizesExplorer: sizesExplorer,
-    analyzerProvider: Provider.of<AnalyzerProvider>(context, listen: false),
-    filesOperationsProvider: foProviderFalse,
-    mediaPlayerProvider:
-        Provider.of<MediaPlayerProvider>(context, listen: false),
-  );
+
   //* to reset the exit counter after 2 seconds
   Future.delayed(Duration(seconds: 5)).then((value) {
     clearExitCounter();

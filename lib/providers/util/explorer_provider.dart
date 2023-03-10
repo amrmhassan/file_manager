@@ -285,7 +285,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   @override
-  void goBack({
+  bool goBack({
     required AnalyzerProvider? analyzerProvider,
     required bool sizesExplorer,
     required FilesOperationsProvider filesOperationsProvider,
@@ -294,15 +294,19 @@ class ExplorerProvider extends ChangeNotifier
     if (mediaPlayerProvider.videoPlayerController != null &&
         !mediaPlayerProvider.videoHidden) {
       mediaPlayerProvider.togglePlayerHidden();
-      return;
+      return true;
     }
-    if (currentActiveDir.parent.path == '.') return;
+    if (initialDirs.any((element) => element.path == currentActiveDir.path)) {
+      return false;
+    }
+    if (currentActiveDir.parent.path == '.') return false;
     setActiveDir(
       path: currentActiveDir.parent.path,
       sizesExplorer: sizesExplorer,
       analyzerProvider: analyzerProvider,
       filesOperationsProvider: filesOperationsProvider,
     );
+    return true;
   }
 
   //? go home
