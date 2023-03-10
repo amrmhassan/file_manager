@@ -23,6 +23,10 @@ class DownloadFolderController extends DownloadTaskController {
 
   int count = 0;
 
+  final Function(int size) setTaskSize;
+  DownloadTaskController? currentDownloadingFile;
+  bool folderDownloadCancelled = false;
+
   DownloadFolderController({
     required super.downloadPath,
     required super.myDeviceID,
@@ -34,6 +38,7 @@ class DownloadFolderController extends DownloadTaskController {
     required super.remoteDeviceID,
     required super.remoteDeviceName,
     super.maximumParallelDownloadThreads,
+    required this.setTaskSize,
   });
 
   Future createDownloadFolders() async {
@@ -94,6 +99,7 @@ class DownloadFolderController extends DownloadTaskController {
     files = items.where((element) => element.entityType == EntityType.file);
     size = items.fold(
         0, (previousValue, element) => previousValue + (element.size ?? 0));
+    setTaskSize(size);
   }
 
   Future downloadFiles() async {
@@ -103,7 +109,7 @@ class DownloadFolderController extends DownloadTaskController {
       String downloadURL = url.replaceAll(
           getFolderContentRecrusiveEndPoint, downloadFileEndPoint);
 
-      DownloadTaskController downloadTaskController = DownloadTaskController(
+      currentDownloadingFile = DownloadTaskController(
         downloadPath: localFilePath,
         myDeviceID: myDeviceID,
         mySessionID: mySessionID,
@@ -118,7 +124,18 @@ class DownloadFolderController extends DownloadTaskController {
           setProgress(count);
         },
       );
-      await downloadTaskController.downloadFile();
+      await currentDownloadingFile?.downloadFile();
+      if (folderDownloadCancelled) break;
+    }
+  }
+
+  @override
+  void cancelTask() {
+    try {
+      currentDownloadingFile?.cancelTask();
+      folderDownloadCancelled = true;
+    } catch (e) {
+      logger.i('Download Cancelled', null, StackTrace.current);
     }
   }
 
@@ -127,5 +144,10 @@ class DownloadFolderController extends DownloadTaskController {
     await getEntitiesPaths();
     await createDownloadFolders();
     await downloadFiles();
+    if (folderDownloadCancelled) {
+      return Future.value(0);
+    } else {
+      return Future.value(size);
+    }
   }
 }

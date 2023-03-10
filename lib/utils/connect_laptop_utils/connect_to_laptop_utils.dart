@@ -1,11 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:dio/dio.dart';
-import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
-import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
-import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/server_provider.dart';

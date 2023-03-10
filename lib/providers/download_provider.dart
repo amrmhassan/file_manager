@@ -491,9 +491,15 @@ class DownloadProvider extends ChangeNotifier {
           setProgress: (p) {
             _updateTaskPercent(downloadTaskModel.id, p);
           },
-          setSpeed: (speed) {},
+          setSpeed: (speed) {
+            downloadSpeed = speed;
+            notifyListeners();
+          },
           remoteDeviceID: downloadTaskModel.remoteDeviceID,
           remoteDeviceName: downloadTaskModel.remoteDeviceName,
+          setTaskSize: (size) {
+            setTaskSize(size, downloadTaskModel.id);
+          },
         );
         _setTaskController(
           downloadTaskModel.id,
