@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/custom_volume_controllers.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -13,6 +14,14 @@ class DownloadPercentBar extends StatelessWidget {
     super.key,
     required this.downloadTaskModel,
   });
+  double get widthFactor {
+    if (downloadTaskModel.count == 0) {
+      return 1;
+    }
+    return (downloadTaskModel.count / (downloadTaskModel.size ?? 1)) <= 0
+        ? 1
+        : (downloadTaskModel.count / (downloadTaskModel.size ?? 1));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +33,7 @@ class DownloadPercentBar extends StatelessWidget {
           width: double.infinity,
           alignment: Alignment.centerLeft,
           child: FractionallySizedBox(
-            widthFactor: downloadTaskModel.count / downloadTaskModel.size!,
+            widthFactor: widthFactor,
             child: Container(
               width: double.infinity,
               height: 4,

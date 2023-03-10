@@ -41,11 +41,11 @@ class _DownloadCardState extends State<DownloadCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.downloadTaskModel.size == 0 &&
-        widget.downloadTaskModel.count == 0) {
-      //! this is an error, for files with 0 size and 0 count
-      return SizedBox();
-    }
+    // if (widget.downloadTaskModel.size == 0 &&
+    //     widget.downloadTaskModel.count == 0) {
+    //   //! this is an error, for files with 0 size and 0 count
+    //   return SizedBox();
+    // }
     return Dismissible(
       direction: widget.downloadTaskModel.taskStatus == TaskStatus.finished
           ? DismissDirection.none

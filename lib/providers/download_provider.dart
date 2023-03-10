@@ -283,6 +283,28 @@ class DownloadProvider extends ChangeNotifier {
   // when adding a new download task i want to check if there is any task downloading now or not
   // this will be called when the user wants to download a file from the other device storage
 
+  Future<void> addMultipleDownloadTasks({
+    required Iterable<String> remoteEntitiesPaths,
+    required Iterable<int?> sizes,
+    required String? remoteDeviceID,
+    required String? remoteDeviceName,
+    required ServerProvider serverProvider,
+    required ShareProvider shareProvider,
+    required Iterable<EntityType> entitiesTypes,
+  }) async {
+    for (var i = 0; i < remoteEntitiesPaths.length; i++) {
+      addDownloadTask(
+        remoteEntityPath: remoteEntitiesPaths.elementAt(i),
+        size: sizes.elementAt(i),
+        remoteDeviceID: remoteDeviceID,
+        remoteDeviceName: remoteDeviceName,
+        serverProvider: serverProvider,
+        shareProvider: shareProvider,
+        entityType: entitiesTypes.elementAt(i),
+      );
+    }
+  }
+
   Future<void> addDownloadTask({
     required String remoteEntityPath,
     required int? size,
@@ -320,8 +342,8 @@ class DownloadProvider extends ChangeNotifier {
           element.remoteDeviceID == remoteDeviceID);
     } catch (e) {
       if (task == null) {
-        logger
-            .i('Task doesn\'t exit and it will be added to be downloaded soon');
+        // logger
+        //     .i('Task doesn\'t exit and it will be added to be downloaded soon');
       } else {
         throw CustomException(
           e: 'Task already added and ${task.taskStatus.name}',

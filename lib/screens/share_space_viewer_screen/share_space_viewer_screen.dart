@@ -2,14 +2,18 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/share_screen/widgets/empty_share_items.dart';
 import 'package:explorer/screens/share_screen/widgets/not_sharing_view.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
@@ -142,6 +146,42 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                 color: kActiveTextColor,
               ),
             ),
+            rightIcon: shareExpProvider.allowSelect
+                ? Row(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ButtonWrapper(
+                            padding: EdgeInsets.all(mediumPadding),
+                            onTap: () {
+                              var selectedItems =
+                                  shareExpPF(context).selectedItems;
+                              downPF(context).addMultipleDownloadTasks(
+                                remoteEntitiesPaths:
+                                    selectedItems.map((e) => e.path),
+                                sizes: selectedItems.map((e) => e.size),
+                                remoteDeviceID: data.peerModel?.deviceID,
+                                remoteDeviceName: data.peerModel?.name,
+                                serverProvider: serverPF(context),
+                                shareProvider: sharePF(context),
+                                entitiesTypes: selectedItems.map(
+                                  (e) => e.entityType,
+                                ),
+                              );
+                              shareExpPF(context).clearSelectedItems();
+                            },
+                            child: Image.asset(
+                              'assets/icons/download.png',
+                              width: mediumIconSize,
+                            ),
+                          ),
+                        ],
+                      ),
+                      HSpace(),
+                    ],
+                  )
+                : null,
           ),
           if (me) NotSharingView(),
           if (shareExpProvider.currentPath != null)
@@ -189,21 +229,27 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                             onDirTapped: localGetFolderContent,
                             sizesExplorer: false,
                             parentSize: 0,
+                            exploreMode: ExploreMode.selection,
+                            isSelected: shareExpProvider.isSelected(
+                                shareExpProvider.viewedItems[index].path),
                             shareSpaceItemModel:
                                 shareExpProvider.viewedItems[index],
+                            onSelectClicked: () {
+                              shareExpPF(context).toggleSelectItem(
+                                shareExpProvider.viewedItems[index],
+                              );
+                            },
                             // to prevent clicking on the disk storages
-                            onLongPressed: path_operations
-                                    .basename(shareExpProvider
-                                        .viewedItems[index].path)
-                                    .contains(':')
-                                ? null
-                                : (path, entityType, network) {
-                                    showDownloadFromShareSpaceModal(
-                                      context,
-                                      data.peerModel,
-                                      index,
-                                    );
-                                  },
+                            onLongPressed: (path, entityType, network) {
+                              // showDownloadFromShareSpaceModal(
+                              //   context,
+                              //   data.peerModel,
+                              //   index,
+                              // );
+                              shareExpPF(context).toggleSelectItem(
+                                shareExpProvider.viewedItems[index],
+                              );
+                            },
                             onFileTapped: (path) {
                               showDownloadFromShareSpaceModal(
                                 context,
@@ -211,7 +257,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                                 index,
                               );
                             },
-                            allowSelect: false,
+                            allowSelect: shareExpProvider.allowSelect,
                           ),
                         ),
                       ),
@@ -251,8 +297,8 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
           shareItemsExplorerProvider: shareItemsExplorerProvider,
         );
       }
-      logger.i(
-          'Folder content loaded with length ${shareExpPF(context).viewedItems.length}');
+      // logger.i(
+      //     'Folder content loaded with length ${shareExpPF(context).viewedItems.length}');
     } catch (e) {
       logger.e(e);
       showSnackBar(

@@ -42,6 +42,9 @@ class ChildDirectoryItem extends StatefulWidget {
   final bool isSelected;
   final bool allowShowingFavIcon;
   final bool allowSelect;
+  final ExploreMode? exploreMode;
+  final VoidCallback? onSelectClicked;
+
   const ChildDirectoryItem({
     super.key,
     required this.fileName,
@@ -52,6 +55,8 @@ class ChildDirectoryItem extends StatefulWidget {
     required this.isSelected,
     required this.allowShowingFavIcon,
     required this.allowSelect,
+    this.exploreMode,
+    required this.onSelectClicked,
   });
 
   @override
@@ -313,11 +318,24 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                               color: kInActiveTextColor.withOpacity(.7),
                             ),
                           ),
-                        foProvider.exploreMode == ExploreMode.selection &&
+                        (widget.exploreMode ?? foProvider.exploreMode) ==
+                                    ExploreMode.selection &&
                                 widget.allowSelect
                             ? EntityCheckBox(
                                 isSelected: widget.isSelected,
-                                storageItemModel: widget.storageItemModel!,
+                                onTap: widget.onSelectClicked ??
+                                    () {
+                                      var expProvider =
+                                          Provider.of<ExplorerProvider>(context,
+                                              listen: false);
+                                      Provider.of<FilesOperationsProvider>(
+                                              context,
+                                              listen: false)
+                                          .toggleFromSelectedItems(
+                                        widget.storageItemModel!,
+                                        expProvider,
+                                      );
+                                    },
                               )
                             : Image.asset(
                                 'assets/icons/right-arrow.png',

@@ -81,6 +81,7 @@ class _ExtFilesScreenState extends State<ExtFilesScreen> {
                     parentSize: parentSize ?? 0,
                     allowSelect: false,
                     network: false,
+                    onSelectClicked: null,
                   ),
                 );
               }).toList(),

@@ -14,6 +14,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
 import 'package:explorer/screens/explorer_screen/widgets/file_size.dart';
 import 'package:explorer/screens/explorer_screen/widgets/media_player_button.dart';
@@ -34,6 +35,8 @@ class ChildFileItem extends StatefulWidget {
   final bool isSelected;
   final bool allowSelect;
   final bool network;
+  final ExploreMode? exploreMode;
+  final VoidCallback? onSelectClicked;
 
   const ChildFileItem({
     super.key,
@@ -44,6 +47,8 @@ class ChildFileItem extends StatefulWidget {
     required this.isSelected,
     required this.allowSelect,
     required this.network,
+    this.exploreMode,
+    required this.onSelectClicked,
   });
 
   @override
@@ -153,11 +158,24 @@ class _ChildFileItemState extends State<ChildFileItem> {
                           network: widget.network,
                         ),
                         HSpace(),
-                        foProvider.exploreMode == ExploreMode.selection &&
+                        (widget.exploreMode ?? foProvider.exploreMode) ==
+                                    ExploreMode.selection &&
                                 widget.allowSelect
                             ? EntityCheckBox(
                                 isSelected: widget.isSelected,
-                                storageItemModel: widget.storageItemModel!,
+                                onTap: widget.onSelectClicked ??
+                                    () {
+                                      var expProvider =
+                                          Provider.of<ExplorerProvider>(context,
+                                              listen: false);
+                                      Provider.of<FilesOperationsProvider>(
+                                              context,
+                                              listen: false)
+                                          .toggleFromSelectedItems(
+                                        widget.storageItemModel!,
+                                        expProvider,
+                                      );
+                                    },
                               )
                             : Container(
                                 constraints:

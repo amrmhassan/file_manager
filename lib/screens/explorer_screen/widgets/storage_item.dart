@@ -33,6 +33,9 @@ class StorageItem extends StatefulWidget {
   final String? viewedFilePath;
   final Function(String path, EntityType entityType, bool network)?
       onLongPressed;
+  final bool? isSelected;
+  final ExploreMode? exploreMode;
+  final VoidCallback? onSelectClicked;
 
   const StorageItem({
     super.key,
@@ -48,6 +51,9 @@ class StorageItem extends StatefulWidget {
     this.network = false,
     this.viewedFilePath,
     this.onLongPressed,
+    this.isSelected,
+    this.exploreMode,
+    this.onSelectClicked,
   });
 
   @override
@@ -166,19 +172,23 @@ class _StorageItemState extends State<StorageItem> {
                     storageItemModel: widget.storageItemModel,
                     parentSize: widget.parentSize,
                     sizesExplorer: widget.sizesExplorer,
-                    isSelected: isSelected(context),
+                    isSelected: widget.isSelected ?? isSelected(context),
                     allowShowingFavIcon: widget.allowShowingFavIcon,
                     allowSelect: widget.allowSelect,
                     shareSpaceItemModel: widget.shareSpaceItemModel,
+                    exploreMode: widget.exploreMode,
+                    onSelectClicked: widget.onSelectClicked,
                   )
                 : ChildFileItem(
                     storageItemModel: widget.storageItemModel,
                     parentSize: widget.parentSize,
                     sizesExplorer: widget.sizesExplorer,
-                    isSelected: isSelected(context),
+                    isSelected: widget.isSelected ?? isSelected(context),
                     allowSelect: widget.allowSelect,
                     shareSpaceItemModel: widget.shareSpaceItemModel,
                     network: widget.network,
+                    exploreMode: widget.exploreMode,
+                    onSelectClicked: widget.onSelectClicked,
                   ),
           ),
         ),

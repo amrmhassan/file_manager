@@ -10,10 +10,32 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
   String? viewedUserDeviceId;
   bool myShareSpace = true;
   bool loadingItems = true;
+  List<ShareSpaceItemModel> selectedItems = [];
+  bool get allowSelect => selectedItems.isNotEmpty;
+
+  void clearSelectedItems() {
+    selectedItems.clear();
+    notifyListeners();
+  }
 
   bool laptopExploring = false;
   void setLaptopExploring(bool v) {
     laptopExploring = v;
+  }
+
+  bool isSelected(String path) {
+    return selectedItems.any((element) => element.path == path);
+  }
+
+  void toggleSelectItem(ShareSpaceItemModel shareSpaceItemModel) {
+    if (selectedItems
+        .any((element) => element.path == shareSpaceItemModel.path)) {
+      selectedItems
+          .removeWhere((element) => element.path == shareSpaceItemModel.path);
+    } else {
+      selectedItems.add(shareSpaceItemModel);
+    }
+    notifyListeners();
   }
 
   // this will hold the shared items of the device that we are currently viewing it's shared items, this won't be changed for one user until next load of his items

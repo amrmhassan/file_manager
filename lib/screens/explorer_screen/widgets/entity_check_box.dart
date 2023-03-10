@@ -3,21 +3,17 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
-import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class EntityCheckBox extends StatelessWidget {
   const EntityCheckBox({
     Key? key,
-    required this.storageItemModel,
     required this.isSelected,
+    required this.onTap,
   }) : super(key: key);
 
-  final StorageItemModel storageItemModel;
   final bool isSelected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +23,7 @@ class EntityCheckBox extends StatelessWidget {
       hoverColor: Colors.transparent,
       splash: false,
       focusedColor: Colors.transparent,
-      onTap: () {
-        var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
-        Provider.of<FilesOperationsProvider>(context, listen: false)
-            .toggleFromSelectedItems(storageItemModel, expProvider);
-      },
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(largePadding),
         child: Container(
