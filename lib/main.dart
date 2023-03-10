@@ -25,6 +25,9 @@ import 'package:provider/provider.dart';
 // fix notification still viewed after file downloaded
 
 //! add download folder, then allow selecting for multiple downloads in sharespace viewer screen, then sorting, then" download to "
+//! show the video name in video player
+//! show full file name and wrap it if it was long
+//! add disks_desktop 1.0.1
 
 void main() async {
   await initBeforeRunApp();

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/ask_for_share_space_modal.dart';
 import 'package:explorer/global/modals/entity_info_modal.dart';
@@ -10,9 +12,15 @@ import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/modals/entity_options_modal.dart';
 import 'package:explorer/global/modals/sort_by_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
+import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/models/share_space_item_model.dart';
+import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
+import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
@@ -201,6 +209,64 @@ Future showQrCodeModal(BuildContext context) async {
             ],
           ),
         ),
+      ),
+    ),
+  );
+}
+
+void showDownloadFromShareSpaceModal(
+  BuildContext context,
+  PeerModel? peerModel,
+  int index,
+) async {
+  var shareExpProvider = shareExpPF(context);
+  ShareSpaceItemModel shareSpaceItemModel = shareExpProvider.viewedItems[index];
+  showModalBottomSheet(
+    backgroundColor: Colors.transparent,
+    context: context,
+    builder: (context) => ModalWrapper(
+      padding: EdgeInsets.symmetric(
+        vertical: kVPad / 2,
+      ),
+      bottomPaddingFactor: 0,
+      afterLinePaddingFactor: 0,
+      showTopLine: false,
+      color: kBackgroundColor,
+      child: Column(
+        children: [
+          ModalButtonElement(
+            inactiveColor: Colors.transparent,
+            title: 'Download Now',
+            onTap: () async {
+              if (shareSpaceItemModel.entityType == EntityType.folder) {
+                Navigator.pop(context);
+                await downloadFolder(shareSpaceItemModel.path);
+              } else {
+                try {
+                  await Provider.of<DownloadProvider>(
+                    context,
+                    listen: false,
+                  ).addDownloadTaskFromPeer(
+                    fileSize: shareSpaceItemModel.size,
+                    remoteDeviceID: peerModel?.deviceID ?? laptopID,
+                    remoteFilePath: shareSpaceItemModel.path,
+                    serverProvider: serverPF(context),
+                    shareProvider: sharePF(context),
+                    remoteDeviceName: peerModel?.name ?? laptopName,
+                  );
+                  Navigator.pop(context);
+                } catch (e) {
+                  logger.e(e);
+                  showSnackBar(
+                    context: context,
+                    message: 'An Error occurred',
+                    snackBarType: SnackBarType.error,
+                  );
+                }
+              }
+            },
+          ),
+        ],
       ),
     ),
   );

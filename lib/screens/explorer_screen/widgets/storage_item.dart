@@ -31,6 +31,8 @@ class StorageItem extends StatefulWidget {
   final Function(String path)? onFileTapped;
   final bool network;
   final String? viewedFilePath;
+  final Function(String path, EntityType entityType, bool network)?
+      onLongPressed;
 
   const StorageItem({
     super.key,
@@ -45,6 +47,7 @@ class StorageItem extends StatefulWidget {
     this.onFileTapped,
     this.network = false,
     this.viewedFilePath,
+    this.onLongPressed,
   });
 
   @override
@@ -137,17 +140,25 @@ class _StorageItemState extends State<StorageItem> {
                     }
                   }
                 : null,
-            onLongPress: widget.allowSelect &&
-                    expProviderFalse.currentActiveDir.path !=
-                        initialDirs.first.path
-                ? () {
-                    var expProvider =
-                        Provider.of<ExplorerProvider>(context, listen: false);
+            onLongPress: widget.onLongPressed != null
+                ? () => widget.onLongPressed!(
+                      widget.storageItemModel?.path ??
+                          widget.shareSpaceItemModel!.path,
+                      widget.storageItemModel?.entityType ??
+                          widget.shareSpaceItemModel!.entityType,
+                      widget.storageItemModel == null,
+                    )
+                : widget.allowSelect &&
+                        expProviderFalse.currentActiveDir.path !=
+                            initialDirs.first.path
+                    ? () {
+                        var expProvider = Provider.of<ExplorerProvider>(context,
+                            listen: false);
 
-                    foProviderFalse.toggleFromSelectedItems(
-                        widget.storageItemModel!, expProvider);
-                  }
-                : null,
+                        foProviderFalse.toggleFromSelectedItems(
+                            widget.storageItemModel!, expProvider);
+                      }
+                    : null,
             borderRadius: 0,
             child: entityType == EntityType.folder
                 ? ChildDirectoryItem(

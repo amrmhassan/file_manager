@@ -2,11 +2,9 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/modals/double_buttons_modal.dart';
+import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/share_space_item_model.dart';
@@ -15,13 +13,11 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/share_screen/widgets/empty_share_items.dart';
 import 'package:explorer/screens/share_screen/widgets/not_sharing_view.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
-import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/current_path_viewer.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
-import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart'
     as connect_laptop_utils;
 import 'package:explorer/utils/general_utils.dart';
@@ -195,58 +191,24 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                             parentSize: 0,
                             shareSpaceItemModel:
                                 shareExpProvider.viewedItems[index],
+                            // to prevent clicking on the disk storages
+                            onLongPressed: path_operations
+                                    .basename(shareExpProvider
+                                        .viewedItems[index].path)
+                                    .contains(':')
+                                ? null
+                                : (path, entityType, network) {
+                                    showDownloadFromShareSpaceModal(
+                                      context,
+                                      data.peerModel,
+                                      index,
+                                    );
+                                  },
                             onFileTapped: (path) {
-                              showModalBottomSheet(
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder: (context) => ModalWrapper(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: kVPad / 2,
-                                  ),
-                                  bottomPaddingFactor: 0,
-                                  afterLinePaddingFactor: 0,
-                                  showTopLine: false,
-                                  color: kBackgroundColor,
-                                  child: Column(
-                                    children: [
-                                      ModalButtonElement(
-                                        inactiveColor: Colors.transparent,
-                                        title: 'Download Now',
-                                        onTap: () async {
-                                          try {
-                                            await Provider.of<DownloadProvider>(
-                                              context,
-                                              listen: false,
-                                            ).addDownloadTaskFromPeer(
-                                              fileSize: shareExpProvider
-                                                  .viewedItems[index].size,
-                                              remoteDeviceID:
-                                                  data.peerModel?.deviceID ??
-                                                      laptopID,
-                                              remoteFilePath: shareExpProvider
-                                                  .viewedItems[index].path,
-                                              serverProvider: serverPF(context),
-                                              shareProvider: sharePF(context),
-                                              remoteDeviceName:
-                                                  data.peerModel?.name ??
-                                                      laptopName,
-                                            );
-                                            Navigator.pop(context);
-                                          } catch (e) {
-                                            showModalBottomSheet(
-                                              context: context,
-                                              builder: (context) =>
-                                                  DoubleButtonsModal(
-                                                onOk: () {},
-                                                title: e.toString(),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              showDownloadFromShareSpaceModal(
+                                context,
+                                data.peerModel,
+                                index,
                               );
                             },
                             allowSelect: false,

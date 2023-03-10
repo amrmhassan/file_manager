@@ -1,5 +1,12 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
+
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
+import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -94,4 +101,57 @@ Future<void> startDownloadFile(
       },
     ),
   );
+}
+
+Future<void> downloadFolder(
+  String folderPath,
+) async {
+  late BuildContext modalContext;
+  try {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: navigatorKey.currentContext!,
+      builder: (context) {
+        modalContext = context;
+        return ModalWrapper(
+            showTopLine: false,
+            color: kCardBackgroundColor,
+            child: Column(
+              children: [
+                CircularProgressIndicator(
+                  color: kMainIconColor,
+                  strokeWidth: 2,
+                ),
+                VSpace(),
+                Text('Loading Info'),
+              ],
+            ));
+      },
+    );
+    String connLink = connectLaptopPF(navigatorKey.currentContext!)
+        .getPhoneConnLink(getFolderContentRecrusiveEndPoint);
+    var res = await Dio().get(
+      connLink,
+      options: Options(
+        headers: {
+          folderPathHeaderKey: Uri.encodeComponent(folderPath),
+        },
+      ),
+    );
+    try {
+      Navigator.pop(modalContext);
+    } catch (e) {
+      logger.e(e);
+    }
+    var data = res.data as List;
+    var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
+    for (var item
+        in items.where((element) => element.entityType == EntityType.folder)) {
+      logger.i('${item.path}=>${item.entityType}=>${item.size}');
+    }
+  } on DioError catch (e) {
+    logger.i(e.response?.data);
+    logger.i(e.message);
+    logger.i(e.type);
+  }
 }
