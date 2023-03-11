@@ -7,6 +7,7 @@ import 'package:explorer/helpers/router_system/server.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/utils/connect_laptop_utils/handlers/handlers.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 import 'package:explorer/utils/server_utils/middlewares.dart';
 
@@ -301,7 +302,13 @@ Future<HttpServer> testingRunServerWithCustomServer(
         getListyEndPoint,
         [],
         getUserListyHandler,
+      )
+      .get(
+        getFolderContentRecrusiveEndPoint,
+        [],
+        getFolderChildrenRecrusive,
       );
+
   CustomServer customServer = CustomServer(
     router,
     InternetAddress.anyIPv4,

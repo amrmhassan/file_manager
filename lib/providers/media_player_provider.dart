@@ -135,6 +135,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   //# video controllers
+  String? playingVideoPath;
   VideoPlayerController? videoPlayerController;
   double? videoHeight;
   double? videoWidth;
@@ -193,6 +194,11 @@ class MediaPlayerProvider extends ChangeNotifier {
     String? fileRemotePath,
   ]) {
     closeVideo();
+    if (network) {
+      playingVideoPath = fileRemotePath;
+    } else {
+      playingVideoPath = path;
+    }
     videoPlayerController = VideoPlayerController.network(path,
         httpHeaders: network
             ? {

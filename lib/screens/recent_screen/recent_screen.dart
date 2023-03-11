@@ -165,35 +165,7 @@ class _RecentScreenState extends State<RecentScreen> {
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'laptop-icon',
-                onTap: () async {
-                  bool downloaded = (await SharedPrefHelper.getBool(
-                          downloadWindowsClientKey)) ??
-                      false;
-                  if (downloaded) {
-                    bool noted = (await SharedPrefHelper.getBool(
-                            windowsClientUpdateNoteKey)) ??
-                        false;
-                    if (noted) {
-                      handleConnectToLaptopButton(context);
-                    } else {
-                      SharedPrefHelper.setBool(
-                        windowsClientUpdateNoteKey,
-                        true,
-                      );
-                      Navigator.pushNamed(
-                        context,
-                        WindowsUpdateNoteScreen.routeName,
-                      );
-                    }
-                  } else {
-                    SharedPrefHelper.setBool(downloadWindowsClientKey, true);
-                    Navigator.pushNamed(
-                      context,
-                      ConnLaptopComingSoon.routeName,
-                      arguments: true,
-                    );
-                  }
-                },
+                onTap: handleClickConnectLaptop,
                 title: 'Connect Laptop',
                 color: Colors.white,
               ),
@@ -248,6 +220,34 @@ class _RecentScreenState extends State<RecentScreen> {
             : StorageSegments()),
       ],
     );
+  }
+
+  void handleClickConnectLaptop() async {
+    bool downloaded =
+        (await SharedPrefHelper.getBool(downloadWindowsClientKey)) ?? false;
+    if (downloaded) {
+      bool noted =
+          (await SharedPrefHelper.getBool(windowsClientUpdateNoteKey)) ?? false;
+      if (noted) {
+        handleConnectToLaptopButton(context);
+      } else {
+        SharedPrefHelper.setBool(
+          windowsClientUpdateNoteKey,
+          true,
+        );
+        Navigator.pushNamed(
+          context,
+          WindowsUpdateNoteScreen.routeName,
+        );
+      }
+    } else {
+      SharedPrefHelper.setBool(downloadWindowsClientKey, true);
+      Navigator.pushNamed(
+        context,
+        ConnLaptopComingSoon.routeName,
+        arguments: true,
+      );
+    }
   }
 }
 

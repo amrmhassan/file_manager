@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +24,15 @@ class QuickNotification {
         // friendly dialog box before call the request method.
         // This is very important to not harm the user experience
         AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+      if (progress == 100) {
+        Future.delayed(Duration(seconds: 2)).then((value) {
+          try {
+            closeDownloadNotification(id);
+          } catch (e) {
+            logger.e(e);
+          }
+        });
       }
 
       AwesomeNotifications().createNotification(

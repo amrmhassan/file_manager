@@ -216,7 +216,10 @@ class DownloadTaskController {
     }
 
     // if overwrite then return false to continue download and overwrite the existing file
-    if (overwrite) return false;
+    if (overwrite) {
+      await File(downloadPath).delete();
+      return false;
+    }
     // if rename, rename the downloaded file local path then continue download
     if (rename) {
       // here i will use the rename

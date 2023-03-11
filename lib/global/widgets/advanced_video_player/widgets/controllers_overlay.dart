@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/close_video_button.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/custom_icon_button.dart';
@@ -244,6 +245,8 @@ class VideoUpperControllers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mpProvider = mpP(context);
+
     return Stack(
       children: [
         VideoLowerBackgroundShader(
@@ -252,7 +255,15 @@ class VideoUpperControllers extends StatelessWidget {
         Row(
           children: [
             CloseVideoButton(),
-            Spacer(),
+            Expanded(
+              child: SafeArea(
+                child: Text(
+                  getFileName(mpProvider.playingVideoPath ?? ''),
+                  style: h4TextStyle.copyWith(height: 5),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
             FadeInRight(
               preferences: AnimationPreferences(
                 duration: Duration(milliseconds: 350),
