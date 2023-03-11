@@ -24,6 +24,7 @@ import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/screens/storage_cleaner_screen/storage_cleaner_screen.dart';
 import 'package:explorer/screens/whats_app_screen/whats_app_screen.dart';
 import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_coming_soon.dart';
+import 'package:explorer/screens/windows_client_update_note_screen/windows_client_update_note_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
@@ -169,15 +170,29 @@ class _RecentScreenState extends State<RecentScreen> {
                           downloadWindowsClientKey)) ??
                       false;
                   if (downloaded) {
-                    handleConnectToLaptopButton(context);
+                    bool noted = (await SharedPrefHelper.getBool(
+                            windowsClientUpdateNoteKey)) ??
+                        false;
+                    if (noted) {
+                      handleConnectToLaptopButton(context);
+                    } else {
+                      SharedPrefHelper.setBool(
+                        windowsClientUpdateNoteKey,
+                        true,
+                      );
+                      Navigator.pushNamed(
+                        context,
+                        WindowsUpdateNoteScreen.routeName,
+                      );
+                    }
                   } else {
+                    SharedPrefHelper.setBool(downloadWindowsClientKey, true);
                     Navigator.pushNamed(
                       context,
                       ConnLaptopComingSoon.routeName,
                       arguments: true,
                     );
                   }
-                  SharedPrefHelper.setBool(downloadWindowsClientKey, true);
                 },
                 title: 'Connect Laptop',
                 color: Colors.white,
