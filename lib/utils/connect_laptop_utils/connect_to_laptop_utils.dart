@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -102,7 +105,7 @@ Future<void> startDownloadFile(
   );
 }
 
-Future<void> downloadFolder({
+Future<void> downloadFolderUtil({
   required String remoteDeviceID,
   required String remoteFilePath,
   required ServerProvider serverProvider,
@@ -118,4 +121,22 @@ Future<void> downloadFolder({
     shareProvider: shareProvider,
     entityType: EntityType.folder,
   );
+}
+
+Future<void> startSendEntities(
+  List<CapturedEntityModel> entities,
+  BuildContext context,
+) async {
+  try {
+    var data = entities.map((e) => e.toJSON()).toList();
+    var encodedData = json.encode(data);
+    String connLink =
+        connectLaptopPF(context).getPhoneConnLink(startDownloadFileEndPoint);
+    await Dio().post(
+      connLink,
+      data: encodedData,
+    );
+  } on DioError catch (e) {
+    logger.e(e.response?.data);
+  }
 }

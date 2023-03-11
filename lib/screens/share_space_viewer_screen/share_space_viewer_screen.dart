@@ -241,11 +241,6 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                             },
                             // to prevent clicking on the disk storages
                             onLongPressed: (path, entityType, network) {
-                              // showDownloadFromShareSpaceModal(
-                              //   context,
-                              //   data.peerModel,
-                              //   index,
-                              // );
                               shareExpPF(context).toggleSelectItem(
                                 shareExpProvider.viewedItems[index],
                               );

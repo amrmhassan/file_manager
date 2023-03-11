@@ -240,7 +240,7 @@ void showDownloadFromShareSpaceModal(
             onTap: () async {
               if (shareSpaceItemModel.entityType == EntityType.folder) {
                 Navigator.pop(context);
-                await downloadFolder(
+                await downloadFolderUtil(
                   remoteDeviceID: peerModel?.deviceID ?? laptopID,
                   remoteDeviceName: peerModel?.name ?? laptopName,
                   remoteFilePath: shareSpaceItemModel.path,

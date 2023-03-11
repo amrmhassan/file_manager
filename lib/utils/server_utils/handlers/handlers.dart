@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -180,18 +181,25 @@ Future<void> getFolderContentHandler(
   HttpRequest request,
   HttpResponse response,
   ServerProvider serverProvider,
-  ShareProvider shareProvider,
-) async {
+  ShareProvider shareProvider, [
+  bool recrusive = false,
+  bool connectPhone = false,
+]) async {
+  Completer completer = Completer();
   try {
     var headers = request.headers;
     String folderPath =
-        Uri.decodeComponent(headers[folderPathHeaderKey]!.first);
+        Uri.decodeComponent(headers.value(folderPathHeaderKey)!);
     // i will need the peer session id to know that if it is allowed or not
     // String peerSessionID = headers[sessionIDHeaderKey]!.first;
     Directory directory = Directory(folderPath);
     if (directory.existsSync()) {
-      PeerModel me = serverProvider.me(shareProvider);
-      var folderChildren = await compute(getFolderChildren, folderPath);
+      late PeerModel me;
+      if (!connectPhone) {
+        me = serverProvider.me(shareProvider);
+      }
+      var folderChildren = await compute(
+          (message) => getFolderChildren(folderPath, recrusive), false);
       // hide marked 'hidden' elements
       List<Map<String, dynamic>> sharedItems = [];
       for (var entity in folderChildren) {
@@ -203,8 +211,8 @@ Future<void> getFolderContentHandler(
               ? EntityType.file
               : EntityType.folder,
           path: entity.path,
-          ownerDeviceID: me.deviceID,
-          ownerSessionID: me.sessionID,
+          ownerDeviceID: connectPhone ? laptopID : me.deviceID,
+          ownerSessionID: connectPhone ? laptopID : me.sessionID,
           addedAt: DateTime.now(),
           size: fileStat.size,
         ).toJSON());
@@ -215,6 +223,7 @@ Future<void> getFolderContentHandler(
       response
         ..headers.add('Content-Type', 'application/json; charset=utf-8')
         ..add(encodedData);
+      completer.complete();
     }
   } catch (e, s) {
     response
@@ -226,6 +235,7 @@ Future<void> getFolderContentHandler(
       rethrowError: true,
     );
   }
+  return completer.future;
 }
 
 Future<void> streamAudioHandler(
@@ -378,8 +388,9 @@ Future<void> downloadFileHandler(
 }
 
 // the isolate that will get any folder children then return it when finished
-List<FileSystemEntity> getFolderChildren(String folderPath) {
-  return Directory(folderPath).listSync();
+List<FileSystemEntity> getFolderChildren(String folderPath,
+    [bool rec = false]) {
+  return Directory(folderPath).listSync(recursive: rec);
 }
 
 Future<void> getWsServerConnLinkHandler(
