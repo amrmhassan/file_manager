@@ -150,6 +150,7 @@ class DownloadProvider extends ChangeNotifier {
   }) async {
     int index = tasks.indexWhere((element) => element.id == taskID);
     if (alsoFile) {
+      logger.e('Entity type:${tasks[index].entityType}');
       await rdu.DownloadTaskController.deleteTaskFromStorage(
         tasks[index].localFilePath,
         tasks[index].entityType == EntityType.folder,
