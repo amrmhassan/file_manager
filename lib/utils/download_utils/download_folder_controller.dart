@@ -20,8 +20,9 @@ class DownloadFolderController extends DownloadTaskController {
   late Iterable<ShareSpaceItemModel> folders;
   late Iterable<ShareSpaceItemModel> files;
   late int size;
+  final int initlaCount;
 
-  int count = 0;
+  late int count;
 
   final Function(int size) setTaskSize;
   DownloadTaskController? currentDownloadingFile;
@@ -39,7 +40,12 @@ class DownloadFolderController extends DownloadTaskController {
     required super.remoteDeviceName,
     super.maximumParallelDownloadThreads,
     required this.setTaskSize,
-  });
+    required this.initlaCount,
+  }) {
+    count = initlaCount;
+  }
+
+  Future setInitialCount() async {}
 
   Future createDownloadFolders() async {
     Directory mainDir = Directory(downloadPath);

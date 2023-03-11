@@ -523,6 +523,7 @@ class DownloadProvider extends ChangeNotifier {
           setTaskSize: (size) {
             setTaskSize(size, downloadTaskModel.id);
           },
+          initlaCount: downloadTaskModel.count,
         );
         _setTaskController(
           downloadTaskModel.id,

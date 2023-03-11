@@ -414,9 +414,13 @@ class DownloadTaskController {
     String localFilePath, [
     bool folder = false,
   ]) async {
-    if (folder) {
-      var dir = Directory(localFilePath);
-      await dir.delete(recursive: true);
+    try {
+      if (folder) {
+        var dir = Directory(localFilePath);
+        await dir.delete(recursive: true);
+      }
+    } catch (e) {
+      logger.e(e);
     }
     try {
       var file = File(localFilePath);

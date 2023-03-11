@@ -307,8 +307,10 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         snackBarType: SnackBarType.error,
       );
     }
-    setState(() {
-      loading = false;
-    });
+    if (mounted) {
+      setState(() {
+        loading = false;
+      });
+    }
   }
 }
