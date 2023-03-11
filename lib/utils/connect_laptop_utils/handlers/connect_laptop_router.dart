@@ -55,7 +55,7 @@ CustomRouterSystem connectLaptopRouter(ConnectLaptopProvider connectLaptopPF) {
     ..addHandler(
       startDownloadFileEndPoint,
       HttpMethod.POST,
-      laptop_handlers.startDownloadFileHandler,
+      laptop_handlers.startDownloadActionHandler,
     )
     ..addHandler(
       downloadFileEndPoint,

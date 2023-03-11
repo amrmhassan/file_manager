@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
@@ -222,7 +223,7 @@ Future<void> getPhoneShareSpaceHandler(
   }
 }
 
-Future<void> startDownloadFileHandler(
+Future<void> startDownloadActionHandler(
   HttpRequest request,
   HttpResponse response,
 ) async {
@@ -236,22 +237,24 @@ Future<void> startDownloadFileHandler(
   }
 
   try {
-    String filePath = await decodeRequest(request, false);
-    filePath = filePath.replaceAll('\\', '/');
-    int fileSize = int.parse(request.headers.value(fileSizeHeaderKey)!);
-    String remoteFilepath = filePath;
+    //
+    var decodedData = (await decodeRequest(request, true)) as List;
+    var capturedItems =
+        decodedData.map((e) => CapturedEntityModel.fromJSON(e)).toList();
 
-    var downProvider = downPF(context);
+    for (var item in capturedItems) {
+      var downProvider = downPF(context);
 
-    await downProvider.addDownloadTask(
-      remoteEntityPath: remoteFilepath,
-      size: fileSize,
-      serverProvider: serverPF(context),
-      shareProvider: sharePF(context),
-      remoteDeviceID: null,
-      entityType: EntityType.folder,
-      remoteDeviceName: null,
-    );
+      await downProvider.addDownloadTask(
+        remoteEntityPath: item.path.replaceAll('\\', '/'),
+        size: item.size,
+        serverProvider: serverPF(context),
+        shareProvider: sharePF(context),
+        remoteDeviceID: null,
+        entityType: item.entityType,
+        remoteDeviceName: null,
+      );
+    }
   } catch (e, s) {
     response
       ..statusCode = HttpStatus.internalServerError
