@@ -12,10 +12,13 @@ class ServiceActions {
   static const String playAudioAction = 'playAudioAction';
   static const String pauseAudioAction = 'pauseAudioAction';
   static const String seekToAction = 'seekToAction';
+  static const String checkAudioPlaying = 'checkAudioPlaying';
 }
 
 class ServiceResActions {
+  //# audio result actions
   static const String setFullSongDuration = 'setFullSondDuration';
   static const String setCurrentAudioDuration = 'setCurrentAudioDuration';
   static const String audioFinished = 'audioFinished';
+  static const String isPlaying = 'isPlaying';
 }

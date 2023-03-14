@@ -15,7 +15,7 @@ void initializeNotification() {
         channelDescription: 'Notification channel for basic tests',
         defaultColor: Color(0xffFDCF4F),
         ledColor: Colors.white,
-        importance: NotificationImportance.High,
+        importance: NotificationImportance.Max,
         enableLights: false,
         enableVibration: false,
         playSound: false,
