@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.amh.file_manager">
+    package="com.amh.file_manager">
     <!-- Storage permissions -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -37,7 +36,6 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
-        tools:replace="android:label"
     >
 
         <activity

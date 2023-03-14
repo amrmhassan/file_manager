@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/services/audio_service/audio_service.dart';
 import 'package:explorer/services/services_constants.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -11,7 +12,7 @@ late FlutterBackgroundService flutterBackgroundService;
 class BackgroundService {
   //? this will be like the router, that handles the background service calls and routes them to the right place
   @pragma('vm:entry-point')
-  static void onStart(ServiceInstance service) {
+  static void _onStart(ServiceInstance service) {
     DartPluginRegistrant.ensureInitialized();
     AudioService audioService = AudioService(service);
     service
@@ -37,14 +38,16 @@ class BackgroundService {
     await flutterBackgroundService.configure(
       iosConfiguration: IosConfiguration(),
       androidConfiguration: AndroidConfiguration(
-        onStart: onStart,
+        onStart: _onStart,
         isForegroundMode: true,
         initialNotificationTitle: 'App Running',
         notificationChannelId: 'basic_channel',
         foregroundServiceNotificationId: ServiceNotificationIDs.serviceRunning,
         autoStartOnBoot: false,
-        autoStart: true,
+        autoStart: false,
       ),
     );
+    await flutterBackgroundService.startService();
+    await AwesomeNotifications().cancel(ServiceNotificationIDs.serviceRunning);
   }
 }
