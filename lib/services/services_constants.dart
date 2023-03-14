@@ -7,7 +7,15 @@ class ServiceNotificationIDs {
 }
 
 class ServiceActions {
-  static const String stopService = 'stop_service';
-  static const String playAudioAction = 'play_audio';
-  static const String pauseAudioAction = 'pause_audio';
+  static const String stopService = 'stopService';
+  //# audio actions
+  static const String playAudioAction = 'playAudioAction';
+  static const String pauseAudioAction = 'pauseAudioAction';
+  static const String seekToAction = 'seekToAction';
+}
+
+class ServiceResActions {
+  static const String setFullSongDuration = 'setFullSondDuration';
+  static const String setCurrentAudioDuration = 'setCurrentAudioDuration';
+  static const String audioFinished = 'audioFinished';
 }

@@ -1,20 +1,23 @@
 import 'dart:async';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
+import 'package:explorer/services/background_service.dart';
+import 'package:explorer/services/services_constants.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:path/path.dart';
 import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 
 class MediaPlayerProvider extends ChangeNotifier {
-  //# services
-  //# services
+  //# service stream subscriptions
+  StreamSubscription? fullDurationsub;
+  StreamSubscription? currentDurationSub;
+  StreamSubscription? audioFinishedSub;
 
-  final AudioPlayer _audioPlayer = AudioPlayer();
   Duration? fullSongDuration;
   Duration? currentDuration;
 
@@ -23,8 +26,6 @@ class MediaPlayerProvider extends ChangeNotifier {
     playerHidden = !playerHidden;
     notifyListeners();
   }
-
-  StreamSubscription? durationStreamSub;
 
   //? check playing
   bool audioPlaying = false;
@@ -42,15 +43,7 @@ class MediaPlayerProvider extends ChangeNotifier {
       playingAudioFilePath = fileRemotePath;
     }
     notifyListeners();
-    // BackgroundService.runAudioService(
-    //   _playAudio,
-    //   path,
-    //   network,
-    //   fileRemotePath,
-    //   (i) {
-    //     setAudioService(i);
-    //   },
-    // );
+
     _playAudio(
       path,
       network,
@@ -59,11 +52,17 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   //? pause playing
-  Future<void> pausePlaying() async {
-    await _audioPlayer.pause();
+  Future<void> pausePlaying([bool callBackgroundService = true]) async {
+    if (callBackgroundService) {
+      flutterBackgroundService.invoke(ServiceActions.pauseAudioAction);
+    }
     QuickNotification.closeAudioNotification();
 
     audioPlaying = false;
+    fullSongDuration = null;
+    currentDuration = null;
+    playingAudioFilePath = null;
+
     notifyListeners();
   }
 
@@ -74,35 +73,49 @@ class MediaPlayerProvider extends ChangeNotifier {
     String? fileRemotePath,
   ]) async {
     try {
-      if (durationStreamSub != null) {
-        durationStreamSub?.cancel();
-      }
-      if (network) {
-        fullSongDuration = await _audioPlayer.setUrl(
-          path,
-          headers: network
-              ? {
-                  filePathHeaderKey: Uri.encodeComponent(fileRemotePath!),
-                }
-              : null,
-        );
-      } else {
-        fullSongDuration = await _audioPlayer.setFilePath(path);
-      }
+      fullDurationsub?.cancel();
+      currentDurationSub?.cancel();
+      audioFinishedSub?.cancel();
+      fullSongDuration = null;
+      currentDurationSub = null;
+      audioFinishedSub = null;
+      // playing background service audio
+      flutterBackgroundService.invoke(ServiceActions.playAudioAction, {
+        'network': network,
+        'path': path,
+        'fileRemotePath': fileRemotePath,
+      });
+      // here receive the full sond duration
+      fullDurationsub = flutterBackgroundService
+          .on(ServiceResActions.setFullSongDuration)
+          .listen((event) {
+        int? duration = event?['duration'];
+        if (duration == null) {
+          logger.i('full song duration is null');
+          throw Exception('full song duration is null');
+        }
+        fullSongDuration = Duration(milliseconds: duration);
+      });
       audioPlaying = true;
       notifyListeners();
 
-      durationStreamSub = _audioPlayer.positionStream.listen((event) {
-        currentDuration = event;
-        if (currentDuration?.inSeconds == fullSongDuration?.inSeconds) {
-          audioPlaying = false;
-          fullSongDuration = null;
-          playingAudioFilePath = null;
-          currentDuration = null;
-        }
+      // listen for duration stream
+      currentDurationSub = flutterBackgroundService
+          .on(ServiceResActions.setCurrentAudioDuration)
+          .listen((event) {
+        Duration d = Duration(milliseconds: event!['duration']);
+        if (d.inMilliseconds > (fullSongDuration?.inMilliseconds ?? 0)) return;
+        currentDuration = d;
+        if (currentDuration?.inMilliseconds ==
+            fullSongDuration?.inMilliseconds) {}
         notifyListeners();
       });
-      _audioPlayer.play();
+
+      audioFinishedSub = flutterBackgroundService
+          .on(ServiceResActions.audioFinished)
+          .listen((event) {
+        pausePlaying(false);
+      });
       if (network) {
         String fileName = basename(fileRemotePath!);
         QuickNotification.sendAudioNotification(fileName);
@@ -119,19 +132,18 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   // ? to forward by 10 seconds
   void forward10() {
-    _audioPlayer.seek(
-        Duration(milliseconds: currentDuration!.inMilliseconds + 10 * 1000));
+    seekTo(currentDuration!.inMilliseconds + 10 * 1000);
   }
 
   // ? to backward by 10 seconds
   void backward10() {
-    _audioPlayer.seek(
-        Duration(milliseconds: currentDuration!.inMilliseconds - 10 * 1000));
+    seekTo(currentDuration!.inMilliseconds - 10 * 1000);
   }
 
   //? seek to
   void seekTo(int millisecond) {
-    _audioPlayer.seek(Duration(milliseconds: millisecond));
+    flutterBackgroundService
+        .invoke(ServiceActions.seekToAction, {'duration': millisecond});
   }
 
   //# video controllers

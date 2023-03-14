@@ -5,7 +5,6 @@ import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/initiators/lifecycle_listeners.dart';
 import 'package:explorer/initiators/main_disks.dart';
 import 'package:explorer/services/background_service.dart';
-import 'package:explorer/services/services_constants.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/notifications/notification_init.dart';
 import 'package:explorer/utils/theme_utils.dart';
