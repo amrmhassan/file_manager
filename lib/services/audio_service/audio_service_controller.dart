@@ -26,11 +26,29 @@ class AudioServiceController {
   }
 
   static Future<bool> isPlaying() {
+    StreamSubscription? sub;
     Completer<bool> completer = Completer<bool>();
     flutterBackgroundService.invoke(ServiceActions.checkAudioPlaying);
-    flutterBackgroundService.on(ServiceResActions.isPlaying).listen((event) {
+    sub = flutterBackgroundService
+        .on(ServiceResActions.isPlaying)
+        .listen((event) {
       bool playing = event!['playing'];
       completer.complete(playing);
+      sub?.cancel();
+    });
+    return completer.future;
+  }
+
+  static Future<Duration> getFullSongDurtion() {
+    StreamSubscription? sub;
+    Completer<Duration> completer = Completer<Duration>();
+    flutterBackgroundService.invoke(ServiceActions.getFullSongDuration);
+    sub = flutterBackgroundService
+        .on(ServiceResActions.setFullSongDuration)
+        .listen((event) {
+      int milliseconds = event!['duration'];
+      completer.complete(Duration(milliseconds: milliseconds));
+      sub?.cancel();
     });
     return completer.future;
   }

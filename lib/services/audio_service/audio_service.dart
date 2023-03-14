@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/services/services_constants.dart';
@@ -15,6 +16,8 @@ class AudioService {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   AudioPlayer get audioPlayer => _audioPlayer;
+  Duration? fullSongDuration;
+  String? playingFilePath;
 
   void playAudio(Map<String, dynamic>? event) async {
     if (durationStreamSub != null) {
@@ -25,7 +28,6 @@ class AudioService {
     String? fileRemotePath = event['fileRemotePath'];
 
     logger.i('Plying audio ');
-    Duration? fullSongDuration;
     if (network) {
       fullSongDuration = await _audioPlayer.setUrl(
         path,
@@ -35,8 +37,10 @@ class AudioService {
               }
             : null,
       );
+      playingFilePath = fileRemotePath;
     } else {
       fullSongDuration = await _audioPlayer.setFilePath(path);
+      playingFilePath = path;
     }
 
     //? setting full audio duration
@@ -73,5 +77,15 @@ class AudioService {
   void isPlaying(event) {
     service
         .invoke(ServiceResActions.isPlaying, {'playing': _audioPlayer.playing});
+  }
+
+  void getFullSongDuration(event) {
+    service.invoke(ServiceResActions.setFullSongDuration,
+        {'duration': fullSongDuration?.inMilliseconds});
+  }
+
+  void getSongName(event) {
+    service.invoke(ServiceResActions.getSongPath,
+        {'name': getFileName(playingFilePath ?? '')});
   }
 }

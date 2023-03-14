@@ -62,6 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
       await downPF(context).loadDownloadSettings();
       //?
       downPF(context).loadTasks();
+      //?
+      mpPF(context).handlePlayingAudioAfterResumingApp();
 
       //* getting storage permission
       bool res = await showPermissionsModal(

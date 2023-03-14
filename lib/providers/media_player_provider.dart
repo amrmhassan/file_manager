@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -74,17 +75,19 @@ class MediaPlayerProvider extends ChangeNotifier {
     String? fileRemotePath,
   ]) async {
     try {
+      _runAudioBackgroundServiceListeners();
       AudioServiceController.playAudio(path, network, fileRemotePath);
+
+      late String fileName;
+      if (network) {
+        fileName = getFileName(fileRemotePath!);
+      } else {
+        fileName = getFileName(path);
+      }
+
+      QuickNotification.sendAudioNotification(fileName);
       audioPlaying = true;
       notifyListeners();
-      _runAudioBackgroundServiceListeners();
-      if (network) {
-        String fileName = basename(fileRemotePath!);
-        QuickNotification.sendAudioNotification(fileName);
-      } else {
-        String fileName = basename(path);
-        QuickNotification.sendAudioNotification(fileName);
-      }
     } catch (e) {
       audioPlaying = false;
       fullSongDuration = null;
@@ -142,6 +145,20 @@ class MediaPlayerProvider extends ChangeNotifier {
   //? seek to
   void seekTo(int millisecond) {
     AudioServiceController.seekTo(millisecond);
+  }
+
+  void handlePlayingAudioAfterResumingApp() async {
+    logger.i('Checking for audio is playing or not');
+    bool isPlaying = await AudioServiceController.isPlaying();
+    logger.e(isPlaying);
+    if (isPlaying) {
+      Duration fullSongD = await AudioServiceController.getFullSongDurtion();
+      QuickNotification.sendAudioNotification('fileName');
+      _runAudioBackgroundServiceListeners();
+      audioPlaying = true;
+      fullSongDuration = fullSongD;
+      notifyListeners();
+    }
   }
 
   //# video controllers

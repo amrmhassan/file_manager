@@ -20,6 +20,8 @@ class BackgroundService {
       ..on(ServiceActions.pauseAudioAction).listen(audioService.pauseAudio)
       ..on(ServiceActions.seekToAction).listen(audioService.seekTo)
       ..on(ServiceActions.checkAudioPlaying).listen(audioService.isPlaying)
+      ..on(ServiceActions.getFullSongDuration)
+          .listen(audioService.getFullSongDuration)
       // video service
       ..on(ServiceActions.stopService).listen((event) {
         logger.i('Stopping background service');
