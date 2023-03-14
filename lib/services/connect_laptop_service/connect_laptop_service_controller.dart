@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/services/background_service.dart';
 import 'package:explorer/services/services_constants.dart';
 
@@ -9,6 +10,7 @@ class ConnLaptopServiceController {
     Completer<int> completer = Completer<int>();
     flutterBackgroundService.invoke(ServiceActions.openLaptopServer, {
       'port': port,
+      'intialDirs': initialDirs.map((e) => e.path).toList(),
     });
 
     sub = flutterBackgroundService

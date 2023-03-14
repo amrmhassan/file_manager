@@ -263,13 +263,13 @@ class AnalyzerProvider extends ChangeNotifier
   //? get total storage size
   @override
   Future<int> getTotalDiskSpace() async {
-    return ((await DiskSpace.getTotalDiskSpace ?? 0) * 1024 * 1024).toInt();
+    return getTotalDiskSpaceTemp();
   }
 
   //? get free storage size
   @override
   Future<int> getFreeDiskSpace() async {
-    return ((await DiskSpace.getFreeDiskSpace ?? 0) * 1024 * 1024).toInt();
+    return getFreeDiskSpaceTemp();
   }
 
   //? get apps storage size
@@ -280,4 +280,12 @@ class AnalyzerProvider extends ChangeNotifier
     int files = totalFilesSize;
     return total - free - files;
   }
+}
+
+Future<int> getTotalDiskSpaceTemp() async {
+  return ((await DiskSpace.getTotalDiskSpace ?? 0) * 1024 * 1024).toInt();
+}
+
+Future<int> getFreeDiskSpaceTemp() async {
+  return ((await DiskSpace.getFreeDiskSpace ?? 0) * 1024 * 1024).toInt();
 }

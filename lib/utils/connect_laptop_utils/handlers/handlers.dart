@@ -9,6 +9,8 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/util/analyzer_provider.dart';
+import 'package:explorer/services/connect_laptop_service/connect_laptop_service.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
@@ -21,22 +23,14 @@ Future<void> getStorageInfoHandler(
   HttpRequest request,
   HttpResponse response,
 ) async {
-  BuildContext? context = navigatorKey.currentContext;
-  if (context == null) {
-    response
-      ..statusCode = HttpStatus.internalServerError
-      ..write('An error with context')
-      ..close();
-    return;
-  }
   try {
-    int totalSpace = await analyzerPF(context).getTotalDiskSpace();
-    int freeSpace = await analyzerPF(context).getFreeDiskSpace();
+    int totalSpace = await getTotalDiskSpaceTemp();
+    int freeSpace = await getFreeDiskSpaceTemp();
 
     response
       ..headers.add(freeSpaceHeaderKey, freeSpace)
       ..headers.add(totalSpaceHeaderKey, totalSpace)
-      ..write('Space is in headers')
+      ..write('tegetTotalDiskSpaceTemp is in headers')
       ..close();
   } catch (e) {
     response
@@ -83,14 +77,14 @@ Future<void> getPhoneFolderContentHandler(
     String folderPath = request.headers.value(folderPathHeaderKey)!;
 
     folderPath = Uri.decodeComponent(folderPath);
-    if (folderPath == initialDirs.first.path) {
+    if (folderPath == backgroundServiceInitlaDirs.first.path) {
       // if it has only 2 children then it means we have only one disk
-      if (initialDirs.length <= 2) {
-        folderPath = initialDirs.last.path;
+      if (backgroundServiceInitlaDirs.length <= 2) {
+        folderPath = backgroundServiceInitlaDirs.last.path;
       } else {
         // here this mean i have more than one disk and i need to return only them
         await _handleSendChildrenToClient(
-          initialDirs.skip(1),
+          backgroundServiceInitlaDirs.skip(1),
           folderPath,
           response,
         );
