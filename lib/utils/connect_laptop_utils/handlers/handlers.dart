@@ -153,6 +153,7 @@ Future<void> getClipboardHandler(
       ..write(data?.text ?? '')
       ..close();
   } catch (e) {
+    logger.e(e);
     response
       ..statusCode = HttpStatus.internalServerError
       ..write('An error getting clipboard $e')

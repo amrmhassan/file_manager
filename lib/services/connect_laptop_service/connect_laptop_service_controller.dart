@@ -18,8 +18,16 @@ class ConnLaptopServiceController {
         .listen((event) {
       int port = event!['port'];
       completer.complete(port);
+      //! listening for the background service events
+      listenForRequests();
       sub?.cancel();
     });
     return completer.future;
+  }
+
+  static Future<void> listenForRequests() async {
+    flutterBackgroundService
+        .on(ServiceResActions.connLaptopRequests)
+        .listen((event) {});
   }
 }

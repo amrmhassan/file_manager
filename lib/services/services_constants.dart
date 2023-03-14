@@ -23,4 +23,5 @@ class ServiceResActions {
   static const String getSongPath = 'getSongPath';
   //# connect laptop result actions
   static const String setLaptopServerPort = 'setLaptopServerPort';
+  static const String connLaptopRequests = 'connLaptopRequests';
 }
