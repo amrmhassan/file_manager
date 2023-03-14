@@ -10,7 +10,6 @@ import 'package:explorer/services/background_service.dart';
 import 'package:explorer/services/services_constants.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 

@@ -1,5 +1,10 @@
 buildscript {
     ext.kotlin_version = '1.8.0'
+       ext {
+       compileSdkVersion   = 33                // or latest
+       targetSdkVersion    = 31                // or latest
+       appCompatVersion    = "1.4.2"           // or latest
+   }
     repositories {
         google()
         mavenCentral()
@@ -23,6 +28,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+              maven {
+          // [required] background_fetch
+          url "${project(':background_fetch').projectDir}/libs"
+      }
     }
 }
 

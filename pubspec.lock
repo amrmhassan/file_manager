@@ -65,6 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.4+1"
+  background_fetch:
+    dependency: "direct main"
+    description:
+      name: background_fetch
+      sha256: c49953b72c42e4851cd3837bd2488fab84c0e653260293d9f4730ff00d4b3f99
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.5"
   bitsdojo_window:
     dependency: "direct main"
     description:
