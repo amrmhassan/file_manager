@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
@@ -9,6 +11,8 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/services/background_service.dart';
+import 'package:explorer/services/services_constants.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +57,13 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                   mpProvider.playingAudioFilePath, mpProvider.audioPlaying)) {
                 // here i am playing and i want to pause
                 await mpProviderFalse.pausePlaying();
+                flutterBackgroundService.invoke(
+                  ServiceActions.pauseAudioAction,
+                );
               } else {
+                flutterBackgroundService.invoke(
+                  ServiceActions.playAudioAction,
+                );
                 var sharedExpProvider = Provider.of<ShareItemsExplorerProvider>(
                   context,
                   listen: false,

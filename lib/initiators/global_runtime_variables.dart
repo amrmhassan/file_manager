@@ -5,9 +5,9 @@ import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:explorer/utils/notifications/notification_id_mapper.dart';
 
 bool firstTimeRunApp = false;
+bool testing = false;
 DownloadsNotificationIDSMapper notificationMapper =
     DownloadsNotificationIDSMapper();
-bool testing = false;
 
 var validPaths = initialDirs.skip(1).map((e) => {
       'path': e.path,
