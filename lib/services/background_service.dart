@@ -7,6 +7,7 @@ import 'package:explorer/utils/duration_utils.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 late FlutterBackgroundService flutterBackgroundService;
 StreamSubscription? durationStreamSub;
@@ -93,5 +94,6 @@ class BackgroundService {
         autoStart: true,
       ),
     );
+    AwesomeNotifications().cancel(ServiceNotificationIDs.serviceRunning);
   }
 }

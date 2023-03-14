@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
+import 'package:explorer/services/audio_service/audio_service_controller.dart';
 import 'package:explorer/services/background_service.dart';
 import 'package:explorer/services/services_constants.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
@@ -54,7 +55,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   //? pause playing
   Future<void> pausePlaying([bool callBackgroundService = true]) async {
     if (callBackgroundService) {
-      flutterBackgroundService.invoke(ServiceActions.pauseAudioAction);
+      AudioServiceController.pauseAudio();
     }
     QuickNotification.closeAudioNotification();
 
@@ -73,49 +74,10 @@ class MediaPlayerProvider extends ChangeNotifier {
     String? fileRemotePath,
   ]) async {
     try {
-      fullDurationsub?.cancel();
-      currentDurationSub?.cancel();
-      audioFinishedSub?.cancel();
-      fullSongDuration = null;
-      currentDurationSub = null;
-      audioFinishedSub = null;
-      // playing background service audio
-      flutterBackgroundService.invoke(ServiceActions.playAudioAction, {
-        'network': network,
-        'path': path,
-        'fileRemotePath': fileRemotePath,
-      });
-      // here receive the full sond duration
-      fullDurationsub = flutterBackgroundService
-          .on(ServiceResActions.setFullSongDuration)
-          .listen((event) {
-        int? duration = event?['duration'];
-        if (duration == null) {
-          logger.i('full song duration is null');
-          throw Exception('full song duration is null');
-        }
-        fullSongDuration = Duration(milliseconds: duration);
-      });
+      AudioServiceController.playAudio(path, network, fileRemotePath);
       audioPlaying = true;
       notifyListeners();
-
-      // listen for duration stream
-      currentDurationSub = flutterBackgroundService
-          .on(ServiceResActions.setCurrentAudioDuration)
-          .listen((event) {
-        Duration d = Duration(milliseconds: event!['duration']);
-        if (d.inMilliseconds > (fullSongDuration?.inMilliseconds ?? 0)) return;
-        currentDuration = d;
-        if (currentDuration?.inMilliseconds ==
-            fullSongDuration?.inMilliseconds) {}
-        notifyListeners();
-      });
-
-      audioFinishedSub = flutterBackgroundService
-          .on(ServiceResActions.audioFinished)
-          .listen((event) {
-        pausePlaying(false);
-      });
+      _runAudioBackgroundServiceListeners();
       if (network) {
         String fileName = basename(fileRemotePath!);
         QuickNotification.sendAudioNotification(fileName);
@@ -130,6 +92,43 @@ class MediaPlayerProvider extends ChangeNotifier {
     }
   }
 
+  void _runAudioBackgroundServiceListeners() {
+    fullDurationsub?.cancel();
+    currentDurationSub?.cancel();
+    audioFinishedSub?.cancel();
+    fullSongDuration = null;
+    currentDurationSub = null;
+    audioFinishedSub = null;
+
+    // here receive the full sond duration
+    fullDurationsub = flutterBackgroundService
+        .on(ServiceResActions.setFullSongDuration)
+        .listen((event) {
+      int? duration = event?['duration'];
+      if (duration == null) {
+        logger.i('full song duration is null');
+        throw Exception('full song duration is null');
+      }
+      fullSongDuration = Duration(milliseconds: duration);
+    });
+    // listen for duration stream
+    currentDurationSub = flutterBackgroundService
+        .on(ServiceResActions.setCurrentAudioDuration)
+        .listen((event) {
+      Duration d = Duration(milliseconds: event!['duration']);
+      if (d.inMilliseconds > (fullSongDuration?.inMilliseconds ?? 0)) return;
+      currentDuration = d;
+      notifyListeners();
+    });
+
+// receive the audio finished
+    audioFinishedSub = flutterBackgroundService
+        .on(ServiceResActions.audioFinished)
+        .listen((event) {
+      pausePlaying(false);
+    });
+  }
+
   // ? to forward by 10 seconds
   void forward10() {
     seekTo(currentDuration!.inMilliseconds + 10 * 1000);
@@ -142,8 +141,7 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //? seek to
   void seekTo(int millisecond) {
-    flutterBackgroundService
-        .invoke(ServiceActions.seekToAction, {'duration': millisecond});
+    AudioServiceController.seekTo(millisecond);
   }
 
   //# video controllers
