@@ -7,9 +7,8 @@ import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/laptop_message_model.dart';
+import 'package:explorer/services/connect_laptop_service/connect_laptop_service_controller.dart';
 import 'package:explorer/utils/client_utils.dart';
-import 'package:explorer/utils/connect_laptop_utils/handlers/connect_laptop_router.dart';
-import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
@@ -61,14 +60,11 @@ class ConnectLaptopProvider extends ChangeNotifier {
       await closeServer();
 
       //? opening the server port and setting end points
-      httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
+      //! open server here
 
       //? when above code is success then set the needed stuff like port, other things
-      myPort = httpServer!.port;
+      myPort = await ConnLaptopServiceController.openServer(myPort);
       connectLaptopPort = myPort;
-
-      CustomRouterSystem customRouterSystem = connectLaptopRouter(this);
-      httpServer!.listen(customRouterSystem.pipeline);
 
       notifyListeners();
     } catch (e) {

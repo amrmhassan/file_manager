@@ -42,7 +42,7 @@ class AudioServiceController {
   static Future<Duration> getFullSongDurtion() {
     StreamSubscription? sub;
     Completer<Duration> completer = Completer<Duration>();
-    flutterBackgroundService.invoke(ServiceActions.getFullSongDuration);
+    flutterBackgroundService.invoke(ServiceActions.fullSongDuration);
     sub = flutterBackgroundService
         .on(ServiceResActions.setFullSongDuration)
         .listen((event) {

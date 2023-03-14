@@ -1,5 +1,4 @@
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/utils/connect_laptop_utils/handlers/handlers.dart'
     as laptop_handlers;
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
@@ -7,7 +6,7 @@ import 'package:explorer/utils/custom_router_system/helpers/server_requests_util
 import 'package:explorer/utils/server_utils/handlers/handlers.dart'
     as normal_handlers;
 
-CustomRouterSystem connectLaptopRouter(ConnectLaptopProvider connectLaptopPF) {
+CustomRouterSystem connectLaptopRouter() {
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
 
   //? adding handlers

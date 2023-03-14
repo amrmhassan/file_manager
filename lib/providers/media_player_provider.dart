@@ -147,11 +147,10 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   void handlePlayingAudioAfterResumingApp() async {
-    logger.i('Checking for audio is playing or not');
     bool isPlaying = await AudioServiceController.isPlaying();
-    logger.e(isPlaying);
     if (isPlaying) {
       Duration fullSongD = await AudioServiceController.getFullSongDurtion();
+      //! get the file name from the background service
       QuickNotification.sendAudioNotification('fileName');
       _runAudioBackgroundServiceListeners();
       audioPlaying = true;

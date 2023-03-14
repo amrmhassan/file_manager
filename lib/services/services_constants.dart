@@ -9,7 +9,9 @@ class ServiceActions {
   static const String pauseAudioAction = 'pauseAudioAction';
   static const String seekToAction = 'seekToAction';
   static const String checkAudioPlaying = 'checkAudioPlaying';
-  static const String getFullSongDuration = 'getFullSongDuration';
+  static const String fullSongDuration = 'getFullSongDuration';
+  //# connect laptop actions
+  static const String openLaptopServer = 'openLaptopServer';
 }
 
 class ServiceResActions {
@@ -19,4 +21,6 @@ class ServiceResActions {
   static const String audioFinished = 'audioFinished';
   static const String isPlaying = 'isPlaying';
   static const String getSongPath = 'getSongPath';
+  //# connect laptop result actions
+  static const String setLaptopServerPort = 'setLaptopServerPort';
 }

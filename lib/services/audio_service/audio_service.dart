@@ -9,8 +9,8 @@ import 'package:just_audio/just_audio.dart';
 
 //? this is for controlling the background action, receiving events from the forground UI and execute it
 class AudioService {
-  ServiceInstance service;
-  AudioService(this.service);
+  final ServiceInstance _service;
+  AudioService(this._service);
 
   StreamSubscription? durationStreamSub;
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -44,17 +44,17 @@ class AudioService {
     }
 
     //? setting full audio duration
-    service.invoke(ServiceResActions.setFullSongDuration,
+    _service.invoke(ServiceResActions.setFullSongDuration,
         {'duration': fullSongDuration?.inMilliseconds});
 
     //? listening for audio duration stream
     durationStreamSub = _audioPlayer.positionStream.listen((event) {
-      service.invoke(ServiceResActions.setCurrentAudioDuration,
+      _service.invoke(ServiceResActions.setCurrentAudioDuration,
           {'duration': event.inMilliseconds});
     });
     _audioPlayer.playerStateStream.listen((event) {
       if (event.processingState == ProcessingState.completed) {
-        service.invoke(ServiceResActions.audioFinished);
+        _service.invoke(ServiceResActions.audioFinished);
         logger.i('song finished');
       }
     });
@@ -75,17 +75,17 @@ class AudioService {
   }
 
   void isPlaying(event) {
-    service
+    _service
         .invoke(ServiceResActions.isPlaying, {'playing': _audioPlayer.playing});
   }
 
   void getFullSongDuration(event) {
-    service.invoke(ServiceResActions.setFullSongDuration,
+    _service.invoke(ServiceResActions.setFullSongDuration,
         {'duration': fullSongDuration?.inMilliseconds});
   }
 
   void getSongName(event) {
-    service.invoke(ServiceResActions.getSongPath,
+    _service.invoke(ServiceResActions.getSongPath,
         {'name': getFileName(playingFilePath ?? '')});
   }
 }
