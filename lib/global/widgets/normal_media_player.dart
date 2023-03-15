@@ -7,6 +7,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
   @override
   Widget build(BuildContext context) {
     var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    var mpProviderFalse = mpPF(context);
 
     return FadeInUpBig(
       key: mediaAnimationController,
@@ -85,7 +87,7 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       width: largeIconSize,
                       height: largeIconSize,
                       onTap: () {
-                        mpProvider.backward10();
+                        mpProviderFalse.backward10();
                       },
                       child: Image.asset(
                         'assets/icons/back_ten.png',
@@ -97,10 +99,16 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       width: largeIconSize,
                       height: largeIconSize,
                       onTap: () {
-                        mpProvider.pausePlaying();
+                        if (mpProviderFalse.audioPlaying) {
+                          mpProviderFalse.pausePlaying();
+                        } else {
+                          mpProviderFalse.resumePlaying();
+                        }
                       },
                       child: Image.asset(
-                        'assets/icons/pause.png',
+                        mpProvider.audioPlaying
+                            ? 'assets/icons/pause.png'
+                            : 'assets/icons/play-button-arrowhead.png',
                         color: kMainIconColor,
                         width: largeIconSize / 2,
                       ),
@@ -109,7 +117,7 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       width: largeIconSize,
                       height: largeIconSize,
                       onTap: () {
-                        mpProvider.forward10();
+                        mpProviderFalse.forward10();
                       },
                       child: Image.asset(
                         'assets/icons/ten.png',

@@ -52,7 +52,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
               if (mePlaying(
                   mpProvider.playingAudioFilePath, mpProvider.audioPlaying)) {
                 // here i am playing and i want to pause
-                await mpProviderFalse.pausePlaying();
+                await mpProviderFalse.stopPlaying();
               } else {
                 var sharedExpProvider = Provider.of<ShareItemsExplorerProvider>(
                   context,

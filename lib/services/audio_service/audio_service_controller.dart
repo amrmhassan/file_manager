@@ -14,9 +14,10 @@ class MyAudioHandler extends BaseAudioHandler
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   AudioPlayer get audioPlayer => _audioPlayer;
-  Duration? fullSongDuration;
+  Duration? _fullSongDuration;
   String? playingFilePath;
 
+//? to start the audio
   void playAudio(
     String path,
     MediaPlayerProvider mediaPlayerProvider, [
@@ -27,9 +28,8 @@ class MyAudioHandler extends BaseAudioHandler
       durationStreamSub?.cancel();
     }
 
-    logger.i('Plying audio ');
     if (network) {
-      fullSongDuration = await _audioPlayer.setUrl(
+      _fullSongDuration = await _audioPlayer.setUrl(
         path,
         headers: network
             ? {
@@ -39,12 +39,12 @@ class MyAudioHandler extends BaseAudioHandler
       );
       playingFilePath = fileRemotePath;
     } else {
-      fullSongDuration = await _audioPlayer.setFilePath(path);
+      _fullSongDuration = await _audioPlayer.setFilePath(path);
       playingFilePath = path;
     }
 
     //? setting full audio duration
-    mediaPlayerProvider.setFullSongDuration(fullSongDuration);
+    mediaPlayerProvider.setFullSongDuration(_fullSongDuration);
 
     //? listening for audio duration stream
     durationStreamSub = _audioPlayer.positionStream.listen((event) {
@@ -52,7 +52,7 @@ class MyAudioHandler extends BaseAudioHandler
     });
     _audioPlayer.playerStateStream.listen((event) {
       if (event.processingState == ProcessingState.completed) {
-        mediaPlayerProvider.pausePlaying(false);
+        mediaPlayerProvider.stopPlaying(false);
       }
     });
     play();
@@ -66,6 +66,26 @@ class MyAudioHandler extends BaseAudioHandler
     // All 'play' requests from all origins route to here. Implement this
     // callback to start playing audio appropriate to your app. e.g. music.
     _audioPlayer.play();
+    playbackState.add(PlaybackState(
+      controls: [
+        MediaControl.pause,
+        MediaControl.fastForward,
+        MediaControl.rewind,
+      ],
+      systemActions: {
+        MediaAction.seek,
+        MediaAction.seekForward,
+        MediaAction.seekBackward,
+      },
+      playing: true,
+      updatePosition: Duration(seconds: 1),
+      // The current speed
+      speed: 1.0,
+      // The current queue position
+      queueIndex: 0,
+      processingState: AudioProcessingState.ready,
+      androidCompactActionIndices: const [0, 1, 3],
+    ));
   }
 
   @override
@@ -87,5 +107,5 @@ class MyAudioHandler extends BaseAudioHandler
   Future<void> skipToQueueItem(int index) async {}
 
   bool get isPlaying => _audioPlayer.playing;
-  Duration? get getFullSongDurtion => fullSongDuration;
+  Duration? get getFullSongDurtion => _fullSongDuration;
 }

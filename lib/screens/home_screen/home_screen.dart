@@ -79,8 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
       await Provider.of<ChildrenItemsProvider>(context, listen: false)
           .getAndUpdateAllSavedFolders();
-      //!
-      await audioPlayerInit();
     });
 
     super.initState();

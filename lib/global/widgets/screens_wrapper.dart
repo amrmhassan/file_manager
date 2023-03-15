@@ -109,27 +109,6 @@ class ScreensWrapper extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (Platform.isWindows &&
-                        (ModalRoute.of(context)?.settings.name?.toString() ??
-                                '') !=
-                            HomeScreen.routeName)
-                      Container(
-                        width: double.infinity,
-                        height: largeIconSize * 1.5,
-                        color: kCardBackgroundColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            CustomIconButton(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              iconData: Icons.arrow_forward_ios,
-                            ),
-                            HSpace(factor: 2),
-                          ],
-                        ),
-                      ),
                   ],
                 ),
               ),

@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
-import 'package:explorer/services/audio_service/audio_service_controller.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -26,12 +24,13 @@ class MediaPlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCurrentSongPosition(Duration? d) {
+  void setCurrentSongPosition(Duration d) {
+    if (d.inMilliseconds > (fullSongDuration?.inMilliseconds ?? 0)) return;
     currentDuration = d;
     notifyListeners();
   }
 
-  bool playerHidden = false;
+  bool playerHidden = true;
   void togglePlayerHidden() {
     playerHidden = !playerHidden;
     notifyListeners();
@@ -48,6 +47,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     bool network = false,
     String? fileRemotePath,
   ]) async {
+    playerHidden = false;
     playingAudioFilePath = path;
     if (network) {
       playingAudioFilePath = fileRemotePath;
@@ -61,8 +61,20 @@ class MediaPlayerProvider extends ChangeNotifier {
     );
   }
 
+  Future<void> pausePlaying() async {
+    myAudioHandler.pause();
+    audioPlaying = false;
+    notifyListeners();
+  }
+
+  Future<void> resumePlaying() async {
+    myAudioHandler.play();
+    audioPlaying = true;
+    notifyListeners();
+  }
+
   //? pause playing
-  Future<void> pausePlaying([bool callBackgroundService = true]) async {
+  Future<void> stopPlaying([bool callBackgroundService = true]) async {
     if (callBackgroundService) {
       // AudioServiceController.pauseAudio();
       myAudioHandler.pause();
