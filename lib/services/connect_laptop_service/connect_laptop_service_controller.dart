@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/services/background_service.dart';
 import 'package:explorer/services/services_constants.dart';
 
@@ -35,13 +35,13 @@ class ConnLaptopServiceController {
       if (!loggingTestFile.existsSync()) {
         loggingTestFile.createSync();
       }
+      bool contextExist = navigatorKey.currentContext != null;
       var raf = await loggingTestFile.open(mode: FileMode.append);
       String data =
-          '$event--${DateTime.now().toIso8601String()}\n-----------------------\n';
+          '${contextExist ? "context exist" : "no context"}$event--${DateTime.now().toIso8601String()}\n-----------------------\n';
       raf.writeStringSync(data);
       raf.closeSync();
 
-      print(event);
       //? getting the response for the background service here
       flutterBackgroundService.invoke(ServiceActions.sendResponse, event);
     });

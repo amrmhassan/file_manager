@@ -1,5 +1,5 @@
 class ServiceNotificationIDs {
-  static const int serviceRunning = 903;
+  static const int serviceRunning = 888;
 }
 
 class ServiceActions {

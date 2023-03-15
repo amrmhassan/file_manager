@@ -14,6 +14,7 @@ import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:move_to_background/move_to_background.dart';
 
 //? handle press back button
 Future<bool> handlePressPhoneBackButton({
@@ -22,7 +23,7 @@ Future<bool> handlePressPhoneBackButton({
   required VoidCallback incrementExitCounter,
   required VoidCallback clearExitCounter,
   required bool sizesExplorer,
-}) {
+}) async {
   var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
   var foProviderFalse = Provider.of<FilesOperationsProvider>(
     context,
@@ -40,6 +41,7 @@ Future<bool> handlePressPhoneBackButton({
   bool exit = false;
   if (!canGoBack) {
     if (sizesExplorer) {
+      await MoveToBackground.moveTaskToBack();
       return Future.value(true);
     }
     exitCounter++;
@@ -48,6 +50,7 @@ Future<bool> handlePressPhoneBackButton({
       showSnackBar(context: context, message: 'Back Again To Exit');
       exit = false;
     } else {
+      await MoveToBackground.moveTaskToBack();
       exit = true;
     }
   } else {
@@ -58,7 +61,7 @@ Future<bool> handlePressPhoneBackButton({
   Future.delayed(Duration(seconds: 5)).then((value) {
     clearExitCounter();
   });
-  return Future.delayed(Duration.zero).then((value) => exit);
+  return Future.value(exit);
 }
 
 //? to handle apply permissions callback after granting permissions

@@ -15,10 +15,14 @@ void initializeNotification() {
         channelDescription: 'Notification channel for basic tests',
         defaultColor: Color(0xffFDCF4F),
         ledColor: Colors.white,
-        importance: NotificationImportance.Max,
+        importance: NotificationImportance.Default,
         enableLights: false,
         enableVibration: false,
         playSound: false,
+        locked: false,
+        channelShowBadge: false,
+        defaultPrivacy: NotificationPrivacy.Public,
+        criticalAlerts: false,
       )
     ],
     // Channel groups are only visual and are not required
@@ -30,5 +34,4 @@ void initializeNotification() {
     ],
     debug: false,
   );
-  AwesomeNotifications().cancelAll();
 }

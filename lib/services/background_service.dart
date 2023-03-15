@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/services/audio_service/audio_service.dart';
 import 'package:explorer/services/connect_laptop_service/connect_laptop_service.dart';
 import 'package:explorer/services/services_constants.dart';
@@ -16,6 +15,7 @@ class BackgroundService {
   static void _onStart(ServiceInstance service) {
     DartPluginRegistrant.ensureInitialized();
     AudioService audioService = AudioService(service);
+
     ConnectLaptopService connLaptopService = ConnectLaptopService(service);
     service
       // audio service
@@ -27,8 +27,9 @@ class BackgroundService {
           .listen(audioService.getFullSongDuration)
       // conn laptop service
       ..on(ServiceActions.openLaptopServer).listen(connLaptopService.openServer)
+      // stopping service
       ..on(ServiceActions.stopService).listen((event) {
-        logger.i('Stopping background service');
+        logger.e('Stopping background service');
         service.stopSelf();
       });
   }
@@ -42,14 +43,14 @@ class BackgroundService {
       iosConfiguration: IosConfiguration(),
       androidConfiguration: AndroidConfiguration(
         onStart: _onStart,
-        isForegroundMode: true,
-        initialNotificationTitle: 'App Running',
+        isForegroundMode: false,
+        initialNotificationContent: 'App Running',
+        initialNotificationTitle: 'File Manager',
         notificationChannelId: 'basic_channel',
         foregroundServiceNotificationId: ServiceNotificationIDs.serviceRunning,
         autoStartOnBoot: false,
-        autoStart: false,
+        autoStart: true,
       ),
     );
-    await flutterBackgroundService.startService();
   }
 }

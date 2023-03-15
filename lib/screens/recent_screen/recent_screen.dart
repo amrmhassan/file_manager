@@ -273,7 +273,8 @@ void handleConnectToLaptopButton(
             'Please ensure that both devices are connected to either the same Wi-Fi or to the hotspot of one of the devices.');
   }
   try {
-    Navigator.pushNamed(context, ConnectLaptopScreen.routeName);
+    Navigator.pushNamed(
+        navigatorKey.currentContext ?? context, ConnectLaptopScreen.routeName);
   } catch (e) {
     logger.e(e);
   }
