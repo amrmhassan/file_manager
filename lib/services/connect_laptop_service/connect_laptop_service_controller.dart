@@ -28,6 +28,8 @@ class ConnLaptopServiceController {
   static Future<void> listenForRequests() async {
     flutterBackgroundService
         .on(ServiceResActions.connLaptopRequests)
-        .listen((event) {});
+        .listen((event) {
+      print(event);
+    });
   }
 }
