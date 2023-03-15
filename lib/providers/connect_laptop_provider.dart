@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/laptop_message_model.dart';
-import 'package:explorer/services/connect_laptop_service/connect_laptop_service_controller.dart';
+import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
@@ -16,8 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-
-int connectLaptopPort = 0;
+import 'package:explorer/utils/connect_laptop_utils/handlers/connect_laptop_router.dart';
 
 class ConnectLaptopProvider extends ChangeNotifier {
   int myPort = 0;
@@ -61,10 +60,15 @@ class ConnectLaptopProvider extends ChangeNotifier {
 
       //? opening the server port and setting end points
       //! open server here
+      httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
+      //! i need to empty the request object from it's info and pass them to the main isolate for the listener on the ConnLaptopServiceController, yo might need to extract the request body , path , method for the outside main isolate
+      //! and you might need to warn the user before clicking the back button with the connect laptop server is open
+      CustomRouterSystem customRouterSystem = connectLaptopRouter();
+      httpServer!.listen(customRouterSystem.pipeline);
+      myPort = httpServer!.port;
 
       //? when above code is success then set the needed stuff like port, other things
-      myPort = await ConnLaptopServiceController.openServer(myPort);
-      connectLaptopPort = myPort;
+      // myPort = await ConnLaptopServiceController.openServer(myPort);
 
       notifyListeners();
     } catch (e) {

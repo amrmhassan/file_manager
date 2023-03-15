@@ -12,6 +12,7 @@ import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/utils/notifications/notification_contorller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:provider/provider.dart';
 
 //! add the ability to download a folder
@@ -28,9 +29,15 @@ import 'package:provider/provider.dart';
 //! show the video name in video player
 //! add disks_desktop 1.0.1
 
+void startForegroundService() async {
+  ForegroundService().start();
+  debugPrint("Started service");
+}
+
 void main() async {
   await initBeforeRunApp();
   runApp(const MyApp());
+  startForegroundService();
 }
 
 class MyApp extends StatefulWidget {

@@ -41,7 +41,7 @@ Future<bool> handlePressPhoneBackButton({
   bool exit = false;
   if (!canGoBack) {
     if (sizesExplorer) {
-      await MoveToBackground.moveTaskToBack();
+      // i made this false, to prevent the app from being closed when clicking the back button instead it will be hidden by the previous line
       return Future.value(true);
     }
     exitCounter++;
@@ -51,7 +51,9 @@ Future<bool> handlePressPhoneBackButton({
       exit = false;
     } else {
       await MoveToBackground.moveTaskToBack();
-      exit = true;
+      // i made this false, to prevent the app from being closed when clicking the back button
+
+      exit = false;
     }
   } else {
     exit = false;

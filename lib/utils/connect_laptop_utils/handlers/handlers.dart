@@ -10,7 +10,6 @@ import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
-import 'package:explorer/services/connect_laptop_service/connect_laptop_service.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
@@ -77,14 +76,14 @@ Future<void> getPhoneFolderContentHandler(
     String folderPath = request.headers.value(folderPathHeaderKey)!;
 
     folderPath = Uri.decodeComponent(folderPath);
-    if (folderPath == backgroundServiceInitlaDirs.first.path) {
+    if (folderPath == initialDirs.first.path) {
       // if it has only 2 children then it means we have only one disk
-      if (backgroundServiceInitlaDirs.length <= 2) {
-        folderPath = backgroundServiceInitlaDirs.last.path;
+      if (initialDirs.length <= 2) {
+        folderPath = initialDirs.last.path;
       } else {
         // here this mean i have more than one disk and i need to return only them
         await _handleSendChildrenToClient(
-          backgroundServiceInitlaDirs.skip(1),
+          initialDirs.skip(1),
           folderPath,
           response,
         );
