@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/services/background_service.dart';
+import 'package:explorer/services/connect_laptop_service/connect_laptop_service.dart';
 import 'package:explorer/services/services_constants.dart';
 
 class ConnLaptopServiceController {
@@ -29,6 +30,7 @@ class ConnLaptopServiceController {
     flutterBackgroundService
         .on(ServiceResActions.connLaptopRequests)
         .listen((event) {
+      logger.e(helperHTTPCarriar.httpServer);
       print(event);
     });
   }

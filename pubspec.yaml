@@ -60,6 +60,7 @@ dependencies:
   external_path: ^1.0.3
   flutter_background_service: ^2.4.6
   workmanager: ^0.5.1
+  http: ^0.13.5
 
 
 dev_dependencies:
