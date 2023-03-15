@@ -47,36 +47,37 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
         ),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text(
-                  formatDuration(
-                      mpProvider.currentDuration ?? Duration(seconds: 30)),
-                  style: h4TextStyleInactive,
-                ),
-                Expanded(
-                  child: Slider(
-                    thumbColor: kAudioColor,
-                    activeColor: kAudioColor,
-                    inactiveColor: kAudioColor.withOpacity(.4),
-                    onChanged: (double value) {
-                      mpProvider.seekTo(value.toInt());
-                    },
-                    value:
-                        (mpProvider.currentDuration?.inMilliseconds ?? 0) * 1,
-                    min: 0,
-                    max: (mpProvider.fullSongDuration?.inMilliseconds ??
-                            100000) *
-                        1,
+            if (mpProvider.fullSongDuration != null &&
+                mpProvider.currentDuration != null)
+              Row(
+                children: [
+                  Text(
+                    formatDuration(
+                        mpProvider.currentDuration ?? Duration(seconds: 30)),
+                    style: h4TextStyleInactive,
                   ),
-                ),
-                Text(
-                  formatDuration(
-                      mpProvider.fullSongDuration ?? Duration(seconds: 200)),
-                  style: h4TextStyleInactive,
-                ),
-              ],
-            ),
+                  Expanded(
+                    child: Slider(
+                      thumbColor: kAudioColor,
+                      activeColor: kAudioColor,
+                      inactiveColor: kAudioColor.withOpacity(.4),
+                      onChanged: (double value) {
+                        mpProvider.seekTo(value.toInt());
+                      },
+                      value:
+                          mpProvider.currentDuration!.inMilliseconds.toDouble(),
+                      min: 0,
+                      max: mpProvider.fullSongDuration!.inMilliseconds
+                          .toDouble(),
+                    ),
+                  ),
+                  Text(
+                    formatDuration(
+                        mpProvider.fullSongDuration ?? Duration(seconds: 200)),
+                    style: h4TextStyleInactive,
+                  ),
+                ],
+              ),
             Stack(
               alignment: Alignment.centerRight,
               children: [

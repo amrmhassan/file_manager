@@ -25,7 +25,8 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   void setCurrentSongPosition(Duration d) {
-    if (d.inMilliseconds > (fullSongDuration?.inMilliseconds ?? 0)) return;
+    if (d.inMilliseconds > (fullSongDuration?.inMilliseconds ?? 0) ||
+        d.inMilliseconds <= 0) return;
     currentDuration = d;
     notifyListeners();
   }
@@ -85,6 +86,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     fullSongDuration = null;
     currentDuration = null;
     playingAudioFilePath = null;
+    playerHidden = true;
 
     notifyListeners();
   }
