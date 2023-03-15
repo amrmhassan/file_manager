@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:explorer/initiators/audio_service_init.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
       //?
       mpPF(context).handlePlayingAudioAfterResumingApp();
       //?
-      //!
 
       //* getting storage permission
       bool res = await showPermissionsModal(
@@ -79,6 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       await Provider.of<ChildrenItemsProvider>(context, listen: false)
           .getAndUpdateAllSavedFolders();
+      //!
+      await audioPlayerInit();
     });
 
     super.initState();

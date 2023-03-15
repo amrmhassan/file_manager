@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:explorer/services/audio_service/audio_service.dart';
 import 'package:explorer/services/connect_laptop_service/connect_laptop_service.dart';
 import 'package:explorer/services/services_constants.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -14,17 +13,16 @@ class BackgroundService {
   @pragma('vm:entry-point')
   static void _onStart(ServiceInstance service) {
     DartPluginRegistrant.ensureInitialized();
-    AudioService audioService = AudioService(service);
 
     ConnectLaptopService connLaptopService = ConnectLaptopService(service);
     service
       // audio service
-      ..on(ServiceActions.playAudioAction).listen(audioService.playAudio)
-      ..on(ServiceActions.pauseAudioAction).listen(audioService.pauseAudio)
-      ..on(ServiceActions.seekToAction).listen(audioService.seekTo)
-      ..on(ServiceActions.checkAudioPlaying).listen(audioService.isPlaying)
-      ..on(ServiceActions.fullSongDuration)
-          .listen(audioService.getFullSongDuration)
+      // ..on(ServiceActions.playAudioAction).listen(audioService.playAudio)
+      // ..on(ServiceActions.pauseAudioAction).listen(audioService.pauseAudio)
+      // ..on(ServiceActions.seekToAction).listen(audioService.seekTo)
+      // ..on(ServiceActions.checkAudioPlaying).listen(audioService.isPlaying)
+      // ..on(ServiceActions.fullSongDuration)
+      //     .listen(audioService.getFullSongDuration)
       // conn laptop service
       ..on(ServiceActions.openLaptopServer).listen(connLaptopService.openServer)
       // stopping service

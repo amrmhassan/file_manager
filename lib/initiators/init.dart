@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/firebase_options.dart';
 import 'package:explorer/helpers/hive/hive_initiator.dart';
@@ -5,7 +7,6 @@ import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/initiators/lifecycle_listeners.dart';
 import 'package:explorer/initiators/main_disks.dart';
 import 'package:explorer/services/background_service.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/notifications/notification_init.dart';
 import 'package:explorer/utils/theme_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,7 +43,6 @@ Future initBeforeRunApp() async {
     listenForLifeCycleEvents();
     await BackgroundService.initService();
   } catch (e) {
-    printOnDebug('Error with first time app in main() or theme variables');
     logger.e(e);
   }
 }

@@ -1,55 +1,91 @@
 import 'dart:async';
 
-import 'package:explorer/services/background_service.dart';
-import 'package:explorer/services/services_constants.dart';
+import 'package:audio_service/audio_service.dart';
+import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/providers/media_player_provider.dart';
+import 'package:just_audio/just_audio.dart';
 
-//? this is for the main isolate, or the UI controller using provider, sending events to the background service
-class AudioServiceController {
-  static void playAudio(String path, bool network, String? fileRemotePath) {
-    // here play the audio from the background service
-    flutterBackgroundService.invoke(ServiceActions.playAudioAction, {
-      'network': network,
-      'path': path,
-      'fileRemotePath': fileRemotePath,
+class MyAudioHandler extends BaseAudioHandler
+    with
+        QueueHandler, // mix in default queue callback implementations
+        SeekHandler {
+  StreamSubscription? durationStreamSub;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  AudioPlayer get audioPlayer => _audioPlayer;
+  Duration? fullSongDuration;
+  String? playingFilePath;
+
+  void playAudio(
+    String path,
+    MediaPlayerProvider mediaPlayerProvider, [
+    bool network = false,
+    String? fileRemotePath,
+  ]) async {
+    if (durationStreamSub != null) {
+      durationStreamSub?.cancel();
+    }
+
+    logger.i('Plying audio ');
+    if (network) {
+      fullSongDuration = await _audioPlayer.setUrl(
+        path,
+        headers: network
+            ? {
+                filePathHeaderKey: Uri.encodeComponent(fileRemotePath!),
+              }
+            : null,
+      );
+      playingFilePath = fileRemotePath;
+    } else {
+      fullSongDuration = await _audioPlayer.setFilePath(path);
+      playingFilePath = path;
+    }
+
+    //? setting full audio duration
+    mediaPlayerProvider.setFullSongDuration(fullSongDuration);
+
+    //? listening for audio duration stream
+    durationStreamSub = _audioPlayer.positionStream.listen((event) {
+      mediaPlayerProvider.setCurrentSongPosition(event);
     });
-  }
-
-  static void pauseAudio() {
-    // pause audio
-    flutterBackgroundService.invoke(ServiceActions.pauseAudioAction);
-  }
-
-  static void seekTo(int millisecond) {
-    // seek
-    flutterBackgroundService
-        .invoke(ServiceActions.seekToAction, {'duration': millisecond});
-  }
-
-  static Future<bool> isPlaying() {
-    StreamSubscription? sub;
-    Completer<bool> completer = Completer<bool>();
-    flutterBackgroundService.invoke(ServiceActions.checkAudioPlaying);
-    sub = flutterBackgroundService
-        .on(ServiceResActions.isPlaying)
-        .listen((event) {
-      bool playing = event!['playing'];
-      completer.complete(playing);
-      sub?.cancel();
+    _audioPlayer.playerStateStream.listen((event) {
+      if (event.processingState == ProcessingState.completed) {
+        mediaPlayerProvider.pausePlaying(false);
+      }
     });
-    return completer.future;
+    play();
+
+    // play audio here
   }
 
-  static Future<Duration> getFullSongDurtion() {
-    StreamSubscription? sub;
-    Completer<Duration> completer = Completer<Duration>();
-    flutterBackgroundService.invoke(ServiceActions.fullSongDuration);
-    sub = flutterBackgroundService
-        .on(ServiceResActions.setFullSongDuration)
-        .listen((event) {
-      int milliseconds = event!['duration'];
-      completer.complete(Duration(milliseconds: milliseconds));
-      sub?.cancel();
-    });
-    return completer.future;
+  // The most common callbacks:
+  @override
+  Future<void> play() async {
+    // All 'play' requests from all origins route to here. Implement this
+    // callback to start playing audio appropriate to your app. e.g. music.
+    _audioPlayer.play();
   }
+
+  @override
+  Future<void> pause() async {
+    _audioPlayer.pause();
+  }
+
+  @override
+  Future<void> stop() async {
+    _audioPlayer.stop();
+  }
+
+  @override
+  Future<void> seek(Duration position) async {
+    _audioPlayer.seek(position);
+  }
+
+  @override
+  Future<void> skipToQueueItem(int index) async {}
+
+  bool get isPlaying => _audioPlayer.playing;
+  Duration? get getFullSongDurtion => fullSongDuration;
 }
