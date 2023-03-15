@@ -51,6 +51,5 @@ class BackgroundService {
       ),
     );
     await flutterBackgroundService.startService();
-    await AwesomeNotifications().cancel(ServiceNotificationIDs.serviceRunning);
   }
 }

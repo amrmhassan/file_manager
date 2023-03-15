@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
 import 'package:explorer/helpers/router_system/router.dart';
 import 'package:explorer/helpers/router_system/server.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -190,9 +189,9 @@ Future<HttpServer> testingRunServerWithCustomServer(
   ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) async {
   var router = CustomRouter()
-      .addGlobalMiddleWare((request, response) {
-        return ReqResTracker(request, response);
-      })
+      // .addGlobalMiddleWare((request, response) {
+      //   return ReqResTracker(request, response);
+      // })
       .get(
         areYouAliveEndPoint,
         [],

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:math';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/services/background_service.dart';
@@ -28,7 +30,17 @@ class ConnLaptopServiceController {
   static Future<void> listenForRequests() async {
     flutterBackgroundService
         .on(ServiceResActions.connLaptopRequests)
-        .listen((event) {
+        .listen((event) async {
+      File loggingTestFile = File('sdcard/logging.txt');
+      if (!loggingTestFile.existsSync()) {
+        loggingTestFile.createSync();
+      }
+      var raf = await loggingTestFile.open(mode: FileMode.append);
+      String data =
+          '$event--${DateTime.now().toIso8601String()}\n-----------------------\n';
+      raf.writeStringSync(data);
+      raf.closeSync();
+
       print(event);
       //? getting the response for the background service here
       flutterBackgroundService.invoke(ServiceActions.sendResponse, event);

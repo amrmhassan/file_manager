@@ -2,11 +2,17 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/services/connect_laptop_service/path_split.dart';
 import 'package:explorer/services/services_constants.dart';
 import 'package:explorer/utils/connect_laptop_utils/handlers/connect_laptop_router.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+
+// working from background service
+//file explorer--, stream audio, video, download file--
+//? need context
+//? share space, copy clipboard, send text, send file
 
 late List<Directory> backgroundServiceInitlaDirs;
 
@@ -29,8 +35,31 @@ class ConnectLaptopService {
     CustomRouterSystem customRouterSystem = connectLaptopRouter();
     httpServer!.listen(
       (request) async {
-        customRouterSystem.pipeline(request);
-        sendRequestToMainIsolate(_service, request);
+        //? this should contain a map of headers and response body, there will be an error with downloading, streaming file,
+        //?  because this will slow the downloading speed, so i will split them,
+        //? some will be from the main isolate, and others will be from this isolate, but check if the path is in this isolate first
+
+        if (workingPathsFromBackground.contains(request.uri.path)) {
+          customRouterSystem.pipeline(request);
+        } else {
+          try {
+            var response = await _sendRequestToMainIsolate(_service, request);
+            var headers = response['headers'] as Map<String, dynamic>;
+            var body = response['body'];
+
+            headers.forEach((key, value) {
+              request.response.headers.add(key, value);
+            });
+            request.response
+              ..add(body)
+              ..close();
+          } catch (e) {
+            request.response
+              ..statusCode = HttpStatus.internalServerError
+              ..write('An error occurred with background service')
+              ..close();
+          }
+        }
       },
     );
     port = httpServer!.port;
@@ -38,41 +67,42 @@ class ConnectLaptopService {
       'port': port,
     });
   }
-}
 
-Future<dynamic> sendRequestToMainIsolate(
-  ServiceInstance s,
-  HttpRequest request,
-) async {
-  Map<String, dynamic> headers = {};
-  request.headers.forEach((name, values) {
-    try {
-      headers[name] = values.first;
-    } catch (e) {
-      logger.e(e);
-    }
-  });
-  var requestBody = await decodeRequest(request, true);
+  Future<dynamic> _sendRequestToMainIsolate(
+    ServiceInstance s,
+    HttpRequest request,
+  ) async {
+    StreamSubscription? sub;
+    Map<String, dynamic> headers = {};
+    request.headers.forEach((name, values) {
+      try {
+        headers[name] = values.first;
+      } catch (e) {
+        logger.e(e);
+      }
+    });
+    var requestBody = await decodeRequest(request, true);
 
-  Completer completer = Completer();
-  var requestInfo = {
-    'request': request.uri.path,
-    'method': request.method,
-    'content': requestBody,
-    'remoteIp': request.connectionInfo?.remoteAddress.address,
-    'remotePort': request.connectionInfo?.remotePort,
-    'headers': headers,
-  };
-  print(requestInfo);
-  s.invoke(
-    ServiceResActions.connLaptopRequests,
-    requestInfo,
-  );
+    Completer completer = Completer();
+    var requestInfo = {
+      'path': request.uri.path,
+      'method': request.method,
+      'content': requestBody,
+      'remoteIp': request.connectionInfo?.remoteAddress.address,
+      'remotePort': request.connectionInfo?.remotePort,
+      'headers': headers,
+    };
 
-  s.on(ServiceActions.sendResponse).listen((event) {
-    print('data got from background listener, $event');
-    completer.complete(event);
-  });
+    s.invoke(
+      ServiceResActions.connLaptopRequests,
+      requestInfo,
+    );
 
-  return completer.future;
+    sub = s.on(ServiceActions.sendResponse).listen((event) {
+      completer.complete(event);
+      sub?.cancel();
+    });
+
+    return completer.future;
+  }
 }

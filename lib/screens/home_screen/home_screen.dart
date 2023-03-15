@@ -2,6 +2,8 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:explorer/services/services_constants.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
       downPF(context).loadTasks();
       //?
       mpPF(context).handlePlayingAudioAfterResumingApp();
+      //?
+      await AwesomeNotifications()
+          .cancel(ServiceNotificationIDs.serviceRunning);
 
       //* getting storage permission
       bool res = await showPermissionsModal(
