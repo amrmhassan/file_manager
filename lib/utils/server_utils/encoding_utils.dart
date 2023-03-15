@@ -5,10 +5,14 @@ Future<dynamic> decodeRequest(
   HttpRequest request, [
   bool jsonify = true,
 ]) async {
-  if (jsonify) {
-    return json.decode(utf8.decode(await request.single));
+  try {
+    if (jsonify) {
+      return json.decode(utf8.decode(await request.single));
+    }
+    return utf8.decode(await request.single);
+  } catch (e) {
+    return null;
   }
-  return utf8.decode(await request.single);
 }
 
 String jsonify(Map<String, dynamic> obj) {

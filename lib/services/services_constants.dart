@@ -12,6 +12,7 @@ class ServiceActions {
   static const String fullSongDuration = 'getFullSongDuration';
   //# connect laptop actions
   static const String openLaptopServer = 'openLaptopServer';
+  static const String sendResponse = 'sendResponse';
 }
 
 class ServiceResActions {
