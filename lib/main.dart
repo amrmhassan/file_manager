@@ -15,19 +15,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:provider/provider.dart';
 
-//! add the ability to download a folder
-//! add video, audio notification
-//! prevent the app from being killed when it is in the background
-//!
-
-// fix viewwing the file hint in windows
 // fix continuing faild task from laptop
 
-// fix notification still viewed after file downloaded
-
-//! add download folder, then allow selecting for multiple downloads in sharespace viewer screen, then sorting, then" download to "
-//! show the video name in video player
 //! add disks_desktop 1.0.1
+
+// implement audio_service notfication for audio
+// implement audio_service for the video then notification
+// remove flutter_background_service or comment it
+// add remaining time on the downloading card
+
+// ForegroundService().start(); only when opening the server either with laptop or with share space
+// and ForegroundService().stop(); when closing both laptop and share space, make an outside function to check for this and close the background service only when both servers are SnackBarClosedReason
+// implement resuming downloads with laptop for both laptop and mobile
+// try to edit the ForegroundService() package to stop sounds and to change the title of the notification
 
 void startForegroundService() async {
   ForegroundService().start();
