@@ -4,7 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
-import 'package:explorer/services/media_service/my_audio_handler.dart';
+import 'package:explorer/services/media_service/my_media_handler.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -12,8 +12,6 @@ import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 
 class MediaPlayerProvider extends ChangeNotifier {
   //# service stream subscriptions
-  StreamSubscription? fullDurationSub;
-  StreamSubscription? currentDurationSub;
   StreamSubscription? audioPlayerStateSub;
 
   Duration? fullSongDuration;

@@ -57,7 +57,7 @@ class MyAudioHandler extends BaseAudioHandler
         });
         playbackState.add(res);
       });
-    }
+    } else if (playingMediaType == PlayingMediaType.video) {}
     play();
     var item = MediaItem(
       id: path,
@@ -94,9 +94,6 @@ class MyAudioHandler extends BaseAudioHandler
   Future<void> seek(Duration position) async {
     audioHandlersUtils.audioPlayer.seek(position);
   }
-
-  @override
-  Future<void> skipToQueueItem(int index) async {}
 
   bool get isPlaying => audioHandlersUtils.audioPlayer.playing;
   Duration? get getFullSongDuration => fullMediaDuration;

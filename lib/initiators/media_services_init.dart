@@ -2,7 +2,7 @@
 
 import 'package:audio_service/audio_service.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
-import 'package:explorer/services/media_service/my_audio_handler.dart';
+import 'package:explorer/services/media_service/my_media_handler.dart';
 
 Future mediaPlayersInit() async {
   myMediaHandler = await AudioService.init(
