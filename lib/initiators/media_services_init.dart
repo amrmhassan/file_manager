@@ -2,10 +2,10 @@
 
 import 'package:audio_service/audio_service.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
-import 'package:explorer/services/audio_service/my_audio_handler.dart';
+import 'package:explorer/services/media_service/my_audio_handler.dart';
 
-Future audioPlayerInit() async {
-  myAudioHandler = await AudioService.init(
+Future mediaPlayersInit() async {
+  myMediaHandler = await AudioService.init(
     builder: () => MyAudioHandler(),
     config: AudioServiceConfig(
       androidNotificationChannelId: 'basic_channel',

@@ -3,7 +3,7 @@
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/firebase_options.dart';
 import 'package:explorer/helpers/hive/hive_initiator.dart';
-import 'package:explorer/initiators/audio_service_init.dart';
+import 'package:explorer/initiators/media_services_init.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/initiators/lifecycle_listeners.dart';
 import 'package:explorer/initiators/main_disks.dart';
@@ -44,7 +44,7 @@ Future initBeforeRunApp() async {
     listenForLifeCycleEvents();
     await BackgroundService.initService();
     //!
-    await audioPlayerInit();
+    await mediaPlayersInit();
   } catch (e) {
     logger.e(e);
   }

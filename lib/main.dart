@@ -22,7 +22,6 @@ import 'package:provider/provider.dart';
 
 //! add disks_desktop 1.0.1
 
-// implement audio_service notification for audio
 // implement audio_service for the video then notification
 // remove flutter_background_service or comment it
 // add remaining time on the downloading card

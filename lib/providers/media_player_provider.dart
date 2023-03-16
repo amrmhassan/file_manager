@@ -5,6 +5,7 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
+import 'package:explorer/services/media_service/my_audio_handler.dart';
 import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -63,13 +64,13 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   Future<void> pausePlaying([bool callService = true]) async {
-    if (callService) myAudioHandler.pause();
+    if (callService) myMediaHandler.pause();
     audioPlaying = false;
     notifyListeners();
   }
 
   Future<void> resumePlaying() async {
-    myAudioHandler.play();
+    myMediaHandler.play();
     audioPlaying = true;
     notifyListeners();
   }
@@ -78,7 +79,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   Future<void> stopPlaying([bool callBackgroundService = true]) async {
     if (callBackgroundService) {
       // AudioServiceController.pauseAudio();
-      myAudioHandler.stop();
+      myMediaHandler.stop();
     }
     QuickNotification.closeAudioNotification();
 
@@ -102,21 +103,26 @@ class MediaPlayerProvider extends ChangeNotifier {
   ]) async {
     try {
       // AudioServiceController.playAudio(path, network, fileRemotePath);
-      myAudioHandler.playAudio(path, this, network, fileRemotePath);
+      myMediaHandler.playMedia(
+        PlayingMediaType.audio,
+        path,
+        this,
+        network,
+        fileRemotePath,
+      );
 
       // QuickNotification.sendAudioNotification(fileName);
       audioPlaying = true;
       notifyListeners();
-      audioPlayerStateSub =
-          myAudioHandler.audioPlayer.playerStateStream.listen((event) {
+      audioPlayerStateSub = myMediaHandler
+          .audioHandlersUtils.audioPlayer.playerStateStream
+          .listen((event) {
         if (event.playing && !audioPlaying) {
           audioPlaying = true;
           notifyListeners();
-          logger.i('outside play');
         } else if (!event.playing && audioPlaying) {
           audioPlaying = false;
           notifyListeners();
-          logger.i('outside pause');
         }
       });
     } catch (e) {
@@ -128,23 +134,23 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   // ? to forward by 10 seconds
   void forward10() {
-    myAudioHandler.fastForward();
+    myMediaHandler.fastForward();
   }
 
   // ? to backward by 10 seconds
   void backward10() {
-    myAudioHandler.rewind();
+    myMediaHandler.rewind();
   }
 
   //? seek to
   void seekTo(int millisecond) {
-    myAudioHandler.seek(Duration(milliseconds: millisecond));
+    myMediaHandler.seek(Duration(milliseconds: millisecond));
   }
 
   void handlePlayingAudioAfterResumingApp() async {
-    bool isPlaying = myAudioHandler.isPlaying;
+    bool isPlaying = myMediaHandler.isPlaying;
     if (isPlaying) {
-      Duration? fullSongD = myAudioHandler.getFullSongDuration;
+      Duration? fullSongD = myMediaHandler.getFullSongDuration;
       audioPlaying = true;
       fullSongDuration = fullSongD;
       notifyListeners();
