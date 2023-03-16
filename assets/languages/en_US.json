@@ -14,5 +14,17 @@
   "downloads-text": "Downloads",
   "apks-text": "APKs",
   "unknown-text": "Unknown",
-  "apps-data-text": "Apps Data"
+  "apps-data-text": "Apps Data",
+  "qr-scanner-text": "QR Scanner",
+  "settings-text": "Settings",
+  "about-us-text": "About Us",
+  "host": "Host",
+  "join": "Join",
+  "recent": "Recent",
+  "your-share-space": "Your Share Space",
+  "host-note": "You must connect devices to the same network (wifi or hotspot of one of the devices) first",
+  "continue": "Continue",
+  "your-empty-share-space": "Your share Space is empty\n Add some files to send to people",
+  "other-empty-share-space": "Other user share space is empty",
+  "note": "Note"
 }

@@ -11,7 +11,7 @@ import 'package:explorer/initiators/main_screens.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
-import 'package:explorer/utils/notifications/notification_contorller.dart';
+import 'package:explorer/utils/notifications/notification_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

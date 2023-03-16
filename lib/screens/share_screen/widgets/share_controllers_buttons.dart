@@ -20,6 +20,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ShareControllersButtons extends StatefulWidget {
@@ -116,7 +117,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
               },
               backgroundColor: Colors.white,
               child: Text(
-                'Host',
+                'host'.i18n(),
                 style: h3TextStyle.copyWith(
                   color: Colors.black,
                 ),
@@ -192,7 +193,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
               },
               backgroundColor: kBlueColor,
               child: Text(
-                'Join',
+                'join'.i18n(),
                 style: h3TextStyle.copyWith(
                   color: Colors.white,
                 ),
@@ -244,9 +245,8 @@ class HostNoteModal extends StatelessWidget {
       showCancelButton: false,
       title: '',
       okColor: kBlueColor,
-      okText: 'Continue',
-      subTitle:
-          'You must connect devices to the same network (wifi or hotspot of one of the devices) first',
+      okText: 'continue'.i18n(),
+      subTitle: 'host-note'.i18n(),
       titleIcon: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -258,7 +258,7 @@ class HostNoteModal extends StatelessWidget {
               ),
               HSpace(),
               Text(
-                'Note',
+                'note'.i18n(),
                 style: h3TextStyle,
               )
             ],

@@ -23,6 +23,7 @@ import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +54,7 @@ class CustomAppDrawer extends StatelessWidget {
 
             AppDrawerItem(
               iconPath: 'qr-code',
-              title: 'QR Scanner',
+              title: 'qr-scanner-text'.i18n(),
               onTap: () async {
                 Navigator.pop(context);
                 Navigator.pushNamed(
@@ -66,7 +67,7 @@ class CustomAppDrawer extends StatelessWidget {
             ),
             AppDrawerItem(
               iconPath: 'download-circular-button',
-              title: 'Downloads',
+              title: 'downloads-text'.i18n(),
               onTap: () async {
                 Navigator.pop(context);
                 Navigator.pushNamed(
@@ -81,7 +82,7 @@ class CustomAppDrawer extends StatelessWidget {
             StorageAnalyzerButton(),
             AppDrawerItem(
               iconPath: 'settings',
-              title: 'Settings',
+              title: 'settings-text'.i18n(),
               onTap: () async {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, SettingsScreen.routeName);
@@ -91,7 +92,7 @@ class CustomAppDrawer extends StatelessWidget {
 
             AppDrawerItem(
               iconPath: 'info',
-              title: 'About us',
+              title: 'about-us-text'.i18n(),
               onTap: () async {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, AboutUsScreen.routeName);

@@ -7,6 +7,7 @@ import 'package:explorer/screens/share_screen/widgets/downloading_overlay.dart';
 import 'package:explorer/screens/share_screen/widgets/share_screen_tab_button.dart';
 import 'package:explorer/screens/share_settings_screen/share_settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class ShareScreenNavBar extends StatelessWidget {
   const ShareScreenNavBar({
@@ -27,7 +28,7 @@ class ShareScreenNavBar extends StatelessWidget {
           Stack(
             children: [
               ShareScreenTabButton(
-                title: 'Recent',
+                title: 'recent'.i18n(),
                 iconName: 'clock',
                 onTap: () {
                   Navigator.pushNamed(
@@ -40,13 +41,13 @@ class ShareScreenNavBar extends StatelessWidget {
             ],
           ),
           ShareScreenTabButton(
-            title: 'Share',
+            title: 'share-text'.i18n(),
             iconName: 'link',
             onTap: () {},
             active: true,
           ),
           ShareScreenTabButton(
-            title: 'Settings',
+            title: 'settings-text'.i18n(),
             iconName: 'settings',
             onTap: () {
               Navigator.pushNamed(context, ShareSettingsScreen.routeName);

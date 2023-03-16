@@ -4,6 +4,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/screens/analyzer_screen/analyzer_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class StorageAnalyzerButton extends StatelessWidget {
   const StorageAnalyzerButton({
@@ -25,7 +26,7 @@ class StorageAnalyzerButton extends StatelessWidget {
           color: kInactiveColor,
         ),
         title: Text(
-          'Storage Analyzer',
+          'storage-analyzer-text'.i18n(),
           style: h4TextStyle.copyWith(color: kInactiveColor),
         ),
       ),

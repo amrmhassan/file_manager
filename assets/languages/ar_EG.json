@@ -14,5 +14,17 @@
   "downloads-text": "تنزيلات",
   "apks-text": "حزم",
   "unknown-text": "غير معروف",
-  "apps-data-text": "تطبيقات"
+  "apps-data-text": "تطبيقات",
+  "qr-scanner-text": "ماسح الكود",
+  "settings-text": "إعدادات",
+  "about-us-text": "من نحن",
+  "host": "ابدأ",
+  "join": "انضم",
+  "recent": "مؤخرا",
+  "your-share-space": "ملفاتك المشتركة",
+  "host-note": "تأكد من توصيل الأجهزة بنفس الشبكة أولا (سواء واي فاي أو هوت سبوت)",
+  "continue": "استمرار",
+  "your-empty-share-space": "لم تقم بإضافة ملفات مشتركة \nقم بإضافة ملفات لمشاركتها مع الآخرين",
+  "other-empty-share-space": "الملفات المشتركة فارغة",
+  "note": "ملحوظة"
 }

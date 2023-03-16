@@ -11,6 +11,7 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class ShareSpaceScreenAppBar extends StatelessWidget {
@@ -26,7 +27,9 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
         Provider.of<ServerProvider>(context, listen: false);
     return CustomAppBar(
       title: Text(
-        serverProvider.myIp == null ? 'Your Share Space' : 'Group Share Space',
+        serverProvider.myIp == null
+            ? 'your-share-space'.i18n()
+            : 'Group Share Space',
         style: h2TextStyle.copyWith(
           color: kActiveTextColor,
         ),

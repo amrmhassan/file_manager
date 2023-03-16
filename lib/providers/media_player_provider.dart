@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
@@ -12,7 +11,7 @@ import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 
 class MediaPlayerProvider extends ChangeNotifier {
   //# service stream subscriptions
-  StreamSubscription? fullDurationsub;
+  StreamSubscription? fullDurationSub;
   StreamSubscription? currentDurationSub;
   StreamSubscription? audioFinishedSub;
 
@@ -102,12 +101,12 @@ class MediaPlayerProvider extends ChangeNotifier {
       // AudioServiceController.playAudio(path, network, fileRemotePath);
       myAudioHandler.playAudio(path, this, network, fileRemotePath);
 
-      late String fileName;
-      if (network) {
-        fileName = getFileName(fileRemotePath!);
-      } else {
-        fileName = getFileName(path);
-      }
+      // late String fileName;
+      // if (network) {
+      //   fileName = getFileName(fileRemotePath!);
+      // } else {
+      //   fileName = getFileName(path);
+      // }
 
       // QuickNotification.sendAudioNotification(fileName);
       audioPlaying = true;
@@ -120,15 +119,15 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   void runAudioBackgroundServiceListeners() {
-    fullDurationsub?.cancel();
+    fullDurationSub?.cancel();
     currentDurationSub?.cancel();
     audioFinishedSub?.cancel();
     fullSongDuration = null;
     currentDurationSub = null;
     audioFinishedSub = null;
 
-    // here receive the full sond duration
-//     fullDurationsub = flutterBackgroundService
+    // here receive the full song duration
+//     fullDurationSub = flutterBackgroundService
 //         .on(ServiceResActions.setFullSongDuration)
 //         .listen((event) {
 //       int? duration = event?['duration'];
@@ -174,7 +173,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   void handlePlayingAudioAfterResumingApp() async {
     bool isPlaying = myAudioHandler.isPlaying;
     if (isPlaying) {
-      Duration? fullSongD = myAudioHandler.getFullSongDurtion;
+      Duration? fullSongD = myAudioHandler.getFullSongDuration;
       //! get the file name from the background service
       // QuickNotification.sendAudioNotification('fileName');
       runAudioBackgroundServiceListeners();

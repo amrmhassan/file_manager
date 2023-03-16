@@ -27,6 +27,7 @@ import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -121,7 +122,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
       : data.laptop
           ? 'Laptop'
           : me
-              ? 'Your Share Space'
+              ? 'your-share-space'.i18n()
               : '${data.peerModel!.name} Share Space';
 
   @override
@@ -218,7 +219,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                 : shareExpProvider.viewedItems.isEmpty
                     ? Expanded(
                         child: EmptyShareItems(
-                        title: 'Other user share space is emptys',
+                        title: 'Other user share space is empty',
                       ))
                     : Expanded(
                         child: ListView.builder(

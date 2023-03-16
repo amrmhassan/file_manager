@@ -108,5 +108,5 @@ class MyAudioHandler extends BaseAudioHandler
   Future<void> skipToQueueItem(int index) async {}
 
   bool get isPlaying => _audioPlayer.playing;
-  Duration? get getFullSongDurtion => _fullSongDuration;
+  Duration? get getFullSongDuration => _fullSongDuration;
 }

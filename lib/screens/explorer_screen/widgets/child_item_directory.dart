@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/defaults_constants.dart';
@@ -22,6 +23,7 @@ import 'package:explorer/screens/explorer_screen/utils/sizes_utils.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_check_box.dart';
 import 'package:explorer/screens/explorer_screen/widgets/home_item_h_line.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/global_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -337,10 +339,18 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                       );
                                     },
                               )
-                            : Image.asset(
-                                'assets/icons/right-arrow.png',
-                                width: mediumIconSize,
-                                color: kMainIconColor.withOpacity(.4),
+                            : Transform(
+                                origin: Offset(
+                                  mediumIconSize / 2,
+                                  mediumIconSize / 2,
+                                ),
+                                transform: Matrix4.rotationZ(
+                                    CustomLocale.isArabic(context) ? pi : 0),
+                                child: Image.asset(
+                                  'assets/icons/right-arrow.png',
+                                  width: mediumIconSize,
+                                  color: kMainIconColor.withOpacity(.4),
+                                ),
                               )
                       ],
                     ),
