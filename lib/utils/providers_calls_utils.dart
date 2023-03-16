@@ -111,3 +111,12 @@ ListyProvider listyPF(BuildContext context) {
 ListyProvider listyP(BuildContext context) {
   return Provider.of<ListyProvider>(context);
 }
+
+//? listy provider
+MediaPlayerProvider mediaPF(BuildContext context) {
+  return Provider.of<MediaPlayerProvider>(context, listen: false);
+}
+
+MediaPlayerProvider mediaP(BuildContext context) {
+  return Provider.of<MediaPlayerProvider>(context);
+}

@@ -34,6 +34,7 @@ class _PlayPauseOverLayState extends State<PlayPauseOverLay>
       duration: animationDuration,
       reverseDuration: reverseDuration,
     );
+    mediaPF(context).setAnimationController(_controller);
 
     var mpProviderFalse =
         Provider.of<MediaPlayerProvider>(context, listen: false);

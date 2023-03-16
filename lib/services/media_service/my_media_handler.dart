@@ -104,7 +104,7 @@ class MyAudioHandler extends BaseAudioHandler
     if (playingMediaType == PlayingMediaType.audio) {
       audioHandlersUtils.audioPlayer.play();
     } else if (playingMediaType == PlayingMediaType.video) {
-      videoHandlersUtils.videoPlayerController!.play();
+      videoHandlersUtils.playOrResume();
     }
   }
 

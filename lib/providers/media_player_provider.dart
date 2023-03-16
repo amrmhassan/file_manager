@@ -355,4 +355,11 @@ class MediaPlayerProvider extends ChangeNotifier {
   Future videoForWard10() async {
     myMediaHandler.fastForward();
   }
+
+  //# video play pause button animation
+  AnimationController? pausePlayAnimation;
+
+  void setAnimationController(AnimationController a) {
+    pausePlayAnimation = a;
+  }
 }
