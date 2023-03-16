@@ -1,18 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-
-import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/advanced_video_player/advanced_video_player.dart';
-import 'package:explorer/global/widgets/advanced_video_player/widgets/custom_icon_button.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/laptop_messages_button.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/quick_send_open_button.dart';
 import 'package:explorer/global/widgets/show_controllers_button.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player_show_button.dart';
-import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 

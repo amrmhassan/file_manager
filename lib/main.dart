@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/initiators/init.dart';
@@ -13,13 +14,15 @@ import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/utils/notifications/notification_contorller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service/flutter_foreground_service.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
-// fix continuing faild task from laptop
+// fix continuing failed task from laptop
 
 //! add disks_desktop 1.0.1
 
-// implement audio_service notfication for audio
+// implement audio_service notification for audio
 // implement audio_service for the video then notification
 // remove flutter_background_service or comment it
 // add remaining time on the downloading card
@@ -31,7 +34,6 @@ import 'package:provider/provider.dart';
 
 void startForegroundService() async {
   ForegroundService().start();
-  debugPrint("Started service");
 }
 
 void main() async {
@@ -67,10 +69,29 @@ class _MyAppState extends State<MyApp> {
     var initialRoute = testing
         ? TestScreen.routeName
         : (firstTimeRunApp ? IntroScreen.routeName : HomeScreen.routeName);
+    LocalJsonLocalization.delegate.directories = ['assets/languages'];
 
     return MultiProvider(
       providers: mainProviders,
       child: MaterialApp(
+        localizationsDelegates: [
+          // delegate from flutter_localization
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          // delegate from localization package.
+          LocalJsonLocalization.delegate,
+        ],
+        supportedLocales: supportedLocales,
+        localeResolutionCallback: (locale, supportedLocales) {
+          if (supportedLocales.contains(locale)) {
+            return locale;
+          } else if (locale?.languageCode == arabicLocal.languageCode) {
+            return arabicLocal;
+          } else {
+            return englishLocal;
+          }
+        },
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           // useMaterial3: true,

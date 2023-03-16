@@ -5,6 +5,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
+import 'package:localization/localization.dart';
 
 //? to get sections info
 Future<void> calcSections(
@@ -47,39 +48,39 @@ Future<void> calcSections(
   }
   SectionElement imageSection = SectionElement(
     color: kImagesColor,
-    title: 'Images',
+    title: 'images-text'.i18n(),
     percent: imageSize / totalSize,
   );
   SectionElement audioSection = SectionElement(
     color: kAudioColor,
     percent: audioSize / totalSize,
-    title: 'Music',
+    title: 'music-text'.i18n(),
   );
   SectionElement videoSection = SectionElement(
     color: kVideoColor,
     percent: videoSize / totalSize,
-    title: 'Videos',
+    title: 'videos-text'.i18n(),
   );
   SectionElement apkSection = SectionElement(
     color: kAPKsColor,
     percent: apkSize / totalSize,
-    title: 'APKs',
+    title: 'apks-text'.i18n(),
   );
   SectionElement docSection = SectionElement(
     color: kDocsColor,
     percent: docSize / totalSize,
-    title: 'Docs',
+    title: 'docs-text'.i18n(),
   );
 
   SectionElement unknownSection = SectionElement(
     color: kUnknownColor,
     percent: unknownSize / totalSize,
-    title: 'Unknown',
+    title: 'unknown-text'.i18n(),
   );
   SectionElement appsSizeSection = SectionElement(
     color: kAppsColor,
     percent: appDataSize / totalSize,
-    title: 'Apps Data',
+    title: 'apps-data-text'.i18n(),
   );
   List<SectionElement> sections = [
     imageSection,

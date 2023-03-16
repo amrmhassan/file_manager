@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.2
   permission_handler: ^10.2.0
   path: ^1.8.2
@@ -63,7 +65,7 @@ dependencies:
   flutter_foreground_task: ^4.1.0
   flutter_foreground_service: ^0.3.0
   audio_service: ^0.18.9
-  rxdart: ^0.27.7
+  localization: ^2.1.0
 
 
 dev_dependencies:
@@ -85,6 +87,7 @@ flutter:
     - assets/icons/recent/
     - assets/anim/
     - assets/icons/intro/
+    - assets/languages/
  
   fonts:
     - family: Cairo

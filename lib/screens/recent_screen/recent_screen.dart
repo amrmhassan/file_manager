@@ -28,6 +28,7 @@ import 'package:explorer/screens/windows_client_update_note_screen/windows_clien
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class RecentScreen extends StatefulWidget {
@@ -78,7 +79,7 @@ class _RecentScreenState extends State<RecentScreen> {
                         children: [
                           RecentItemType(
                             iconName: 'image',
-                            title: 'Images',
+                            title: 'images-text'.i18n(),
                             onTap: () {
                               openRecentScreen(RecentType.image);
                             },
@@ -86,7 +87,7 @@ class _RecentScreenState extends State<RecentScreen> {
                           ),
                           RecentItemType(
                             iconName: 'play-button',
-                            title: 'Videos',
+                            title: 'videos-text'.i18n(),
                             onTap: () {
                               openRecentScreen(RecentType.video);
                             },
@@ -97,7 +98,7 @@ class _RecentScreenState extends State<RecentScreen> {
                             onTap: () {
                               openRecentScreen(RecentType.doc);
                             },
-                            title: 'Docs',
+                            title: 'docs-text'.i18n(),
                             color: kDocsColor,
                           ),
                           RecentItemType(
@@ -105,7 +106,7 @@ class _RecentScreenState extends State<RecentScreen> {
                             onTap: () {
                               openRecentScreen(RecentType.music);
                             },
-                            title: 'Music',
+                            title: 'music-text'.i18n(),
                             color: kAudioColor,
                           ),
                         ],
@@ -116,7 +117,7 @@ class _RecentScreenState extends State<RecentScreen> {
                         children: [
                           RecentItemType(
                             iconName: 'android',
-                            title: 'APKs',
+                            title: 'apks-text'.i18n(),
                             onTap: () {
                               openRecentScreen(RecentType.apk);
                             },
@@ -124,7 +125,7 @@ class _RecentScreenState extends State<RecentScreen> {
                           ),
                           RecentItemType(
                             iconName: 'download',
-                            title: 'Downloads',
+                            title: 'downloads-text'.i18n(),
                             onTap: () {
                               openRecentScreen(RecentType.download);
                             },
@@ -135,7 +136,7 @@ class _RecentScreenState extends State<RecentScreen> {
                             onTap: () {
                               openRecentScreen(RecentType.archives);
                             },
-                            title: 'Archives',
+                            title: 'archives-text'.i18n(),
                             color: kAPKsColor,
                           ),
                           RecentItemType(
@@ -144,7 +145,7 @@ class _RecentScreenState extends State<RecentScreen> {
                               Navigator.pushNamed(
                                   context, WhatsAppScreen.routeName);
                             },
-                            title: 'Social',
+                            title: 'social-text'.i18n(),
                             color: kWhatsAppColor,
                           ),
                         ],
@@ -159,14 +160,14 @@ class _RecentScreenState extends State<RecentScreen> {
                 onTap: () {
                   Navigator.pushNamed(context, ShareScreen.routeName);
                 },
-                title: 'Share',
+                title: 'share-text'.i18n(),
                 color: Colors.white,
               ),
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'laptop-icon',
                 onTap: handleClickConnectLaptop,
-                title: 'Connect Laptop',
+                title: 'connect-laptop-text'.i18n(),
                 color: Colors.white,
               ),
               VSpace(),
@@ -179,7 +180,7 @@ class _RecentScreenState extends State<RecentScreen> {
                     arguments: ItemsType.recentOpenedFiles,
                   );
                 },
-                title: 'Recently Opened',
+                title: 'recently-opened-text'.i18n(),
                 color: kMainIconColor,
               ),
               VSpace(),
@@ -188,7 +189,7 @@ class _RecentScreenState extends State<RecentScreen> {
                 onTap: () {
                   Navigator.pushNamed(context, AnalyzerScreen.routeName);
                 },
-                title: 'Storage Analyzer',
+                title: 'storage-analyzer-text'.i18n(),
               ),
               VSpace(),
               AnalyzerOptionsItem(
@@ -196,7 +197,7 @@ class _RecentScreenState extends State<RecentScreen> {
                 onTap: () {
                   Navigator.pushNamed(context, StorageCleanerScreen.routeName);
                 },
-                title: 'Storage Cleaner',
+                title: 'storage-cleaner-text'.i18n(),
               ),
               VSpace(),
               AnalyzerOptionsItem(
@@ -204,7 +205,7 @@ class _RecentScreenState extends State<RecentScreen> {
                 onTap: () {
                   Navigator.pushNamed(context, ListyScreen.routeName);
                 },
-                title: 'Listy',
+                title: 'listy-text'.i18n(),
               ),
               VSpace(),
             ],

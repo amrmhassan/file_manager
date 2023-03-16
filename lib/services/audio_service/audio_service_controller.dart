@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:just_audio/just_audio.dart';

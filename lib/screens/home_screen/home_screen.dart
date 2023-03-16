@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:isolate';
-import 'package:explorer/initiators/audio_service_init.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
