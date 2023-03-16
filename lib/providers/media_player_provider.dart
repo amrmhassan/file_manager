@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
@@ -13,7 +14,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   //# service stream subscriptions
   StreamSubscription? fullDurationSub;
   StreamSubscription? currentDurationSub;
-  StreamSubscription? audioFinishedSub;
+  StreamSubscription? audioPlayerStateSub;
 
   Duration? fullSongDuration;
   Duration? currentDuration;
@@ -61,8 +62,8 @@ class MediaPlayerProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> pausePlaying() async {
-    myAudioHandler.pause();
+  Future<void> pausePlaying([bool callService = true]) async {
+    if (callService) myAudioHandler.pause();
     audioPlaying = false;
     notifyListeners();
   }
@@ -77,15 +78,18 @@ class MediaPlayerProvider extends ChangeNotifier {
   Future<void> stopPlaying([bool callBackgroundService = true]) async {
     if (callBackgroundService) {
       // AudioServiceController.pauseAudio();
-      myAudioHandler.pause();
+      myAudioHandler.stop();
     }
     QuickNotification.closeAudioNotification();
+
+    audioPlayerStateSub?.cancel();
 
     audioPlaying = false;
     fullSongDuration = null;
     currentDuration = null;
     playingAudioFilePath = null;
     playerHidden = true;
+    audioPlayerStateSub = null;
 
     notifyListeners();
   }
@@ -97,55 +101,29 @@ class MediaPlayerProvider extends ChangeNotifier {
     String? fileRemotePath,
   ]) async {
     try {
-      runAudioBackgroundServiceListeners();
       // AudioServiceController.playAudio(path, network, fileRemotePath);
       myAudioHandler.playAudio(path, this, network, fileRemotePath);
 
       // QuickNotification.sendAudioNotification(fileName);
       audioPlaying = true;
       notifyListeners();
+      audioPlayerStateSub =
+          myAudioHandler.audioPlayer.playerStateStream.listen((event) {
+        if (event.playing && !audioPlaying) {
+          audioPlaying = true;
+          notifyListeners();
+          logger.i('outside play');
+        } else if (!event.playing && audioPlaying) {
+          audioPlaying = false;
+          notifyListeners();
+          logger.i('outside pause');
+        }
+      });
     } catch (e) {
       audioPlaying = false;
       fullSongDuration = null;
       notifyListeners();
     }
-  }
-
-  void runAudioBackgroundServiceListeners() {
-    fullDurationSub?.cancel();
-    currentDurationSub?.cancel();
-    audioFinishedSub?.cancel();
-    fullSongDuration = null;
-    currentDurationSub = null;
-    audioFinishedSub = null;
-
-    // here receive the full song duration
-//     fullDurationSub = flutterBackgroundService
-//         .on(ServiceResActions.setFullSongDuration)
-//         .listen((event) {
-//       int? duration = event?['duration'];
-//       if (duration == null) {
-//         logger.i('full song duration is null');
-//         throw Exception('full song duration is null');
-//       }
-//       fullSongDuration = Duration(milliseconds: duration);
-//     });
-//     // listen for duration stream
-//     currentDurationSub = flutterBackgroundService
-//         .on(ServiceResActions.setCurrentAudioDuration)
-//         .listen((event) {
-//       Duration d = Duration(milliseconds: event!['duration']);
-//       if (d.inMilliseconds > (fullSongDuration?.inMilliseconds ?? 0)) return;
-//       currentDuration = d;
-//       notifyListeners();
-//     });
-
-// // receive the audio finished
-//     audioFinishedSub = flutterBackgroundService
-//         .on(ServiceResActions.audioFinished)
-//         .listen((event) {
-//       pausePlaying(false);
-//     });
   }
 
   // ? to forward by 10 seconds
@@ -167,7 +145,6 @@ class MediaPlayerProvider extends ChangeNotifier {
     bool isPlaying = myAudioHandler.isPlaying;
     if (isPlaying) {
       Duration? fullSongD = myAudioHandler.getFullSongDuration;
-      runAudioBackgroundServiceListeners();
       audioPlaying = true;
       fullSongDuration = fullSongD;
       notifyListeners();
