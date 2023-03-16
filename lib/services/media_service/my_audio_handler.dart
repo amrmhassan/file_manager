@@ -3,10 +3,8 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/services/media_service/audio_handlers_utils.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:video_player/video_player.dart';
 
 enum PlayingMediaType {
@@ -53,7 +51,10 @@ class MyAudioHandler extends BaseAudioHandler
       await _playBackStream?.cancel();
       _playBackStream =
           audioHandlersUtils.audioPlayer.playbackEventStream.listen((event) {
-        var res = _transformEvent(event);
+        var res = audioHandlersUtils.transformEvent(event, () {
+          stop();
+          audioHandlersUtils.audioPlayer.stop();
+        });
         playbackState.add(res);
       });
     }
@@ -102,57 +103,11 @@ class MyAudioHandler extends BaseAudioHandler
 
   @override
   Future<void> fastForward() {
-    int newMilliSecondDuration =
-        (audioHandlersUtils.audioPlayer.position).inMilliseconds + 10 * 1000;
-    if (newMilliSecondDuration > (fullMediaDuration).inMilliseconds) {
-      newMilliSecondDuration = (fullMediaDuration).inMilliseconds;
-    }
-    return seek(Duration(milliseconds: newMilliSecondDuration));
+    return seek(Duration(milliseconds: audioHandlersUtils.fastForwardValue));
   }
 
   @override
   Future<void> rewind() {
-    int newMilliSecondDuration =
-        (audioHandlersUtils.audioPlayer.position).inMilliseconds - 10 * 1000;
-    if (newMilliSecondDuration < 0) {
-      newMilliSecondDuration = 0;
-    }
-    return seek(Duration(milliseconds: newMilliSecondDuration));
-  }
-
-  PlaybackState _transformEvent(PlaybackEvent event) {
-    if (event.processingState == ProcessingState.completed) {
-      stop();
-      audioHandlersUtils.audioPlayer.stop();
-      logger.e('Completed');
-    }
-    return PlaybackState(
-      controls: [
-        MediaControl.rewind,
-        if (audioHandlersUtils.audioPlayer.playing)
-          MediaControl.pause
-        else
-          MediaControl.play,
-        MediaControl.fastForward,
-      ],
-      systemActions: const {
-        MediaAction.seek,
-        MediaAction.seekForward,
-        MediaAction.seekBackward,
-      },
-      androidCompactActionIndices: const [0, 1, 3],
-      processingState: const {
-        ProcessingState.idle: AudioProcessingState.idle,
-        ProcessingState.loading: AudioProcessingState.loading,
-        ProcessingState.buffering: AudioProcessingState.buffering,
-        ProcessingState.ready: AudioProcessingState.ready,
-        ProcessingState.completed: AudioProcessingState.idle,
-      }[audioHandlersUtils.audioPlayer.processingState]!,
-      playing: audioHandlersUtils.audioPlayer.playing,
-      updatePosition: audioHandlersUtils.audioPlayer.position,
-      bufferedPosition: audioHandlersUtils.audioPlayer.bufferedPosition,
-      speed: audioHandlersUtils.audioPlayer.speed,
-      queueIndex: event.currentIndex,
-    );
+    return seek(Duration(milliseconds: audioHandlersUtils.rewindValue));
   }
 }
