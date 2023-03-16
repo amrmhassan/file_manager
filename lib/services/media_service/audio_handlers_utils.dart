@@ -68,7 +68,6 @@ class AudioHandlersUtils {
   PlaybackState transformEvent(PlaybackEvent event, Function onCompleted) {
     if (event.processingState == ProcessingState.completed) {
       onCompleted();
-      logger.e('Completed');
     }
     return PlaybackState(
       controls: [

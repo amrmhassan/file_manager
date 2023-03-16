@@ -31,6 +31,7 @@ import 'package:provider/provider.dart';
 // implement resuming downloads with laptop for both laptop and mobile
 // try to edit the ForegroundService() package to stop sounds and to change the title of the notification
 //! fix the can't generate thumbnail error, because the package name changed in the main kotlin
+//! fix play_pause video button when pausing from notification or from headset, this might be fixed by moving the animation controller into the media provider like the windows version
 
 void startForegroundService() async {
   ForegroundService().start();

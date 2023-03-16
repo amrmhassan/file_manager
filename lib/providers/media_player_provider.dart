@@ -175,6 +175,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     videoSpeed = s;
     notifyListeners();
     //! call set speed here with call background
+    if (callBackground) myMediaHandler.setSpeed(s);
   }
 
   //? to return the ready buffered parts to be viewed into the video player slider
@@ -260,30 +261,23 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   //? toggle video play
-  void toggleVideoPlay() {
-    isVideoPlaying = !isVideoPlaying;
-    bottomVideoControllersHidden = false;
-    notifyListeners();
+  void toggleVideoPlay([bool callBackground = true]) {
     if (isVideoPlaying) {
-      //! all play video here
-      myMediaHandler.play();
+      pauseVideo(callBackground);
     } else {
-      //! all pause video here
-      myMediaHandler.pause();
+      resumeVideo(callBackground);
     }
   }
 
-  void pauseVideo() {
+  void pauseVideo([bool callBackground = true]) {
     isVideoPlaying = false;
     notifyListeners();
-    //! all pause video here
-    myMediaHandler.pause();
+    if (callBackground) myMediaHandler.pause();
   }
 
-  void resumeVideo() {
+  void resumeVideo([bool callBackground = true]) {
     isVideoPlaying = true;
     notifyListeners();
-    //! all play video here
     myMediaHandler.play();
   }
 
@@ -348,11 +342,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   //# muting the video
   bool videoMuted = false;
   Future toggleMuteVideo() async {
-    if (videoMuted) {
-      await videoPlayerController?.setVolume(1);
-    } else {
-      await videoPlayerController?.setVolume(0);
-    }
+    myMediaHandler.toggleVideoMuted(!videoMuted);
 
     videoMuted = !videoMuted;
     notifyListeners();

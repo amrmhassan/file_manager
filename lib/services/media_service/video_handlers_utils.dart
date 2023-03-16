@@ -98,7 +98,6 @@ class VideoHandlersUtils {
       onCompleted();
       return PlaybackState();
     }
-    logger.e(_videoPlayerController!.value.position.inMilliseconds);
     return PlaybackState(
       controls: [
         MediaControl.rewind,
@@ -121,10 +120,10 @@ class VideoHandlersUtils {
         VideoState.ready: AudioProcessingState.ready,
         VideoState.completed: AudioProcessingState.idle,
       }[videoState]!,
-      playing: _videoPlayerController!.value.isPlaying,
-      updatePosition: _videoPlayerController!.value.position,
-      speed: _videoPlayerController!.value.playbackSpeed,
-      queueIndex: event.index,
+      playing: _videoPlayerController?.value.isPlaying ?? false,
+      updatePosition: _videoPlayerController?.value.position ?? Duration.zero,
+      speed: _videoPlayerController?.value.playbackSpeed ?? 1,
+      queueIndex: 2,
     );
   }
 
@@ -162,5 +161,18 @@ class VideoHandlersUtils {
   void setVideoSpeed(double s) {
     _mediaPlayerProvider.setVideoSpeed(s);
     _videoPlayerController?.setPlaybackSpeed(s);
+  }
+
+  void pause() {
+    _videoPlayerController!.pause();
+    _mediaPlayerProvider.pauseVideo(false);
+  }
+
+  void setSpeed(double s) {
+    _videoPlayerController?.setPlaybackSpeed(s);
+  }
+
+  void setMuted(bool muted) {
+    _videoPlayerController?.setVolume(muted ? 0 : 1);
   }
 }

@@ -115,8 +115,21 @@ class MyAudioHandler extends BaseAudioHandler
     if (playingMediaType == PlayingMediaType.audio) {
       audioHandlersUtils.audioPlayer.pause();
     } else if (playingMediaType == PlayingMediaType.video) {
-      videoHandlersUtils.videoPlayerController!.pause();
+      videoHandlersUtils.pause();
     }
+  }
+
+  @override
+  Future<void> setSpeed(double speed) {
+    if (playingMediaType == PlayingMediaType.video) {
+      videoHandlersUtils.setSpeed(speed);
+    }
+
+    return super.setSpeed(speed);
+  }
+
+  void toggleVideoMuted(bool muted) {
+    videoHandlersUtils.setMuted(muted);
   }
 
   @override
@@ -143,7 +156,6 @@ class MyAudioHandler extends BaseAudioHandler
 
   @override
   Future<void> fastForward() {
-    logger.e(videoHandlersUtils.fastForwardValue);
     if (playingMediaType == PlayingMediaType.audio) {
       return seek(Duration(milliseconds: audioHandlersUtils.fastForwardValue));
     } else {
