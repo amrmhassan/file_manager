@@ -146,6 +146,27 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                     HSpace(),
                   ],
                 ),
+                Positioned(
+                  left: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      HSpace(),
+                      ButtonWrapper(
+                        padding: EdgeInsets.all(largePadding),
+                        onTap: () {
+                          mpPF(context).stopPlaying();
+                        },
+                        child: Image.asset(
+                          'assets/icons/close.png',
+                          color: kMainIconColor,
+                          width: smallIconSize,
+                          height: smallIconSize,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],

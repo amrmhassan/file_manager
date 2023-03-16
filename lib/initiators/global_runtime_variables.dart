@@ -1,7 +1,7 @@
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/services/audio_service/audio_service_controller.dart';
+import 'package:explorer/services/audio_service/my_audio_handler.dart';
 import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:explorer/utils/notifications/notification_id_mapper.dart';
 

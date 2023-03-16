@@ -101,13 +101,6 @@ class MediaPlayerProvider extends ChangeNotifier {
       // AudioServiceController.playAudio(path, network, fileRemotePath);
       myAudioHandler.playAudio(path, this, network, fileRemotePath);
 
-      // late String fileName;
-      // if (network) {
-      //   fileName = getFileName(fileRemotePath!);
-      // } else {
-      //   fileName = getFileName(path);
-      // }
-
       // QuickNotification.sendAudioNotification(fileName);
       audioPlaying = true;
       notifyListeners();
@@ -157,12 +150,12 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   // ? to forward by 10 seconds
   void forward10() {
-    seekTo(currentDuration!.inMilliseconds + 10 * 1000);
+    myAudioHandler.fastForward();
   }
 
   // ? to backward by 10 seconds
   void backward10() {
-    seekTo(currentDuration!.inMilliseconds - 10 * 1000);
+    myAudioHandler.rewind();
   }
 
   //? seek to
@@ -174,8 +167,6 @@ class MediaPlayerProvider extends ChangeNotifier {
     bool isPlaying = myAudioHandler.isPlaying;
     if (isPlaying) {
       Duration? fullSongD = myAudioHandler.getFullSongDuration;
-      //! get the file name from the background service
-      // QuickNotification.sendAudioNotification('fileName');
       runAudioBackgroundServiceListeners();
       audioPlaying = true;
       fullSongDuration = fullSongD;
