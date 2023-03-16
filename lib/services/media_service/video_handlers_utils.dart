@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/providers/media_player_provider.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:video_player/video_player.dart';
 
 enum VideoState {
@@ -28,8 +26,9 @@ class VideoHandlersUtils {
   Duration? _fullVideoDuration;
   String? playingFilePath;
   VideoState videoState = VideoState.idle;
+  late Completer<Duration?> fullVideoDurationCompleter;
 
-  Duration? get fullVideoDuration => _fullVideoDuration;
+  Future<Duration?> get fullVideoDuration => fullVideoDurationCompleter.future;
 
   Future playVideo(
     String path,
@@ -41,6 +40,7 @@ class VideoHandlersUtils {
   ]) async {
     _mediaPlayerProvider = mediaPlayerProvider;
     closeVideo();
+    fullVideoDurationCompleter = Completer<Duration?>();
 
     videoState = VideoState.loading;
 
@@ -62,6 +62,9 @@ class VideoHandlersUtils {
         ))
       ..initialize().then((value) {
         _fullVideoDuration ??= _videoPlayerController!.value.duration;
+        if (!fullVideoDurationCompleter.isCompleted) {
+          fullVideoDurationCompleter.complete(_fullVideoDuration);
+        }
         mediaPlayerProvider.onInitVideo(_videoPlayerController!, network);
       })
       ..play()
@@ -70,7 +73,7 @@ class VideoHandlersUtils {
             ? VideoState.ready
             : _videoPlayerController!.value.isBuffering
                 ? VideoState.buffering
-                : VideoState.idle;
+                : VideoState.ready;
 
         mediaPlayerProvider.videoPositionListener(_videoPlayerController!);
         // videoPosition = videoPlayerController?.value.position ?? Duration.zero;
@@ -119,11 +122,12 @@ class VideoHandlersUtils {
         VideoState.buffering: AudioProcessingState.buffering,
         VideoState.ready: AudioProcessingState.ready,
         VideoState.completed: AudioProcessingState.idle,
-      }[videoState]!,
+      }[event]!,
       playing: _videoPlayerController?.value.isPlaying ?? false,
       updatePosition: _videoPlayerController?.value.position ?? Duration.zero,
+      bufferedPosition: _videoPlayerController?.value.position ?? Duration.zero,
       speed: _videoPlayerController?.value.playbackSpeed ?? 1,
-      queueIndex: 2,
+      queueIndex: event.index,
     );
   }
 

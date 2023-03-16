@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/services/media_service/audio_handlers_utils.dart';
 import 'package:explorer/services/media_service/video_handlers_utils.dart';
@@ -73,9 +72,8 @@ class MyAudioHandler extends BaseAudioHandler
         fileRemotePath,
       );
       playingFileName = videoHandlersUtils.fileName;
-      fullMediaDuration = videoHandlersUtils.fullVideoDuration ?? Duration.zero;
-      _playBackStream =
-          audioHandlersUtils.audioPlayer.playbackEventStream.listen((event) {});
+      fullMediaDuration =
+          (await videoHandlersUtils.fullVideoDuration) ?? Duration.zero;
     }
     play();
     var item = MediaItem(
@@ -140,6 +138,7 @@ class MyAudioHandler extends BaseAudioHandler
       videoHandlersUtils.closeVideo();
     }
     playingMediaType = null;
+    super.stop();
   }
 
   @override
