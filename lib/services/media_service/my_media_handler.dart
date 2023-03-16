@@ -3,8 +3,10 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/services/media_service/audio_handlers_utils.dart';
+import 'package:explorer/services/media_service/video_handlers_utils.dart';
 import 'package:video_player/video_player.dart';
 
 enum PlayingMediaType {
@@ -18,6 +20,7 @@ class MyAudioHandler extends BaseAudioHandler
         SeekHandler {
   VideoPlayerController? videoPlayerController;
   AudioHandlersUtils audioHandlersUtils = AudioHandlersUtils();
+  VideoHandlersUtils videoHandlersUtils = VideoHandlersUtils();
 
   StreamSubscription? _playBackStream;
 
@@ -38,6 +41,7 @@ class MyAudioHandler extends BaseAudioHandler
     String? fileRemotePath,
   ]) async {
     playingMediaType = mediaType;
+    await _playBackStream?.cancel();
 
     if (playingMediaType == PlayingMediaType.audio) {
       await audioHandlersUtils.playAudio(
@@ -48,7 +52,6 @@ class MyAudioHandler extends BaseAudioHandler
       );
       playingFileName = audioHandlersUtils.fileName;
       fullMediaDuration = audioHandlersUtils.fullSongDuration ?? Duration.zero;
-      await _playBackStream?.cancel();
       _playBackStream =
           audioHandlersUtils.audioPlayer.playbackEventStream.listen((event) {
         var res = audioHandlersUtils.transformEvent(event, () {
@@ -57,7 +60,23 @@ class MyAudioHandler extends BaseAudioHandler
         });
         playbackState.add(res);
       });
-    } else if (playingMediaType == PlayingMediaType.video) {}
+    } else if (playingMediaType == PlayingMediaType.video) {
+      videoHandlersUtils.playVideo(
+        path,
+        videoPlaybackStateListener,
+        () {
+          stop();
+          audioHandlersUtils.audioPlayer.stop();
+        },
+        mediaPlayerProvider,
+        network,
+        fileRemotePath,
+      );
+      playingFileName = videoHandlersUtils.fileName;
+      fullMediaDuration = videoHandlersUtils.fullVideoDuration ?? Duration.zero;
+      _playBackStream =
+          audioHandlersUtils.audioPlayer.playbackEventStream.listen((event) {});
+    }
     play();
     var item = MediaItem(
       id: path,
@@ -71,28 +90,52 @@ class MyAudioHandler extends BaseAudioHandler
     // play audio here
   }
 
+  void videoPlaybackStateListener(VideoState event) {
+    var res = videoHandlersUtils.transformEvent(event, () {
+      stop();
+      videoHandlersUtils.closeVideo();
+    });
+    playbackState.add(res);
+  }
+
   // The most common callbacks:
   @override
   Future<void> play() async {
     // All 'play' requests from all origins route to here. Implement this
     // callback to start playing audio appropriate to your app. e.g. music.
-    audioHandlersUtils.audioPlayer.play();
+    if (playingMediaType == PlayingMediaType.audio) {
+      audioHandlersUtils.audioPlayer.play();
+    } else if (playingMediaType == PlayingMediaType.video) {
+      videoHandlersUtils.videoPlayerController!.play();
+    }
   }
 
   @override
   Future<void> pause() async {
-    audioHandlersUtils.audioPlayer.pause();
+    if (playingMediaType == PlayingMediaType.audio) {
+      audioHandlersUtils.audioPlayer.pause();
+    } else if (playingMediaType == PlayingMediaType.video) {
+      videoHandlersUtils.videoPlayerController!.pause();
+    }
   }
 
   @override
   Future<void> stop() async {
+    if (playingMediaType == PlayingMediaType.audio) {
+      audioHandlersUtils.audioPlayer.stop();
+    } else if (playingMediaType == PlayingMediaType.video) {
+      videoHandlersUtils.closeVideo();
+    }
     playingMediaType = null;
-    audioHandlersUtils.audioPlayer.stop();
   }
 
   @override
   Future<void> seek(Duration position) async {
-    audioHandlersUtils.audioPlayer.seek(position);
+    if (playingMediaType == PlayingMediaType.audio) {
+      audioHandlersUtils.audioPlayer.seek(position);
+    } else if (playingMediaType == PlayingMediaType.video) {
+      videoHandlersUtils.videoPlayerController!.seekTo(position);
+    }
   }
 
   bool get isPlaying => audioHandlersUtils.audioPlayer.playing;
@@ -100,11 +143,20 @@ class MyAudioHandler extends BaseAudioHandler
 
   @override
   Future<void> fastForward() {
-    return seek(Duration(milliseconds: audioHandlersUtils.fastForwardValue));
+    logger.e(videoHandlersUtils.fastForwardValue);
+    if (playingMediaType == PlayingMediaType.audio) {
+      return seek(Duration(milliseconds: audioHandlersUtils.fastForwardValue));
+    } else {
+      return seek(Duration(milliseconds: videoHandlersUtils.fastForwardValue));
+    }
   }
 
   @override
   Future<void> rewind() {
-    return seek(Duration(milliseconds: audioHandlersUtils.rewindValue));
+    if (playingMediaType == PlayingMediaType.audio) {
+      return seek(Duration(milliseconds: audioHandlersUtils.rewindValue));
+    } else {
+      return seek(Duration(milliseconds: videoHandlersUtils.rewindValue));
+    }
   }
 }

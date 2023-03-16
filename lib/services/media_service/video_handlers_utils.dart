@@ -6,74 +6,106 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:video_player/video_player.dart';
+
+enum VideoState {
+  idle,
+  ready,
+  buffering,
+  completed,
+  loading,
+}
 
 class VideoHandlersUtils {
   String? _playingFileName;
-  StreamSubscription? _durationStreamSub;
-  StreamSubscription? _playBackStreamSub;
-
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool isVideoPlaying = false;
+  late MediaPlayerProvider _mediaPlayerProvider;
+  VideoPlayerController? _videoPlayerController;
 
   String? get fileName => _playingFileName;
 
-  AudioPlayer get audioPlayer => _audioPlayer;
-  Duration? _fullSongDuration;
+  VideoPlayerController? get videoPlayerController => _videoPlayerController;
+  Duration? _fullVideoDuration;
   String? playingFilePath;
+  VideoState videoState = VideoState.idle;
 
-  Duration? get fullSongDuration => _fullSongDuration;
+  Duration? get fullVideoDuration => _fullVideoDuration;
 
-  Future playAudio(
+  Future playVideo(
     String path,
+    Function(VideoState event) videoPlaybackStateListener,
+    Function() onCompleted,
     MediaPlayerProvider mediaPlayerProvider, [
     bool network = false,
     String? fileRemotePath,
   ]) async {
-    _durationStreamSub?.cancel();
-    _playBackStreamSub?.cancel();
+    _mediaPlayerProvider = mediaPlayerProvider;
+    closeVideo();
+
+    videoState = VideoState.loading;
+
     if (network) {
+      playingFilePath = fileRemotePath;
       _playingFileName = getFileName(fileRemotePath!);
     } else {
+      playingFilePath = path;
       _playingFileName = getFileName(path);
     }
-    if (network) {
-      _fullSongDuration = await _audioPlayer.setUrl(
-        path,
-        headers: network
+    _videoPlayerController = VideoPlayerController.network(path,
+        httpHeaders: network
             ? {
                 filePathHeaderKey: Uri.encodeComponent(fileRemotePath!),
               }
-            : null,
-      );
-      playingFilePath = fileRemotePath;
-    } else {
-      _fullSongDuration = await _audioPlayer.setFilePath(path);
-      playingFilePath = path;
-    }
+            : {},
+        videoPlayerOptions: VideoPlayerOptions(
+          allowBackgroundPlayback: true,
+        ))
+      ..initialize().then((value) {
+        _fullVideoDuration ??= _videoPlayerController!.value.duration;
+        mediaPlayerProvider.onInitVideo(_videoPlayerController!, network);
+      })
+      ..play()
+      ..addListener(() async {
+        videoState = _videoPlayerController!.value.isPlaying
+            ? VideoState.ready
+            : _videoPlayerController!.value.isBuffering
+                ? VideoState.buffering
+                : VideoState.idle;
 
-    //? setting full audio duration
-    mediaPlayerProvider.setFullSongDuration(_fullSongDuration);
+        mediaPlayerProvider.videoPositionListener(_videoPlayerController!);
+        // videoPosition = videoPlayerController?.value.position ?? Duration.zero;
+        // _bufferedParts = videoPlayerController?.value.buffered ?? [];
+        // isBuffering = videoPlayerController?.value.isBuffering ?? false;
 
-    _durationStreamSub = _audioPlayer.positionStream.listen((event) {
-      mediaPlayerProvider.setCurrentSongPosition(event);
-    });
-
-    //? listening for audio playback state
-    _playBackStreamSub = _audioPlayer.playerStateStream.listen((event) {
-      if (event.processingState == ProcessingState.completed) {
-        mediaPlayerProvider.stopPlaying(false);
-      }
-    });
+        var duration = _videoPlayerController?.value.duration.inMilliseconds;
+        var position = _videoPlayerController?.value.position.inMilliseconds;
+        // notifyListeners();
+        if ((duration == position) &&
+            duration != null &&
+            position != null &&
+            duration != 0 &&
+            position != 0) {
+          //* this means it stopped playing cause it's duration finished
+          closeVideo();
+        }
+        videoPlaybackStateListener(videoState);
+      });
+    isVideoPlaying = true;
   }
 
-  PlaybackState transformEvent(PlaybackEvent event, Function onCompleted) {
-    if (event.processingState == ProcessingState.completed) {
+  PlaybackState transformEvent(VideoState event, Function onCompleted) {
+    if (event == VideoState.completed) {
       onCompleted();
-      logger.e('Completed');
+      return PlaybackState();
     }
+    logger.e(_videoPlayerController!.value.position.inMilliseconds);
     return PlaybackState(
       controls: [
         MediaControl.rewind,
-        if (audioPlayer.playing) MediaControl.pause else MediaControl.play,
+        if (_videoPlayerController?.value.isPlaying ?? false)
+          MediaControl.pause
+        else
+          MediaControl.play,
         MediaControl.fastForward,
       ],
       systemActions: const {
@@ -83,37 +115,52 @@ class VideoHandlersUtils {
       },
       androidCompactActionIndices: const [0, 1, 3],
       processingState: const {
-        ProcessingState.idle: AudioProcessingState.idle,
-        ProcessingState.loading: AudioProcessingState.loading,
-        ProcessingState.buffering: AudioProcessingState.buffering,
-        ProcessingState.ready: AudioProcessingState.ready,
-        ProcessingState.completed: AudioProcessingState.idle,
-      }[audioPlayer.processingState]!,
-      playing: audioPlayer.playing,
-      updatePosition: audioPlayer.position,
-      bufferedPosition: audioPlayer.bufferedPosition,
-      speed: audioPlayer.speed,
-      queueIndex: event.currentIndex,
+        VideoState.idle: AudioProcessingState.idle,
+        VideoState.loading: AudioProcessingState.loading,
+        VideoState.buffering: AudioProcessingState.buffering,
+        VideoState.ready: AudioProcessingState.ready,
+        VideoState.completed: AudioProcessingState.idle,
+      }[videoState]!,
+      playing: _videoPlayerController!.value.isPlaying,
+      updatePosition: _videoPlayerController!.value.position,
+      speed: _videoPlayerController!.value.playbackSpeed,
+      queueIndex: event.index,
     );
   }
 
   int get fastForwardValue {
+    Duration videoDuration = _fullVideoDuration ?? Duration.zero;
+
     int newMilliSecondDuration =
-        (audioPlayer.position).inMilliseconds + 10 * 1000;
-    if (newMilliSecondDuration >
-        (_fullSongDuration ?? Duration.zero).inMilliseconds) {
-      newMilliSecondDuration =
-          (_fullSongDuration ?? Duration.zero).inMilliseconds;
+        (_videoPlayerController!.value.position).inMilliseconds + 10 * 1000;
+
+    if (newMilliSecondDuration > videoDuration.inMilliseconds) {
+      newMilliSecondDuration = videoDuration.inMilliseconds;
     }
     return newMilliSecondDuration;
   }
 
   int get rewindValue {
     int newMilliSecondDuration =
-        (audioPlayer.position).inMilliseconds - 10 * 1000;
+        (_videoPlayerController!.value.position).inMilliseconds - 10 * 1000;
     if (newMilliSecondDuration < 0) {
       newMilliSecondDuration = 0;
     }
     return newMilliSecondDuration;
+  }
+
+  void closeVideo() {
+    _mediaPlayerProvider.closeVideo(false);
+    _videoPlayerController?.removeListener(() {});
+    _videoPlayerController?.dispose();
+    _videoPlayerController = null;
+    isVideoPlaying = false;
+    _fullVideoDuration = null;
+    videoState = VideoState.completed;
+  }
+
+  void setVideoSpeed(double s) {
+    _mediaPlayerProvider.setVideoSpeed(s);
+    _videoPlayerController?.setPlaybackSpeed(s);
   }
 }

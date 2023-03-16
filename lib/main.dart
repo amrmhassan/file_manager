@@ -30,6 +30,7 @@ import 'package:provider/provider.dart';
 // and ForegroundService().stop(); when closing both laptop and share space, make an outside function to check for this and close the background service only when both servers are SnackBarClosedReason
 // implement resuming downloads with laptop for both laptop and mobile
 // try to edit the ForegroundService() package to stop sounds and to change the title of the notification
+//! fix the can't generate thumbnail error, because the package name changed in the main kotlin
 
 void startForegroundService() async {
   ForegroundService().start();

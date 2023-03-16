@@ -156,25 +156,25 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //# video controllers
   String? playingVideoPath;
-  VideoPlayerController? videoPlayerController;
   double? videoHeight;
   double? videoWidth;
   double? videoAspectRatio;
   bool volumeTouched = false;
   bool seekerTouched = false;
   Duration? videoDuration;
-  bool isVideoPlaying = false;
+  bool isVideoPlaying = true;
   Duration videoPosition = Duration.zero;
   bool videoHidden = false;
   bool networkVideo = false;
   List<DurationRange> _bufferedParts = [];
   bool isBuffering = false;
   double videoSpeed = 1;
+  VideoPlayerController? videoPlayerController;
 
-  void setVideoSpeed(double s) {
+  void setVideoSpeed(double s, [bool callBackground = true]) {
     videoSpeed = s;
     notifyListeners();
-    videoPlayerController?.setPlaybackSpeed(s);
+    //! call set speed here with call background
   }
 
   //? to return the ready buffered parts to be viewed into the video player slider
@@ -213,53 +213,39 @@ class MediaPlayerProvider extends ChangeNotifier {
     bool network = false,
     String? fileRemotePath,
   ]) {
-    closeVideo();
-    if (network) {
-      playingVideoPath = fileRemotePath;
-    } else {
-      playingVideoPath = path;
-    }
-    videoPlayerController = VideoPlayerController.network(path,
-        httpHeaders: network
-            ? {
-                filePathHeaderKey: Uri.encodeComponent(fileRemotePath!),
-              }
-            : {},
-        videoPlayerOptions: VideoPlayerOptions(
-          allowBackgroundPlayback: true,
-        ))
-      ..initialize().then((value) {
-        videoHeight = videoPlayerController?.value.size.height;
-        videoWidth = videoPlayerController?.value.size.width;
-        videoAspectRatio = videoPlayerController?.value.aspectRatio;
-        videoDuration = videoPlayerController?.value.duration;
-        networkVideo = network;
-
-        notifyListeners();
-      })
-      ..play()
-      ..addListener(() async {
-        videoPosition = videoPlayerController?.value.position ?? Duration.zero;
-        _bufferedParts = videoPlayerController?.value.buffered ?? [];
-        isBuffering = videoPlayerController?.value.isBuffering ?? false;
-
-        notifyListeners();
-        if (isVideoPlaying &&
-            !(videoPlayerController?.value.isPlaying ?? false)) {
-          //* this means it stopped playing cause it's duration finished
-          closeVideo();
-        }
-      });
+    myMediaHandler.playMedia(
+      PlayingMediaType.video,
+      path,
+      this,
+      network,
+      fileRemotePath,
+    );
     isVideoPlaying = true;
     videoHidden = false;
 
     notifyListeners();
   }
 
+  void onInitVideo(VideoPlayerController controller, bool network) {
+    videoHeight = controller.value.size.height;
+    videoWidth = controller.value.size.width;
+    videoAspectRatio = controller.value.aspectRatio;
+    videoDuration = controller.value.duration;
+    networkVideo = network;
+    isVideoPlaying = true;
+    videoPlayerController = controller;
+    notifyListeners();
+  }
+
+  void videoPositionListener(VideoPlayerController controller) {
+    videoPosition = controller.value.position;
+    _bufferedParts = controller.value.buffered;
+    isBuffering = controller.value.isBuffering;
+    notifyListeners();
+  }
+
   //? close video
-  void closeVideo() {
-    videoPlayerController?.removeListener(() {});
-    videoPlayerController?.dispose();
+  void closeVideo([bool tellBackground = true]) {
     videoPlayerController = null;
     isVideoPlaying = false;
     videoDuration = null;
@@ -267,9 +253,10 @@ class MediaPlayerProvider extends ChangeNotifier {
     videoPosition = Duration.zero;
     videoHidden = false;
     bottomVideoControllersHidden = false;
-    _bufferedParts.clear();
+    _bufferedParts = [];
     videoSpeed = 1;
     notifyListeners();
+    if (tellBackground) myMediaHandler.stop();
   }
 
   //? toggle video play
@@ -278,22 +265,26 @@ class MediaPlayerProvider extends ChangeNotifier {
     bottomVideoControllersHidden = false;
     notifyListeners();
     if (isVideoPlaying) {
-      videoPlayerController?.play();
+      //! all play video here
+      myMediaHandler.play();
     } else {
-      videoPlayerController?.pause();
+      //! all pause video here
+      myMediaHandler.pause();
     }
   }
 
   void pauseVideo() {
     isVideoPlaying = false;
     notifyListeners();
-    videoPlayerController?.pause();
+    //! all pause video here
+    myMediaHandler.pause();
   }
 
   void resumeVideo() {
     isVideoPlaying = true;
     notifyListeners();
-    videoPlayerController?.play();
+    //! all play video here
+    myMediaHandler.play();
   }
 
   //? add to current position
@@ -369,25 +360,10 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //# video fast seeking
   Future videoBackWard10() async {
-    videoPlayerController?.seekTo(
-        Duration(milliseconds: videoPosition.inMilliseconds - 10 * 1000));
-    Duration newDuration =
-        Duration(milliseconds: videoPosition.inMilliseconds - 10000);
-    if (newDuration.inSeconds < 0) {
-      videoPlayerController?.seekTo(Duration.zero);
-    } else {
-      videoPlayerController?.seekTo(newDuration);
-    }
+    myMediaHandler.rewind();
   }
 
   Future videoForWard10() async {
-    Duration newDuration = Duration(
-      milliseconds: videoPosition.inMilliseconds + 10000,
-    );
-    if (newDuration.inSeconds > videoDuration!.inSeconds) {
-      videoPlayerController?.seekTo(videoDuration!);
-    } else {
-      videoPlayerController?.seekTo(newDuration);
-    }
+    myMediaHandler.fastForward();
   }
 }
