@@ -4,12 +4,6 @@ import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
-// enum MouseEventsType {
-//   move,
-//   rightClick,
-//   leftClick,
-// }
-
 class SendMouseEvents {
   late WebSocket? socket;
   final BuildContext context;
@@ -26,7 +20,28 @@ class SendMouseEvents {
     double sensitivity = 3;
     int dx = (delta.dx * sensitivity).ceil();
     int dy = (delta.dy * sensitivity).ceil();
-    connectLaptopPF(context).ioWebSocketChannel?.innerWebSocket?.add(
-        '${moveCursorPath}___${reversed ? dy : dx},${reversed ? dx : dy}');
+    _add('${moveCursorPath}___${reversed ? dy : dx},${reversed ? dx : dy}');
+  }
+
+  void rightClick() {
+    _add(mouseRightClickedPath);
+  }
+
+  void leftClick() {
+    _add(mouseLeftClickedPath);
+  }
+
+  void leftDown() {
+    _add(mouseLeftDownPath);
+  }
+
+  void leftUp() {
+    _add(mouseLeftUpPath);
+  }
+
+  void _add(dynamic data) {
+    connectLaptopPF(context).ioWebSocketChannel?.innerWebSocket?.add(data);
+    if (data.toString().startsWith(moveCursorPath)) return;
+    print(data);
   }
 }

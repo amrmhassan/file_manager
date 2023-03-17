@@ -1,13 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/global/widgets/v_line.dart';
 import 'package:explorer/helpers/send_mouse_events.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class TouchPadScreen extends StatefulWidget {
@@ -19,12 +22,12 @@ class TouchPadScreen extends StatefulWidget {
 }
 
 class _TouchPadScreenState extends State<TouchPadScreen> {
-  late SendMouseEvents sendMouseEvents;
+  bool doubleTapped = false;
+  late MouseEvents mouseEvents;
+
   @override
   void initState() {
-    sendMouseEvents = SendMouseEvents(
-      context,
-    );
+    mouseEvents = MouseEvents(context);
     super.initState();
   }
 
@@ -60,13 +63,14 @@ class _TouchPadScreenState extends State<TouchPadScreen> {
             Expanded(
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  sendMouseEvents.moveEvent(details.delta);
+                  mouseEvents.move(details.delta);
                 },
-                onTap: () {
-                  connectLaptopPF(context)
-                      .ioWebSocketChannel
-                      ?.innerWebSocket
-                      ?.add('data');
+                onTapDown: (details) {
+                  mouseEvents.panDownEvent();
+                },
+                onTapUp: (details) {
+                  // bsend left mouse up event
+                  mouseEvents.panUpEvent();
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -80,9 +84,82 @@ class _TouchPadScreenState extends State<TouchPadScreen> {
                 ),
               ),
             ),
+            HLine(
+              color: kMainIconColor.withOpacity(.2),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ButtonWrapper(
+                    borderRadius: 0,
+                    height: 100,
+                    onTap: () {
+                      mouseEvents.leftClick();
+                    },
+                    backgroundColor: kBackgroundColor,
+                    child: SizedBox(),
+                  ),
+                ),
+                VLine(
+                  height: 100,
+                  color: kMainIconColor.withOpacity(.2),
+                ),
+                Expanded(
+                  child: ButtonWrapper(
+                    borderRadius: 0,
+                    height: 100,
+                    onTap: () {
+                      mouseEvents.rightClick();
+                    },
+                    backgroundColor: kBackgroundColor,
+                    child: SizedBox(),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
     );
+  }
+}
+
+class MouseEvents {
+  final BuildContext _context;
+  late SendMouseEvents sendMouseEvents;
+  bool _mouseDown = false;
+
+  MouseEvents(this._context) {
+    sendMouseEvents = sendMouseEvents = SendMouseEvents(
+      _context,
+    );
+  }
+
+  void panDownEvent() {
+    _mouseDown = true;
+    Future.delayed(Duration(milliseconds: 200)).then((value) {
+      if (!_mouseDown) {
+        // this mean that the user have made up event before the time ends, so it was a click not a move event
+        sendMouseEvents.leftDown();
+        sendMouseEvents.leftUp();
+      }
+      _mouseDown = false;
+    });
+  }
+
+  void panUpEvent() {
+    _mouseDown = false;
+  }
+
+  void move(Offset delta) {
+    sendMouseEvents.moveEvent(delta);
+  }
+
+  void leftClick() {
+    sendMouseEvents.leftClick();
+  }
+
+  void rightClick() {
+    sendMouseEvents.rightClick();
   }
 }
