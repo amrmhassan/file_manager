@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/services/media_service/my_media_handler.dart';
@@ -161,7 +162,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   bool volumeTouched = false;
   bool seekerTouched = false;
   Duration? videoDuration;
-  bool isVideoPlaying = true;
+  bool isVideoPlaying = false;
   Duration videoPosition = Duration.zero;
   bool videoHidden = false;
   bool networkVideo = false;
@@ -246,6 +247,7 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //? close video
   void closeVideo([bool tellBackground = true]) {
+    pauseVideo();
     videoPlayerController = null;
     isVideoPlaying = false;
     videoDuration = null;
@@ -269,15 +271,23 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   void pauseVideo([bool callBackground = true]) {
-    isVideoPlaying = false;
-    notifyListeners();
-    if (callBackground) myMediaHandler.pause();
+    try {
+      isVideoPlaying = false;
+      notifyListeners();
+      if (callBackground) myMediaHandler.pause();
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   void resumeVideo([bool callBackground = true]) {
-    isVideoPlaying = true;
-    notifyListeners();
-    myMediaHandler.play();
+    try {
+      isVideoPlaying = true;
+      notifyListeners();
+      myMediaHandler.play();
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   //? add to current position
@@ -358,6 +368,9 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //# video play pause button animation
   AnimationController? pausePlayAnimation;
+  void disposeAnimationController() {
+    pausePlayAnimation = null;
+  }
 
   void setAnimationController(AnimationController a) {
     pausePlayAnimation = a;

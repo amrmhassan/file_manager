@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_field
 
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
@@ -52,6 +53,7 @@ class _PlayPauseOverLayState extends State<PlayPauseOverLay>
   @override
   void dispose() {
     _controller.dispose();
+    mediaPF(navigatorKey.currentContext!).disposeAnimationController();
     super.dispose();
   }
 

@@ -173,7 +173,7 @@ class VideoHandlersUtils {
   void pause() {
     _videoPlayerController!.pause();
     _mediaPlayerProvider.pauseVideo(false);
-    _mediaPlayerProvider.pausePlayAnimation?.reverse();
+    _mediaPlayerProvider.pausePlayAnimation?.forward();
   }
 
   void setSpeed(double s) {
@@ -186,6 +186,6 @@ class VideoHandlersUtils {
 
   void playOrResume() {
     videoPlayerController!.play();
-    _mediaPlayerProvider.pausePlayAnimation?.forward();
+    _mediaPlayerProvider.pausePlayAnimation?.reverse();
   }
 }
