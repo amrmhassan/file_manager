@@ -10,6 +10,7 @@ Future mediaPlayersInit() async {
     config: AudioServiceConfig(
       androidNotificationChannelId: 'basic_channel',
       androidNotificationChannelName: 'Music playback',
+      androidNotificationOngoing: true,
     ),
   );
 }

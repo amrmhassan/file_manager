@@ -24,14 +24,9 @@ import 'package:provider/provider.dart';
 
 // add remaining time on the downloading card
 
-// ForegroundService().start(); only when opening the server either with laptop or with share space
-// and ForegroundService().stop(); when closing both laptop and share space, make an outside function to check for this and close the background service only when both servers are SnackBarClosedReason
-// implement resuming downloads with laptop for both laptop and mobile
-// try to edit the ForegroundService() package to stop sounds and to change the title of the notification
-//! fix the can't generate thumbnail error, because the package name changed in the main kotlin
-//! fix play_pause video button when pausing from notification or from headset, this might be fixed by moving the animation controller into the media provider like the windows version
-
 //! try the flutterVersionCode to change it locally and update the app on the phone and see will it work or not
+
+//! fix playing another media when video player is open
 
 void startForegroundService() {
   ForegroundService().start();
