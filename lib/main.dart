@@ -33,8 +33,14 @@ import 'package:provider/provider.dart';
 //! fix the can't generate thumbnail error, because the package name changed in the main kotlin
 //! fix play_pause video button when pausing from notification or from headset, this might be fixed by moving the animation controller into the media provider like the windows version
 
-void startForegroundService() async {
+//! try the flutterVersionCode to change it locally and update the app on the phone and see will it work or not
+
+void startForegroundService() {
   ForegroundService().start();
+}
+
+void stopForegroundService() {
+  ForegroundService().stop();
 }
 
 void main() async {
@@ -85,6 +91,8 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: supportedLocales,
         localeResolutionCallback: (locale, supportedLocales) {
+          //! this is just because i am not fully done yet with arabic language
+          return englishLocal;
           if (supportedLocales.contains(locale)) {
             return locale;
           } else if (locale?.languageCode == arabicLocal.languageCode) {

@@ -9,7 +9,6 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
@@ -22,14 +21,22 @@ Future<void> getStorageInfoHandler(
   HttpRequest request,
   HttpResponse response,
 ) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error with context')
+      ..close();
+    return;
+  }
   try {
-    int totalSpace = await getTotalDiskSpaceTemp();
-    int freeSpace = await getFreeDiskSpaceTemp();
+    int totalSpace = await analyzerPF(context).getTotalDiskSpace();
+    int freeSpace = await analyzerPF(context).getFreeDiskSpace();
 
     response
       ..headers.add(freeSpaceHeaderKey, freeSpace)
       ..headers.add(totalSpaceHeaderKey, totalSpace)
-      ..write('tegetTotalDiskSpaceTemp is in headers')
+      ..write('Space is in headers')
       ..close();
   } catch (e) {
     response
@@ -152,7 +159,6 @@ Future<void> getClipboardHandler(
       ..write(data?.text ?? '')
       ..close();
   } catch (e) {
-    logger.e(e);
     response
       ..statusCode = HttpStatus.internalServerError
       ..write('An error getting clipboard $e')

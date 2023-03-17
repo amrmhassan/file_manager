@@ -31,7 +31,7 @@ class LifecycleEventHandler extends WidgetsBindingObserver {
     logger.i(state);
     if (state == AppLifecycleState.detached) {
       logger.e('App UI Closed');
-      flutterBackgroundService.invoke(ServiceActions.stopService);
+      // flutterBackgroundService.invoke(ServiceActions.stopService);
 
       File loggingTestFile = File('sdcard/detachEvents.txt');
       if (!loggingTestFile.existsSync()) {

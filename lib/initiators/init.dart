@@ -42,7 +42,7 @@ Future initBeforeRunApp() async {
     await initialDirsInit();
     initMainDisksCustomInfo();
     listenForLifeCycleEvents();
-    await BackgroundService.initService();
+    // await BackgroundService.initService();
     //!
     await mediaPlayersInit();
   } catch (e) {

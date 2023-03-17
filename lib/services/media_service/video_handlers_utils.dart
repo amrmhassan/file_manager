@@ -101,6 +101,9 @@ class VideoHandlersUtils {
       onCompleted();
       return PlaybackState();
     }
+    //! i added this check if it doesn't work or not
+    videoState = _videoPlayerController == null ? VideoState.idle : videoState;
+
     return PlaybackState(
       controls: [
         MediaControl.rewind,
