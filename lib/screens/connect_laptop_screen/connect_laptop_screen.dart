@@ -210,7 +210,8 @@ class ConnectLaptopScreen extends StatelessWidget {
                       Navigator.pushNamed(context, TouchPadScreen.routeName);
                     },
                     title: 'Windows TouchPad',
-                    logoName: 'list1',
+                    logoName: 'touchpad',
+                    color: kMainIconColor,
                   ),
                   // AnalyzerOptionsItem(
                   //   enablePadding: false,

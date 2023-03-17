@@ -4,11 +4,11 @@ import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
-enum MouseEventsType {
-  move,
-  rightClick,
-  leftClick,
-}
+// enum MouseEventsType {
+//   move,
+//   rightClick,
+//   leftClick,
+// }
 
 class SendMouseEvents {
   late WebSocket? socket;

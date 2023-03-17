@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
-
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
