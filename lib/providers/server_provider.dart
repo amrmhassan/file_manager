@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
+import 'package:explorer/initiators/global_runtime_variables.dart';
 
 import 'package:explorer/models/white_block_list_model.dart';
 import 'package:explorer/providers/share_provider.dart';
@@ -285,6 +286,7 @@ class ServerProvider extends ChangeNotifier {
     myConnLink = null;
     myIp = null;
     notifyListeners();
+    foregroundServiceController.shareSpaceServerStopped();
   }
 
   //? to restart the server

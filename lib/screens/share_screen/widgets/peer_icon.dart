@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/utils/client_utils.dart' as client_utils;
@@ -37,11 +38,15 @@ class _PeerIconState extends State<PeerIcon> {
         );
 
   void getRemoteImage() async {
-    var image = await client_utils.getPeerImage(widget.peerModel.connLink);
-    if (!mounted) return;
-    setState(() {
-      peerImage = image;
-    });
+    try {
+      var image = await client_utils.getPeerImage(widget.peerModel.connLink);
+      if (!mounted) return;
+      setState(() {
+        peerImage = image;
+      });
+    } catch (e) {
+      logger.e('other user has no image');
+    }
   }
 
   String? get myImagePath => sharePF(context).myImagePath;

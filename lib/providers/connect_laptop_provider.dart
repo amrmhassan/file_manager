@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/laptop_message_model.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/client_utils.dart';
@@ -67,6 +68,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
       httpServer!.listen(customRouterSystem.pipeline);
       myPort = httpServer!.port;
 
+      foregroundServiceController.connPhoneServerStarted();
       //? when above code is success then set the needed stuff like port, other things
       // myPort = await ConnLaptopServiceController.openServer(myPort);
 
@@ -89,6 +91,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
     ioWebSocketChannel = null;
     myClientWsSink?.close();
     notifyListeners();
+    foregroundServiceController.connPhoneServerStopped();
   }
 
   Future<bool> handleConnect(Object? code) async {

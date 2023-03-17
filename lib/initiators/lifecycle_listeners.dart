@@ -3,8 +3,6 @@ import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
-import 'package:explorer/services/background_service.dart';
-import 'package:explorer/services/services_constants.dart';
 import 'package:flutter/material.dart';
 
 void listenForLifeCycleEvents() {

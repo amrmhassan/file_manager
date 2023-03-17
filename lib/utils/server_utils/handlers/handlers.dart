@@ -6,6 +6,7 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
@@ -182,7 +183,7 @@ Future<void> getFolderContentHandler(
   HttpResponse response,
   ServerProvider serverProvider,
   ShareProvider shareProvider, [
-  bool recrusive = false,
+  bool recursive = false,
   bool connectPhone = false,
 ]) async {
   Completer completer = Completer();
@@ -199,7 +200,7 @@ Future<void> getFolderContentHandler(
         me = serverProvider.me(shareProvider);
       }
       var folderChildren = await compute(
-          (message) => getFolderChildren(folderPath, recrusive), false);
+          (message) => getFolderChildren(folderPath, recursive), false);
       // hide marked 'hidden' elements
       List<Map<String, dynamic>> sharedItems = [];
       for (var entity in folderChildren) {
@@ -480,6 +481,7 @@ void serverCheckHandler(
 
     serverProvider.setMyServerSocket(customServerSocket);
     serverProvider.setMyWSConnLink(myWSConnLink);
+    foregroundServiceController.shareSpaceServerStarted();
   }
   //!
 // i know my port, but i don't know which of my ips will work

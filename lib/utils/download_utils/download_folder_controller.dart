@@ -20,7 +20,7 @@ class DownloadFolderController extends DownloadTaskController {
   late Iterable<ShareSpaceItemModel> folders;
   late Iterable<ShareSpaceItemModel> files;
   late int size;
-  final int initlaCount;
+  final int initialCount;
 
   late int count;
 
@@ -40,9 +40,9 @@ class DownloadFolderController extends DownloadTaskController {
     required super.remoteDeviceName,
     super.maximumParallelDownloadThreads,
     required this.setTaskSize,
-    required this.initlaCount,
+    required this.initialCount,
   }) {
-    count = initlaCount;
+    count = initialCount;
   }
 
   Future setInitialCount() async {}
@@ -113,7 +113,7 @@ class DownloadFolderController extends DownloadTaskController {
       String localFilePath =
           file.path.replaceFirst(remoteFilePath, downloadPath);
       String downloadURL = url.replaceAll(
-          getFolderContentRecrusiveEndPoint, downloadFileEndPoint);
+          getFolderContentRecursiveEndPoint, downloadFileEndPoint);
 
       currentDownloadingFile = DownloadTaskController(
         downloadPath: localFilePath,
@@ -149,7 +149,7 @@ class DownloadFolderController extends DownloadTaskController {
   Future downloadFile([bool ask = true]) async {
     await getEntitiesPaths();
     await createDownloadFolders();
-    // i returned this value not to notifiy the download provider that the download is paused
+    // i returned this value not to notify the download provider that the download is paused
     if (size == 0) return Future.value(10);
 
     await downloadFiles();

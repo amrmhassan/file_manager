@@ -458,7 +458,7 @@ class DownloadProvider extends ChangeNotifier {
       } else {
         if (downloadTaskModel.entityType == EntityType.folder) {
           laptopDownloadUrl = connectLaptopPF(navigatorKey.currentContext!)
-              .getPhoneConnLink(getFolderContentRecrusiveEndPoint);
+              .getPhoneConnLink(getFolderContentRecursiveEndPoint);
         } else {
           laptopDownloadUrl = connectLaptopPF(navigatorKey.currentContext!)
               .getPhoneConnLink(downloadFileEndPoint);
@@ -502,7 +502,7 @@ class DownloadProvider extends ChangeNotifier {
         //! you need to create all sub folders first
         //! then download files, one at a time
         //! that's it
-        //! you might need to look for the polymerphism principle to make both come from the same controller, but the controller will handle the way of downloading
+        //! you might need to look for the polymorphism principle to make both come from the same controller, but the controller will handle the way of downloading
         //? here add the download folder controller that will inherit form the download task controller
         downloadTaskController = DownloadFolderController(
           downloadPath: downloadTaskModel.localFilePath,
@@ -511,7 +511,7 @@ class DownloadProvider extends ChangeNotifier {
           remoteFilePath: downloadTaskModel.remoteFilePath,
           url: laptop
               ? laptopDownloadUrl
-              : remotePeer.getMyLink(getFolderContentRecrusiveEndPoint),
+              : remotePeer.getMyLink(getFolderContentRecursiveEndPoint),
           setProgress: (p) {
             _updateTaskPercent(downloadTaskModel.id, p);
           },
@@ -524,7 +524,7 @@ class DownloadProvider extends ChangeNotifier {
           setTaskSize: (size) {
             setTaskSize(size, downloadTaskModel.id);
           },
-          initlaCount: downloadTaskModel.count,
+          initialCount: downloadTaskModel.count,
         );
         _setTaskController(
           downloadTaskModel.id,

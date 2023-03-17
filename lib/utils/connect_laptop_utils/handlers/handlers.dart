@@ -268,7 +268,7 @@ Future<void> startDownloadActionHandler(
   }
 }
 
-Future<void> getFolderChildrenRecrusive(
+Future<void> getFolderChildrenRecursive(
   HttpRequest request,
   HttpResponse response,
 ) async {

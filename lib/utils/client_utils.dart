@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/working_ip_model.dart';
@@ -56,6 +57,7 @@ Future addClient(
         sessionIDString: mySessionID,
       },
     );
+    foregroundServiceController.shareSpaceServerStarted();
   } on DioError catch (e, s) {
     logger.e(e.response?.data);
     throw CustomException(

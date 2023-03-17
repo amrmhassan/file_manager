@@ -1,6 +1,7 @@
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/foreground_service_controller.dart';
 import 'package:explorer/services/media_service/my_media_handler.dart';
 import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:explorer/utils/notifications/notification_id_mapper.dart';
@@ -18,3 +19,6 @@ List<StorageItemModel> explorerMainDisks =
     pathsToStorageItemsWithType(validPaths);
 
 late MyAudioHandler myMediaHandler;
+
+ForegroundServiceController foregroundServiceController =
+    ForegroundServiceController();

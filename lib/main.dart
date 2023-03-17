@@ -22,8 +22,6 @@ import 'package:provider/provider.dart';
 
 //! add disks_desktop 1.0.1
 
-// implement audio_service for the video then notification
-// remove flutter_background_service or comment it
 // add remaining time on the downloading card
 
 // ForegroundService().start(); only when opening the server either with laptop or with share space
@@ -46,7 +44,6 @@ void stopForegroundService() {
 void main() async {
   await initBeforeRunApp();
   runApp(const MyApp());
-  startForegroundService();
 }
 
 class MyApp extends StatefulWidget {
@@ -92,6 +89,7 @@ class _MyAppState extends State<MyApp> {
         supportedLocales: supportedLocales,
         localeResolutionCallback: (locale, supportedLocales) {
           //! this is just because i am not fully done yet with arabic language
+
           return englishLocal;
           if (supportedLocales.contains(locale)) {
             return locale;

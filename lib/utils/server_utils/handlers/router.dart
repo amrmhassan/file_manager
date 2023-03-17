@@ -303,9 +303,9 @@ Future<HttpServer> testingRunServerWithCustomServer(
         getUserListyHandler,
       )
       .get(
-        getFolderContentRecrusiveEndPoint,
+        getFolderContentRecursiveEndPoint,
         [],
-        getFolderChildrenRecrusive,
+        getFolderChildrenRecursive,
       );
 
   CustomServer customServer = CustomServer(

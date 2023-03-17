@@ -62,9 +62,9 @@ CustomRouterSystem connectLaptopRouter() {
       normal_handlers.downloadFileHandler,
     )
     ..addHandler(
-      getFolderContentRecrusiveEndPoint,
+      getFolderContentRecursiveEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getFolderChildrenRecrusive,
+      laptop_handlers.getFolderChildrenRecursive,
     );
   return customRouterSystem;
 }
