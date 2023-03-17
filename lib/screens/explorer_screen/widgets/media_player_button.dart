@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
               if (mePlaying(
                   mpProvider.playingAudioFilePath, mpProvider.audioPlaying)) {
                 // here i am playing and i want to pause
-                await mpProviderFalse.stopPlaying();
+                await mpProviderFalse.stopAudioPlaying();
               } else {
                 var sharedExpProvider = Provider.of<ShareItemsExplorerProvider>(
                   context,
@@ -101,6 +102,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
             ? ButtonWrapper(
                 onTap: () async {
                   if (widget.network) {
+                    showSnackBar(context: context, message: 'buffering...');
                     String? connLink;
                     if (shareExpPF(context).laptopExploring) {
                       connLink = connectLaptopPF(context)

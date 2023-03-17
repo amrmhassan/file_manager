@@ -59,7 +59,7 @@ class AudioHandlersUtils {
     //? listening for audio playback state
     _playBackStreamSub = _audioPlayer.playerStateStream.listen((event) {
       if (event.processingState == ProcessingState.completed) {
-        mediaPlayerProvider.stopPlaying(false);
+        mediaPlayerProvider.stopAudioPlaying(false);
       }
     });
   }

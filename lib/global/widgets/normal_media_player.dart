@@ -101,9 +101,9 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       height: largeIconSize,
                       onTap: () {
                         if (mpProviderFalse.audioPlaying) {
-                          mpProviderFalse.pausePlaying();
+                          mpProviderFalse.pauseAudioPlaying();
                         } else {
-                          mpProviderFalse.resumePlaying();
+                          mpProviderFalse.resumeAudioPlaying();
                         }
                       },
                       child: Image.asset(
@@ -155,7 +155,7 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       ButtonWrapper(
                         padding: EdgeInsets.all(largePadding),
                         onTap: () {
-                          mpPF(context).stopPlaying();
+                          mpPF(context).stopAudioPlaying();
                         },
                         child: Image.asset(
                           'assets/icons/close.png',

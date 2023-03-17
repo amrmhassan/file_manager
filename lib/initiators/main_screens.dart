@@ -1,3 +1,4 @@
+import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/screens/windows_client_update_note_screen/windows_client_update_note_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/screens/about_us_screen/about_us_screen.dart';
@@ -62,4 +63,5 @@ Map<String, Widget Function(BuildContext)> mainRoutes = {
   ConnLaptopComingSoon.routeName: (context) => const ConnLaptopComingSoon(),
   WindowsUpdateNoteScreen.routeName: (context) =>
       const WindowsUpdateNoteScreen(),
+  TouchPadScreen.routeName: (context) => const TouchPadScreen(),
 };

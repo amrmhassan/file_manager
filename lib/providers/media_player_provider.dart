@@ -60,20 +60,20 @@ class MediaPlayerProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> pausePlaying([bool callService = true]) async {
+  Future<void> pauseAudioPlaying([bool callService = true]) async {
     if (callService) myMediaHandler.pause();
     audioPlaying = false;
     notifyListeners();
   }
 
-  Future<void> resumePlaying() async {
+  Future<void> resumeAudioPlaying() async {
     myMediaHandler.play();
     audioPlaying = true;
     notifyListeners();
   }
 
   //? pause playing
-  Future<void> stopPlaying([bool callBackgroundService = true]) async {
+  Future<void> stopAudioPlaying([bool callBackgroundService = true]) async {
     if (callBackgroundService) {
       // AudioServiceController.pauseAudio();
       myMediaHandler.stop();

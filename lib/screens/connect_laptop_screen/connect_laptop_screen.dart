@@ -3,6 +3,7 @@
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
+import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -202,6 +203,15 @@ class ConnectLaptopScreen extends StatelessWidget {
                     color: kMainIconColor,
                   ),
                   VSpace(),
+
+                  AnalyzerOptionsItem(
+                    enablePadding: false,
+                    onTap: () {
+                      Navigator.pushNamed(context, TouchPadScreen.routeName);
+                    },
+                    title: 'Windows TouchPad',
+                    logoName: 'list1',
+                  ),
                   // AnalyzerOptionsItem(
                   //   enablePadding: false,
                   //   onTap: () {},

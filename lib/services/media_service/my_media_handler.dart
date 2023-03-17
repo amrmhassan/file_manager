@@ -107,6 +107,7 @@ class MyAudioHandler extends BaseAudioHandler
     } else if (playingMediaType == PlayingMediaType.video) {
       videoHandlersUtils.playOrResume();
     }
+    super.play();
   }
 
   @override
@@ -120,6 +121,7 @@ class MyAudioHandler extends BaseAudioHandler
     } catch (e) {
       logger.e(e);
     }
+    super.pause();
   }
 
   @override
@@ -153,6 +155,7 @@ class MyAudioHandler extends BaseAudioHandler
     } else if (playingMediaType == PlayingMediaType.video) {
       videoHandlersUtils.videoPlayerController!.seekTo(position);
     }
+    super.seek(position);
   }
 
   bool get isPlaying => audioHandlersUtils.audioPlayer.playing;
