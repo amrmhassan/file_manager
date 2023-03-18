@@ -289,3 +289,59 @@ Future<void> getFolderChildrenRecursive(
     true,
   );
 }
+
+Future<void> getAndroidNameHandler(
+  HttpRequest request,
+  HttpResponse response,
+) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error with context')
+      ..close();
+    return;
+  }
+
+  try {
+    //
+    String name = sharePF(context).myName;
+    response
+      ..write(name)
+      ..close();
+  } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('error getting device name')
+      ..close();
+    logger.e(e, s);
+  }
+}
+
+Future<void> getAndroidIdHandler(
+  HttpRequest request,
+  HttpResponse response,
+) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error with context')
+      ..close();
+    return;
+  }
+
+  try {
+    //
+    String id = sharePF(context).myDeviceId;
+    response
+      ..write(id)
+      ..close();
+  } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('error getting device id')
+      ..close();
+    logger.e(e, s);
+  }
+}

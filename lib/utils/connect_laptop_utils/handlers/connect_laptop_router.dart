@@ -65,6 +65,16 @@ CustomRouterSystem connectLaptopRouter() {
       getFolderContentRecursiveEndPoint,
       HttpMethod.GET,
       laptop_handlers.getFolderChildrenRecursive,
+    )
+    ..addHandler(
+      getAndroidNameEndPoint,
+      HttpMethod.GET,
+      laptop_handlers.getAndroidNameHandler,
+    )
+    ..addHandler(
+      getAndroidIDEndPoint,
+      HttpMethod.GET,
+      laptop_handlers.getAndroidIdHandler,
     );
   return customRouterSystem;
 }

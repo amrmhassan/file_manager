@@ -47,7 +47,7 @@ class ConnectLaptopScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'Your Windows',
+              connectLaptopProvider.laptopName ?? 'Your Windows',
               style: h2TextStyle,
             ),
             leftIcon: IconButton(

@@ -1,10 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ui';
-
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';

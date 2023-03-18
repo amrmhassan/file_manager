@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +20,10 @@ class SendMouseEvents {
   }
 
   void moveEvent(Offset delta) {
-    bool reversed = false;
-
     double sensitivity = 3;
     int dx = (delta.dx * sensitivity).ceil();
     int dy = (delta.dy * sensitivity).ceil();
-    _add('${moveCursorPath}___${reversed ? dy : dx},${reversed ? dx : dy}');
+    _add('${moveCursorPath}___$dx,$dy');
   }
 
   void rightClick() {
@@ -73,8 +70,5 @@ class SendMouseEvents {
     } else if (lastEvents.last != moveCursorPath) {
       lastEvents.add(event);
     }
-    print(lastEvents);
-
-    print(event);
   }
 }

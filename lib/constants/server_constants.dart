@@ -35,6 +35,8 @@ const String getFolderContentRecursiveEndPoint =
     '/getFolderContentRecursiveEndPoint';
 const String getLaptopDeviceIDEndPoint = '/getLaptopDeviceIDEndPoint';
 const String getLaptopDeviceNameEndpoint = '/getLaptopDeviceNameEndpoint';
+const String getAndroidNameEndPoint = '/getAndroidNameEndPoint';
+const String getAndroidIDEndPoint = '/getAndroidIDEndPoint';
 
 //? headers keys
 const String folderPathHeaderKey = 'folderPathHeaderKey';
