@@ -2,6 +2,8 @@
 
 import 'dart:async';
 import 'dart:isolate';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

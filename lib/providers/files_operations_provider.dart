@@ -288,7 +288,6 @@ class FilesOperationsProvider extends ChangeNotifier {
     await share_plus.Share.shareFiles(
       items,
       subject: 'Share Files',
-      text: 'Share Items',
     );
     _loadingOperation = false;
     clearAllSelectedItems(explorerProvider);

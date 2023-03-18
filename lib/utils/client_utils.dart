@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
@@ -10,6 +11,7 @@ import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/working_ip_model.dart';
+import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -433,4 +435,26 @@ Future<WorkingIpModel?> getWorkingIpFromCode({
     });
   }
   return completer.future;
+}
+
+Future<String> getLaptopID(ConnectLaptopProvider connectLaptopProvider) async {
+  String connLink =
+      connectLaptopProvider.getPhoneConnLink(getLaptopDeviceIDEndPoint);
+  var data = await Dio().get(connLink);
+  if (data.data.toString().isEmpty) {
+    throw Exception('cant get laptop id');
+  }
+  return data.data.toString();
+}
+
+Future<String> getLaptopName(
+  ConnectLaptopProvider connectLaptopProvider,
+) async {
+  String connLink =
+      connectLaptopProvider.getPhoneConnLink(getLaptopDeviceNameEndpoint);
+  var data = await Dio().get(connLink);
+  if (data.data.toString().isEmpty) {
+    throw Exception('cant get laptop name');
+  }
+  return data.data.toString();
 }

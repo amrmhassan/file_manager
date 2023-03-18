@@ -22,8 +22,12 @@ import 'package:explorer/utils/connect_laptop_utils/handlers/connect_laptop_rout
 class ConnectLaptopProvider extends ChangeNotifier {
   int myPort = 0;
   String? myIp;
+
   String? remoteIP;
   int? remotePort;
+  String? laptopID;
+  String? laptopName;
+
   HttpServer? httpServer;
   IOWebSocketChannel? ioWebSocketChannel;
   WebSocketSink? myClientWsSink;
@@ -114,8 +118,15 @@ class ConnectLaptopProvider extends ChangeNotifier {
     );
     customClientSocket.client(wsConnLink, null);
     ioWebSocketChannel = customClientSocket.clientChannel;
-    //! set the channel here
     myClientWsSink = customClientSocket.clientChannel.sink;
+
+    //? getting laptop info, (id, name)
+    try {
+      laptopID = await getLaptopID(this);
+      laptopName = await getLaptopName(this);
+    } catch (e) {
+      logger.e(e);
+    }
 
     notifyListeners();
     return true;

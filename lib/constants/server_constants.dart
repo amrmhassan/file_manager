@@ -33,6 +33,8 @@ const String getListyEndPoint = '/getListyEndPoint';
 const String startDownloadFileEndPoint = '/startDownloadFileEndPoint';
 const String getFolderContentRecursiveEndPoint =
     '/getFolderContentRecursiveEndPoint';
+const String getLaptopDeviceIDEndPoint = '/getLaptopDeviceIDEndPoint';
+const String getLaptopDeviceNameEndpoint = '/getLaptopDeviceNameEndpoint';
 
 //? headers keys
 const String folderPathHeaderKey = 'folderPathHeaderKey';
@@ -57,3 +59,4 @@ const String mouseRightClickedPath = 'mouseRightClickedPath';
 const String mouseLeftClickedPath = 'mouseLeftClickedPath';
 const String mouseLeftDownPath = 'mouseLeftDownPath';
 const String mouseLeftUpPath = 'mouseLeftUpPath';
+const String mouseEventClickDrag = 'mouseEventClickDrag';

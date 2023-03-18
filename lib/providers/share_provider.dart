@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
@@ -96,12 +97,21 @@ class ShareProvider extends ChangeNotifier {
     await _loadMyImagePath();
   }
 
+  Future<String> _getAndroidName() async {
+    var info = await DeviceInfoPlugin().androidInfo;
+    String name = ('${info.manufacturer ?? ''} ${info.model ?? ''}');
+    if (name.replaceAll(' ', '').isEmpty) {
+      return myDefaultName;
+    }
+    return name;
+  }
+
   //? to load my saved name
   Future<void> _loadMyName() async {
     String? savedName = await SharedPrefHelper.getString(myNameKey);
 
     if (savedName == null) {
-      myName = myDefaultName;
+      myName = await _getAndroidName();
       notifyListeners();
       await SharedPrefHelper.setString(myNameKey, myName);
       return;

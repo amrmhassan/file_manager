@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
 import 'dart:io';
 
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +10,9 @@ import 'package:flutter/material.dart';
 class SendMouseEvents {
   late WebSocket? socket;
   final BuildContext context;
+  bool dontSend = false;
+
+  List<String> lastEvents = [];
 
   SendMouseEvents(
     this.context,
@@ -39,9 +45,36 @@ class SendMouseEvents {
     _add(mouseLeftUpPath);
   }
 
-  void _add(dynamic data) {
+  void _add(dynamic data) async {
+    String event = data.toString().split('___').first;
+    if (event == mouseLeftDownPath &&
+        lastEvents.length == 2 &&
+        lastEvents.first == mouseLeftDownPath &&
+        lastEvents.last == mouseLeftUpPath) {
+      // this mean the user is about to click and drag so i wont send the latest 2 events of down then up
+      // so i will set a var dontSend to be true
+      // in this case i will make a delay between sending events and receiving them
+
+      // so here i must record the current mouse position and send it
+      // and the waiting option should happen on the windows stuff
+      connectLaptopPF(context)
+          .ioWebSocketChannel
+          ?.innerWebSocket
+          ?.add(mouseEventClickDrag);
+    }
+
     connectLaptopPF(context).ioWebSocketChannel?.innerWebSocket?.add(data);
-    if (data.toString().startsWith(moveCursorPath)) return;
-    print(data);
+    Future.delayed(Duration(milliseconds: 200)).then((value) {
+      lastEvents.clear();
+    });
+
+    if (lastEvents.isEmpty) {
+      lastEvents.add(event);
+    } else if (lastEvents.last != moveCursorPath) {
+      lastEvents.add(event);
+    }
+    print(lastEvents);
+
+    print(event);
   }
 }
