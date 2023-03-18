@@ -125,7 +125,7 @@ String doubleToString(double d, [int roundTo = 2]) {
 void copyToClipboard(BuildContext context, String path,
     [bool showSnack = true]) {
   Clipboard.setData(ClipboardData(text: path));
-  if (showSnack) showSnackBar(context: context, message: 'Copied To Clipboard');
+  if (showSnack) fastSnackBar(msg: 'Copied To Clipboard');
 }
 
 //? capitalize a single word

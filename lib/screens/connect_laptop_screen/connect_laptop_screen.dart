@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
+import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
+import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
@@ -50,6 +53,24 @@ class ConnectLaptopScreen extends StatelessWidget {
               connectLaptopProvider.laptopName ?? 'Your Windows',
               style: h2TextStyle,
             ),
+            rightIcon: connectLaptopProvider.laptopMessages.isEmpty
+                ? null
+                : Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              LaptopMessagesScreen.routeName,
+                            );
+                          },
+                          icon: Icon(
+                            Icons.message,
+                            color: kMainIconColor,
+                          )),
+                      HSpace(factor: .3),
+                    ],
+                  ),
             leftIcon: IconButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -158,10 +179,20 @@ class ConnectLaptopScreen extends StatelessWidget {
                           builder: (context) => DoubleButtonsModal(
                             onOk: () {
                               copyToClipboard(context, clipboard);
+                              Navigator.pop(context);
                             },
-                            title: 'Phone Clipboard',
+                            title: 'Windows Clipboard',
                             subTitle: clipboard,
-                            showCancelButton: false,
+                            showCancelButton: true,
+                            cancelText: 'Expand',
+                            autoPop: false,
+                            onCancel: () {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                FullTextViewerScreen.routeName,
+                                arguments: clipboard,
+                              );
+                            },
                             okColor: kBlueColor,
                             okText: 'Copy',
                           ),

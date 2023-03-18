@@ -11,6 +11,8 @@ import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_line.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/send_mouse_events.dart';
+import 'package:explorer/models/types.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 class TouchPadScreen extends StatefulWidget {
@@ -34,7 +36,13 @@ class _TouchPadScreenState extends State<TouchPadScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      onWillPop: () {
+        showSnackBar(
+            context: context,
+            message: 'Press the above back button',
+            snackBarType: SnackBarType.error);
+        return Future.value(false);
+      },
       child: ScreensWrapper(
         backgroundColor: kBackgroundColor,
         child: Column(
