@@ -39,9 +39,9 @@ void addClientHandler(
 ) async {
   try {
     BuildContext context = getContext();
-    ShareProvider shareProviderFalse = sharePF(context);
-
+    var shareProviderFalse = sharePF(context);
     var serverProvider = serverPF(context);
+
     Map body = await decodeRequest(request);
     String name = body[nameString] as String;
     String deviceID = body[deviceIDString] as String;
@@ -58,26 +58,27 @@ void addClientHandler(
       );
     await peerAddedServerFeedBack(serverProvider, shareProviderFalse);
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
 void getShareSpaceHandler(
   HttpRequest request,
   HttpResponse response,
-  ServerProvider serverProvider,
-  ShareProvider shareProvider,
 ) {
   try {
+    BuildContext context = getContext();
+    var shareProviderFalse = sharePF(context);
+    var serverProvider = serverPF(context);
+
     List<Map<String, dynamic>> sharedItemsMap =
-        shareProvider.sharedItems.map((e) {
+        shareProviderFalse.sharedItems.map((e) {
       ShareSpaceItemModel shareSpaceItemModel = e;
       shareSpaceItemModel.ownerSessionID =
-          serverProvider.me(shareProvider).sessionID;
+          serverProvider.me(shareProviderFalse).sessionID;
       return shareSpaceItemModel.toJSON();
     }).toList();
     String jsonResponse = json.encode(sharedItemsMap);
@@ -85,11 +86,10 @@ void getShareSpaceHandler(
       ..headers.contentType = ContentType.json
       ..add(encodeRequest(jsonResponse));
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
@@ -97,46 +97,50 @@ void getShareSpaceHandler(
 Future<void> clientAddedHandler(
   HttpRequest request,
   HttpResponse response,
-  ServerProvider serverProvider,
 ) async {
   try {
+    BuildContext context = getContext();
+    var serverProvider = serverPF(context);
+
     List<dynamic> decodedRequest = await decodeRequest(request, true);
     List<PeerModel> listOfAllPeers =
         decodedRequest.map((e) => PeerModel.fromJSON(e)).toList();
     serverProvider.updateAllPeers(listOfAllPeers);
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
 void clientLeftHandler(
   HttpRequest request,
   HttpResponse response,
-  ServerProvider serverProvider,
 ) async {
   try {
+    BuildContext context = getContext();
+    var serverProvider = serverPF(context);
+
     String sessionID = (await decodeRequest(request))[sessionIDString];
 
     serverProvider.peerLeft(sessionID);
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
 void fileAddedHandler(
   HttpRequest request,
   HttpResponse response,
-  ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) async {
   try {
+    BuildContext context = getContext();
+    ShareItemsExplorerProvider shareItemsExplorerProvider = shareExpPF(context);
+
     //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
     var headers = request.headers;
     var senderSessionID = (headers[ownerSessionIDString])!.first;
@@ -153,11 +157,10 @@ void fileAddedHandler(
       sessionId: senderSessionID,
     );
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 
   // print(headers);
@@ -166,9 +169,11 @@ void fileAddedHandler(
 void fileRemovedHandler(
   HttpRequest request,
   HttpResponse response,
-  ShareItemsExplorerProvider shareItemsExplorerProvider,
 ) async {
   try {
+    BuildContext context = getContext();
+    ShareItemsExplorerProvider shareItemsExplorerProvider = shareExpPF(context);
+
     //? here make a provider to handle peer share space items then update the items if the viewed items are for the updated peer
     List<dynamic> bodyJson = await decodeRequest(request);
     List<String> removedItemsPaths = bodyJson.map((e) => e as String).toList();
@@ -180,24 +185,25 @@ void fileRemovedHandler(
       sessionId: senderSessionID,
     );
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
 Future<void> getFolderContentHandler(
   HttpRequest request,
-  HttpResponse response,
-  ServerProvider serverProvider,
-  ShareProvider shareProvider, [
+  HttpResponse response, [
   bool recursive = false,
   bool connectPhone = false,
 ]) async {
   Completer completer = Completer();
   try {
+    BuildContext context = getContext();
+    var shareProvider = sharePF(context);
+    var serverProvider = serverPF(context);
+
     var headers = request.headers;
     String folderPath =
         Uri.decodeComponent(headers.value(folderPathHeaderKey)!);
@@ -239,12 +245,8 @@ Future<void> getFolderContentHandler(
   } catch (e, s) {
     response
       ..statusCode = HttpStatus.internalServerError
-      ..close();
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+      ..write(e);
+    logger.e(e, s);
   }
   return completer.future;
 }
@@ -292,11 +294,10 @@ Future<void> streamAudioHandler(
       ..add('Content-Range', 'bytes $start-$end/$length');
     file.openRead(start, end).pipe(req.response);
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
@@ -344,11 +345,10 @@ Future<void> streamVideoHandler(
       ..add('Access-Control-Allow-Origin', '*');
     file.openRead(start, end).pipe(req.response);
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
@@ -390,11 +390,10 @@ Future<void> downloadFileHandler(
       ..add('Content-Range', 'bytes $start-$end/$length');
     file.openRead(start, end).pipe(req.response);
   } catch (e, s) {
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
@@ -407,108 +406,132 @@ List<FileSystemEntity> getFolderChildren(String folderPath,
 Future<void> getWsServerConnLinkHandler(
   HttpRequest request,
   HttpResponse response,
-  ServerProvider serverProvider,
 ) async {
-  response.write(serverProvider.myWSConnLink);
+  try {
+    BuildContext context = getContext();
+    ServerProvider serverProvider = serverPF(context);
+    response.write(serverProvider.myWSConnLink);
+  } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
+  }
 }
 
 Future<void> getUserImageHandler(
   HttpRequest request,
   HttpResponse response,
-  ShareProvider shareProvider,
 ) async {
-  if (shareProvider.myImagePath == null) {
-    response
-      ..statusCode = HttpStatus.notFound
-      ..write('Not Found')
-      ..close();
-    return;
-  }
-  File file = File(shareProvider.myImagePath!);
-  if (!file.existsSync()) {
-    response
-      ..statusCode = HttpStatus.notFound
-      ..write('image path deleted or moved')
-      ..close();
-    return;
-  }
-  var bytes = file.readAsBytesSync();
+  try {
+    BuildContext context = getContext();
+    var shareProvider = sharePF(context);
+    if (shareProvider.myImagePath == null) {
+      response
+        ..statusCode = HttpStatus.notFound
+        ..write('Not Found')
+        ..close();
+      return;
+    }
+    File file = File(shareProvider.myImagePath!);
+    if (!file.existsSync()) {
+      response
+        ..statusCode = HttpStatus.notFound
+        ..write('image path deleted or moved')
+        ..close();
+      return;
+    }
+    var bytes = file.readAsBytesSync();
 
-  response
-    ..headers.contentType = ContentType.binary
-    ..contentLength = bytes.length
-    ..add(bytes)
-    ..close();
+    response
+      ..headers.contentType = ContentType.binary
+      ..contentLength = bytes.length
+      ..add(bytes)
+      ..close();
+  } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
+  }
 }
 
 //# connect to phone handlers
 void serverCheckHandler(
   HttpRequest request,
   HttpResponse response,
-  ServerProvider serverProvider,
-  ShareProvider shareProvider,
 ) async {
-  String remoteIp = request.connectionInfo!.remoteAddress.address;
-  String myIp = (request.headers.value('host')!).split(':').first;
-  int remoteServerPort = int.parse(utf8.decode(await request.single));
-  logger.i(
-      'got server check with remote $remoteIp:$remoteServerPort \nlocal $myIp:${serverProvider.myPort}');
+  try {
+    BuildContext context = getContext();
+    var shareProvider = sharePF(context);
+    var serverProvider = serverPF(context);
+    String remoteIp = request.connectionInfo!.remoteAddress.address;
+    String myIp = (request.headers.value('host')!).split(':').first;
+    int remoteServerPort = int.parse(utf8.decode(await request.single));
+    logger.i(
+        'got server check with remote $remoteIp:$remoteServerPort \nlocal $myIp:${serverProvider.myPort}');
 
-  // i made this because if laptop is connected to a wifi and the phone is connected to laptop hotspot
-  // when the phone checks for the laptop ip which is on wifi, it responds
-  // so i think in this case the phone has access to wifi ips, and this mean that he can access router page even if the phone is connected to laptop hotspot
-  // so if the remote ip is the same as my ip this means that i getting a request through myself(my phone through wifi that i am connected to, when phone is connected to my hotspot)
-  if (remoteIp == myIp) {
-    response.statusCode = HttpStatus.badRequest;
-    response.write(
-        'You are connected to me through wifi, while you are connected to my hotspot');
-    response.close();
-    return;
-  }
-  //? 1] the first user will give me my ip
-  //? 2] i will set my ip as he provided me with it
-  //? 3] i will give him his ip
+    // i made this because if laptop is connected to a wifi and the phone is connected to laptop hotspot
+    // when the phone checks for the laptop ip which is on wifi, it responds
+    // so i think in this case the phone has access to wifi ips, and this mean that he can access router page even if the phone is connected to laptop hotspot
+    // so if the remote ip is the same as my ip this means that i getting a request through myself(my phone through wifi that i am connected to, when phone is connected to my hotspot)
+    if (remoteIp == myIp) {
+      response.statusCode = HttpStatus.badRequest;
+      response.write(
+          'You are connected to me through wifi, while you are connected to my hotspot');
+      response.close();
+      return;
+    }
+    //? 1] the first user will give me my ip
+    //? 2] i will set my ip as he provided me with it
+    //? 3] i will give him his ip
 
-  //? 4] other users will give me my ip, i will compare it with my ip provided from the first user
-  //? 5] if it is diff then this is bad, and no connection will be established
-  //? 6] if not, then i will provide the user with his ip (done)
+    //? 4] other users will give me my ip, i will compare it with my ip provided from the first user
+    //? 5] if it is diff then this is bad, and no connection will be established
+    //? 6] if not, then i will provide the user with his ip (done)
 
-  if (myIp != serverProvider.myIp && serverProvider.myIp != null) {
-    logger.w('devices are\'nt connected to the same network');
-    response
-      ..statusCode = HttpStatus.badRequest
-      ..write('You aren\'t connected to the same network')
-      ..close();
-  }
-  if (serverProvider.myIp == null) {
-    logger.i('setting my ip(host) to be $myIp');
-    serverProvider.firstConnected(myIp, shareProvider, MemberType.host);
+    if (myIp != serverProvider.myIp && serverProvider.myIp != null) {
+      logger.w('devices are\'nt connected to the same network');
+      response
+        ..statusCode = HttpStatus.badRequest
+        ..write('You aren\'t connected to the same network')
+        ..close();
+    }
+    if (serverProvider.myIp == null) {
+      logger.i('setting my ip(host) to be $myIp');
+      serverProvider.firstConnected(myIp, shareProvider, MemberType.host);
+      //!
+      var customServerSocket =
+          CustomServerSocket(myIp, serverProvider, shareProvider);
+      var wsServer = await customServerSocket.getWsConnLink();
+      var myWSConnLink = getConnLink(myIp, wsServer.port, null, true);
+
+      serverProvider.setMyServerSocket(customServerSocket);
+      serverProvider.setMyWSConnLink(myWSConnLink);
+      foregroundServiceController.shareSpaceServerStarted();
+    }
     //!
-    var customServerSocket =
-        CustomServerSocket(myIp, serverProvider, shareProvider);
-    var wsServer = await customServerSocket.getWsConnLink();
-    var myWSConnLink = getConnLink(myIp, wsServer.port, null, true);
-
-    serverProvider.setMyServerSocket(customServerSocket);
-    serverProvider.setMyWSConnLink(myWSConnLink);
-    foregroundServiceController.shareSpaceServerStarted();
-  }
-  //!
 // i know my port, but i don't know which of my ips will work
 // so client will provide my ip for me,
 // and i will get his port from his
 // and i will provide him with his working ip
 
-  response
-    ..write(remoteIp)
-    ..close();
+    response
+      ..write(remoteIp)
+      ..close();
 
-  if (navigatorKey.currentContext == null) return;
-  try {
-    Navigator.popUntil(navigatorKey.currentContext!,
-        (route) => route.settings.name == ShareScreen.routeName);
-  } catch (e) {
-    logger.e(e);
+    if (navigatorKey.currentContext == null) return;
+    try {
+      Navigator.popUntil(navigatorKey.currentContext!,
+          (route) => route.settings.name == ShareScreen.routeName);
+    } catch (e, s) {
+      logger.e(e, s);
+    }
+  } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
   }
 }
 
@@ -517,18 +540,19 @@ Future<void> getUserListyHandler(
   HttpRequest request,
   HttpResponse response,
 ) async {
-  BuildContext? context = navigatorKey.currentContext;
-  if (context == null) {
+  try {
+    BuildContext context = getContext();
+
+    var listyList = listyPF(context).listyList;
+    var data = listyList.map((e) => e.toJSON()).toList();
+    var encodedData = encodeRequest(json.encode(data));
+    response
+      ..add(encodedData)
+      ..close();
+  } catch (e, s) {
     response
       ..statusCode = HttpStatus.internalServerError
-      ..write('An error with context')
-      ..close();
-    return;
+      ..write(e);
+    logger.e(e, s);
   }
-  var listyList = listyPF(context).listyList;
-  var data = listyList.map((e) => e.toJSON()).toList();
-  var encodedData = encodeRequest(json.encode(data));
-  response
-    ..add(encodedData)
-    ..close();
 }

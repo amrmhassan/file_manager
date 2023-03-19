@@ -199,107 +199,65 @@ Future<HttpServer> testingRunServerWithCustomServer(
           ..write('Yes i am a live')
           ..close(),
       )
-      .post(
-        serverCheckEndPoint,
-        [],
-        (request, response) => serverCheckHandler(
-          request,
-          response,
-          serverProvider,
-          shareProvider,
-        ),
-      )
-      .post(
-        addClientEndPoint,
-        [],
-        (request, response) => addClientHandler(
-          request,
-          response,
-          serverProvider,
-          shareProvider,
-        ),
-      )
+      .post(serverCheckEndPoint, [], serverCheckHandler)
+      .post(addClientEndPoint, [], addClientHandler)
       .get(
         getShareSpaceEndPoint,
         [
           checkIfConnectedMiddleWare,
           getShareSpaceMiddleware,
         ],
-        (request, response) => getShareSpaceHandler(
-          request,
-          response,
-          serverProvider,
-          shareProvider,
-        ),
+        getShareSpaceHandler,
       )
       .post(
         clientAddedEndPoint,
         [],
-        (request, response) => clientAddedHandler(
-          request,
-          response,
-          serverProvider,
-        ),
+        clientAddedHandler,
       )
       .post(
-          clientLeftEndPoint,
-          [checkIfConnectedMiddleWare],
-          (request, response) => clientLeftHandler(
-                request,
-                response,
-                serverProvider,
-              ))
+        clientLeftEndPoint,
+        [checkIfConnectedMiddleWare],
+        clientLeftHandler,
+      )
       .post(
         fileAddedToShareSpaceEndPoint,
         [checkIfConnectedMiddleWare],
-        (request, response) => fileAddedHandler(
-          request,
-          response,
-          shareItemsExplorerProvider,
-        ),
+        fileAddedHandler,
       )
       .post(
         fileRemovedFromShareSpaceEndPoint,
         [checkIfConnectedMiddleWare],
-        (request, response) => fileRemovedHandler(
-          request,
-          response,
-          shareItemsExplorerProvider,
-        ),
+        fileRemovedHandler,
       )
       .get(
         getFolderContentEndPointEndPoint,
         [checkIfConnectedMiddleWare],
-        (request, response) => getFolderContentHandler(
-          request,
-          response,
-          serverProvider,
-          shareProvider,
-        ),
+        getFolderContentHandler,
       )
       .get(
-          streamAudioEndPoint, [checkIfConnectedMiddleWare], streamAudioHandler)
+        streamAudioEndPoint,
+        [checkIfConnectedMiddleWare],
+        streamAudioHandler,
+      )
       .get(
-          streamVideoEndPoint, [checkIfConnectedMiddleWare], streamVideoHandler)
-      .get(downloadFileEndPoint, [checkIfConnectedMiddleWare],
-          downloadFileHandler)
+        streamVideoEndPoint,
+        [checkIfConnectedMiddleWare],
+        streamVideoHandler,
+      )
+      .get(
+        downloadFileEndPoint,
+        [checkIfConnectedMiddleWare],
+        downloadFileHandler,
+      )
       .get(
         wsServerConnLinkEndPoint,
         [],
-        (request, response) => getWsServerConnLinkHandler(
-          request,
-          response,
-          serverProvider,
-        ),
+        getWsServerConnLinkHandler,
       )
       .get(
         getPeerImagePathEndPoint,
         [checkIfConnectedMiddleWare],
-        (request, response) => getUserImageHandler(
-          request,
-          response,
-          shareProvider,
-        ),
+        getUserImageHandler,
       )
       .get(
         getListyEndPoint,

@@ -283,8 +283,6 @@ Future<void> getFolderChildrenRecursive(
   await getFolderContentHandler(
     request,
     response,
-    serverPF(context),
-    sharePF(context),
     true,
     true,
   );
