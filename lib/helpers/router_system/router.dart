@@ -19,6 +19,11 @@ class CustomRouter {
     HttpRequest request,
     HttpResponse response,
   )> globalMiddlewares = [];
+  final List<
+      FutureOr<ReqResTracker> Function(
+    HttpRequest request,
+    HttpResponse response,
+  )> trailersMiddlewares = [];
 
   CustomRouter({this.onNotFound});
 
@@ -43,6 +48,17 @@ class CustomRouter {
   )
           m) {
     globalMiddlewares.add(m);
+    return this;
+  }
+
+  //? to add a global middleware that will run after each response is done
+  CustomRouter addTrailersMiddleWare(
+      FutureOr<ReqResTracker> Function(
+    HttpRequest request,
+    HttpResponse response,
+  )
+          m) {
+    trailersMiddlewares.add(m);
     return this;
   }
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
 import 'package:explorer/helpers/router_system/router.dart';
 import 'package:explorer/helpers/router_system/server.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -183,6 +184,8 @@ import 'package:explorer/utils/server_utils/middlewares.dart';
 //   return customRouterSystem;
 // }
 
+//! add another type of middle wares that run after all handlers are done
+
 Future<HttpServer> testingRunServerWithCustomServer(
   ServerProvider serverProvider,
   ShareProvider shareProvider,
@@ -192,6 +195,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
       // .addGlobalMiddleWare((request, response) {
       //   return ReqResTracker(request, response);
       // })
+      .addGlobalMiddleWare(requestLogger)
       .get(
         areYouAliveEndPoint,
         [],
@@ -199,8 +203,16 @@ Future<HttpServer> testingRunServerWithCustomServer(
           ..write('Yes i am a live')
           ..close(),
       )
-      .post(serverCheckEndPoint, [], serverCheckHandler)
-      .post(addClientEndPoint, [], addClientHandler)
+      .post(
+        serverCheckEndPoint,
+        [],
+        serverCheckHandler,
+      )
+      .post(
+        addClientEndPoint,
+        [],
+        addClientHandler,
+      )
       .get(
         getShareSpaceEndPoint,
         [

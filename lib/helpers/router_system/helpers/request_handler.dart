@@ -19,7 +19,7 @@ class RequestHandler {
     requestReceived = DateTime.now();
   }
 
-//? to distribute the listening event for the request
+  //? to distribute the listening event for the request
   void handleManageListenEvent(HttpRequest request) async {
     HttpResponse response = request.response;
     // first of all, execute global middlewares
@@ -31,6 +31,7 @@ class RequestHandler {
       request,
       response,
     );
+    //? closing the
     if (tracker.closed) return _closed();
     tracker = await _handleRouteToPath(
       tracker.request,
@@ -38,6 +39,13 @@ class RequestHandler {
     );
 
     _closed();
+
+    //? for running function what will have access to the response result, after each request is closed
+    _handleRunTrailerMiddlewares(
+      router.trailersMiddlewares,
+      request,
+      response,
+    );
   }
 
   FutureOr<ReqResTracker> _handleRouteToPath(
@@ -80,6 +88,17 @@ class RequestHandler {
     await _handleRunHandlers(pipeLines.first.handler, request, response);
 
     return tracker;
+  }
+
+  FutureOr<void> _handleRunTrailerMiddlewares(
+    List<FutureOr<dynamic> Function(HttpRequest, HttpResponse)>
+        trailersMiddlewares,
+    HttpRequest request,
+    HttpResponse response,
+  ) {
+    for (var trailerWare in trailersMiddlewares) {
+      trailerWare(request, response);
+    }
   }
 
   FutureOr<ReqResTracker> _handleRunMiddlewares(
