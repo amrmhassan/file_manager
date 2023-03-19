@@ -54,7 +54,8 @@ class VideoHandlersUtils {
     _videoPlayerController = VideoPlayerController.network(path,
         httpHeaders: network
             ? {
-                filePathHeaderKey: Uri.encodeComponent(fileRemotePath!),
+                KHeaders.filePathHeaderKey:
+                    Uri.encodeComponent(fileRemotePath!),
               }
             : {},
         videoPlayerOptions: VideoPlayerOptions(

@@ -89,8 +89,8 @@ class DownloadFolderController extends DownloadTaskController {
       url,
       options: Options(
         headers: {
-          folderPathHeaderKey: Uri.encodeComponent(remoteFilePath),
-          sessionIDHeaderKey: mySessionID,
+          KHeaders.folderPathHeaderKey: Uri.encodeComponent(remoteFilePath),
+          KHeaders.sessionIDHeaderKey: mySessionID,
         },
       ),
     );
@@ -113,8 +113,7 @@ class DownloadFolderController extends DownloadTaskController {
       String localFilePath =
           file.path.replaceFirst(remoteFilePath, downloadPath);
       String downloadURL = url.replaceAll(
-          EndPoints1.getFolderContentRecursiveEndPoint,
-          EndPoints1.downloadFileEndPoint);
+          EndPoints.getFullFolderContent, EndPoints.downloadFile);
 
       currentDownloadingFile = DownloadTaskController(
         downloadPath: localFilePath,

@@ -242,8 +242,8 @@ class DownloadTaskController {
       url,
       options: Options(
         headers: {
-          reqIntentPathHeaderKey: 'length',
-          filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
+          KHeaders.reqIntentPathHeaderKey: 'length',
+          KHeaders.filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
         },
       ),
     ))
@@ -292,8 +292,8 @@ class DownloadTaskController {
       // to merge the headers, user headers and this function headers
       Map<String, dynamic> mergedHeaders = {
         HttpHeaders.rangeHeader: range,
-        filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
-        sessionIDHeaderKey: mySessionID,
+        KHeaders.filePathHeaderKey: Uri.encodeComponent(remoteFilePath),
+        KHeaders.sessionIDHeaderKey: mySessionID,
         deviceIDString: myDeviceID,
         "Accept": "application/octet-stream",
       };

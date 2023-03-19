@@ -210,7 +210,7 @@ class S1H {
 
       var headers = request.headers;
       String folderPath =
-          Uri.decodeComponent(headers.value(folderPathHeaderKey)!);
+          Uri.decodeComponent(headers.value(KHeaders.folderPathHeaderKey)!);
       // i will need the peer session id to know that if it is allowed or not
       // String peerSessionID = headers[sessionIDHeaderKey]!.first;
       Directory directory = Directory(folderPath);
@@ -260,13 +260,12 @@ class S1H {
     HttpResponse response,
   ) async {
     try {
-      String audioPath = req.headers.value(filePathHeaderKey) ?? '';
+      String audioPath = req.headers.value(KHeaders.filePathHeaderKey) ?? '';
       audioPath = Uri.decodeComponent(audioPath);
       if (audioPath.isEmpty) {
         // this means that the file is being played through a windows app, that can't send header
         //! you need to edit router to route to this even though the path is different
-        audioPath =
-            req.uri.path.replaceFirst('${EndPoints1.streamAudioEndPoint}/', '');
+        audioPath = req.uri.path.replaceFirst('${EndPoints.streamAudio}/', '');
         audioPath = Uri.decodeComponent(audioPath);
       }
 
@@ -311,13 +310,12 @@ class S1H {
     HttpResponse response,
   ) async {
     try {
-      String videoPath = req.headers.value(filePathHeaderKey) ?? '';
+      String videoPath = req.headers.value(KHeaders.filePathHeaderKey) ?? '';
       videoPath = Uri.decodeComponent(videoPath);
       if (videoPath.isEmpty) {
         // this means that the file is being played through a windows app, that can't send header
         //! you need to edit router to route to this even though the path is different
-        videoPath =
-            req.uri.path.replaceFirst('${EndPoints1.streamVideoEndPoint}/', '');
+        videoPath = req.uri.path.replaceFirst('${EndPoints.streamVideo}/', '');
         videoPath = Uri.decodeComponent(videoPath);
       }
 
@@ -363,9 +361,9 @@ class S1H {
     HttpResponse response,
   ) async {
     try {
-      String? intent = req.headers.value(reqIntentPathHeaderKey);
+      String? intent = req.headers.value(KHeaders.reqIntentPathHeaderKey);
       String filePath =
-          Uri.decodeComponent(req.headers.value(filePathHeaderKey)!);
+          Uri.decodeComponent(req.headers.value(KHeaders.filePathHeaderKey)!);
       File file = File(filePath);
       int length = await file.length();
       if (intent == 'length') {

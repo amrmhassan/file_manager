@@ -19,14 +19,14 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 
 Future<Map<String, int>> getPhoneStorageInfo(BuildContext context) async {
-  var res = await Dio().get(
-      connectLaptopPF(context).getPhoneConnLink(EndPoints1.getStorageEndPoint));
-  int freeSpace = int.parse(res.headers.value(freeSpaceHeaderKey)!);
-  int totalSpace = int.parse(res.headers.value(totalSpaceHeaderKey)!);
+  var res = await Dio()
+      .get(connectLaptopPF(context).getPhoneConnLink(EndPoints.getStorage));
+  int freeSpace = int.parse(res.headers.value(KHeaders.freeSpaceHeaderKey)!);
+  int totalSpace = int.parse(res.headers.value(KHeaders.totalSpaceHeaderKey)!);
 
   return {
-    freeSpaceHeaderKey: freeSpace,
-    totalSpaceHeaderKey: totalSpace,
+    KHeaders.freeSpaceHeaderKey: freeSpace,
+    KHeaders.totalSpaceHeaderKey: totalSpace,
   };
 }
 
@@ -41,9 +41,7 @@ Future<void> getLaptopFolderContent({
     String connLink = getConnLink(
         connectLaptopProvider.remoteIP!,
         connectLaptopProvider.remotePort!,
-        shareSpace
-            ? EndPoints1.getShareSpaceEndPoint
-            : EndPoints1.getPhoneFolderContentEndPoint);
+        shareSpace ? EndPoints.getShareSpace : EndPoints.getPhoneFolderContent);
 
     var res = await Dio().get(
       connLink,
@@ -51,14 +49,14 @@ Future<void> getLaptopFolderContent({
           ? null
           : Options(
               headers: {
-                folderPathHeaderKey: Uri.encodeComponent(folderPath),
+                KHeaders.folderPathHeaderKey: Uri.encodeComponent(folderPath),
               },
             ),
     );
     var data = res.data as List;
     String? folderPathRetrieved;
-    folderPathRetrieved =
-        Uri.decodeComponent(res.headers.value(parentFolderPathHeaderKey) ?? '');
+    folderPathRetrieved = Uri.decodeComponent(
+        res.headers.value(KHeaders.parentFolderPathHeaderKey) ?? '');
     var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
     shareItemsExplorerProvider.updatePath(
         folderPathRetrieved.isEmpty ? null : folderPathRetrieved, items);
@@ -78,7 +76,7 @@ Future<String?> getPhoneClipboard(
   ConnectLaptopProvider connectLaptopProvider,
 ) async {
   String connLink = getConnLink(connectLaptopProvider.remoteIP!,
-      connectLaptopProvider.remotePort!, EndPoints1.getClipboardEndPoint);
+      connectLaptopProvider.remotePort!, EndPoints.getClipboard);
   logger.i(connLink);
   var res = await Dio().get(connLink);
   String clipboard = (res.data);
@@ -94,14 +92,14 @@ Future<void> startDownloadFile(
   int fileSize,
   BuildContext context,
 ) async {
-  String connLink = connectLaptopPF(context)
-      .getPhoneConnLink(EndPoints1.startDownloadFileEndPoint);
+  String connLink =
+      connectLaptopPF(context).getPhoneConnLink(EndPoints.startDownloadFile);
   await Dio().post(
     connLink,
     data: filePath,
     options: Options(
       headers: {
-        fileSizeHeaderKey: fileSize,
+        KHeaders.fileSizeHeaderKey: fileSize,
       },
     ),
   );
@@ -132,8 +130,8 @@ Future<void> startSendEntities(
   try {
     var data = entities.map((e) => e.toJSON()).toList();
     var encodedData = json.encode(data);
-    String connLink = connectLaptopPF(context)
-        .getPhoneConnLink(EndPoints1.startDownloadFileEndPoint);
+    String connLink =
+        connectLaptopPF(context).getPhoneConnLink(EndPoints.startDownloadFile);
     await Dio().post(
       connLink,
       data: encodedData,

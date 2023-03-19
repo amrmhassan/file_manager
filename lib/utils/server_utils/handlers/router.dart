@@ -21,24 +21,24 @@ Future<HttpServer> testingRunServerWithCustomServer(
       // })
       .addTrailersMiddleWare(MiddleWares.requestLogger)
       .get(
-        EndPoints1.areYouAliveEndPoint,
+        EndPoints.areYouAlive,
         [],
         (request, response) => response
           ..write('Yes i am a live')
           ..close(),
       )
       .post(
-        EndPoints1.serverCheckEndPoint,
+        EndPoints.serverCheck,
         [],
         S1H.serverCheckHandler,
       )
       .post(
-        EndPoints1.addClientEndPoint,
+        EndPoints.addClient,
         [],
         S1H.addClientHandler,
       )
       .get(
-        EndPoints1.getShareSpaceEndPoint,
+        EndPoints.getShareSpace,
         [
           MiddleWares.checkIfConnectedMiddleWare,
           MiddleWares.getShareSpaceMiddleware,
@@ -46,62 +46,62 @@ Future<HttpServer> testingRunServerWithCustomServer(
         S1H.getShareSpaceHandler,
       )
       .post(
-        EndPoints1.clientAddedEndPoint,
+        EndPoints.clientAdded,
         [],
         S1H.clientAddedHandler,
       )
       .post(
-        EndPoints1.clientLeftEndPoint,
+        EndPoints.clientLeft,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.clientLeftHandler,
       )
       .post(
-        EndPoints1.fileAddedToShareSpaceEndPoint,
+        EndPoints.fileAddedToShareSpace,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.fileAddedHandler,
       )
       .post(
-        EndPoints1.fileRemovedFromShareSpaceEndPoint,
+        EndPoints.fileRemovedFromShareSpace,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.fileRemovedHandler,
       )
       .get(
-        EndPoints1.getFolderContentEndPointEndPoint,
+        EndPoints.getFolderContentEndPoint,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.getFolderContentHandler,
       )
       .get(
-        EndPoints1.streamAudioEndPoint,
+        EndPoints.streamAudio,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.streamAudioHandler,
       )
       .get(
-        EndPoints1.streamVideoEndPoint,
+        EndPoints.streamVideo,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.streamVideoHandler,
       )
       .get(
-        EndPoints1.downloadFileEndPoint,
+        EndPoints.downloadFile,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.downloadFileHandler,
       )
       .get(
-        EndPoints1.wsServerConnLinkEndPoint,
+        EndPoints.wsServerConnLink,
         [],
         S1H.getWsServerConnLinkHandler,
       )
       .get(
-        EndPoints1.getPeerImagePathEndPoint,
+        EndPoints.getPeerImagePath,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.getUserImageHandler,
       )
       .get(
-        EndPoints1.getListyEndPoint,
+        EndPoints.getListy,
         [MiddleWares.checkIfConnectedMiddleWare],
         S1H.getUserListyHandler,
       )
       .get(
-        EndPoints1.getFolderContentRecursiveEndPoint,
+        EndPoints.getFullFolderContent,
         [MiddleWares.checkIfConnectedMiddleWare],
         S2H.getFolderChildrenRecursive,
       );

@@ -30,13 +30,14 @@ class MiddleWares {
       );
     }
     var headers = request.headers;
-    String? deviceID = headers.value(deviceIDHeaderKey);
-    String? userName = headers.value(userNameHeaderKey);
+    String? deviceID = headers.value(KHeaders.deviceIDHeaderKey);
+    String? userName = headers.value(KHeaders.userNameHeaderKey);
 
     if (deviceID == null) {
       response
         ..statusCode = HttpStatus.badRequest
-        ..headers.add(serverRefuseReasonHeaderKey, 'No device id provided')
+        ..headers
+            .add(KHeaders.serverRefuseReasonHeaderKey, 'No device id provided')
         ..close();
       return ReqResTracker(
         request,
@@ -48,7 +49,8 @@ class MiddleWares {
     if (userName == null) {
       response
         ..statusCode = HttpStatus.badRequest
-        ..headers.add(serverRefuseReasonHeaderKey, 'No User name provided')
+        ..headers
+            .add(KHeaders.serverRefuseReasonHeaderKey, 'No User name provided')
         ..close();
       return ReqResTracker(
         request,
@@ -62,7 +64,7 @@ class MiddleWares {
     } else if (await serverPF(context).isPeerBlocked(deviceID)) {
       response
         ..statusCode = HttpStatus.badRequest
-        ..headers.add(serverRefuseReasonHeaderKey, 'You are blocked')
+        ..headers.add(KHeaders.serverRefuseReasonHeaderKey, 'You are blocked')
         ..close();
       return ReqResTracker(
         request,
@@ -83,7 +85,7 @@ class MiddleWares {
     } else {
       response
         ..statusCode = HttpStatus.badRequest
-        ..headers.add(serverRefuseReasonHeaderKey, 'You are blocked')
+        ..headers.add(KHeaders.serverRefuseReasonHeaderKey, 'You are blocked')
         ..close();
       return ReqResTracker(
         request,
@@ -113,8 +115,8 @@ class MiddleWares {
     }
     var serverProvider = serverPF(context);
     String? ip = request.connectionInfo?.remoteAddress.address;
-    int? port =
-        int.tryParse(request.headers.value(myServerPortHeaderKey) ?? '');
+    int? port = int.tryParse(
+        request.headers.value(KHeaders.myServerPortHeaderKey) ?? '');
     // if data not provided, just return
     if (ip == null || port == null) {
       response

@@ -107,7 +107,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
       return false;
     }
     String wsConnLink = (await Dio().get(getConnLink(
-            remoteIP!, remotePort!, EndPoints1.phoneWsServerConnLinkEndPoint)))
+            remoteIP!, remotePort!, EndPoints.phoneWsServerConnLink)))
         .data;
     CustomClientSocket customClientSocket = CustomClientSocket(
       onServerDisconnected: () {

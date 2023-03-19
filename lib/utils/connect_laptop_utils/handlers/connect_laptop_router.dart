@@ -15,67 +15,67 @@ CustomRouterSystem connectLaptopRouter() {
   //? adding handlers
   customRouterSystem
     ..addHandler(
-      EndPoints1.getStorageEndPoint,
+      EndPoints.getStorage,
       HttpMethod.GET,
       S2H.getStorageInfoHandler,
     )
     ..addHandler(
-      EndPoints1.getDiskNamesEndPoint,
+      EndPoints.getDiskNames,
       HttpMethod.GET,
       S2H.getDiskNamesHandler,
     )
     ..addHandler(
-      EndPoints1.getPhoneFolderContentEndPoint,
+      EndPoints.getPhoneFolderContent,
       HttpMethod.GET,
       S2H.getPhoneFolderContentHandler,
     )
     ..addHandler(
-      EndPoints1.streamAudioEndPoint,
+      EndPoints.streamAudio,
       HttpMethod.GET,
       S1H.streamAudioHandler,
     )
     ..addHandler(
-      EndPoints1.streamVideoEndPoint,
+      EndPoints.streamVideo,
       HttpMethod.GET,
       S1H.streamVideoHandler,
     )
     ..addHandler(
-      EndPoints1.getClipboardEndPoint,
+      EndPoints.getClipboard,
       HttpMethod.GET,
       S2H.getClipboardHandler,
     )
     ..addHandler(
-      EndPoints1.sendTextEndpoint,
+      EndPoints.sendText,
       HttpMethod.POST,
       S2H.sendTextHandler,
     )
     ..addHandler(
-      EndPoints1.getShareSpaceEndPoint,
+      EndPoints.getShareSpace,
       HttpMethod.GET,
       S2H.getPhoneShareSpaceHandler,
     )
     ..addHandler(
-      EndPoints1.startDownloadFileEndPoint,
+      EndPoints.startDownloadFile,
       HttpMethod.POST,
       S2H.startDownloadActionHandler,
     )
     ..addHandler(
-      EndPoints1.downloadFileEndPoint,
+      EndPoints.downloadFile,
       HttpMethod.GET,
       S1H.downloadFileHandler,
     )
     ..addHandler(
-      EndPoints1.getFolderContentRecursiveEndPoint,
+      EndPoints.getFullFolderContent,
       HttpMethod.GET,
       S2H.getFolderChildrenRecursive,
     )
     ..addHandler(
-      EndPoints1.getAndroidNameEndPoint,
+      EndPoints.getAndroidName,
       HttpMethod.GET,
       S2H.getAndroidNameHandler,
     )
     ..addHandler(
-      EndPoints1.getAndroidIDEndPoint,
+      EndPoints.getAndroidID,
       HttpMethod.GET,
       S2H.getAndroidIdHandler,
     );
@@ -86,22 +86,20 @@ CustomRouterSystem connectLaptopRouter() {
 
 Future<HttpServer> testingRunConnLaptopServerWithCustomServer() async {
   var router = CustomRouter()
-      .get(EndPoints1.getStorageEndPoint, [], S2H.getStorageInfoHandler)
-      .get(EndPoints1.getDiskNamesEndPoint, [], S2H.getDiskNamesHandler)
-      .get(EndPoints1.getPhoneFolderContentEndPoint, [],
-          S2H.getPhoneFolderContentHandler)
-      .get(EndPoints1.streamAudioEndPoint, [], S1H.streamAudioHandler)
-      .get(EndPoints1.streamVideoEndPoint, [], S1H.streamVideoHandler)
-      .get(EndPoints1.getClipboardEndPoint, [], S2H.getClipboardHandler)
-      .post(EndPoints1.sendTextEndpoint, [], S2H.sendTextHandler)
-      .get(EndPoints1.getShareSpaceEndPoint, [], S2H.getPhoneShareSpaceHandler)
-      .post(EndPoints1.startDownloadFileEndPoint, [],
-          S2H.startDownloadActionHandler)
-      .get(EndPoints1.downloadFileEndPoint, [], S1H.downloadFileHandler)
-      .get(EndPoints1.getFolderContentRecursiveEndPoint, [],
-          S2H.getFolderChildrenRecursive)
-      .get(EndPoints1.getAndroidNameEndPoint, [], S2H.getAndroidNameHandler)
-      .get(EndPoints1.getAndroidIDEndPoint, [], S2H.getAndroidIdHandler);
+      .get(EndPoints.getStorage, [], S2H.getStorageInfoHandler)
+      .get(EndPoints.getDiskNames, [], S2H.getDiskNamesHandler)
+      .get(
+          EndPoints.getPhoneFolderContent, [], S2H.getPhoneFolderContentHandler)
+      .get(EndPoints.streamAudio, [], S1H.streamAudioHandler)
+      .get(EndPoints.streamVideo, [], S1H.streamVideoHandler)
+      .get(EndPoints.getClipboard, [], S2H.getClipboardHandler)
+      .post(EndPoints.sendText, [], S2H.sendTextHandler)
+      .get(EndPoints.getShareSpace, [], S2H.getPhoneShareSpaceHandler)
+      .post(EndPoints.startDownloadFile, [], S2H.startDownloadActionHandler)
+      .get(EndPoints.downloadFile, [], S1H.downloadFileHandler)
+      .get(EndPoints.getFullFolderContent, [], S2H.getFolderChildrenRecursive)
+      .get(EndPoints.getAndroidName, [], S2H.getAndroidNameHandler)
+      .get(EndPoints.getAndroidID, [], S2H.getAndroidIdHandler);
 
   CustomServer customServer = CustomServer(
     router,

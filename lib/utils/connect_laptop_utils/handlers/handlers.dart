@@ -36,8 +36,8 @@ class S2H {
       int freeSpace = await analyzerPF(context).getFreeDiskSpace();
 
       response
-        ..headers.add(freeSpaceHeaderKey, freeSpace)
-        ..headers.add(totalSpaceHeaderKey, totalSpace)
+        ..headers.add(KHeaders.freeSpaceHeaderKey, freeSpace)
+        ..headers.add(KHeaders.totalSpaceHeaderKey, totalSpace)
         ..write('Space is in headers')
         ..close();
     } catch (e) {
@@ -65,8 +65,8 @@ class S2H {
       int freeSpace = await analyzerPF(context).getFreeDiskSpace();
 
       response
-        ..headers.add(freeSpaceHeaderKey, freeSpace)
-        ..headers.add(totalSpaceHeaderKey, totalSpace)
+        ..headers.add(KHeaders.freeSpaceHeaderKey, freeSpace)
+        ..headers.add(KHeaders.totalSpaceHeaderKey, totalSpace)
         ..write('Space is in headers')
         ..close();
     } catch (e) {
@@ -82,7 +82,7 @@ class S2H {
     HttpResponse response,
   ) async {
     try {
-      String folderPath = request.headers.value(folderPathHeaderKey)!;
+      String folderPath = request.headers.value(KHeaders.folderPathHeaderKey)!;
 
       folderPath = Uri.decodeComponent(folderPath);
       if (folderPath == initialDirs.first.path) {
@@ -147,7 +147,8 @@ class S2H {
 
     response
       ..headers.add('Content-Type', 'application/json; charset=utf-8')
-      ..headers.add(parentFolderPathHeaderKey, Uri.encodeComponent(folderPath))
+      ..headers.add(
+          KHeaders.parentFolderPathHeaderKey, Uri.encodeComponent(folderPath))
       ..add(encodedData);
   }
 

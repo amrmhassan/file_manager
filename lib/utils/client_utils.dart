@@ -49,7 +49,7 @@ Future addClient(
     String myIp = serverProviderFalse.myIp!;
     int myPort = serverProviderFalse.myPort;
     await Dio().post(
-      '$connLink${EndPoints1.addClientEndPoint}',
+      '$connLink${EndPoints.addClient}',
       data: {
         nameString: name,
         deviceIDString: deviceID,
@@ -76,7 +76,7 @@ Future addClient(
 //
 Future<Uint8List?> getPeerImage(String connLink) async {
   try {
-    String url = '$connLink${EndPoints1.getPeerImagePathEndPoint}';
+    String url = '$connLink${EndPoints.getPeerImagePath}';
     Uri uri = Uri.parse(url);
     HttpClient client = HttpClient();
     var request = await client.getUrl(uri);
@@ -127,10 +127,10 @@ Future broadcastUnsubscribeClient(
     for (var peer in peersCopied) {
       if (peer.sessionID == me.sessionID) continue;
       await Dio().post(
-        '${getConnLink(peer.ip, peer.port)}${EndPoints1.clientLeftEndPoint}',
+        '${getConnLink(peer.ip, peer.port)}${EndPoints.clientLeft}',
         data: {
           sessionIDString: customSessionID,
-          myServerPortHeaderKey: serverProviderFalse.myPort,
+          KHeaders.myServerPortHeaderKey: serverProviderFalse.myPort,
         },
       );
     }
@@ -155,14 +155,14 @@ Future<List<ShareSpaceItemModel>?> getPeerShareSpace(
   try {
     shareItemsExplorerProvider.setLoadingItems(true);
     PeerModel peerModel = serverProvider.peerModelWithSessionID(sessionID);
-    String connLink = peerModel.getMyLink(EndPoints1.getShareSpaceEndPoint);
+    String connLink = peerModel.getMyLink(EndPoints.getShareSpace);
     var res = await Dio().get(
       connLink,
       options: Options(
         headers: {
-          deviceIDHeaderKey: shareProvider.myDeviceId,
-          userNameHeaderKey: shareProvider.myName,
-          myServerPortHeaderKey: serverProvider.myPort,
+          KHeaders.deviceIDHeaderKey: shareProvider.myDeviceId,
+          KHeaders.userNameHeaderKey: shareProvider.myName,
+          KHeaders.myServerPortHeaderKey: serverProvider.myPort,
         },
         receiveDataWhenStatusError: false,
       ),
@@ -181,7 +181,8 @@ Future<List<ShareSpaceItemModel>?> getPeerShareSpace(
     return items;
   } on DioError catch (e) {
     shareItemsExplorerProvider.setLoadingItems(false);
-    String? reason = e.response?.headers.value(serverRefuseReasonHeaderKey);
+    String? reason =
+        e.response?.headers.value(KHeaders.serverRefuseReasonHeaderKey);
     throw CustomException(
       e: reason ?? 'Unknown Reason',
       s: StackTrace.current,
@@ -203,11 +204,11 @@ Future<void> broadCastFileRemovalFromShareSpace({
     await _broadcast(
       serverProvider: serverProvider,
       shareProvider: shareProvider,
-      endPoint: EndPoints1.fileRemovedFromShareSpaceEndPoint,
+      endPoint: EndPoints.fileRemovedFromShareSpace,
       headers: {
         ownerSessionIDString: me.sessionID,
         ownerDeviceIDString: me.deviceID,
-        myServerPortHeaderKey: serverProvider.myPort,
+        KHeaders.myServerPortHeaderKey: serverProvider.myPort,
 
         // 'Content-Type': 'application/json; charset=utf-8',
       },
@@ -238,11 +239,11 @@ Future<void> broadCastFileAddedToShareSpace({
     await _broadcast(
       serverProvider: serverProvider,
       shareProvider: shareProvider,
-      endPoint: EndPoints1.fileAddedToShareSpaceEndPoint,
+      endPoint: EndPoints.fileAddedToShareSpace,
       headers: {
         ownerSessionIDString: me.sessionID,
         ownerDeviceIDString: me.deviceID,
-        myServerPortHeaderKey: serverProvider.myPort,
+        KHeaders.myServerPortHeaderKey: serverProvider.myPort,
 
         // 'Content-Type': 'application/json; charset=utf-8',
       },
@@ -275,12 +276,12 @@ Future<void> getFolderContent({
     PeerModel otherPeer = serverProvider.peerModelWithSessionID(userSessionID);
     String connLink = getConnLink(otherPeer.ip, otherPeer.port);
     var res = await Dio().get(
-      '$connLink${EndPoints1.getFolderContentEndPointEndPoint}',
+      '$connLink${EndPoints.getFolderContentEndPoint}',
       options: Options(
         headers: {
-          folderPathHeaderKey: Uri.encodeComponent(folderPath),
-          sessionIDHeaderKey: me.sessionID,
-          myServerPortHeaderKey: serverProvider.myPort,
+          KHeaders.folderPathHeaderKey: Uri.encodeComponent(folderPath),
+          KHeaders.sessionIDHeaderKey: me.sessionID,
+          KHeaders.myServerPortHeaderKey: serverProvider.myPort,
         },
       ),
     );
@@ -348,10 +349,10 @@ Future<String?> connectToWsServer(
   try {
     CustomClientSocket clientSocket = CustomClientSocket();
     String wsConnLink = (await Dio().get(
-      '$connLink${EndPoints1.wsServerConnLinkEndPoint}',
+      '$connLink${EndPoints.wsServerConnLink}',
       options: Options(
         headers: {
-          myServerPortHeaderKey: serverProviderFalse.myPort,
+          KHeaders.myServerPortHeaderKey: serverProviderFalse.myPort,
         },
       ),
     ))
@@ -414,7 +415,7 @@ Future<WorkingIpModel?> getWorkingIpFromCode({
   dio.options.receiveTimeout = timeout ?? 5000;
 
   for (var ip in ips) {
-    String connLink = getConnLink(ip, port, EndPoints1.serverCheckEndPoint);
+    String connLink = getConnLink(ip, port, EndPoints.serverCheck);
     dio
         .post(
       connLink,
@@ -437,8 +438,8 @@ Future<WorkingIpModel?> getWorkingIpFromCode({
 }
 
 Future<String> getLaptopID(ConnectLaptopProvider connectLaptopProvider) async {
-  String connLink = connectLaptopProvider
-      .getPhoneConnLink(EndPoints1.getLaptopDeviceIDEndPoint);
+  String connLink =
+      connectLaptopProvider.getPhoneConnLink(EndPoints.getLaptopDeviceID);
   var data = await Dio().get(connLink);
   if (data.data.toString().isEmpty) {
     throw Exception('cant get laptop id');
@@ -449,8 +450,8 @@ Future<String> getLaptopID(ConnectLaptopProvider connectLaptopProvider) async {
 Future<String> getLaptopName(
   ConnectLaptopProvider connectLaptopProvider,
 ) async {
-  String connLink = connectLaptopProvider
-      .getPhoneConnLink(EndPoints1.getLaptopDeviceNameEndpoint);
+  String connLink =
+      connectLaptopProvider.getPhoneConnLink(EndPoints.getLaptopDeviceName);
   var data = await Dio().get(connLink);
   if (data.data.toString().isEmpty) {
     throw Exception('cant get laptop name');

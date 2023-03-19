@@ -65,7 +65,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                 if (widget.network) {
                   if (shareExpPF(context).laptopExploring) {
                     connLink = connectLaptopPF(context)
-                        .getPhoneConnLink(EndPoints1.streamAudioEndPoint);
+                        .getPhoneConnLink(EndPoints.streamAudio);
                   } else {
                     var serverProvider =
                         Provider.of<ServerProvider>(context, listen: false);
@@ -73,7 +73,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                             .peerModelWithSessionID(
                                 sharedExpProvider.viewedUserSessionId!)
                             .connLink +
-                        EndPoints1.streamAudioEndPoint;
+                        EndPoints.streamAudio;
                   }
                 }
 
@@ -106,7 +106,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                     String? connLink;
                     if (shareExpPF(context).laptopExploring) {
                       connLink = connectLaptopPF(context)
-                          .getPhoneConnLink(EndPoints1.streamVideoEndPoint);
+                          .getPhoneConnLink(EndPoints.streamVideo);
                     } else {
                       var sharedExpProvider =
                           Provider.of<ShareItemsExplorerProvider>(
@@ -119,7 +119,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                               .peerModelWithSessionID(
                                   sharedExpProvider.viewedUserSessionId!)
                               .connLink +
-                          EndPoints1.streamVideoEndPoint;
+                          EndPoints.streamVideo;
                     }
 
                     mpProviderFalse.playVideo(
