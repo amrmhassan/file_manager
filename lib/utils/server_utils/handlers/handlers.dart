@@ -25,13 +25,23 @@ import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
 
 //! window video and audio player can't send header right now , so i will handle window video, audio players manually from the path
+BuildContext getContext() {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    throw Exception('error with context getting');
+  }
+  return context;
+}
+
 void addClientHandler(
   HttpRequest request,
   HttpResponse response,
-  ServerProvider serverProvider,
-  ShareProvider shareProviderFalse,
 ) async {
   try {
+    BuildContext context = getContext();
+    ShareProvider shareProviderFalse = sharePF(context);
+
+    var serverProvider = serverPF(context);
     Map body = await decodeRequest(request);
     String name = body[nameString] as String;
     String deviceID = body[deviceIDString] as String;

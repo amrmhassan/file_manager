@@ -95,8 +95,21 @@ Future<ReqResTracker> getShareSpaceMiddleware(
 Future<ReqResTracker> checkIfConnectedMiddleWare(
   HttpRequest request,
   HttpResponse response,
-  ServerProvider serverProvider,
 ) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write('An error with context')
+      ..close();
+    return ReqResTracker(
+      request,
+      response,
+      closed: true,
+      closeReason: 'error with context',
+    );
+  }
+  var serverProvider = serverPF(context);
   String? ip = request.connectionInfo?.remoteAddress.address;
   int? port = int.tryParse(request.headers.value(myServerPortHeaderKey) ?? '');
   // if data not provided, just return

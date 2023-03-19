@@ -96,9 +96,10 @@ class DownloadProvider extends ChangeNotifier {
   }
 
   Future<bool> continueFailedTasks(
-      DownloadTaskModel downloadTaskModel,
-      ServerProvider serverProviderFalse,
-      ShareProvider shareProviderFalse) async {
+    DownloadTaskModel downloadTaskModel,
+    ServerProvider serverProviderFalse,
+    ShareProvider shareProviderFalse,
+  ) async {
     String deviceID = downloadTaskModel.remoteDeviceID;
     bool connectedToDevice =
         serverProviderFalse.connectedToDeviceWithId(deviceID);

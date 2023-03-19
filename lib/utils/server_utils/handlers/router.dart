@@ -222,6 +222,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
       .get(
         getShareSpaceEndPoint,
         [
+          checkIfConnectedMiddleWare,
           getShareSpaceMiddleware,
         ],
         (request, response) => getShareSpaceHandler(
@@ -242,7 +243,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
       )
       .post(
           clientLeftEndPoint,
-          [],
+          [checkIfConnectedMiddleWare],
           (request, response) => clientLeftHandler(
                 request,
                 response,
@@ -250,7 +251,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
               ))
       .post(
         fileAddedToShareSpaceEndPoint,
-        [],
+        [checkIfConnectedMiddleWare],
         (request, response) => fileAddedHandler(
           request,
           response,
@@ -259,7 +260,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
       )
       .post(
         fileRemovedFromShareSpaceEndPoint,
-        [],
+        [checkIfConnectedMiddleWare],
         (request, response) => fileRemovedHandler(
           request,
           response,
@@ -268,7 +269,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
       )
       .get(
         getFolderContentEndPointEndPoint,
-        [],
+        [checkIfConnectedMiddleWare],
         (request, response) => getFolderContentHandler(
           request,
           response,
@@ -276,9 +277,12 @@ Future<HttpServer> testingRunServerWithCustomServer(
           shareProvider,
         ),
       )
-      .get(streamAudioEndPoint, [], streamAudioHandler)
-      .get(streamVideoEndPoint, [], streamVideoHandler)
-      .get(downloadFileEndPoint, [], downloadFileHandler)
+      .get(
+          streamAudioEndPoint, [checkIfConnectedMiddleWare], streamAudioHandler)
+      .get(
+          streamVideoEndPoint, [checkIfConnectedMiddleWare], streamVideoHandler)
+      .get(downloadFileEndPoint, [checkIfConnectedMiddleWare],
+          downloadFileHandler)
       .get(
         wsServerConnLinkEndPoint,
         [],
@@ -290,7 +294,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
       )
       .get(
         getPeerImagePathEndPoint,
-        [],
+        [checkIfConnectedMiddleWare],
         (request, response) => getUserImageHandler(
           request,
           response,
@@ -299,12 +303,12 @@ Future<HttpServer> testingRunServerWithCustomServer(
       )
       .get(
         getListyEndPoint,
-        [],
+        [checkIfConnectedMiddleWare],
         getUserListyHandler,
       )
       .get(
         getFolderContentRecursiveEndPoint,
-        [],
+        [checkIfConnectedMiddleWare],
         getFolderChildrenRecursive,
       );
 

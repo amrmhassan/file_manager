@@ -28,6 +28,8 @@ import 'package:provider/provider.dart';
 
 //! fix playing another media when video player is open
 
+//! continue downloading failed tasks with laptop continueFailedTasks from download provider and remove laptop_id constant and name
+
 void startForegroundService() {
   ForegroundService().start();
 }

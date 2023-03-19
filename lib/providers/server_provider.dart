@@ -285,6 +285,7 @@ class ServerProvider extends ChangeNotifier {
     blockedPeers.clear();
     myConnLink = null;
     myIp = null;
+    myPort = 0;
     notifyListeners();
     foregroundServiceController.shareSpaceServerStopped();
   }

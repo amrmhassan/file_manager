@@ -7,7 +7,6 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/laptop_message_model.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
