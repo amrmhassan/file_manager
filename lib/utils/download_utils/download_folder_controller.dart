@@ -113,7 +113,8 @@ class DownloadFolderController extends DownloadTaskController {
       String localFilePath =
           file.path.replaceFirst(remoteFilePath, downloadPath);
       String downloadURL = url.replaceAll(
-          getFolderContentRecursiveEndPoint, downloadFileEndPoint);
+          EndPoints1.getFolderContentRecursiveEndPoint,
+          EndPoints1.downloadFileEndPoint);
 
       currentDownloadingFile = DownloadTaskController(
         downloadPath: localFilePath,

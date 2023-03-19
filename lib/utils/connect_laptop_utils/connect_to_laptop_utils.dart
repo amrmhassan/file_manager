@@ -19,8 +19,8 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 
 Future<Map<String, int>> getPhoneStorageInfo(BuildContext context) async {
-  var res = await Dio()
-      .get(connectLaptopPF(context).getPhoneConnLink(getStorageEndPoint));
+  var res = await Dio().get(
+      connectLaptopPF(context).getPhoneConnLink(EndPoints1.getStorageEndPoint));
   int freeSpace = int.parse(res.headers.value(freeSpaceHeaderKey)!);
   int totalSpace = int.parse(res.headers.value(totalSpaceHeaderKey)!);
 
@@ -41,7 +41,9 @@ Future<void> getLaptopFolderContent({
     String connLink = getConnLink(
         connectLaptopProvider.remoteIP!,
         connectLaptopProvider.remotePort!,
-        shareSpace ? getShareSpaceEndPoint : getPhoneFolderContentEndPoint);
+        shareSpace
+            ? EndPoints1.getShareSpaceEndPoint
+            : EndPoints1.getPhoneFolderContentEndPoint);
 
     var res = await Dio().get(
       connLink,
@@ -76,7 +78,7 @@ Future<String?> getPhoneClipboard(
   ConnectLaptopProvider connectLaptopProvider,
 ) async {
   String connLink = getConnLink(connectLaptopProvider.remoteIP!,
-      connectLaptopProvider.remotePort!, getClipboardEndPoint);
+      connectLaptopProvider.remotePort!, EndPoints1.getClipboardEndPoint);
   logger.i(connLink);
   var res = await Dio().get(connLink);
   String clipboard = (res.data);
@@ -92,8 +94,8 @@ Future<void> startDownloadFile(
   int fileSize,
   BuildContext context,
 ) async {
-  String connLink =
-      connectLaptopPF(context).getPhoneConnLink(startDownloadFileEndPoint);
+  String connLink = connectLaptopPF(context)
+      .getPhoneConnLink(EndPoints1.startDownloadFileEndPoint);
   await Dio().post(
     connLink,
     data: filePath,
@@ -130,8 +132,8 @@ Future<void> startSendEntities(
   try {
     var data = entities.map((e) => e.toJSON()).toList();
     var encodedData = json.encode(data);
-    String connLink =
-        connectLaptopPF(context).getPhoneConnLink(startDownloadFileEndPoint);
+    String connLink = connectLaptopPF(context)
+        .getPhoneConnLink(EndPoints1.startDownloadFileEndPoint);
     await Dio().post(
       connLink,
       data: encodedData,

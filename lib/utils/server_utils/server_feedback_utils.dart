@@ -19,7 +19,8 @@ Future<void> peerAddedServerFeedBack(
     try {
       //? to skip if the peer is me
       if (peer.ip == serverProviderFalse.myIp) continue;
-      String connLink = 'http://${peer.ip}:${peer.port}$clientAddedEndPoint';
+      String connLink =
+          'http://${peer.ip}:${peer.port}${EndPoints1.clientAddedEndPoint}';
       var jsonRequest = json.encode(
         serverProviderFalse.peers
             .map(

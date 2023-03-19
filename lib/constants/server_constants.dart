@@ -1,42 +1,50 @@
 //? end points
+
+//? this is the endpoints of server 1(the share space server of phones)
+class EndPoints1 {
 // other
-const String dummyEndPoint = '/dummyendpointjustlikethemainone';
+  static const String dummyEndPoint = '/dummyendpointjustlikethemainone';
 
 // files
-const String getShareSpaceEndPoint = '/getShareSpace';
-const String fileAddedToShareSpaceEndPoint = '/fileAddedToShareSpace';
-const String fileRemovedFromShareSpaceEndPoint = '/fileRemovedFromShareSpace';
-const String getFolderContentEndPointEndPoint = '/getFolderContentEndPoint';
-const String streamAudioEndPoint = '/streamAudio';
-const String streamVideoEndPoint = '/streamVideo';
-const String downloadFileEndPoint = '/downloadFile';
-const String wsServerConnLinkEndPoint = '/wsServerConnLink';
-const String phoneWsServerConnLinkEndPoint = '/phoneWsServerConnLink';
+  static const String getShareSpaceEndPoint = '/getShareSpace';
+  static const String fileAddedToShareSpaceEndPoint = '/fileAddedToShareSpace';
+  static const String fileRemovedFromShareSpaceEndPoint =
+      '/fileRemovedFromShareSpace';
+  static const String getFolderContentEndPointEndPoint =
+      '/getFolderContentEndPoint';
+  static const String streamAudioEndPoint = '/streamAudio';
+  static const String streamVideoEndPoint = '/streamVideo';
+  static const String downloadFileEndPoint = '/downloadFile';
+  static const String wsServerConnLinkEndPoint = '/wsServerConnLink';
+  static const String phoneWsServerConnLinkEndPoint = '/phoneWsServerConnLink';
 
 // clients
-const String addClientEndPoint = '/addClient';
-const String clientAddedEndPoint = '/clientAdded';
-const String clientLeftEndPoint = '/clientLeft';
-const String getPeerImagePathEndPoint = '/getPeerImagePath';
+  static const String addClientEndPoint = '/addClient';
+  static const String clientAddedEndPoint = '/clientAdded';
+  static const String clientLeftEndPoint = '/clientLeft';
+  static const String getPeerImagePathEndPoint = '/getPeerImagePath';
 
 // server checking
-const String serverCheckEndPoint = '/serverCheckEndPoint';
-const String getDiskNamesEndPoint = '/getDiskNamesEndPoint';
+  static const String serverCheckEndPoint = '/serverCheckEndPoint';
+  static const String getDiskNamesEndPoint = '/getDiskNamesEndPoint';
 
 // connect laptop endpoints
-const String getStorageEndPoint = '/getStorage';
-const String getPhoneFolderContentEndPoint = '/getPhoneFolderContentEndPoint';
-const String areYouAliveEndPoint = '/areYouAliveEndPoint';
-const String getClipboardEndPoint = '/getClipboardEndPoint';
-const String sendTextEndpoint = '/sendTextEndpoint';
-const String getListyEndPoint = '/getListyEndPoint';
-const String startDownloadFileEndPoint = '/startDownloadFileEndPoint';
-const String getFolderContentRecursiveEndPoint =
-    '/getFolderContentRecursiveEndPoint';
-const String getLaptopDeviceIDEndPoint = '/getLaptopDeviceIDEndPoint';
-const String getLaptopDeviceNameEndpoint = '/getLaptopDeviceNameEndpoint';
-const String getAndroidNameEndPoint = '/getAndroidNameEndPoint';
-const String getAndroidIDEndPoint = '/getAndroidIDEndPoint';
+  static const String getStorageEndPoint = '/getStorage';
+  static const String getPhoneFolderContentEndPoint =
+      '/getPhoneFolderContentEndPoint';
+  static const String areYouAliveEndPoint = '/areYouAliveEndPoint';
+  static const String getClipboardEndPoint = '/getClipboardEndPoint';
+  static const String sendTextEndpoint = '/sendTextEndpoint';
+  static const String getListyEndPoint = '/getListyEndPoint';
+  static const String startDownloadFileEndPoint = '/startDownloadFileEndPoint';
+  static const String getFolderContentRecursiveEndPoint =
+      '/getFolderContentRecursiveEndPoint';
+  static const String getLaptopDeviceIDEndPoint = '/getLaptopDeviceIDEndPoint';
+  static const String getLaptopDeviceNameEndpoint =
+      '/getLaptopDeviceNameEndpoint';
+  static const String getAndroidNameEndPoint = '/getAndroidNameEndPoint';
+  static const String getAndroidIDEndPoint = '/getAndroidIDEndPoint';
+}
 
 //? headers keys
 const String folderPathHeaderKey = 'folderPathHeaderKey';

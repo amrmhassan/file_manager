@@ -30,8 +30,8 @@ class _SendTextToPhoneModalState extends State<SendTextToPhoneModal> {
     return DoubleButtonsModal(
       onOk: () async {
         try {
-          String connLink =
-              connectLaptopPF(context).getPhoneConnLink(sendTextEndpoint);
+          String connLink = connectLaptopPF(context)
+              .getPhoneConnLink(EndPoints1.sendTextEndpoint);
 
           await Dio().post(connLink,
               data: data.text,

@@ -43,14 +43,15 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
           );
           await c.resumeCamera();
         } else {
-          if ((scanData.code ?? '').endsWith(dummyEndPoint) &&
+          if ((scanData.code ?? '').endsWith(EndPoints1.dummyEndPoint) &&
               (scanData.code ?? '').startsWith('http://')) {
-            Navigator.pop(
-                context, scanData.code?.replaceAll(dummyEndPoint, ''));
+            Navigator.pop(context,
+                scanData.code?.replaceAll(EndPoints1.dummyEndPoint, ''));
             await c.stopCamera();
           } else {
             // this time it might be for connecting to laptop option
-            String code = (scanData.code ?? '')..replaceAll(dummyEndPoint, '');
+            String code = (scanData.code ?? '')
+              ..replaceAll(EndPoints1.dummyEndPoint, '');
             var data = code.split(' ');
             if (data.length != 2) return;
             int? last = int.tryParse(data.last);

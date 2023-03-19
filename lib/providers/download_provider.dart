@@ -459,10 +459,10 @@ class DownloadProvider extends ChangeNotifier {
       } else {
         if (downloadTaskModel.entityType == EntityType.folder) {
           laptopDownloadUrl = connectLaptopPF(navigatorKey.currentContext!)
-              .getPhoneConnLink(getFolderContentRecursiveEndPoint);
+              .getPhoneConnLink(EndPoints1.getFolderContentRecursiveEndPoint);
         } else {
           laptopDownloadUrl = connectLaptopPF(navigatorKey.currentContext!)
-              .getPhoneConnLink(downloadFileEndPoint);
+              .getPhoneConnLink(EndPoints1.downloadFileEndPoint);
         }
       }
 
@@ -485,7 +485,7 @@ class DownloadProvider extends ChangeNotifier {
           remoteFilePath: downloadTaskModel.remoteFilePath,
           url: laptop
               ? laptopDownloadUrl
-              : remotePeer.getMyLink(downloadFileEndPoint),
+              : remotePeer.getMyLink(EndPoints1.downloadFileEndPoint),
           setProgress: (int received) {
             _updateTaskPercent(downloadTaskModel.id, received);
           },
@@ -512,7 +512,8 @@ class DownloadProvider extends ChangeNotifier {
           remoteFilePath: downloadTaskModel.remoteFilePath,
           url: laptop
               ? laptopDownloadUrl
-              : remotePeer.getMyLink(getFolderContentRecursiveEndPoint),
+              : remotePeer
+                  .getMyLink(EndPoints1.getFolderContentRecursiveEndPoint),
           setProgress: (p) {
             _updateTaskPercent(downloadTaskModel.id, p);
           },

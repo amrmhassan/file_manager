@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/utils/connect_laptop_utils/handlers/handlers.dart'
-    as laptop_handlers;
+import 'package:explorer/helpers/router_system/router.dart';
+import 'package:explorer/helpers/router_system/server.dart';
+
+import 'package:explorer/utils/connect_laptop_utils/handlers/handlers.dart';
 import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/custom_router_system/helpers/server_requests_utils.dart';
-import 'package:explorer/utils/server_utils/handlers/handlers.dart'
-    as normal_handlers;
+import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 
 CustomRouterSystem connectLaptopRouter() {
   CustomRouterSystem customRouterSystem = CustomRouterSystem();
@@ -12,69 +15,99 @@ CustomRouterSystem connectLaptopRouter() {
   //? adding handlers
   customRouterSystem
     ..addHandler(
-      getStorageEndPoint,
+      EndPoints1.getStorageEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getStorageInfoHandler,
+      S2H.getStorageInfoHandler,
     )
     ..addHandler(
-      getDiskNamesEndPoint,
+      EndPoints1.getDiskNamesEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getDiskNamesHandler,
+      S2H.getDiskNamesHandler,
     )
     ..addHandler(
-      getPhoneFolderContentEndPoint,
+      EndPoints1.getPhoneFolderContentEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getPhoneFolderContentHandler,
+      S2H.getPhoneFolderContentHandler,
     )
     ..addHandler(
-      streamAudioEndPoint,
+      EndPoints1.streamAudioEndPoint,
       HttpMethod.GET,
-      normal_handlers.streamAudioHandler,
+      S1H.streamAudioHandler,
     )
     ..addHandler(
-      streamVideoEndPoint,
+      EndPoints1.streamVideoEndPoint,
       HttpMethod.GET,
-      normal_handlers.streamVideoHandler,
+      S1H.streamVideoHandler,
     )
     ..addHandler(
-      getClipboardEndPoint,
+      EndPoints1.getClipboardEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getClipboardHandler,
+      S2H.getClipboardHandler,
     )
     ..addHandler(
-      sendTextEndpoint,
+      EndPoints1.sendTextEndpoint,
       HttpMethod.POST,
-      laptop_handlers.sendTextHandler,
+      S2H.sendTextHandler,
     )
     ..addHandler(
-      getShareSpaceEndPoint,
+      EndPoints1.getShareSpaceEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getPhoneShareSpaceHandler,
+      S2H.getPhoneShareSpaceHandler,
     )
     ..addHandler(
-      startDownloadFileEndPoint,
+      EndPoints1.startDownloadFileEndPoint,
       HttpMethod.POST,
-      laptop_handlers.startDownloadActionHandler,
+      S2H.startDownloadActionHandler,
     )
     ..addHandler(
-      downloadFileEndPoint,
+      EndPoints1.downloadFileEndPoint,
       HttpMethod.GET,
-      normal_handlers.downloadFileHandler,
+      S1H.downloadFileHandler,
     )
     ..addHandler(
-      getFolderContentRecursiveEndPoint,
+      EndPoints1.getFolderContentRecursiveEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getFolderChildrenRecursive,
+      S2H.getFolderChildrenRecursive,
     )
     ..addHandler(
-      getAndroidNameEndPoint,
+      EndPoints1.getAndroidNameEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getAndroidNameHandler,
+      S2H.getAndroidNameHandler,
     )
     ..addHandler(
-      getAndroidIDEndPoint,
+      EndPoints1.getAndroidIDEndPoint,
       HttpMethod.GET,
-      laptop_handlers.getAndroidIdHandler,
+      S2H.getAndroidIdHandler,
     );
   return customRouterSystem;
+}
+
+//! add another type of middle wares that run after all handlers are done
+
+Future<HttpServer> testingRunConnLaptopServerWithCustomServer() async {
+  var router = CustomRouter()
+      .get(EndPoints1.getStorageEndPoint, [], S2H.getStorageInfoHandler)
+      .get(EndPoints1.getDiskNamesEndPoint, [], S2H.getDiskNamesHandler)
+      .get(EndPoints1.getPhoneFolderContentEndPoint, [],
+          S2H.getPhoneFolderContentHandler)
+      .get(EndPoints1.streamAudioEndPoint, [], S1H.streamAudioHandler)
+      .get(EndPoints1.streamVideoEndPoint, [], S1H.streamVideoHandler)
+      .get(EndPoints1.getClipboardEndPoint, [], S2H.getClipboardHandler)
+      .post(EndPoints1.sendTextEndpoint, [], S2H.sendTextHandler)
+      .get(EndPoints1.getShareSpaceEndPoint, [], S2H.getPhoneShareSpaceHandler)
+      .post(EndPoints1.startDownloadFileEndPoint, [],
+          S2H.startDownloadActionHandler)
+      .get(EndPoints1.downloadFileEndPoint, [], S1H.downloadFileHandler)
+      .get(EndPoints1.getFolderContentRecursiveEndPoint, [],
+          S2H.getFolderChildrenRecursive)
+      .get(EndPoints1.getAndroidNameEndPoint, [], S2H.getAndroidNameHandler)
+      .get(EndPoints1.getAndroidIDEndPoint, [], S2H.getAndroidIdHandler);
+
+  CustomServer customServer = CustomServer(
+    router,
+    InternetAddress.anyIPv4,
+    0,
+  );
+
+  return await customServer.bind();
 }
