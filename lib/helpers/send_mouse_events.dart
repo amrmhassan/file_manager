@@ -23,31 +23,31 @@ class SendMouseEvents {
     double sensitivity = 3;
     int dx = (delta.dx * sensitivity).ceil();
     int dy = (delta.dy * sensitivity).ceil();
-    _add('${moveCursorPath}___$dx,$dy');
+    _add('${SocketPaths.moveCursorPath}___$dx,$dy');
   }
 
   void rightClick() {
-    _add(mouseRightClickedPath);
+    _add(SocketPaths.mouseRightClickedPath);
   }
 
   void leftClick() {
-    _add(mouseLeftClickedPath);
+    _add(SocketPaths.mouseLeftClickedPath);
   }
 
   void leftDown() {
-    _add(mouseLeftDownPath);
+    _add(SocketPaths.mouseLeftDownPath);
   }
 
   void leftUp() {
-    _add(mouseLeftUpPath);
+    _add(SocketPaths.mouseLeftUpPath);
   }
 
   void _add(dynamic data) async {
     String event = data.toString().split('___').first;
-    if (event == mouseLeftDownPath &&
+    if (event == SocketPaths.mouseLeftDownPath &&
         lastEvents.length == 2 &&
-        lastEvents.first == mouseLeftDownPath &&
-        lastEvents.last == mouseLeftUpPath) {
+        lastEvents.first == SocketPaths.mouseLeftDownPath &&
+        lastEvents.last == SocketPaths.mouseLeftUpPath) {
       // this mean the user is about to click and drag so i wont send the latest 2 events of down then up
       // so i will set a var dontSend to be true
       // in this case i will make a delay between sending events and receiving them
@@ -57,7 +57,7 @@ class SendMouseEvents {
       connectLaptopPF(context)
           .ioWebSocketChannel
           ?.innerWebSocket
-          ?.add(mouseEventClickDrag);
+          ?.add(SocketPaths.mouseEventClickDrag);
     }
 
     connectLaptopPF(context).ioWebSocketChannel?.innerWebSocket?.add(data);
@@ -67,7 +67,7 @@ class SendMouseEvents {
 
     if (lastEvents.isEmpty) {
       lastEvents.add(event);
-    } else if (lastEvents.last != moveCursorPath) {
+    } else if (lastEvents.last != SocketPaths.moveCursorPath) {
       lastEvents.add(event);
     }
   }

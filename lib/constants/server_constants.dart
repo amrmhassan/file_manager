@@ -62,10 +62,12 @@ class KHeaders {
   static const String fileSizeHeaderKey = 'fileSizeHeaderKey';
 }
 
+class SocketPaths {
 //? socket server paths
-const String moveCursorPath = 'moveCursorPath';
-const String mouseRightClickedPath = 'mouseRightClickedPath';
-const String mouseLeftClickedPath = 'mouseLeftClickedPath';
-const String mouseLeftDownPath = 'mouseLeftDownPath';
-const String mouseLeftUpPath = 'mouseLeftUpPath';
-const String mouseEventClickDrag = 'mouseEventClickDrag';
+  static const String moveCursorPath = 'moveCursorPath';
+  static const String mouseRightClickedPath = 'mouseRightClickedPath';
+  static const String mouseLeftClickedPath = 'mouseLeftClickedPath';
+  static const String mouseLeftDownPath = 'mouseLeftDownPath';
+  static const String mouseLeftUpPath = 'mouseLeftUpPath';
+  static const String mouseEventClickDrag = 'mouseEventClickDrag';
+}
