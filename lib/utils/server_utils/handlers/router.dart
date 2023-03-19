@@ -195,7 +195,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
       // .addGlobalMiddleWare((request, response) {
       //   return ReqResTracker(request, response);
       // })
-      .addGlobalMiddleWare(requestLogger)
+      .addTrailersMiddleWare(requestLogger)
       .get(
         areYouAliveEndPoint,
         [],

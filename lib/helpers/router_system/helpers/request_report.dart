@@ -1,12 +1,12 @@
 import 'dart:io';
 
 class RequestReportModel {
-  late Duration duration;
   DateTime requestReceived;
   DateTime responseClosed;
   String? closeReason;
   HttpRequest request;
   HttpResponse response;
+  late Duration timeTaken;
 
   RequestReportModel({
     required this.requestReceived,
@@ -15,6 +15,6 @@ class RequestReportModel {
     required this.request,
     required this.response,
   }) {
-    duration = responseClosed.difference(requestReceived);
+    timeTaken = responseClosed.difference(requestReceived);
   }
 }

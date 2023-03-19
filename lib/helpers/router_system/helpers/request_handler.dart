@@ -14,6 +14,7 @@ class RequestHandler {
   final CustomRouter router;
   late DateTime requestReceived;
   late DateTime responseClosed;
+  late Duration timeTaken;
 
   RequestHandler(this.router, this.afterEachResponse) {
     requestReceived = DateTime.now();
@@ -39,13 +40,6 @@ class RequestHandler {
     );
 
     _closed();
-
-    //? for running function what will have access to the response result, after each request is closed
-    _handleRunTrailerMiddlewares(
-      router.trailersMiddlewares,
-      request,
-      response,
-    );
   }
 
   FutureOr<ReqResTracker> _handleRouteToPath(
@@ -91,13 +85,12 @@ class RequestHandler {
   }
 
   FutureOr<void> _handleRunTrailerMiddlewares(
-    List<FutureOr<dynamic> Function(HttpRequest, HttpResponse)>
+    List<FutureOr<dynamic> Function(RequestReportModel reportModel)>
         trailersMiddlewares,
-    HttpRequest request,
-    HttpResponse response,
+    RequestReportModel reportModel,
   ) {
     for (var trailerWare in trailersMiddlewares) {
-      trailerWare(request, response);
+      trailerWare(reportModel);
     }
   }
 
@@ -126,20 +119,26 @@ class RequestHandler {
 
   FutureOr _closed() {
     responseClosed = DateTime.now();
+    timeTaken = responseClosed.difference(requestReceived);
     try {
       tracker.response.close();
     } catch (e) {
       logger.e(e);
     }
-
+    var requestReport = RequestReportModel(
+      requestReceived: requestReceived,
+      responseClosed: responseClosed,
+      closeReason: tracker.closeReason,
+      request: tracker.request,
+      response: tracker.response,
+    );
     if (afterEachResponse != null) {
-      afterEachResponse!(RequestReportModel(
-        requestReceived: requestReceived,
-        responseClosed: responseClosed,
-        closeReason: tracker.closeReason,
-        request: tracker.request,
-        response: tracker.response,
-      ));
+      afterEachResponse!(requestReport);
     }
+    //? for running function what will have access to the response result, after each request is closed
+    _handleRunTrailerMiddlewares(
+      router.trailersMiddlewares,
+      requestReport,
+    );
   }
 }

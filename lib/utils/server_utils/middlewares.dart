@@ -7,6 +7,7 @@ import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
+import 'package:explorer/helpers/router_system/helpers/request_report.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +147,7 @@ Future<ReqResTracker> checkIfConnectedMiddleWare(
   );
 }
 
-ReqResTracker requestLogger(HttpRequest request, HttpResponse response) {
-  logger.i('${request.method.toUpperCase()}-${request.uri.path}');
-  return ReqResTracker(request, response);
+void requestLogger(RequestReportModel reportModel) {
+  logger.i(
+      '${reportModel.request.method.toUpperCase()}-${reportModel.request.uri.path} -${reportModel.timeTaken.inMilliseconds}ms -${reportModel.response.statusCode}');
 }

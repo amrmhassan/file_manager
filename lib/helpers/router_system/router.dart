@@ -2,6 +2,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:explorer/helpers/router_system/helpers/request_report.dart';
+
 import 'helpers/pipeline.dart';
 import 'helpers/req_res_tracker.dart';
 import 'helpers/utils.dart';
@@ -20,9 +22,8 @@ class CustomRouter {
     HttpResponse response,
   )> globalMiddlewares = [];
   final List<
-      FutureOr<ReqResTracker> Function(
-    HttpRequest request,
-    HttpResponse response,
+      FutureOr<void> Function(
+    RequestReportModel requestReport,
   )> trailersMiddlewares = [];
 
   CustomRouter({this.onNotFound});
@@ -53,9 +54,8 @@ class CustomRouter {
 
   //? to add a global middleware that will run after each response is done
   CustomRouter addTrailersMiddleWare(
-      FutureOr<ReqResTracker> Function(
-    HttpRequest request,
-    HttpResponse response,
+      FutureOr<void> Function(
+    RequestReportModel reportModel,
   )
           m) {
     trailersMiddlewares.add(m);
