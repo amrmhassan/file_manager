@@ -1,7 +1,11 @@
 //? file info
+import 'dart:io';
+
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path/path.dart';
 
 part 'local_file_info.g.dart';
 
@@ -85,6 +89,22 @@ class LocalFileInfo {
       changed: changed,
       entityType: entityType,
       size: size,
+    );
+  }
+
+  static LocalFileInfo fromPath(String path) {
+    File file = File(path);
+    FileStat stat = file.statSync();
+    return LocalFileInfo(
+      size: stat.size,
+      parentPath: file.parent.path,
+      path: path,
+      modified: stat.modified,
+      accessed: stat.accessed,
+      changed: stat.changed,
+      entityType: EntityType.file,
+      fileBaseName: basename(path),
+      ext: getFileExtension(path),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
+import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -119,4 +120,13 @@ MediaPlayerProvider mediaPF(BuildContext context) {
 
 MediaPlayerProvider mediaP(BuildContext context) {
   return Provider.of<MediaPlayerProvider>(context);
+}
+
+//? recent provider
+RecentProvider recentPF(BuildContext context) {
+  return Provider.of<RecentProvider>(context, listen: false);
+}
+
+RecentProvider recentP(BuildContext context) {
+  return Provider.of<RecentProvider>(context);
 }

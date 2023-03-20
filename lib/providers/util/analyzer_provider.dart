@@ -1,10 +1,14 @@
+import 'dart:io';
 import 'dart:isolate';
+import 'dart:math';
 import 'package:disk_space/disk_space.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/shared_pref_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_collections.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
@@ -12,6 +16,7 @@ import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/providers/analyzer_provider_abstract.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/screen_utils/recent_screen_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
@@ -149,6 +154,7 @@ class AnalyzerProvider extends ChangeNotifier
           _advancedStorageAnalyzer = message;
           notifyListeners();
         } else if (message is LocalFolderInfo) {
+          _runSingleFolderWatcher(message.path);
           //* here run the code with finishing a folder
           _currentFolder = path_operations.basename(message.path);
           notifyListeners();
@@ -279,6 +285,42 @@ class AnalyzerProvider extends ChangeNotifier
     int free = await getFreeDiskSpace();
     int files = totalFilesSize;
     return total - free - files;
+  }
+
+  void _runSingleFolderWatcher(String folderPath) {
+    try {
+      Directory directory = Directory(folderPath);
+      directory.watch().listen((event) {
+        if (event.isDirectory) {
+          _runSingleFolderWatcher(event.path);
+          logger.i('folder event');
+        } else {
+          BuildContext context = navigatorKey.currentContext!;
+          var recentProvider = recentPF(context);
+          var localFileInfo = LocalFileInfo.fromPath(event.path);
+
+          //! 1=> add (copy)
+          //! 4=> delete
+
+          //! 8 => rename
+          if (event.type == 1) {
+            recentProvider.addRecentFile(localFileInfo, true);
+            logger.i('file added');
+            //? add file to recent files
+          } else if (event.type == 4) {
+            recentProvider.removeRecentFile(event.path);
+            logger.i('file removed');
+            //? just remove from the recent files
+          } else if (event.type == 8) {
+            recentProvider.addRecentFile(localFileInfo);
+            //? just add the new file and the old one won't show automatically by the storage item widgets
+            logger.i('file renamed');
+          }
+        }
+      });
+    } catch (e, s) {
+      logger.e(e, s);
+    }
   }
 }
 

@@ -32,7 +32,6 @@ class RecentsViewerScreen extends StatefulWidget {
 }
 
 class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
-  List<LocalFileInfo> viewedItems = [];
   bool loading = true;
 
   //? to get the file info by index

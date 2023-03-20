@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:localization/localization.dart' as loc;
 
 class LanguageModal extends StatelessWidget {
   const LanguageModal({

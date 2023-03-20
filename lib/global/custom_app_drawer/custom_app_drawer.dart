@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
@@ -147,6 +148,16 @@ class CustomAppDrawer extends StatelessWidget {
                           listen: false,
                         ),
                       );
+                      Navigator.pop(context);
+                    },
+                    onlyDebug: true,
+                  ),
+                  AppDrawerItem(
+                    title: 'Create dummy file',
+                    onTap: () async {
+                      File file = File(
+                          '/sdcard/dummy-file${Random().nextInt(1000)}.mp4');
+                      file.createSync();
                       Navigator.pop(context);
                     },
                     onlyDebug: true,

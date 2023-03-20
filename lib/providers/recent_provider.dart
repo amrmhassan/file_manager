@@ -1,4 +1,3 @@
-import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/files_types_icons.dart';
@@ -46,6 +45,95 @@ class RecentProvider extends ChangeNotifier {
     await _saveResultsToSqlite();
   }
 
+  void removeRecentFile(String path) {
+    FileType fileType = getFileTypeFromPath(path);
+    if (fileType == FileType.image) {
+      imagesFiles.removeWhere((element) => element.path == path);
+    } else if (fileType == FileType.video) {
+      videosFiles.removeWhere((element) => element.path == path);
+    } else if (fileType == FileType.audio) {
+      musicFiles.removeWhere((element) => element.path == path);
+    } else if (fileType == FileType.apk) {
+      apkFiles.removeWhere((element) => element.path == path);
+    } else if (fileType == FileType.archive) {
+      archivesFiles.removeWhere((element) => element.path == path);
+    } else if (fileType == FileType.docs) {
+      docsFiles.removeWhere((element) => element.path == path);
+    }
+    if (path.toLowerCase().contains('download')) {
+      // remove it also
+      downloadsFiles.removeWhere((element) => element.path == path);
+    }
+    notifyListeners();
+  }
+
+  void addRecentFile(LocalFileInfo file, [bool forceAdd = false]) async {
+    String path = file.path;
+    FileType fileType = getFileTypeFromPath(path);
+
+    if (_addImage(path, fileType) &&
+        (imagesFiles.length < recentItemsLimit || forceAdd)) {
+      if (forceAdd) {
+        (await HiveBox.imagesRecentFilesTableName).add(file);
+        imagesFiles.insert(0, file);
+      } else {
+        imagesFiles.add(file);
+      }
+    } else if (_addVideo(path, fileType) &&
+        (videosFiles.length < recentItemsLimit || forceAdd)) {
+      if (forceAdd) {
+        (await HiveBox.videosRecentFilesTableName).add(file);
+        videosFiles.insert(0, file);
+      } else {
+        videosFiles.add(file);
+      }
+    } else if (_addMusic(path, fileType) &&
+        (musicFiles.length < recentItemsLimit || forceAdd)) {
+      if (forceAdd) {
+        (await HiveBox.musicRecentFilesTableName).add(file);
+        musicFiles.insert(0, file);
+      } else {
+        musicFiles.add(file);
+      }
+    } else if (_addApk(path, fileType) &&
+        (apkFiles.length < recentItemsLimit || forceAdd)) {
+      if (forceAdd) {
+        (await HiveBox.apkRecentFilesTableName).add(file);
+        apkFiles.insert(0, file);
+      } else {
+        apkFiles.add(file);
+      }
+    } else if (_addArchives(path, fileType) &&
+        (archivesFiles.length < recentItemsLimit || forceAdd)) {
+      if (forceAdd) {
+        (await HiveBox.archivesRecentFilesTableName).add(file);
+        archivesFiles.insert(0, file);
+      } else {
+        archivesFiles.add(file);
+      }
+    } else if (_addDocs(path, fileType) &&
+        (docsFiles.length < recentItemsLimit || forceAdd)) {
+      if (forceAdd) {
+        (await HiveBox.downloadsRecentFilesTableName).add(file);
+        downloadsFiles.insert(0, file);
+      } else {
+        downloadsFiles.add(file);
+      }
+    }
+
+    // these recent doesn't depend on file type
+    if (_addDownloads(path) &&
+        (downloadsFiles.length < recentItemsLimit || forceAdd)) {
+      downloadsFiles.add(file);
+      if (forceAdd) {
+        (await HiveBox.downloadsRecentFilesTableName).add(file);
+      }
+    }
+    if (forceAdd) {
+      notifyListeners();
+    }
+  }
+
   //? get all types of files in this loop
   void _concludeRecentCategories(List<LocalFileInfo> allFiles) {
     // clearing lists first before adding to them
@@ -59,8 +147,6 @@ class RecentProvider extends ChangeNotifier {
     for (var file in allFiles) {
       // getting file additional info
       String path = file.path;
-      String ext = getFileExtension(file.path);
-      FileType fileType = getFileType(ext);
 
       if (path.contains('/cache')) {
         continue;
@@ -69,29 +155,7 @@ class RecentProvider extends ChangeNotifier {
         continue;
       }
 
-      if (_addImage(path, fileType) && imagesFiles.length < recentItemsLimit) {
-        imagesFiles.add(file);
-      } else if (_addVideo(path, fileType) &&
-          videosFiles.length < recentItemsLimit) {
-        videosFiles.add(file);
-      } else if (_addMusic(path, fileType) &&
-          musicFiles.length < recentItemsLimit) {
-        musicFiles.add(file);
-      } else if (_addApk(path, fileType) &&
-          apkFiles.length < recentItemsLimit) {
-        apkFiles.add(file);
-      } else if (_addArchives(path, fileType) &&
-          archivesFiles.length < recentItemsLimit) {
-        archivesFiles.add(file);
-      } else if (_addDocs(path, fileType) &&
-          docsFiles.length < recentItemsLimit) {
-        docsFiles.add(file);
-      }
-
-      // these recent doesn't depend on file type
-      if (_addDownloads(path) && downloadsFiles.length < recentItemsLimit) {
-        downloadsFiles.add(file);
-      }
+      addRecentFile(file);
     }
   }
 
@@ -196,6 +260,7 @@ class RecentProvider extends ChangeNotifier {
     imagesFiles = [
       ...(await HiveBox.imagesRecentFilesTableName).values.toList().cast()
     ];
+    imagesFiles.sort((b, a) => a.modified.compareTo(b.modified));
   }
 
   Future loadVideos() async {
@@ -214,6 +279,7 @@ class RecentProvider extends ChangeNotifier {
     videosFiles = [
       ...(await HiveBox.videosRecentFilesTableName).values.toList().cast()
     ];
+    videosFiles.sort((b, a) => a.modified.compareTo(b.modified));
   }
 
   Future loadMusic() async {
@@ -231,6 +297,7 @@ class RecentProvider extends ChangeNotifier {
     musicFiles = [
       ...(await HiveBox.musicRecentFilesTableName).values.toList().cast()
     ];
+    musicFiles.sort((b, a) => a.modified.compareTo(b.modified));
   }
 
   Future loadApk() async {
@@ -247,6 +314,7 @@ class RecentProvider extends ChangeNotifier {
     apkFiles = [
       ...(await HiveBox.apkRecentFilesTableName).values.toList().cast()
     ];
+    apkFiles.sort((b, a) => a.modified.compareTo(b.modified));
   }
 
   Future loadArchives() async {
@@ -263,6 +331,7 @@ class RecentProvider extends ChangeNotifier {
     archivesFiles = [
       ...(await HiveBox.archivesRecentFilesTableName).values.toList().cast()
     ];
+    archivesFiles.sort((b, a) => a.modified.compareTo(b.modified));
   }
 
   Future loadDocs() async {
@@ -279,6 +348,7 @@ class RecentProvider extends ChangeNotifier {
     docsFiles = [
       ...(await HiveBox.docsRecentFilesTableName).values.toList().cast()
     ];
+    docsFiles.sort((b, a) => a.modified.compareTo(b.modified));
   }
 
   Future loadDownloads() async {
@@ -296,6 +366,7 @@ class RecentProvider extends ChangeNotifier {
     downloadsFiles = [
       ...(await HiveBox.downloadsRecentFilesTableName).values.toList().cast()
     ];
+    downloadsFiles.sort((b, a) => a.modified.compareTo(b.modified));
   }
 
 //# save data to sqlite
