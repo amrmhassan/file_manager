@@ -61,5 +61,11 @@
   "modified": "Modified: ",
   "accessed": "Accessed: ",
   "files": "Files: ",
-  "folders": "Folders: "
+  "folders": "Folders: ",
+  "share-via": "Share Via",
+  "others": "Others",
+  "quick": "Quick",
+  "hotspot": "HotSpot",
+  "wifi": "WiFi",
+  "choose-network": "Choose a network to connect through"
 }

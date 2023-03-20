@@ -16,6 +16,7 @@ import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 void quickSendHandler(BuildContext context) async {
   showModalBottomSheet(
@@ -42,7 +43,7 @@ void quickSendHandler(BuildContext context) async {
           );
         }
       },
-      okText: 'HotSpot',
+      okText: 'hotspot'.i18n(),
       okColor: kBlueColor,
       onCancel: () async {
         try {
@@ -64,9 +65,9 @@ void quickSendHandler(BuildContext context) async {
           );
         }
       },
-      cancelText: 'WiFi',
+      cancelText: 'wifi'.i18n(),
       // title: 'You are connected to WiFi network',
-      title: 'Choose a network to connect through',
+      title: 'choose-network'.i18n(),
       // subTitle:
       //     'Use connected wifi or open HotSpot for sharing ?',
     ),
@@ -87,14 +88,14 @@ class ShareViewModal extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Share Via', style: h3TextStyle),
+              Text('share-via'.i18n(), style: h3TextStyle),
               VSpace(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ShareOptionButton(
                     iconName: 'other',
-                    title: 'Others',
+                    title: 'others'.i18n(),
                     onTap: () {
                       Navigator.pop(context);
                       shareFileHandler(context);
@@ -103,7 +104,7 @@ class ShareViewModal extends StatelessWidget {
                   HSpace(factor: 1.7),
                   ShareOptionButton(
                     iconName: 'logo',
-                    title: 'Quick',
+                    title: 'quick'.i18n(),
                     onTap: () {
                       Navigator.pop(context);
                       quickSendHandler(context);

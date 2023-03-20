@@ -32,6 +32,17 @@ BuildContext getGlobalContext() {
   return context;
 }
 
+void contextProvider(FutureOr Function() callback, HttpResponse response) {
+  try {
+    callback();
+  } catch (e, s) {
+    response
+      ..statusCode = HttpStatus.internalServerError
+      ..write(e);
+    logger.e(e, s);
+  }
+}
+
 //? this is the server 1 handlers
 class S1H {
   static void addClientHandler(
