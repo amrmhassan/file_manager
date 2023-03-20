@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, dead_code
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/colors.dart';

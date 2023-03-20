@@ -8,7 +8,6 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/laptop_message_model.dart';
-import 'package:explorer/utils/custom_router_system/custom_router_system.dart';
 import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
@@ -65,11 +64,12 @@ class ConnectLaptopProvider extends ChangeNotifier {
 
       //? opening the server port and setting end points
       //! open server here
-      httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
+      httpServer = await testingRunConnLaptopServerWithCustomServer();
+      // httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
       //! i need to empty the request object from it's info and pass them to the main isolate for the listener on the ConnLaptopServiceController, yo might need to extract the request body , path , method for the outside main isolate
       //! and you might need to warn the user before clicking the back button with the connect laptop server is open
-      CustomRouterSystem customRouterSystem = connectLaptopRouter();
-      httpServer!.listen(customRouterSystem.pipeline);
+      // CustomRouterSystem customRouterSystem = connectLaptopRouter();
+      // httpServer!.listen(customRouterSystem.pipeline);
       myPort = httpServer!.port;
 
       foregroundServiceController.connPhoneServerStarted();

@@ -1,30 +1,30 @@
-import 'dart:io';
+// import 'dart:io';
 
-import 'package:explorer/utils/custom_router_system/helpers/server_requests_utils.dart';
+// import 'package:explorer/utils/custom_router_system/helpers/server_requests_utils.dart';
 
-class ServerMiddlewareModel {
-  final List<String> paths;
-  final HttpMethod? httpMethod;
-  final Future<MiddlewareReturn> Function(
-      HttpRequest request, HttpResponse response) callback;
+// class ServerMiddlewareModel {
+//   final List<String> paths;
+//   final HttpMethod? httpMethod;
+//   final Future<MiddlewareReturn> Function(
+//       HttpRequest request, HttpResponse response) callback;
 
-  const ServerMiddlewareModel({
-    required this.paths,
-    required this.httpMethod,
-    required this.callback,
-  });
-}
+//   const ServerMiddlewareModel({
+//     required this.paths,
+//     required this.httpMethod,
+//     required this.callback,
+//   });
+// }
 
-class MiddlewareReturn {
-  final HttpRequest request;
-  final HttpResponse response;
-  final bool closed;
-  final String? closeReason;
+// class MiddlewareReturn {
+//   final HttpRequest request;
+//   final HttpResponse response;
+//   final bool closed;
+//   final String? closeReason;
 
-  const MiddlewareReturn({
-    required this.request,
-    required this.response,
-    this.closed = false,
-    this.closeReason,
-  });
-}
+//   const MiddlewareReturn({
+//     required this.request,
+//     required this.response,
+//     this.closed = false,
+//     this.closeReason,
+//   });
+// }

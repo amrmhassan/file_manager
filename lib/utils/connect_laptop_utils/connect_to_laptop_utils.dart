@@ -41,7 +41,7 @@ Future<void> getLaptopFolderContent({
     String connLink = getConnLink(
         connectLaptopProvider.remoteIP!,
         connectLaptopProvider.remotePort!,
-        shareSpace ? EndPoints.getShareSpace : EndPoints.getPhoneFolderContent);
+        shareSpace ? EndPoints.getShareSpace : EndPoints.getFolderContent);
 
     var res = await Dio().get(
       connLink,

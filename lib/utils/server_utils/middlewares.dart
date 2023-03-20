@@ -8,6 +8,7 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
 import 'package:explorer/helpers/router_system/helpers/request_report.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -151,7 +152,7 @@ class MiddleWares {
   }
 
   static void requestLogger(RequestReportModel reportModel) {
-    logger.i(
-        '${reportModel.request.method.toUpperCase()}-${reportModel.request.uri.path} -${reportModel.timeTaken.inMilliseconds}ms -${reportModel.response.statusCode}');
+    printOnDebug(
+        '${reportModel.request.method.toUpperCase()}-${reportModel.request.uri.path} -ip(${reportModel.request.connectionInfo?.remoteAddress.address}) -${reportModel.timeTaken.inMilliseconds}ms -${reportModel.response.statusCode}');
   }
 }

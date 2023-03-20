@@ -51,7 +51,7 @@ class RequestHandler {
     //? getting right pipeLines
     var pipeLines = router.pipeLines.where(
       (element) =>
-          (element.path == path && element.method == method) ||
+          (path.contains(element.path) && element.method == method) ||
           element.method == HttpMethod.ANY,
     );
     //? no pipeLine match close

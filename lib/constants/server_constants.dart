@@ -28,7 +28,7 @@ class EndPoints {
 
 // connect laptop endpoints
   static const String getStorage = '/getStorage';
-  static const String getPhoneFolderContent = '/getPhoneFolderContentEndPoint';
+  static const String getFolderContent = '/getPhoneFolderContentEndPoint';
   static const String areYouAlive = '/areYouAliveEndPoint';
   static const String getClipboard = '/getClipboardEndPoint';
   static const String sendText = '/sendTextEndpoint';
