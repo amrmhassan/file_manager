@@ -32,9 +32,10 @@ BuildContext getGlobalContext() {
   return context;
 }
 
-void contextProvider(FutureOr Function() callback, HttpResponse response) {
+FutureOr<void> handlerErrorSender(
+    FutureOr Function() callback, HttpResponse response) async {
   try {
-    callback();
+    await callback();
   } catch (e, s) {
     response
       ..statusCode = HttpStatus.internalServerError
@@ -49,7 +50,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var shareProviderFalse = sharePF(context);
       var serverProvider = serverPF(context);
@@ -69,19 +70,14 @@ class S1H {
           jsonify(peerModel.toJSON()),
         );
       await peerAddedServerFeedBack(serverProvider, shareProviderFalse);
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
   static void getShareSpaceHandler(
     HttpRequest request,
     HttpResponse response,
   ) {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var shareProviderFalse = sharePF(context);
       var serverProvider = serverPF(context);
@@ -97,12 +93,7 @@ class S1H {
       response
         ..headers.contentType = ContentType.json
         ..add(encodeRequest(jsonResponse));
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
 //? this is from the server feedback to all peers after a client is added by one of the devices in the group
@@ -110,7 +101,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var serverProvider = serverPF(context);
 
@@ -118,38 +109,28 @@ class S1H {
       List<PeerModel> listOfAllPeers =
           decodedRequest.map((e) => PeerModel.fromJSON(e)).toList();
       serverProvider.updateAllPeers(listOfAllPeers);
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
   static void clientLeftHandler(
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var serverProvider = serverPF(context);
 
       String sessionID = (await decodeRequest(request))[sessionIDString];
 
       serverProvider.peerLeft(sessionID);
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
   static void fileAddedHandler(
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       ShareItemsExplorerProvider shareItemsExplorerProvider =
           shareExpPF(context);
@@ -169,21 +150,14 @@ class S1H {
         addedItems: addedItemsModels,
         sessionId: senderSessionID,
       );
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
-
-    // print(headers);
+    }, response);
   }
 
   static void fileRemovedHandler(
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       ShareItemsExplorerProvider shareItemsExplorerProvider =
           shareExpPF(context);
@@ -199,12 +173,7 @@ class S1H {
         removedItems: removedItemsPaths,
         sessionId: senderSessionID,
       );
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
   static Future<void> getFolderContentHandler(
@@ -213,8 +182,8 @@ class S1H {
     bool recursive = false,
     bool connectPhone = false,
   ]) async {
-    Completer completer = Completer();
-    try {
+    await handlerErrorSender(() async {
+      Completer completer = Completer();
       BuildContext context = getGlobalContext();
       var shareProvider = sharePF(context);
       var serverProvider = serverPF(context);
@@ -257,20 +226,15 @@ class S1H {
           ..add(encodedData);
         completer.complete();
       }
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
-    return completer.future;
+      return completer.future;
+    }, response);
   }
 
   static void streamAudioHandler(
     HttpRequest req,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       String audioPath = req.headers.value(KHeaders.filePathHeaderKey) ?? '';
       audioPath = Uri.decodeComponent(audioPath);
       if (audioPath.isEmpty) {
@@ -308,19 +272,14 @@ class S1H {
         ..add('Accept-Ranges', 'bytes')
         ..add('Content-Range', 'bytes $start-$end/$length');
       file.openRead(start, end).pipe(req.response);
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
   static void streamVideoHandler(
     HttpRequest req,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       String videoPath = req.headers.value(KHeaders.filePathHeaderKey) ?? '';
       videoPath = Uri.decodeComponent(videoPath);
       if (videoPath.isEmpty) {
@@ -359,19 +318,14 @@ class S1H {
         ..add('Content-Range', 'bytes $start-$end/$length')
         ..add('Access-Control-Allow-Origin', '*');
       file.openRead(start, end).pipe(req.response);
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
   static void downloadFileHandler(
     HttpRequest req,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       String? intent = req.headers.value(KHeaders.reqIntentPathHeaderKey);
       String filePath =
           Uri.decodeComponent(req.headers.value(KHeaders.filePathHeaderKey)!);
@@ -404,12 +358,7 @@ class S1H {
         ..add('Accept-Ranges', 'bytes')
         ..add('Content-Range', 'bytes $start-$end/$length');
       file.openRead(start, end).pipe(req.response);
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
 // the isolate that will get any folder children then return it when finished
@@ -422,23 +371,18 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() {
       BuildContext context = getGlobalContext();
       ServerProvider serverProvider = serverPF(context);
       response.write(serverProvider.myWSConnLink);
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
   static void getUserImageHandler(
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var shareProvider = sharePF(context);
       if (shareProvider.myImagePath == null) {
@@ -463,12 +407,7 @@ class S1H {
         ..contentLength = bytes.length
         ..add(bytes)
         ..close();
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
 //# connect to phone handlers
@@ -476,7 +415,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var shareProvider = sharePF(context);
       var serverProvider = serverPF(context);
@@ -542,12 +481,7 @@ class S1H {
       } catch (e, s) {
         logger.e(e, s);
       }
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 
 //! just move this to laptop router and handlers
@@ -555,7 +489,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    try {
+    handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
 
       var listyList = listyPF(context).listyList;
@@ -564,11 +498,6 @@ class S1H {
       response
         ..add(encodedData)
         ..close();
-    } catch (e, s) {
-      response
-        ..statusCode = HttpStatus.internalServerError
-        ..write(e);
-      logger.e(e, s);
-    }
+    }, response);
   }
 }
