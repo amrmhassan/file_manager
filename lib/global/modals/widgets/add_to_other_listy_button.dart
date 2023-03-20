@@ -6,6 +6,7 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class AddToOtherListyButton extends StatelessWidget {
@@ -26,7 +27,7 @@ class AddToOtherListyButton extends StatelessWidget {
             inactiveColor: Colors.transparent,
             opacity: foProviderFalse.selectedItems.length == 1 ? 1 : .5,
             active: foProviderFalse.selectedItems.length == 1,
-            title: 'Add To Other Listy',
+            title: 'add-to-other-listy'.i18n(),
             onTap: () async {
               String path = foProviderFalse.selectedItems.first.path;
               EntityType entityType =

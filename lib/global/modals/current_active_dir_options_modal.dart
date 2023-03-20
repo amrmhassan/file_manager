@@ -9,6 +9,7 @@ import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class CurrentActiveDirOptionsModal extends StatelessWidget {
@@ -31,7 +32,7 @@ class CurrentActiveDirOptionsModal extends StatelessWidget {
         children: [
           VSpace(),
           ModalButtonElement(
-            title: 'Show Hidden Files',
+            title: 'show-hidden-files'.i18n(),
             onTap: () {
               var expProvider =
                   Provider.of<ExplorerProvider>(context, listen: false);
@@ -42,7 +43,7 @@ class CurrentActiveDirOptionsModal extends StatelessWidget {
                 .showHiddenFiles,
           ),
           ModalButtonElement(
-            title: 'Folders First',
+            title: 'folders-first'.i18n(),
             onTap: () {
               var expProvider =
                   Provider.of<ExplorerProvider>(context, listen: false);
@@ -53,25 +54,26 @@ class CurrentActiveDirOptionsModal extends StatelessWidget {
                 .prioritizeFolders,
           ),
           ModalButtonElement(
-            title: 'Create Folder',
+            title: 'create-folder'.i18n(),
             onTap: () {
               Navigator.pop(context);
               createNewFolderModal(context);
             },
           ),
           ModalButtonElement(
-            title: 'Sort By ..',
+            title: 'sort-by'.i18n(),
             onTap: () {
               Navigator.pop(context);
               sortByModal(context);
             },
           ),
           ModalButtonElement(
-            title: 'Search Files',
+            title: 'search-files'.i18n(),
             onTap: () {
               showSnackBar(
-                  context: context,
-                  message: 'Coming soon, will search files, folders');
+                context: context,
+                message: 'search-coming-soon'.i18n(),
+              );
             },
           ),
           VSpace(),

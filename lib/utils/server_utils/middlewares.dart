@@ -2,7 +2,6 @@
 
 import 'dart:io';
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';

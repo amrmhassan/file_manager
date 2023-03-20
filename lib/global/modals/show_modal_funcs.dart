@@ -24,6 +24,7 @@ import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:qr_flutter/qr_flutter.dart';
@@ -100,9 +101,9 @@ Future<void> showFileExtChangeModal(BuildContext context,
       onOk: () {
         handleRenameFile(context, false);
       },
-      title: 'File Extension Change.',
-      subTitle: 'If you changed a file extension it might not work.',
-      okText: 'Rename',
+      title: 'file-ext-change'.i18n(),
+      subTitle: 'file-ext-change-note'.i18n(),
+      okText: 'rename'.i18n(),
       okColor: kBlueColor,
     ),
   );
@@ -125,8 +126,8 @@ void confirmDeleteEntityModal({
       cancelText: cancelText,
       onCancel: onCancel,
       okText: okText,
-      title: title ?? 'Confirm Delete',
-      subTitle: subTitle ?? 'Do you want to delete selected items?',
+      title: title ?? 'confirm-delete'.i18n(),
+      subTitle: subTitle ?? 'confirm-delete-note'.i18n(),
       onOk: onOk ??
           () {
             var expProvider =
@@ -236,7 +237,7 @@ void showDownloadFromShareSpaceModal(
         children: [
           ModalButtonElement(
             inactiveColor: Colors.transparent,
-            title: 'Download Now',
+            title: 'download-now'.i18n(),
             onTap: () async {
               if (shareSpaceItemModel.entityType == EntityType.folder) {
                 Navigator.pop(context);
@@ -266,7 +267,7 @@ void showDownloadFromShareSpaceModal(
                   logger.e(e);
                   showSnackBar(
                     context: context,
-                    message: 'An Error occurred',
+                    message: 'error-occurred'.i18n(),
                     snackBarType: SnackBarType.error,
                   );
                 }

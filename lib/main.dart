@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
         localeResolutionCallback: (locale, supportedLocales) {
           //! this is just because i am not fully done yet with arabic language
 
-          return englishLocal;
+          // return arabicLocal;
           if (supportedLocales.contains(locale)) {
             return locale;
           } else if (locale?.languageCode == arabicLocal.languageCode) {

@@ -10,6 +10,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/settings_screen/widgets/animations_settings.dart';
 import 'package:explorer/screens/settings_screen/widgets/main_setting.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 enum SettingMode {
   main,
@@ -36,9 +37,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   //? to return the settings screen title
   String get title {
     if (settingMode == SettingMode.main) {
-      return 'Settings';
+      return 'settings-text'.i18n();
     } else if (settingMode == SettingMode.animations) {
-      return 'Animations';
+      return 'animations'.i18n();
     } else {
       return '';
     }

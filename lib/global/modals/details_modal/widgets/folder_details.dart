@@ -12,6 +12,7 @@ import 'package:explorer/utils/files_operations_utils/folder_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:localization/localization.dart';
 import 'package:path/path.dart' as path_operations;
 
 class FolderDetails extends StatefulWidget {
@@ -107,33 +108,33 @@ class _FolderDetailsState extends State<FolderDetails> {
           ),
           VSpace(),
           DetailItem(
-            title: 'Path: ',
+            title: 'path'.i18n(),
             value: widget.storageItemModel.path,
             allowCopy: true,
           ),
           DetailItem(
-            title: 'Size: ',
+            title: 'size'.i18n(),
             value: handleConvertSize(folderDetailsModel.size ?? 0),
             valueColor: kInActiveTextColor,
           ),
           DetailItem(
-            title: 'Files: ',
+            title: 'files'.i18n(),
             value: (folderDetailsModel.filesCount ?? 0).toString(),
             valueColor: kInActiveTextColor,
           ),
           DetailItem(
-            title: 'Folders: ',
+            title: 'folders'.i18n(),
             value: (folderDetailsModel.folderCount ?? 0).toString(),
             valueColor: kInActiveTextColor,
           ),
           DetailItem(
-            title: 'Modified: ',
+            title: 'modified'.i18n(),
             value: DateFormat('yyyy-MM-dd   hh:mmaa')
                 .format(widget.storageItemModel.modified),
             valueColor: kInActiveTextColor,
           ),
           DetailItem(
-            title: 'Accessed: ',
+            title: 'accessed'.i18n(),
             value: DateFormat('yyyy-MM-dd   hh:mmaa')
                 .format(widget.storageItemModel.accessed),
             valueColor: kInActiveTextColor,

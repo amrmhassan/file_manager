@@ -5,6 +5,7 @@ import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class OpenInNewTabButton extends StatelessWidget {
@@ -24,7 +25,7 @@ class OpenInNewTabButton extends StatelessWidget {
             inactiveColor: Colors.transparent,
             opacity: foProviderFalse.selectedItems.length == 1 ? 1 : .5,
             active: foProviderFalse.selectedItems.length == 1,
-            title: 'Open In New Tab',
+            title: 'open-in-new-tab'.i18n(),
             onTap: () async {
               Provider.of<ExplorerProvider>(context, listen: false).openTab(
                 foProviderFalse.selectedItems.first.path,

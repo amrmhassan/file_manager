@@ -6,6 +6,7 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class AddToFavoriteButton extends StatelessWidget {
@@ -54,19 +55,19 @@ class AddToFavoriteButton extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return ModalButtonElement(
                   inactiveColor: Colors.transparent,
-                  title: 'Add to favorite',
+                  title: 'add-to-favorite'.i18n(),
                   onTap: () => addToFavorite(context),
                 );
               } else if (snapshot.data == true) {
                 return ModalButtonElement(
                   inactiveColor: Colors.transparent,
-                  title: 'Remove from favorite',
+                  title: 'remove-from-favorite'.i18n(),
                   onTap: () => removeFromFavorite(context),
                 );
               } else {
                 return ModalButtonElement(
                   inactiveColor: Colors.transparent,
-                  title: 'Add to favorite',
+                  title: 'add-to-favorite'.i18n(),
                   onTap: () => addToFavorite(context),
                 );
               }

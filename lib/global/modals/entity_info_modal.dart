@@ -17,6 +17,7 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class EntityInfoEditingModal extends StatefulWidget {
@@ -46,7 +47,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
     try {
       if (rename) {
         if (orgFileName == nameController.text) {
-          showSnackBar(context: context, message: 'The name didn\'t change.');
+          showSnackBar(context: context, message: 'name-didnt-change'.i18n());
         } else {
           EntityType entityType =
               Provider.of<FilesOperationsProvider>(context, listen: false)
@@ -66,7 +67,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
     } catch (e) {
       showSnackBar(
           context: context,
-          message: 'Error Occurred',
+          message: 'error-occurred'.i18n(),
           snackBarType: SnackBarType.error);
     }
 
@@ -101,7 +102,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
     } catch (E) {
       showSnackBar(
         context: context,
-        message: 'This Folder Already Exists',
+        message: 'folder-already-exists'.i18n(),
         snackBarType: SnackBarType.error,
       );
     }
@@ -135,7 +136,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
       } catch (e) {
         showSnackBar(
           context: context,
-          message: 'Error with renaming file',
+          message: 'error-with-renaming'.i18n(),
           snackBarType: SnackBarType.error,
         );
       }
@@ -158,8 +159,8 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
 
   @override
   void initState() {
-    nameController.text =
-        widget.oldName ?? (widget.createListy ? 'New List' : 'New Folder');
+    nameController.text = widget.oldName ??
+        (widget.createListy ? 'new-list'.i18n() : 'new-folder'.i18n());
     if (widget.oldName != null) {
       rename = true;
       String ext = '.${getFileExtension(widget.oldName!)}';
@@ -191,7 +192,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
         children: [
           VSpace(),
           CustomTextField(
-            title: 'Enter Folder Name',
+            title: 'enter-folder-name'.i18n(),
             controller: nameController,
             autoFocus: true,
             color: kInactiveColor,
@@ -210,7 +211,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    'Cancel',
+                    'cancel'.i18n(),
                     style: h4TextStyleInactive,
                   ),
                 ),
@@ -218,7 +219,7 @@ class _EntityInfoEditingModalState extends State<EntityInfoEditingModal> {
                 TextButton(
                   onPressed: () => handleApplyModal(context),
                   child: Text(
-                    rename ? 'Rename' : 'Create',
+                    rename ? 'rename'.i18n() : 'create'.i18n(),
                     style: h4TextStyle,
                   ),
                 ),

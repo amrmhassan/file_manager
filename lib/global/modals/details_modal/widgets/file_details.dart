@@ -9,6 +9,7 @@ import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:localization/localization.dart';
 import 'package:path/path.dart' as path_operations;
 
 class FileDetails extends StatelessWidget {
@@ -38,23 +39,23 @@ class FileDetails extends StatelessWidget {
           ),
           VSpace(),
           DetailItem(
-            title: 'Path: ',
+            title: 'path'.i18n(),
             value: storageItemModel.path,
             allowCopy: true,
           ),
           DetailItem(
-            title: 'Size: ',
+            title: 'size'.i18n(),
             value: handleConvertSize(storageItemModel.size ?? 0),
             valueColor: kInActiveTextColor,
           ),
           DetailItem(
-            title: 'Modified: ',
+            title: 'modified'.i18n(),
             value: DateFormat('yyyy-MM-dd   hh:mmaa')
                 .format(storageItemModel.modified),
             valueColor: kInActiveTextColor,
           ),
           DetailItem(
-            title: 'Accessed: ',
+            title: 'accessed'.i18n(),
             value: DateFormat('yyyy-MM-dd   hh:mmaa')
                 .format(storageItemModel.accessed),
             valueColor: kInActiveTextColor,

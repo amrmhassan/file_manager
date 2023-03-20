@@ -14,6 +14,7 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class EntityOptionsModal extends StatelessWidget {
@@ -46,14 +47,14 @@ class EntityOptionsModal extends StatelessWidget {
             inactiveColor: Colors.transparent,
             opacity: foProviderFalse.selectedItems.length == 1 ? 1 : .5,
             active: foProviderFalse.selectedItems.length == 1,
-            title: 'Rename',
+            title: 'rename'.i18n(),
             onTap: () async {
               Navigator.pop(context);
               await showRenameModal(context);
             },
           ),
           ModalButtonElement(
-            title: 'Details',
+            title: 'details'.i18n(),
             onTap: () async {
               Navigator.pop(context);
               await showDetailsModal(

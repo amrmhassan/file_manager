@@ -10,6 +10,7 @@ import 'package:explorer/providers/util/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 Future<void> handleAddOrRemoveFromShareSpace(
@@ -89,8 +90,8 @@ class _AddToShareSpaceButtonState extends State<AddToShareSpaceButton> {
       title: added == null
           ? '...'
           : added == true
-              ? 'Remove From Share Space'
-              : 'Add To Share Space',
+              ? 'remove-from-share-space'.i18n()
+              : 'add-to-share-space'.i18n(),
       onTap: () async {
         handleAddOrRemoveFromShareSpace(context, added);
         Navigator.pop(context);
