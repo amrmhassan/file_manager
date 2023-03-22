@@ -50,28 +50,6 @@ class RecentProvider extends ChangeNotifier {
     await _saveResultsToSqlite();
   }
 
-  void _removeRecentFile(String path) {
-    // FileType fileType = getFileTypeFromPath(path);
-    // if (fileType == FileType.image) {
-    //   imagesFiles.removeWhere((element) => element.path == path);
-    // } else if (fileType == FileType.video) {
-    //   videosFiles.removeWhere((element) => element.path == path);
-    // } else if (fileType == FileType.audio) {
-    //   musicFiles.removeWhere((element) => element.path == path);
-    // } else if (fileType == FileType.apk) {
-    //   apkFiles.removeWhere((element) => element.path == path);
-    // } else if (fileType == FileType.archive) {
-    //   archivesFiles.removeWhere((element) => element.path == path);
-    // } else if (fileType == FileType.docs) {
-    //   docsFiles.removeWhere((element) => element.path == path);
-    // }
-    // if (path.toLowerCase().contains('download')) {
-    //   // remove it also
-    //   downloadsFiles.removeWhere((element) => element.path == path);
-    // }
-    // notifyListeners();
-  }
-
   void _addRecentFile(LocalFileInfo file, [bool forceAdd = false]) async {
     String path = file.path;
     FileType fileType = getFileTypeFromPath(path);
@@ -79,7 +57,9 @@ class RecentProvider extends ChangeNotifier {
     if (_addImage(path, fileType) &&
         (imagesFiles.length < recentItemsLimit || forceAdd)) {
       if (forceAdd) {
+        logger.i('image actually added');
         (await HiveBox.imagesRecentFilesTableName).add(file);
+
         imagesFiles.insert(0, file);
       } else {
         imagesFiles.add(file);
@@ -119,10 +99,10 @@ class RecentProvider extends ChangeNotifier {
     } else if (_addDocs(path, fileType) &&
         (docsFiles.length < recentItemsLimit || forceAdd)) {
       if (forceAdd) {
-        (await HiveBox.downloadsRecentFilesTableName).add(file);
-        downloadsFiles.insert(0, file);
+        (await HiveBox.docsRecentFilesTableName).add(file);
+        docsFiles.insert(0, file);
       } else {
-        downloadsFiles.add(file);
+        docsFiles.add(file);
       }
     }
 
@@ -135,7 +115,7 @@ class RecentProvider extends ChangeNotifier {
       }
     }
     if (forceAdd) {
-      notifyListeners();
+      // notifyListeners();
     }
   }
 
@@ -393,19 +373,19 @@ class RecentProvider extends ChangeNotifier {
       //! 4=> delete
 
       //! 8 => rename
-      if (event.type == 1) {
-        _addRecentFile(localFileInfo, true);
-        logger.i('file added');
-        //? add file to recent files
-      } else if (event.type == 4) {
-        _removeRecentFile(event.path);
-        logger.i('file removed');
-        //? just remove from the recent files
-      }
-      // else if (event.type == 8) {
-      //   _addRecentFile(localFileInfo);
-      //   //? just add the new file and the old one won't show automatically by the storage item widgets
-      //   logger.i('file renamed');
+      _addRecentFile(localFileInfo, true);
+      // print(event.path);
+      // print(event.type);
+      // if (event.type == 1) {
+      //   _addRecentFile(localFileInfo, true);
+
+      //   logger.i('file ${getFileTypeFromPath(event.path)} added');
+      //   //? add file to recent files
+      // } else if (event.type == 8) {
+      //   _addRecentFile(localFileInfo, true);
+      //   logger.i('file ${getFileTypeFromPath(event.path)} renamed');
+      // } else if (event.type == 4) {
+      //   logger.i('file ${getFileTypeFromPath(event.path)} removed');
       // }
     }
   }

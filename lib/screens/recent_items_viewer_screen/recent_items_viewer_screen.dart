@@ -2,6 +2,7 @@
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
@@ -33,50 +34,51 @@ class RecentsViewerScreen extends StatefulWidget {
 
 class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
   bool loading = true;
+  List<LocalFileInfo> recentFilesToView = [];
 
   //? to get the file info by index
-  LocalFileInfo getFileInfo(int index) {
+  List<LocalFileInfo> getRecentItemsInfo() {
     RecentType recentType =
         ModalRoute.of(context)!.settings.arguments as RecentType;
     var recentProvider = Provider.of<RecentProvider>(context, listen: false);
     if (recentType == RecentType.image) {
-      return recentProvider.imagesFiles[index];
+      return recentProvider.imagesFiles;
     } else if (recentType == RecentType.video) {
-      return recentProvider.videosFiles[index];
+      return recentProvider.videosFiles;
     } else if (recentType == RecentType.apk) {
-      return recentProvider.apkFiles[index];
+      return recentProvider.apkFiles;
     } else if (recentType == RecentType.archives) {
-      return recentProvider.archivesFiles[index];
+      return recentProvider.archivesFiles;
     } else if (recentType == RecentType.doc) {
-      return recentProvider.docsFiles[index];
+      return recentProvider.docsFiles;
     } else if (recentType == RecentType.download) {
-      return recentProvider.downloadsFiles[index];
+      return recentProvider.downloadsFiles;
     } else {
-      return recentProvider.musicFiles[index];
+      return recentProvider.musicFiles;
     }
   }
 
   //? get list length
-  int getListLength() {
-    RecentType recentType =
-        ModalRoute.of(context)!.settings.arguments as RecentType;
-    var recentProvider = Provider.of<RecentProvider>(context, listen: false);
-    if (recentType == RecentType.image) {
-      return recentProvider.imagesFiles.length;
-    } else if (recentType == RecentType.video) {
-      return recentProvider.videosFiles.length;
-    } else if (recentType == RecentType.apk) {
-      return recentProvider.apkFiles.length;
-    } else if (recentType == RecentType.archives) {
-      return recentProvider.archivesFiles.length;
-    } else if (recentType == RecentType.doc) {
-      return recentProvider.docsFiles.length;
-    } else if (recentType == RecentType.download) {
-      return recentProvider.downloadsFiles.length;
-    } else {
-      return recentProvider.musicFiles.length;
-    }
-  }
+  // int getListLength() {
+  //   RecentType recentType =
+  //       ModalRoute.of(context)!.settings.arguments as RecentType;
+  //   var recentProvider = Provider.of<RecentProvider>(context, listen: false);
+  //   if (recentType == RecentType.image) {
+  //     return recentProvider.imagesFiles.length;
+  //   } else if (recentType == RecentType.video) {
+  //     return recentProvider.videosFiles.length;
+  //   } else if (recentType == RecentType.apk) {
+  //     return recentProvider.apkFiles.length;
+  //   } else if (recentType == RecentType.archives) {
+  //     return recentProvider.archivesFiles.length;
+  //   } else if (recentType == RecentType.doc) {
+  //     return recentProvider.docsFiles.length;
+  //   } else if (recentType == RecentType.download) {
+  //     return recentProvider.downloadsFiles.length;
+  //   } else {
+  //     return recentProvider.musicFiles.length;
+  //   }
+  // }
 
 //? load data on the provider
   void loadData() {
@@ -102,7 +104,12 @@ class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
       }
       setState(() {
         loading = false;
+        recentFilesToView = getRecentItemsInfo();
+        recentFilesToView.sort(
+          (a, b) => b.modified.compareTo(a.modified),
+        );
       });
+      logger.i('length ${recentFilesToView.length}');
     });
   }
 
@@ -155,7 +162,7 @@ class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : getListLength() < 1
+              : recentFilesToView.isEmpty
                   ? Expanded(
                       child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -169,9 +176,10 @@ class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
                   : Expanded(
                       child: ListView.builder(
                         physics: BouncingScrollPhysics(),
-                        itemCount: getListLength(),
+                        itemCount: recentFilesToView.length,
                         itemBuilder: (context, index) {
-                          LocalFileInfo localFileInfo = getFileInfo(index);
+                          LocalFileInfo localFileInfo =
+                              recentFilesToView[index];
 
                           return StorageItem(
                             storageItemModel:

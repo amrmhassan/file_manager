@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/widget_keys.dart';
 import 'package:flutter/material.dart';
 
 void listenForLifeCycleEvents() {
