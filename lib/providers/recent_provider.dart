@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/files_types_icons.dart';
@@ -42,32 +44,35 @@ class RecentProvider extends ChangeNotifier {
     allFiles.sort((a, b) => b.modified.compareTo(a.modified));
 
     _concludeRecentCategories(allFiles);
+    // start watching for recent files folders
+    _startListenForRecentFilesParents();
+    // then save results
     await _saveResultsToSqlite();
   }
 
-  void removeRecentFile(String path) {
-    FileType fileType = getFileTypeFromPath(path);
-    if (fileType == FileType.image) {
-      imagesFiles.removeWhere((element) => element.path == path);
-    } else if (fileType == FileType.video) {
-      videosFiles.removeWhere((element) => element.path == path);
-    } else if (fileType == FileType.audio) {
-      musicFiles.removeWhere((element) => element.path == path);
-    } else if (fileType == FileType.apk) {
-      apkFiles.removeWhere((element) => element.path == path);
-    } else if (fileType == FileType.archive) {
-      archivesFiles.removeWhere((element) => element.path == path);
-    } else if (fileType == FileType.docs) {
-      docsFiles.removeWhere((element) => element.path == path);
-    }
-    if (path.toLowerCase().contains('download')) {
-      // remove it also
-      downloadsFiles.removeWhere((element) => element.path == path);
-    }
-    notifyListeners();
+  void _removeRecentFile(String path) {
+    // FileType fileType = getFileTypeFromPath(path);
+    // if (fileType == FileType.image) {
+    //   imagesFiles.removeWhere((element) => element.path == path);
+    // } else if (fileType == FileType.video) {
+    //   videosFiles.removeWhere((element) => element.path == path);
+    // } else if (fileType == FileType.audio) {
+    //   musicFiles.removeWhere((element) => element.path == path);
+    // } else if (fileType == FileType.apk) {
+    //   apkFiles.removeWhere((element) => element.path == path);
+    // } else if (fileType == FileType.archive) {
+    //   archivesFiles.removeWhere((element) => element.path == path);
+    // } else if (fileType == FileType.docs) {
+    //   docsFiles.removeWhere((element) => element.path == path);
+    // }
+    // if (path.toLowerCase().contains('download')) {
+    //   // remove it also
+    //   downloadsFiles.removeWhere((element) => element.path == path);
+    // }
+    // notifyListeners();
   }
 
-  void addRecentFile(LocalFileInfo file, [bool forceAdd = false]) async {
+  void _addRecentFile(LocalFileInfo file, [bool forceAdd = false]) async {
     String path = file.path;
     FileType fileType = getFileTypeFromPath(path);
 
@@ -155,7 +160,7 @@ class RecentProvider extends ChangeNotifier {
         continue;
       }
 
-      addRecentFile(file);
+      _addRecentFile(file);
     }
   }
 
@@ -249,14 +254,7 @@ class RecentProvider extends ChangeNotifier {
 
   Future loadImages() async {
     if (imagesFiles.isNotEmpty) return;
-    // var data = await DBHelper.getData(imagesRecentFilesTableName);
-    // var data = await DBHelper.getDataLimit(
-    //   orderProp: createdAtString,
-    //   table: imagesRecentFilesTableName,
-    // );
-    // for (var image in data) {
-    //   imagesFiles.add(LocalFileInfo.fromJSON(image));
-    // }
+
     imagesFiles = [
       ...(await HiveBox.imagesRecentFilesTableName).values.toList().cast()
     ];
@@ -265,16 +263,6 @@ class RecentProvider extends ChangeNotifier {
 
   Future loadVideos() async {
     if (videosFiles.isNotEmpty) return;
-
-    // var data = await DBHelper.getData(videosRecentFilesTableName);
-    // var data = await DBHelper.getDataLimit(
-    // //   orderProp: createdAtString,
-    // //   table: videosRecentFilesTableName,
-    // //   databaseName: tempDbName,
-    // // );
-    // for (var video in data) {
-    //   videosFiles.add(LocalFileInfo.fromJSON(video));
-    // }
 
     videosFiles = [
       ...(await HiveBox.videosRecentFilesTableName).values.toList().cast()
@@ -285,15 +273,6 @@ class RecentProvider extends ChangeNotifier {
   Future loadMusic() async {
     if (musicFiles.isNotEmpty) return;
 
-    // var data = await DBHelper.getData(musicRecentFilesTableName);
-    // var data = await DBHelper.getDataLimit(
-    //   orderProp: createdAtString,
-    //   table: musicRecentFilesTableName,
-    // );
-    // for (var music in data) {
-    //   musicFiles.add(LocalFileInfo.fromJSON(music));
-    // }
-
     musicFiles = [
       ...(await HiveBox.musicRecentFilesTableName).values.toList().cast()
     ];
@@ -303,14 +282,6 @@ class RecentProvider extends ChangeNotifier {
   Future loadApk() async {
     if (apkFiles.isNotEmpty) return;
 
-    // var data = await DBHelper.getData(apkRecentFilesTableName);
-    // var data = await DBHelper.getDataLimit(
-    //   orderProp: createdAtString,
-    //   table: apkRecentFilesTableName,
-    // );
-    // for (var apk in data) {
-    //   apkFiles.add(LocalFileInfo.fromJSON(apk));
-    // }
     apkFiles = [
       ...(await HiveBox.apkRecentFilesTableName).values.toList().cast()
     ];
@@ -320,14 +291,6 @@ class RecentProvider extends ChangeNotifier {
   Future loadArchives() async {
     if (archivesFiles.isNotEmpty) return;
 
-    // var data = await DBHelper.getData(archivesRecentFilesTableName);
-    // var data = await DBHelper.getDataLimit(
-    //   orderProp: createdAtString,
-    //   table: archivesRecentFilesTableName,
-    // );
-    // for (var apk in data) {
-    //   archivesFiles.add(LocalFileInfo.fromJSON(apk));
-    // }
     archivesFiles = [
       ...(await HiveBox.archivesRecentFilesTableName).values.toList().cast()
     ];
@@ -337,14 +300,6 @@ class RecentProvider extends ChangeNotifier {
   Future loadDocs() async {
     if (docsFiles.isNotEmpty) return;
 
-    // var data = await DBHelper.getData(docsRecentFilesTableName);
-    // var data = await DBHelper.getDataLimit(
-    //   orderProp: createdAtString,
-    //   table: docsRecentFilesTableName,
-    // );
-    // for (var doc in data) {
-    //   docsFiles.add(LocalFileInfo.fromJSON(doc));
-    // }
     docsFiles = [
       ...(await HiveBox.docsRecentFilesTableName).values.toList().cast()
     ];
@@ -354,15 +309,6 @@ class RecentProvider extends ChangeNotifier {
   Future loadDownloads() async {
     if (downloadsFiles.isNotEmpty) return;
 
-    // var data = await DBHelper.getData(downloadsRecentFilesTableName);
-    // var data = await DBHelper.getDataLimit(
-    //   orderProp: createdAtString,
-    //   table: downloadsRecentFilesTableName,
-    // );
-    // for (var downloadFile in data) {
-    //   downloadsFiles.add(LocalFileInfo.fromJSON(downloadFile));
-    // }
-
     downloadsFiles = [
       ...(await HiveBox.downloadsRecentFilesTableName).values.toList().cast()
     ];
@@ -371,45 +317,96 @@ class RecentProvider extends ChangeNotifier {
 
 //# save data to sqlite
   Future<void> _saveResultsToSqlite() async {
-    // for (var imageFile in imagesFiles) {
-    //   var jsonOBJ = imageFile.toJSON();
-    //   await DBHelper.insert(imagesRecentFilesTableName, jsonOBJ);
-    // }
     (await HiveBox.imagesRecentFilesTableName).addAll(imagesFiles);
 
-    // for (var video in videosFiles) {
-    //   var jsonOBJ = video.toJSON();
-    //   await DBHelper.insert(videosRecentFilesTableName, jsonOBJ);
-    // }
     (await HiveBox.videosRecentFilesTableName).addAll(videosFiles);
-    // for (var music in musicFiles) {
-    //   var jsonOBJ = music.toJSON();
-    //   await DBHelper.insert(musicRecentFilesTableName, jsonOBJ);
-    // }
+
     (await HiveBox.musicRecentFilesTableName).addAll(musicFiles);
 
-    // for (var apk in apkFiles) {
-    //   var jsonOBJ = apk.toJSON();
-    //   await DBHelper.insert(apkRecentFilesTableName, jsonOBJ);
-    // }
     (await HiveBox.apkRecentFilesTableName).addAll(apkFiles);
 
-    // for (var archive in archivesFiles) {
-    //   var jsonOBJ = archive.toJSON();
-    //   await DBHelper.insert(archivesRecentFilesTableName, jsonOBJ);
-    // }
     (await HiveBox.archivesRecentFilesTableName).addAll(archivesFiles);
 
-    // for (var doc in docsFiles) {
-    //   var jsonOBJ = doc.toJSON();
-    //   await DBHelper.insert(docsRecentFilesTableName, jsonOBJ);
-    // }
     (await HiveBox.docsRecentFilesTableName).addAll(docsFiles);
 
-    // for (var downloadFile in downloadsFiles) {
-    //   var jsonOBJ = downloadFile.toJSON();
-    //   await DBHelper.insert(downloadsRecentFilesTableName, jsonOBJ);
-    // }
     (await HiveBox.downloadsRecentFilesTableName).addAll(downloadsFiles);
+  }
+
+  //# watching recent files parents
+  final List<String> _foldersToWatch = [];
+  final List<String> _watchedFolders = [];
+
+  void _startListenForRecentFilesParents() {
+    //
+    for (var file in imagesFiles) {
+      _addToFoldersToWatch(file.parentPath);
+    }
+    for (var file in videosFiles) {
+      _addToFoldersToWatch(file.parentPath);
+    }
+    for (var file in musicFiles) {
+      _addToFoldersToWatch(file.parentPath);
+    }
+    for (var file in apkFiles) {
+      _addToFoldersToWatch(file.parentPath);
+    }
+    for (var file in archivesFiles) {
+      _addToFoldersToWatch(file.parentPath);
+    }
+    for (var file in docsFiles) {
+      _addToFoldersToWatch(file.parentPath);
+    }
+    for (var file in downloadsFiles) {
+      _addToFoldersToWatch(file.parentPath);
+    }
+    // after adding start watching
+    _watchRecentFolders();
+  }
+
+  void _addToFoldersToWatch(String folderPath) {
+    if (_foldersToWatch.any((element) => element == folderPath)) return;
+    _foldersToWatch.add(folderPath);
+  }
+
+  void _watchRecentFolders() {
+    for (var folderPath in _foldersToWatch) {
+      _handleStartListenForSingleFolder(folderPath);
+    }
+  }
+
+  void _handleStartListenForSingleFolder(String folderPath) {
+    if (_watchedFolders.contains(folderPath)) return;
+    Directory directory = Directory(folderPath);
+    if (!directory.existsSync()) return;
+    directory.watch().listen(_handleRecentFolderEvent);
+    _watchedFolders.add(folderPath);
+  }
+
+  void _handleRecentFolderEvent(FileSystemEvent event) {
+    if (event.isDirectory) {
+      _handleStartListenForSingleFolder(event.path);
+      logger.i('folder event');
+    } else {
+      var localFileInfo = LocalFileInfo.fromPath(event.path);
+
+      //! 1=> add (copy)
+      //! 4=> delete
+
+      //! 8 => rename
+      if (event.type == 1) {
+        _addRecentFile(localFileInfo, true);
+        logger.i('file added');
+        //? add file to recent files
+      } else if (event.type == 4) {
+        _removeRecentFile(event.path);
+        logger.i('file removed');
+        //? just remove from the recent files
+      }
+      // else if (event.type == 8) {
+      //   _addRecentFile(localFileInfo);
+      //   //? just add the new file and the old one won't show automatically by the storage item widgets
+      //   logger.i('file renamed');
+      // }
+    }
   }
 }

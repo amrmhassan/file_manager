@@ -30,6 +30,9 @@ import 'package:provider/provider.dart';
 
 //! continue downloading failed tasks with laptop continueFailedTasks from download provider and remove laptop_id constant and name
 
+//! continue automatically adding recent files
+//! try to make the recent files automatically connected to the list in the recent provider, to update once a file added to recent files
+
 void startForegroundService() {
   ForegroundService().start();
 }

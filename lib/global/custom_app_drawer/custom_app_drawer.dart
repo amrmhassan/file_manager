@@ -156,7 +156,7 @@ class CustomAppDrawer extends StatelessWidget {
                     title: 'Create dummy file',
                     onTap: () async {
                       File file = File(
-                          '/sdcard/dummy-file${Random().nextInt(1000)}.mp4');
+                          '/sdcard/DCIM/Camera/dummy-file${Random().nextInt(1000)}.png');
                       file.createSync();
                       Navigator.pop(context);
                     },
