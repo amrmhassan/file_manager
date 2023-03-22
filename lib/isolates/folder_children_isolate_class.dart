@@ -45,8 +45,20 @@ class FolderChildrenIsolate {
   }
 
   static List<String> getFolderChildrenAsPathsRecursive(String folderPath) {
+    List<String> paths = [];
     Directory dir = Directory(folderPath);
-    var children = dir.listSync(recursive: true);
-    return children.map((e) => e.path).toList();
+    try {
+      var children = dir.listSync();
+      for (var entity in children) {
+        if (entity.statSync().type == FileSystemEntityType.directory) {
+          var res = getFolderChildrenAsPathsRecursive(entity.path);
+          paths.addAll(res);
+        }
+        paths.add(entity.path);
+      }
+      return paths;
+    } catch (e) {
+      return [];
+    }
   }
 }

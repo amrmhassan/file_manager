@@ -5,10 +5,18 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/isolates/folder_children_isolate_class.dart';
 import 'package:flutter/foundation.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
+import 'package:path/path.dart';
 
 class SearchProvider extends ChangeNotifier {
   String _searchQuery = '';
   String get searchQuery => _searchQuery;
+  bool extendSearchDone = false;
+
+  void setExtendedSearchDone(bool s) {
+    extendSearchDone = s;
+    notifyListeners();
+  }
+
   void setSearchQuery(String v) {
     _searchQuery = v;
     notifyListeners();
@@ -19,13 +27,15 @@ class SearchProvider extends ChangeNotifier {
   bool emptySearch = false;
   bool searching = false;
 
-  Future<void> extendedSearch(String query) async {
-    if (query.length < 2) return;
+  Future<void> extendedSearch() async {
+    if (searchQuery.length < 2) return;
+    emptySearch = false;
     _searchResults.clear();
     searching = true;
+    extendSearchDone = true;
     notifyListeners();
 
-    for (var dir in initialDirs) {
+    for (var dir in initialDirs.skip(1)) {
       if (dir.path == initialDirs.first.path) continue;
       // searching for the full storage path
       // split the storage and get the folders and start a separate search for each folder to fasten the process
@@ -42,10 +52,44 @@ class SearchProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> search() async {
+    if (searchQuery.length < 2) return;
+    _searchResults.clear();
+    searching = true;
+    emptySearch = false;
+    extendSearchDone = false;
+    notifyListeners();
+
+    Iterable<String> allFolders =
+        (await HiveBox.allFoldersInfoTableName).values.cast();
+    Iterable<String> allFiles =
+        (await HiveBox.allFilesInfoTableName).values.cast();
+
+    _handleFilterSearchResults(allFolders);
+    _handleFilterSearchResults(allFiles);
+
+    searching = false;
+    emptySearch = _searchResults.isEmpty;
+    notifyListeners();
+  }
+
+  void _addToSearchResult(List<String> results) {
+    _searchResults.addAll(results);
+    notifyListeners();
+  }
+
+  void _handleFilterSearchResults(Iterable<String> paths) {
+    _addToSearchResult(paths
+        .where((element) =>
+            basename(element).toLowerCase().contains(searchQuery.toLowerCase()))
+        .toList());
+  }
+
   Future<void> _handleRunParallelSearch(List<String> paths) async {
     Completer doneComplete = Completer();
     List<String> parallelFoldersEntries = [];
     List<String> completedSearches = [];
+
     for (var path in paths) {
       _addToSearchResult([path]);
       bool isPathDir = isDir(path);
@@ -70,35 +114,5 @@ class SearchProvider extends ChangeNotifier {
       });
     }
     return doneComplete.future;
-  }
-
-  void _handleFilterSearchResults(Iterable<String> paths) {
-    _addToSearchResult(
-        paths.where((element) => element.contains(searchQuery)).toList());
-  }
-
-  Future<void> search() async {
-    if (searchQuery.length < 2) return;
-    _searchResults.clear();
-    searching = true;
-    notifyListeners();
-
-    Iterable<String> allFolders =
-        (await HiveBox.allFoldersInfoTableName).values.cast();
-    Iterable<String> allFiles =
-        (await HiveBox.allFilesInfoTableName).values.cast();
-
-    _handleFilterSearchResults(allFolders);
-    _handleFilterSearchResults(allFiles);
-
-    searching = false;
-    emptySearch = _searchResults.isEmpty;
-    notifyListeners();
-  }
-
-  void _addToSearchResult(List<String> results) {
-    _searchResults.addAll(results);
-    logger.i('adding ${results.length} to search results');
-    notifyListeners();
   }
 }

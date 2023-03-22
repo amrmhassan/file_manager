@@ -93,18 +93,36 @@ class LocalFileInfo {
   }
 
   static LocalFileInfo fromPath(String path) {
-    File file = File(path);
-    FileStat stat = file.statSync();
-    return LocalFileInfo(
-      size: stat.size,
-      parentPath: file.parent.path,
-      path: path,
-      modified: stat.modified,
-      accessed: stat.accessed,
-      changed: stat.changed,
-      entityType: EntityType.file,
-      fileBaseName: basename(path),
-      ext: getFileExtension(path),
-    );
+    bool isEntityDir = isDir(path);
+    if (isEntityDir) {
+      Directory dir = Directory(path);
+      FileStat stat = dir.statSync();
+
+      return LocalFileInfo(
+        size: stat.size,
+        parentPath: dir.parent.path,
+        path: path,
+        modified: stat.modified,
+        accessed: stat.accessed,
+        changed: stat.changed,
+        entityType: EntityType.folder,
+        fileBaseName: basename(path),
+        ext: getFileExtension(path),
+      );
+    } else {
+      File file = File(path);
+      FileStat stat = file.statSync();
+      return LocalFileInfo(
+        size: stat.size,
+        parentPath: file.parent.path,
+        path: path,
+        modified: stat.modified,
+        accessed: stat.accessed,
+        changed: stat.changed,
+        entityType: EntityType.file,
+        fileBaseName: basename(path),
+        ext: getFileExtension(path),
+      );
+    }
   }
 }
