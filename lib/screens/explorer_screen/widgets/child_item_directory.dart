@@ -3,7 +3,6 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/defaults_constants.dart';
 import 'package:explorer/constants/global_constants.dart';
@@ -13,6 +12,7 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
+import 'package:explorer/isolates/folder_children_isolate_class.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
@@ -30,17 +30,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-int getFolderChildrenNumber(String path) {
-  Directory directory = Directory(path);
-  return directory.listSync().length;
-}
-
-List<LocalFileInfo> getFolderChildren(String folderPath) {
-  Directory directory = Directory(folderPath);
-  var children = directory.listSync();
-  return children.map((e) => LocalFileInfo.fromPath(e.path)).toList();
-}
 
 class ChildDirectoryItem extends StatefulWidget {
   final String fileName;
@@ -175,7 +164,8 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
         bool doUpdateInfo = updateFolderInfo(
             fState.modified, folderItemInfoModel?.dateCaptured);
         if (!doUpdateInfo) return;
-        int cn = await compute(getFolderChildrenNumber, path);
+        int cn =
+            await compute(FolderChildrenIsolate.getFolderChildrenNumber, path);
         await addDataToSqlite(context, [], cn);
         if (!mounted) {
           return;

@@ -2,10 +2,9 @@
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_text_field.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
@@ -26,7 +25,6 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
-  String content = '';
   CustomFuture? customFuture;
 
   @override
@@ -55,24 +53,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   autoFocus: true,
                   title: 'Search...',
                   onChange: (v) {
-                    setState(() {
-                      content = v;
-                    });
+                    searchProviderFalse.setSearchQuery(v);
                     customFuture?.cancel();
                     customFuture = CustomFuture();
 
                     customFuture?.delayedAction(Duration(milliseconds: 500),
                         () async {
-                      searchProviderFalse.search(searchController.text);
+                      searchProviderFalse.search();
                     });
                   },
-                  trailingIcon: content.isEmpty
+                  trailingIcon: searchProvider.searchQuery.isEmpty
                       ? null
                       : IconButton(
                           onPressed: () {
-                            setState(() {
-                              content = '';
-                            });
+                            searchProviderFalse.setSearchQuery('');
                             searchController.text = '';
                           },
                           icon: Icon(
@@ -109,7 +103,24 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ],
               ),
+            )
+          else
+            PaddingWrapper(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ButtonWrapper(
+                    onTap: () {},
+                    child: Text(
+                      'Extended Search?',
+                      style: h4TextStyle.copyWith(color: kBlueColor),
+                    ),
+                  ),
+                  Spacer(),
+                ],
+              ),
             ),
+          VSpace(factor: .5),
           Expanded(
             child: searchProvider.emptySearch
                 ? Center(

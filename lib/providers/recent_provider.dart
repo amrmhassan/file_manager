@@ -5,7 +5,7 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
-import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
+import 'package:explorer/isolates/folder_children_isolate_class.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/foundation.dart';
 
@@ -334,7 +334,10 @@ class RecentProvider extends ChangeNotifier {
       Directory directory = Directory(folder);
       if (!directory.existsSync()) continue;
       // getFolderChildrenNumber(path)
-      var res = await compute((message) => getFolderChildren(message), folder);
+      var res = await compute(
+          (message) =>
+              FolderChildrenIsolate.getFolderChildrenAsLocalFileInfo(message),
+          folder);
       loadedFiles.addAll(res);
     }
     logger.i('loaded files length ${loadedFiles.length}');
