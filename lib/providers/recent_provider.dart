@@ -5,7 +5,9 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
+import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 int recentItemsLimit = 100;
@@ -316,7 +318,43 @@ class RecentProvider extends ChangeNotifier {
   final List<String> _foldersToWatch = [];
   final List<String> _watchedFolders = [];
 
-  void _startListenForRecentFilesParents() {
+  void _preAnalyzeRecentFolders() async {
+    List<LocalFileInfo> loadedFiles = [];
+    for (var folder in _foldersToWatch) {
+      Directory directory = Directory(folder);
+      if (!directory.existsSync()) continue;
+      // getFolderChildrenNumber(path)
+      var res = await compute((message) => getFolderChildren(message), folder);
+      loadedFiles.addAll(res);
+    }
+    logger.i('loaded files length ${loadedFiles.length}');
+    for (var file in loadedFiles) {
+      _addRecentFile(file);
+    }
+  }
+
+  Future<void> loadFoldersToWatchThenListen() async {
+    List<String> folders = (await HiveBox.foldersToWatchForOnStartUpTableName)
+        .values
+        .toList()
+        .cast();
+    // load folders to watch
+    _foldersToWatch.addAll(folders);
+    // pre analyze recent folders
+    _preAnalyzeRecentFolders();
+    // listen for recent folders
+    _startListenForRecentFilesParents(false);
+    logger.i('loaded folders to watch for length ${folders.length}');
+  }
+
+  Future<void> _clearThenSaveFoldersToWatchInHive() async {
+    var box = (await HiveBox.foldersToWatchForOnStartUpTableName);
+    await box.clear();
+    await box.addAll(_foldersToWatch);
+    logger.i('saved folders to watch ${box.values.length}');
+  }
+
+  void _startListenForRecentFilesParents([bool saveToHive = true]) async {
     //
     for (var file in imagesFiles) {
       _addToFoldersToWatch(file.parentPath);
@@ -341,6 +379,9 @@ class RecentProvider extends ChangeNotifier {
     }
     // after adding start watching
     _watchRecentFolders();
+    if (saveToHive) {
+      await _clearThenSaveFoldersToWatchInHive();
+    }
   }
 
   void _addToFoldersToWatch(String folderPath) {

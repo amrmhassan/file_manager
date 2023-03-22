@@ -46,6 +46,10 @@ class HiveBox {
 
   static Future<Box> get extensionInfoTableName =>
       Hive.openBox(_HiveBoxesNames.extensionInfoTableName);
+
+  // folders to watch for on startup
+  static Future<Box> get foldersToWatchForOnStartUpTableName =>
+      Hive.openBox(_HiveBoxesNames.foldersToWatchForOnStartUpTableName);
 }
 
 class _HiveBoxesNames {
@@ -75,16 +79,8 @@ class _HiveBoxesNames {
 
   static const String thumbnailPathTableName = 'thumbnailPathTableName';
   static const String extensionInfoTableName = 'extensionInfoTableName';
+
+  // folders to watch for on startup
+  static const String foldersToWatchForOnStartUpTableName =
+      'foldersToWatchForOnStartUpTableName';
 }
-
-// class HiveHelper {
-//   final Box box;
-
-//   const HiveHelper(this.box);
-
-//   Iterable<dynamic> getDataLimit(int limit) {
-//     List<dynamic> data = box.values.toList();
-//     data.sort();
-//     return data.take(limit);
-//   }
-// }

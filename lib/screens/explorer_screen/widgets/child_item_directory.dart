@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/defaults_constants.dart';
 import 'package:explorer/constants/global_constants.dart';
@@ -33,6 +34,12 @@ import 'package:provider/provider.dart';
 int getFolderChildrenNumber(String path) {
   Directory directory = Directory(path);
   return directory.listSync().length;
+}
+
+List<LocalFileInfo> getFolderChildren(String folderPath) {
+  Directory directory = Directory(folderPath);
+  var children = directory.listSync();
+  return children.map((e) => LocalFileInfo.fromPath(e.path)).toList();
 }
 
 class ChildDirectoryItem extends StatefulWidget {
