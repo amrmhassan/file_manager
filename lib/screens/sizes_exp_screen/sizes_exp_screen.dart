@@ -2,8 +2,8 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';

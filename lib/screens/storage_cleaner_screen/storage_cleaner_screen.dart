@@ -5,7 +5,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';

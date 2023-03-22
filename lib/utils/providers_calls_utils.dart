@@ -8,8 +8,8 @@ import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

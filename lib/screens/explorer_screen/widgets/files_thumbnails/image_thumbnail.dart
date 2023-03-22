@@ -13,7 +13,7 @@ import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/files_thumbnails/isolates/file_thumb_isolates.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';

@@ -6,7 +6,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/animation_wrapper.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';

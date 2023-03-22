@@ -5,7 +5,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

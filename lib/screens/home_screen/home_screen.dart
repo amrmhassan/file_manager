@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';

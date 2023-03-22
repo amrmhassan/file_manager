@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:external_path/external_path.dart';
 
 Future initialDirsInit() async {

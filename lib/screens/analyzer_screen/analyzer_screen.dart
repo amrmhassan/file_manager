@@ -3,7 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzing_report.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzing_starter.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';

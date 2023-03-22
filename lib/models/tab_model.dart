@@ -1,4 +1,4 @@
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:path/path.dart' as path_operations;
 
 class TabModel {

@@ -29,3 +29,14 @@ enum TaskStatus {
   @HiveField(4)
   failed,
 }
+
+enum SortOption {
+  nameAsc,
+  nameDes,
+  sizeAsc,
+  sizeDec,
+  modifiedAsc,
+  modifiedDec,
+  typeAsc,
+  typeDec,
+}

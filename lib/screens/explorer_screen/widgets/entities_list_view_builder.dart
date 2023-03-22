@@ -3,9 +3,9 @@
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/children_info_provider.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:flutter/material.dart';
 

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/initiators/global_runtime_variables.dart';
-import 'package:explorer/providers/explorer_provider_abstract.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,7 @@ import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/tab_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/isolates/load_folder_children_isolates.dart';
 import 'package:explorer/utils/directory_watchers.dart';
@@ -26,8 +25,7 @@ import 'package:explorer/utils/screen_utils/children_view_utils.dart';
 
 Map<String, String> mainDisksMapper = {};
 
-class ExplorerProvider extends ChangeNotifier
-    implements ExplorerProviderAbstract {
+class ExplorerProvider extends ChangeNotifier {
   // this will indicate that the mode is just to view the downloaded file or folder
 
   String? viewedFilePath;
@@ -36,16 +34,15 @@ class ExplorerProvider extends ChangeNotifier
     notifyListeners();
   }
 
-  @override
   int activeViewIndex = 0;
-  @override
+
   void setActivePageIndex(int i) {
     activeViewIndex = i;
     notifyListeners();
   }
 
   String? _activeTabPath;
-  @override
+
   String? get activeTabPath {
     if (_tabs.isNotEmpty && _activeTabPath == null) {
       return _tabs.first.path;
@@ -54,42 +51,41 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   final List<TabModel> _tabs = [];
-  @override
+
   List<TabModel> get tabs => [..._tabs];
 
   final List<StorageItemModel> _children = [];
-  @override
+
   List<StorageItemModel> get children => [..._children];
-  @override
+
   SendPort? globalSendPort;
 
-  @override
   bool loadingChildren = false;
-  @override
+
   String? error;
-  @override
+
   Directory currentActiveDir = initialDirs.first;
-  @override
+
   StreamSubscription<FileSystemEntity>? streamSub;
-  @override
+
   StreamSubscription? watchDirStreamSub;
-  @override
+
   int? parentSize;
 
   //# sorting options
   //? sort parameters
   SortOption _sortOption = defaultSortOption;
-  @override
+
   SortOption get sortOption => _sortOption;
   bool _prioritizeFolders = defaultPriotorizeFolders;
-  @override
+
   bool get prioritizeFolders => _prioritizeFolders;
   bool _showHiddenFiles = defaultShowHiddenFiles;
-  @override
+
   bool get showHiddenFiles => _showHiddenFiles;
 
   //? to set the sort option
-  @override
+
   void setSortOptions(SortOption s) async {
     _sortOption = s;
     notifyListeners();
@@ -97,7 +93,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? to set priotorize folders
-  @override
+
   void togglePriotorizeFolders() async {
     _prioritizeFolders = !_prioritizeFolders;
     notifyListeners();
@@ -105,7 +101,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? to set show hidden files
-  @override
+
   void toggleShowHiddenFiles() async {
     _showHiddenFiles = !_showHiddenFiles;
     notifyListeners();
@@ -113,7 +109,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? to load sort options when app loaded
-  @override
+
   Future loadSortOptions() async {
     String? sortOptionString = await SharedPrefHelper.getString(sortOptionKey);
     bool? prioritizeFoldersLoadedBool =
@@ -142,7 +138,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? to change viewed file name
-  @override
+
   void changeViewedFileName(String oldPath, String newPath) {
     File newFile = File(newPath);
     FileStat fileStat = newFile.statSync();
@@ -161,14 +157,14 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? void remove item when deleted
-  @override
+
   void removeItemWhenDeleted(String path) {
     _children.removeWhere((element) => element.path == path);
     notifyListeners();
   }
 
   //? to change viewed file name
-  @override
+
   void changeViewedFolderName(String oldPath, String newPath) {
     Directory newDir = Directory(newPath);
     FileStat fileStat = newDir.statSync();
@@ -188,13 +184,13 @@ class ExplorerProvider extends ChangeNotifier
 
   //? selected from the current active folder
   List<StorageItemModel> _selectedFromCurrentActiveDir = [];
-  @override
+
   List<StorageItemModel> get selectedFromCurrentActiveDir {
     return [..._selectedFromCurrentActiveDir];
   }
 
   //? to add to the selected from current dir
-  @override
+
   void addToSelectedFromCurrentDir(StorageItemModel s) {
     if (!_selectedFromCurrentActiveDir
         .any((element) => element.path == s.path)) {
@@ -204,7 +200,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? to remove from the selected from current dir
-  @override
+
   void removeFromSelectedFromCurrentDir(String path) {
     _selectedFromCurrentActiveDir.removeWhere(
       (element) => element.path == path,
@@ -213,20 +209,20 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? to clear the ...
-  @override
+
   void clearSelectedFromActiveDir([bool notify = true]) {
     _selectedFromCurrentActiveDir.clear();
     if (notify) notifyListeners();
   }
 
   //? is all in the current active folder selected or not
-  @override
+
   bool get allActiveDirChildrenSelected {
     return _selectedFromCurrentActiveDir.length == _children.length;
   }
 
   //? to update the parent size if in sizes explorer mode
-  @override
+
   void updateParentSize(AnalyzerProvider analyzerProvider) async {
     //? here i will update the current active dir size
     LocalFolderInfo? localFolderInfo =
@@ -237,7 +233,6 @@ class ExplorerProvider extends ChangeNotifier
     }
   }
 
-  @override
   Future<List<StorageItemModel>> viewedChildren(
     BuildContext context, [
     bool sizesExplorer = false,
@@ -284,7 +279,6 @@ class ExplorerProvider extends ChangeNotifier
     }
   }
 
-  @override
   bool goBack({
     required AnalyzerProvider? analyzerProvider,
     required bool sizesExplorer,
@@ -310,7 +304,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? go home
-  @override
+
   void goHome({
     required AnalyzerProvider? analyzerProvider,
     required bool sizesExplorer,
@@ -325,7 +319,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? update the selected items from the current dir when ever the active dir changes
-  @override
+
   void updateSelectedFromActiveDir({
     required FilesOperationsProvider filesOperationsProvider,
   }) {
@@ -336,7 +330,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? update the active dir
-  @override
+
   void setActiveDir({
     required String path,
     AnalyzerProvider? analyzerProvider,
@@ -372,14 +366,14 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? add chunk to children list
-  @override
+
   void addToList(List<StorageItemModel> chunk) {
     _children.addAll(chunk);
     notifyListeners();
   }
 
   //? trying isolates with the provider
-  @override
+
   void runTheIsolate() {
     var receivePort = ReceivePort();
     var sendPort = receivePort.sendPort;
@@ -445,7 +439,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? add a new tab
-  @override
+
   void addTab(String path, FilesOperationsProvider filesOperationsProvider,
       [bool doOpenTab = true]) {
     bool exists = _tabs.any((element) => element.path == path);
@@ -465,7 +459,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? open tab
-  @override
+
   void openTab(String path, FilesOperationsProvider filesOperationsProvider) {
     if (!_tabs.any((element) => element.path == path)) {
       addTab(path, filesOperationsProvider, false);
@@ -476,7 +470,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
 //? close tab
-  @override
+
   void closeTab(String path, FilesOperationsProvider filesOperationsProvider) {
     int index = _tabs.indexWhere((element) => element.path == path);
     int length = _tabs.length;
@@ -491,7 +485,7 @@ class ExplorerProvider extends ChangeNotifier
   }
 
   //? to update the current active tab when opening new one
-  @override
+
   void updateCurrentActiveTab(String path) {
     if (_tabs.isEmpty) return;
     //* if the path already exists in a tab just activate that tab

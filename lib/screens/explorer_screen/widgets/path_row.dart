@@ -3,8 +3,8 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/path_entity_text.dart';
 import 'package:explorer/utils/general_utils.dart';

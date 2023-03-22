@@ -5,8 +5,8 @@ import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/providers/settings_provider.dart';
-import 'package:explorer/providers/util/analyzer_provider.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/analyzer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';

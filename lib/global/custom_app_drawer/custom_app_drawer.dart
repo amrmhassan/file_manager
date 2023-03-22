@@ -15,7 +15,7 @@ import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/download_provider.dart';
-import 'package:explorer/providers/util/explorer_provider.dart';
+import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/about_us_screen/about_us_screen.dart';
 import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';

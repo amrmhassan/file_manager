@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:explorer/providers/explorer_provider_abstract.dart';
+import 'package:explorer/models/types.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
