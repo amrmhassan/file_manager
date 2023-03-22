@@ -18,7 +18,7 @@ class SearchProvider extends ChangeNotifier {
   }
 
   void setSearchQuery(String v) {
-    _searchQuery = v;
+    _searchQuery = v.trim();
     notifyListeners();
   }
 
@@ -79,10 +79,11 @@ class SearchProvider extends ChangeNotifier {
   }
 
   void _handleFilterSearchResults(Iterable<String> paths) {
-    _addToSearchResult(paths
+    var res = paths
         .where((element) =>
             basename(element).toLowerCase().contains(searchQuery.toLowerCase()))
-        .toList());
+        .toList();
+    _addToSearchResult(res);
   }
 
   Future<void> _handleRunParallelSearch(List<String> paths) async {
@@ -91,7 +92,7 @@ class SearchProvider extends ChangeNotifier {
     List<String> completedSearches = [];
 
     for (var path in paths) {
-      _addToSearchResult([path]);
+      _handleFilterSearchResults([path]);
       bool isPathDir = isDir(path);
       if (isPathDir) {
         parallelFoldersEntries.add(path);

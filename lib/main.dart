@@ -33,6 +33,11 @@ import 'package:provider/provider.dart';
 //! continue automatically adding recent files
 //! try to make the recent files automatically connected to the list in the recent provider, to update once a file added to recent files
 
+//!
+//!
+//!run parallel analyzer for the analyzer provider like in the search provider to fasten the process
+//!
+//!
 void startForegroundService() {
   ForegroundService().start();
 }
