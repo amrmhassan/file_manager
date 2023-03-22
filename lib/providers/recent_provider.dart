@@ -8,7 +8,6 @@ import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
 import 'package:explorer/screens/recent_screen/widget/segment_section.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 int recentItemsLimit = 100;
 bool skipHiddenFolders = false;
@@ -16,6 +15,18 @@ bool skipWhatsAppStatusFolder = true;
 bool skipWhatsAppRecordsFolder = true;
 
 class RecentProvider extends ChangeNotifier {
+  List<LocalFileInfo> get allRecentFiles {
+    List<LocalFileInfo> res = [];
+    res.addAll(imagesFiles);
+    res.addAll(videosFiles);
+    res.addAll(musicFiles);
+    res.addAll(apkFiles);
+    res.addAll(archivesFiles);
+    res.addAll(docsFiles);
+    res.addAll(downloadsFiles);
+    return res;
+  }
+
   bool loading = false;
   void setLoading(bool b) {
     loading = b;
@@ -59,7 +70,6 @@ class RecentProvider extends ChangeNotifier {
     if (_addImage(path, fileType) &&
         (imagesFiles.length < recentItemsLimit || forceAdd)) {
       if (forceAdd) {
-        logger.i('image actually added');
         (await HiveBox.imagesRecentFilesTableName).add(file);
 
         imagesFiles.insert(0, file);
@@ -235,7 +245,7 @@ class RecentProvider extends ChangeNotifier {
 //# load data from sqlite
 
   Future loadImages() async {
-    if (imagesFiles.isNotEmpty) return;
+    // if (imagesFiles.isNotEmpty) return;
 
     imagesFiles = [
       ...(await HiveBox.imagesRecentFilesTableName).values.toList().cast()
@@ -244,7 +254,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadVideos() async {
-    if (videosFiles.isNotEmpty) return;
+    // if (videosFiles.isNotEmpty) return;
 
     videosFiles = [
       ...(await HiveBox.videosRecentFilesTableName).values.toList().cast()
@@ -253,7 +263,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadMusic() async {
-    if (musicFiles.isNotEmpty) return;
+    // if (musicFiles.isNotEmpty) return;
 
     musicFiles = [
       ...(await HiveBox.musicRecentFilesTableName).values.toList().cast()
@@ -262,7 +272,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadApk() async {
-    if (apkFiles.isNotEmpty) return;
+    // if (apkFiles.isNotEmpty) return;
 
     apkFiles = [
       ...(await HiveBox.apkRecentFilesTableName).values.toList().cast()
@@ -271,7 +281,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadArchives() async {
-    if (archivesFiles.isNotEmpty) return;
+    // if (archivesFiles.isNotEmpty) return;
 
     archivesFiles = [
       ...(await HiveBox.archivesRecentFilesTableName).values.toList().cast()
@@ -280,7 +290,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadDocs() async {
-    if (docsFiles.isNotEmpty) return;
+    // if (docsFiles.isNotEmpty) return;
 
     docsFiles = [
       ...(await HiveBox.docsRecentFilesTableName).values.toList().cast()
@@ -289,7 +299,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadDownloads() async {
-    if (downloadsFiles.isNotEmpty) return;
+    // if (downloadsFiles.isNotEmpty) return;
 
     downloadsFiles = [
       ...(await HiveBox.downloadsRecentFilesTableName).values.toList().cast()
@@ -329,7 +339,7 @@ class RecentProvider extends ChangeNotifier {
     }
     logger.i('loaded files length ${loadedFiles.length}');
     for (var file in loadedFiles) {
-      _addRecentFile(file);
+      _addRecentFile(file, true);
     }
   }
 

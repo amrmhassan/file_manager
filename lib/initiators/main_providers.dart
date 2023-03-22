@@ -1,3 +1,4 @@
+import 'package:explorer/providers/search_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
@@ -34,4 +35,5 @@ List<SingleChildWidget> mainProviders = [
   ChangeNotifierProvider(create: (ctx) => DownloadProvider()),
   ChangeNotifierProvider(create: (ctx) => QuickSendProvider()),
   ChangeNotifierProvider(create: (ctx) => ConnectLaptopProvider()),
+  ChangeNotifierProvider(create: (ctx) => SearchProvider()),
 ];

@@ -12,6 +12,7 @@ import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/recent_screen_utils.dart';
+import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
@@ -27,7 +28,7 @@ class AnalyzerProvider extends ChangeNotifier {
   //? these data will be available after running the analyzer without closing the app
   bool _loading = false;
 
-  get loading => _loading;
+  bool get loading => _loading;
 
   bool _savingInfoToSqlite = false;
 
@@ -155,7 +156,6 @@ class AnalyzerProvider extends ChangeNotifier {
           _currentFolder = '';
           _foldersInfo = message.allFolderInfoWithSize;
           _allExtensionsInfo = message.allExtensionsInfo;
-          _loading = false;
           //? if we reached here this mean the storage analyzer report done successfully
           await tempCollection.deleteCollection();
           await _saveReportInfo();
@@ -165,7 +165,9 @@ class AnalyzerProvider extends ChangeNotifier {
           await _setLastAnalyzingDate();
           await _handleSaveRecentFiles(recentProvider);
           await _saveResultsToSqlite();
+          await _saveAllFilesInfo();
           isolate.kill();
+          _loading = false;
         } else if (message is int) {
           printOnDebug('Analyzing Time : ${message / 1000} Second');
         } else if (message is! SendPort) {
@@ -174,6 +176,15 @@ class AnalyzerProvider extends ChangeNotifier {
         }
       },
     );
+  }
+
+  Future<void> _saveAllFilesInfo() async {
+    try {
+      (await HiveBox.allFilesInfoTableName)
+          .addAll(_storageAnalyzerV4!.allFilesInfo.map((e) => e.path));
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   //? handle save recent files

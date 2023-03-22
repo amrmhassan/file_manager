@@ -50,6 +50,10 @@ class HiveBox {
   // folders to watch for on startup
   static Future<Box> get foldersToWatchForOnStartUpTableName =>
       Hive.openBox(_HiveBoxesNames.foldersToWatchForOnStartUpTableName);
+
+  // all files info, used for search
+  static Future<Box> get allFilesInfoTableName =>
+      Hive.openBox(_HiveBoxesNames.allFilesInfoTableName);
 }
 
 class _HiveBoxesNames {
@@ -63,6 +67,7 @@ class _HiveBoxesNames {
   static const String listy = 'listyBoxName';
   static const String recentOpenedFile = 'recentOpenedFileBoxName';
   static const String shareSpaceItem = 'shareSpaceItemBoxName';
+
   // recent boxes
   static const String imagesRecentFilesTableName = 'imagesRecentFilesTableName';
   static const String videosRecentFilesTableName = 'videosRecentFilesTableName';
@@ -83,4 +88,7 @@ class _HiveBoxesNames {
   // folders to watch for on startup
   static const String foldersToWatchForOnStartUpTableName =
       'foldersToWatchForOnStartUpTableName';
+
+  // all files info, used for search
+  static const String allFilesInfoTableName = 'allFilesInfoTableName';
 }

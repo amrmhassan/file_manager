@@ -1,7 +1,6 @@
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/models/storage_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/models/types.dart';
 import 'package:path/path.dart' as path;
 
 List<StorageItemModel> getFixedEntityList({
