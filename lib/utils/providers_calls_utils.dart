@@ -5,6 +5,7 @@ import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
+import 'package:explorer/providers/search_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
@@ -129,4 +130,13 @@ RecentProvider recentPF(BuildContext context) {
 
 RecentProvider recentP(BuildContext context) {
   return Provider.of<RecentProvider>(context);
+}
+
+//? recent provider
+SearchProvider searchPF(BuildContext context) {
+  return Provider.of<SearchProvider>(context, listen: false);
+}
+
+SearchProvider searchP(BuildContext context) {
+  return Provider.of<SearchProvider>(context);
 }

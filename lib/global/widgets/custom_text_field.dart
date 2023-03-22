@@ -38,6 +38,8 @@ class CustomTextField extends StatelessWidget {
       {required int currentLength,
       required bool isFocused,
       required int? maxLength})? buildCounter;
+  final BoxDecoration? decoration;
+
   const CustomTextField({
     Key? key,
     this.iconName,
@@ -67,6 +69,7 @@ class CustomTextField extends StatelessWidget {
     this.trailingIcon,
     this.maxLength,
     this.buildCounter,
+    this.decoration,
   }) : super(key: key);
 
   @override
@@ -91,16 +94,17 @@ class CustomTextField extends StatelessWidget {
                 ),
               Expanded(
                 child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: borderRadius ??
-                        BorderRadius.circular(smallBorderRadius),
-                    border: Border.all(
-                      width: 1,
-                      color: errorText == null
-                          ? (borderColor ?? kInactiveColor)
-                          : kDangerColor,
-                    ),
-                  ),
+                  decoration: decoration ??
+                      BoxDecoration(
+                        borderRadius: borderRadius ??
+                            BorderRadius.circular(smallBorderRadius),
+                        border: Border.all(
+                          width: 1,
+                          color: errorText == null
+                              ? (borderColor ?? kInactiveColor)
+                              : kDangerColor,
+                        ),
+                      ),
                   padding: EdgeInsets.symmetric(
                     horizontal: kHPad / 2,
                     // vertical: kVPad / 2,

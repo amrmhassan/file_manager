@@ -1,4 +1,5 @@
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
+import 'package:explorer/screens/search_screen/search_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/screens/windows_client_update_note_screen/windows_client_update_note_screen.dart';
 import 'package:flutter/material.dart';
@@ -66,4 +67,5 @@ Map<String, Widget Function(BuildContext)> mainRoutes = {
       const WindowsUpdateNoteScreen(),
   TouchPadScreen.routeName: (context) => const TouchPadScreen(),
   FullTextViewerScreen.routeName: (context) => const FullTextViewerScreen(),
+  SearchScreen.routeName: (context) => const SearchScreen(),
 };

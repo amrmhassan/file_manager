@@ -12,7 +12,6 @@ import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/screen_utils/recent_screen_utils.dart';
-import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:path/path.dart' as path_operations;
 
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
@@ -165,7 +164,7 @@ class AnalyzerProvider extends ChangeNotifier {
           await _setLastAnalyzingDate();
           await _handleSaveRecentFiles(recentProvider);
           await _saveResultsToSqlite();
-          await _saveAllFilesInfo();
+          await _saveAllFilesFoldersInfo();
           isolate.kill();
           _loading = false;
         } else if (message is int) {
@@ -178,10 +177,23 @@ class AnalyzerProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> _saveAllFilesInfo() async {
+  Future<void> _saveAllFilesFoldersInfo() async {
     try {
-      (await HiveBox.allFilesInfoTableName)
+      // all files info box
+      var filesInfoBox = (await HiveBox.allFilesInfoTableName);
+      await filesInfoBox.clear();
+      await filesInfoBox
           .addAll(_storageAnalyzerV4!.allFilesInfo.map((e) => e.path));
+
+      // all folders info box
+      var foldersInfoBox = (await HiveBox.allFoldersInfoTableName);
+      await foldersInfoBox.clear();
+      await foldersInfoBox
+          .addAll(_storageAnalyzerV4!.allFoldersInfo.map((e) => e.path));
+      logger.i(
+          'all folders info length is ${_storageAnalyzerV4!.allFoldersInfo.length}');
+      logger.i(
+          'all folders info length from the box is ${foldersInfoBox.values.length}');
     } catch (e) {
       logger.e(e);
     }

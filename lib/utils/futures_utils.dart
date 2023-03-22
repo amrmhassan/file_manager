@@ -10,6 +10,7 @@ class CustomFuture {
   }
 
   Future<void> delayedAction(Duration duration, Function callback) async {
+    _isCancelled = false;
     await Future.delayed(duration);
     if (_isCancelled) return;
     await callback();

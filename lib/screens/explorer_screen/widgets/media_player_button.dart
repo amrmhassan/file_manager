@@ -102,7 +102,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
             ? ButtonWrapper(
                 onTap: () async {
                   if (widget.network) {
-                    showSnackBar(context: context, message: 'buffering...');
+                    showSnackBar(context: context, message: 'Loading...');
                     String? connLink;
                     if (shareExpPF(context).laptopExploring) {
                       connLink = connectLaptopPF(context)

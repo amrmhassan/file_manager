@@ -2,12 +2,13 @@
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
-import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/screens/search_screen/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
@@ -70,10 +71,8 @@ class CurrentActiveDirOptionsModal extends StatelessWidget {
           ModalButtonElement(
             title: 'search-files'.i18n(),
             onTap: () {
-              showSnackBar(
-                context: context,
-                message: 'search-coming-soon'.i18n(),
-              );
+              Navigator.pop(context);
+              Navigator.pushNamed(context, SearchScreen.routeName);
             },
           ),
           VSpace(),
