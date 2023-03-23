@@ -1,6 +1,7 @@
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/providers/language_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
@@ -139,4 +140,13 @@ SearchProvider searchPF(BuildContext context) {
 
 SearchProvider searchP(BuildContext context) {
   return Provider.of<SearchProvider>(context);
+}
+
+//? language provider
+LanguageProvider langPF(BuildContext context) {
+  return Provider.of<LanguageProvider>(context, listen: false);
+}
+
+LanguageProvider langP(BuildContext context) {
+  return Provider.of<LanguageProvider>(context);
 }

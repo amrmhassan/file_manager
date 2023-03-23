@@ -11,6 +11,7 @@ import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/report_count_item.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class AnalyzeReport extends StatefulWidget {
@@ -71,7 +72,7 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
                   ),
                   HSpace(factor: .5),
                   Text(
-                    'Last Analyze Report',
+                    'last-report'.i18n(),
                     style: h3TextStyle,
                   ),
                   Spacer(),
@@ -86,31 +87,31 @@ class _AnalyzeReportState extends State<AnalyzeReport> {
                 factor: .5,
               ),
               ReportCountItem(
-                title: 'Total Storage Size ',
+                title: 'total-storage-size'.i18n(),
                 count: totalStorageSize.toGB,
-                trailing: ' GB',
+                trailing: 'gb'.i18n(),
               ),
               ReportCountItem(
-                title: 'Free Storage Size ',
+                title: 'free-storage-size'.i18n(),
                 count: freeStorageSize.toGB,
-                trailing: ' GB',
+                trailing: 'gb'.i18n(),
               ),
               ReportCountItem(
-                title: 'Total Files Size ',
+                title: 'total-files-size'.i18n(),
                 count: analyzerProvider.reportInfo?.totalFilesSize.toGB ?? 0,
-                trailing: ' GB',
+                trailing: 'gb'.i18n(),
               ),
               ReportCountItem(
-                title: 'Apps Data Size ',
+                title: 'app-data-size'.i18n(),
                 count: appsDataSize.toGB,
-                trailing: ' GB',
+                trailing: 'gb'.i18n(),
               ),
               ReportCountItem(
-                title: 'Total Folders Count  ',
+                title: 'total-folder-count'.i18n(),
                 count: (analyzerProvider.reportInfo?.folderCount ?? 0) * 1,
               ),
               ReportCountItem(
-                title: 'Total Files Count  ',
+                title: 'total-files-count'.i18n(),
                 count: (analyzerProvider.reportInfo?.filesCount ?? 0) * 1,
               ),
             ],

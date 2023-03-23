@@ -8,6 +8,7 @@ import 'package:explorer/screens/analyzer_screen/widgets/analyzing_report.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzing_starter.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class AnalyzerScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _AnalyzerScreenState extends State<AnalyzerScreen> {
             activeScreenIndex: 0,
             setActiveScreen: (a) {},
             sizesExplorer: true,
-            title: 'Storage Analyzer',
+            title: 'storage-analyzer-text'.i18n(),
           ),
           HLine(
             width: 1,

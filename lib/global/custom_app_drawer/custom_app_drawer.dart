@@ -14,7 +14,6 @@ import 'package:explorer/helpers/hive/hive_helper.dart';
 
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
-import 'package:explorer/main.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -23,6 +22,7 @@ import 'package:explorer/screens/download_manager_screen/download_manager_screen
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
@@ -168,7 +168,7 @@ class CustomAppDrawer extends StatelessWidget {
                     AppDrawerItem(
                       title: 'English Language',
                       onTap: () async {
-                        MyApp.setLocale(context, englishLocal);
+                        langPF(context).setLocale(englishLocal);
                         Navigator.pop(context);
                       },
                       onlyDebug: true,
@@ -176,7 +176,8 @@ class CustomAppDrawer extends StatelessWidget {
                     AppDrawerItem(
                       title: 'Arabic Language',
                       onTap: () async {
-                        MyApp.setLocale(context, arabicLocal);
+                        langPF(context).setLocale(arabicLocal);
+
                         Navigator.pop(context);
                       },
                       onlyDebug: true,

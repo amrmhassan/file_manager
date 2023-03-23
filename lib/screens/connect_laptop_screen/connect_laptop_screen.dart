@@ -28,6 +28,7 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:file_picker/file_picker.dart' as file_picker;
+import 'package:localization/localization.dart';
 
 class ConnectLaptopScreen extends StatelessWidget {
   static const String routeName = '/ConnectLaptopScreen';
@@ -50,7 +51,7 @@ class ConnectLaptopScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              connectLaptopProvider.laptopName ?? 'Your Windows',
+              connectLaptopProvider.laptopName ?? 'your-windows'.i18n(),
               style: h2TextStyle,
             ),
             rightIcon: connectLaptopProvider.laptopMessages.isEmpty
@@ -80,10 +81,9 @@ class ConnectLaptopScreen extends StatelessWidget {
                     onOk: () {
                       connectLaptopPF(context).closeServer();
                     },
-                    okText: 'Close',
-                    title: 'Close Connection',
-                    subTitle:
-                        'Do you really want to close the connection with phone?',
+                    okText: 'close'.i18n(),
+                    title: 'close-connection'.i18n(),
+                    subTitle: 'close-connection-note'.i18n(),
                   ),
                 );
               },
@@ -121,7 +121,7 @@ class ConnectLaptopScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    title: 'Files Explorer',
+                    title: 'files-explorer'.i18n(),
                     logoName: 'folder_empty',
                     color: kMainIconColor,
                   ),
@@ -149,7 +149,7 @@ class ConnectLaptopScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    title: 'Share Space',
+                    title: 'share-space-intro'.i18n(),
                     logoName: 'management',
                     color: kMainIconColor,
                   ),
@@ -167,7 +167,7 @@ class ConnectLaptopScreen extends StatelessWidget {
                             showTopLine: false,
                             color: kCardBackgroundColor,
                             child: Text(
-                              'Make sure the app is open on phone (not in background)\nThis is due to Android security',
+                              'empty-clipboard-note'.i18n(),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -181,10 +181,10 @@ class ConnectLaptopScreen extends StatelessWidget {
                               copyToClipboard(context, clipboard);
                               Navigator.pop(context);
                             },
-                            title: 'Windows Clipboard',
+                            title: 'windows-clipboard'.i18n(),
                             subTitle: clipboard,
                             showCancelButton: true,
-                            cancelText: 'Expand',
+                            cancelText: 'expand'.i18n(),
                             autoPop: false,
                             onCancel: () {
                               Navigator.pushReplacementNamed(
@@ -194,12 +194,12 @@ class ConnectLaptopScreen extends StatelessWidget {
                               );
                             },
                             okColor: kBlueColor,
-                            okText: 'Copy',
+                            okText: 'copy'.i18n(),
                           ),
                         );
                       }
                     },
-                    title: 'Copy Clipboard',
+                    title: 'copy-clipboard'.i18n(),
                     logoName: 'paste',
                     color: kMainIconColor,
                   ),
@@ -213,7 +213,7 @@ class ConnectLaptopScreen extends StatelessWidget {
                         builder: (context) => SendTextToPhoneModal(),
                       );
                     },
-                    title: 'Send Text',
+                    title: 'send-text'.i18n(),
                     logoName: 'txt',
                   ),
                   VSpace(),
@@ -227,9 +227,10 @@ class ConnectLaptopScreen extends StatelessWidget {
                           pathsToEntities(res.files.map((e) => e.path));
                       handleSendCapturesFiles(capturedFiles, context);
                       showSnackBar(
-                          context: context, message: 'Sending file to laptop');
+                          context: context,
+                          message: 'sending-file-to-laptop'.i18n());
                     },
-                    title: 'Send File',
+                    title: 'send-file'.i18n(),
                     logoName: 'link',
                     color: kMainIconColor,
                   ),
@@ -240,7 +241,7 @@ class ConnectLaptopScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.pushNamed(context, TouchPadScreen.routeName);
                     },
-                    title: 'Windows TouchPad',
+                    title: 'widows-touchpad'.i18n(),
                     logoName: 'touchpad',
                     color: kMainIconColor,
                   ),
@@ -271,7 +272,7 @@ class ConnectLaptopScreen extends StatelessWidget {
     List<CapturedEntityModel> entities,
     BuildContext context,
   ) async {
-    showSnackBar(context: context, message: 'Sending to phone');
+    showSnackBar(context: context, message: 'sending-to-phone'.i18n());
     Navigator.pop(context);
     await startSendEntities(entities, context);
   }

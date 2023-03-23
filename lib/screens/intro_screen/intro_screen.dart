@@ -9,6 +9,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:localization/localization.dart';
 
 class IntroScreen extends StatelessWidget {
   static const String routeName = '/intro_screen';
@@ -69,13 +70,13 @@ class IntroScreen extends StatelessWidget {
             children: [
               VSpace(factor: 3),
               Text(
-                'Connect Windows',
+                'connect-windows'.i18n(),
                 style: h1TextStyle,
               ),
             ],
           ),
           bodyWidget: Text(
-            'Gain full control over your windows device and vice versa',
+            'connect-windows-note'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),
@@ -95,13 +96,13 @@ class IntroScreen extends StatelessWidget {
             children: [
               VSpace(factor: 3),
               Text(
-                'Share Space',
+                'share-space-intro'.i18n(),
                 style: h1TextStyle,
               ),
             ],
           ),
           bodyWidget: Text(
-            'Now you can add files to share space to let others view them',
+            'share-space-intro-note'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),
@@ -116,9 +117,9 @@ class IntroScreen extends StatelessWidget {
           ),
         ),
         PageViewModel(
-          title: 'Streaming',
+          title: 'streaming-intro'.i18n(),
           bodyWidget: Text(
-            'Video, Audios from share space can be viewed without downloaded',
+            'streaming-intro-note'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),
@@ -138,13 +139,13 @@ class IntroScreen extends StatelessWidget {
             children: [
               VSpace(factor: 3),
               Text(
-                'Quick Send',
+                'quick-send-intro'.i18n(),
                 style: h1TextStyle,
               ),
             ],
           ),
           bodyWidget: Text(
-            'You can send files to others just by their browsers.\nNo need for the app on the other device',
+            'quick-send-intro-note'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),
@@ -159,9 +160,9 @@ class IntroScreen extends StatelessWidget {
           ),
         ),
         PageViewModel(
-          title: 'Advanced Explorer',
+          title: 'advanced-explorer-intro'.i18n(),
           bodyWidget: Text(
-            'Enjoy million features with exploring your files',
+            'advanced-explorer-intro-note'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),
@@ -176,9 +177,9 @@ class IntroScreen extends StatelessWidget {
           ),
         ),
         PageViewModel(
-          title: 'Storage Analyzer',
+          title: 'storage-analyzer-text'.i18n(),
           bodyWidget: Text(
-            'Maximize your storage space with ease using our advanced storage analyzer tools',
+            'storage-analyzer-intro-note'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),

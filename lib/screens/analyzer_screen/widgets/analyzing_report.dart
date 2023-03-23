@@ -6,6 +6,7 @@ import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.d
 import 'package:explorer/screens/ext_report_screen/ext_report_screen.dart';
 import 'package:explorer/screens/sizes_exp_screen/sizes_exp_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class AnalyzingReport extends StatefulWidget {
   const AnalyzingReport({
@@ -35,7 +36,7 @@ class _AnalyzingReportState extends State<AnalyzingReport> {
           onTap: () {
             Navigator.pushNamed(context, SizesExpScreen.routeName);
           },
-          title: 'Sizes Explorer',
+          title: 'sizes-explorer'.i18n(),
         ),
         VSpace(),
         AnalyzerOptionsItem(
@@ -43,7 +44,7 @@ class _AnalyzingReportState extends State<AnalyzingReport> {
           onTap: () {
             Navigator.pushNamed(context, ExtReportScreen.routeName);
           },
-          title: 'Extensions',
+          title: 'extensions'.i18n(),
         ),
         VSpace(),
         AnalyzeReport(),

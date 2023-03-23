@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -12,6 +13,7 @@ import 'package:explorer/screens/home_screen/widgets/explorer_mode_switcher.dart
 import 'package:explorer/screens/home_screen/widgets/rescan_button.dart';
 import 'package:explorer/screens/home_screen/widgets/selected_item_number.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -39,13 +41,15 @@ class HomeAppBar extends StatelessWidget {
       children: [
         Row(
           children: [
-            // if (activeScreenIndex == 1)
-            AppBarIconButton(
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-              iconName: 'list',
-            ),
+            if (!sizesExplorer)
+              AppBarIconButton(
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                iconName: 'list',
+              )
+            else
+              HSpace(),
             //! this will hold the progress of the loading operation if i figure a way to do so
             if (foProvider.loadingOperation)
               SizedBox(
@@ -86,7 +90,7 @@ class HomeAppBar extends StatelessWidget {
                 setActiveScreen: setActiveScreen,
               )
             : Text(
-                title ?? 'Sizes Explorer',
+                title ?? 'sizes-explorer'.i18n(),
                 style: h2TextStyle.copyWith(color: kActiveTextColor),
               ),
       ],

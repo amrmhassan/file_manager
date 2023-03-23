@@ -1,22 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/sizes.dart';
-import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/storage_item_model.dart';
-import 'package:explorer/providers/search_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/entity_operations.dart';
-import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/screens/search_screen/widgets/big_loading_search.dart';
 import 'package:explorer/screens/search_screen/widgets/no_search_results.dart';
 import 'package:explorer/screens/search_screen/widgets/search_results.dart';
 import 'package:explorer/screens/search_screen/widgets/search_screen_app_bar.dart';
 import 'package:explorer/screens/search_screen/widgets/searching_or_extend_search.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
-import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
