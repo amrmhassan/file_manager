@@ -43,7 +43,7 @@ class _ChangeMyNameModalState extends State<ChangeMyNameModal> {
         child: Column(
           children: [
             CustomTextField(
-              title: 'Your Name',
+              title: 'your-name'.i18n(),
               autoFocus: true,
               controller: nameController,
               maxLength: 10,

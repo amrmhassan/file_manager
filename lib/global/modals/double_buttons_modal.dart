@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DoubleButtonsModal extends StatelessWidget {
   final String? title;
@@ -59,7 +60,7 @@ class DoubleButtonsModal extends StatelessWidget {
                 horizontal: kHPad / 2, vertical: kVPad / 2),
             backgroundColor: cancelColor ?? kBackgroundColor,
             child: Text(
-              cancelText ?? 'Cancel',
+              cancelText ?? 'cancel'.i18n(),
               style: h4TextStyle.copyWith(color: Colors.white),
             ),
           ),
@@ -77,7 +78,7 @@ class DoubleButtonsModal extends StatelessWidget {
               EdgeInsets.symmetric(horizontal: kHPad / 2, vertical: kVPad / 2),
           backgroundColor: okColor ?? kDangerColor,
           child: Text(
-            okText ?? 'Delete',
+            okText ?? 'delete'.i18n(),
             style: h4TextStyle.copyWith(color: Colors.white),
           ),
         ),

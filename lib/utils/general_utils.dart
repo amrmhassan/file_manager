@@ -11,6 +11,7 @@ import 'package:explorer/models/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:localization/localization.dart';
 import 'package:path/path.dart' as path_operations;
 
 void printOnDebug(Object? object) {
@@ -47,7 +48,7 @@ void showSnackBar({
                     : null),
         margin: margin,
         action: SnackBarAction(
-          label: actionString ?? 'Done',
+          label: actionString ?? 'done'.i18n(),
           textColor: textColor ??
               ((snackBarType ?? SnackBarType.info) == SnackBarType.error ||
                       (snackBarType ?? SnackBarType.info) ==

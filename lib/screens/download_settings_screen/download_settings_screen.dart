@@ -12,6 +12,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:localization/localization.dart';
 
 class DownloadSetScreen extends StatelessWidget {
   static const String routeName = '/DownloadSettingsScreen';
@@ -26,7 +27,7 @@ class DownloadSetScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'Download Settings',
+              'download-settings'.i18n(),
               style: h2TextStyle,
             ),
           ),
@@ -47,7 +48,7 @@ class DownloadSetScreen extends StatelessWidget {
               );
             },
             title: Text(
-              'Maximum parallel downloads',
+              'maximum-downloads'.i18n(),
               style: h4LightTextStyle,
             ),
             trailing: Text(
@@ -73,16 +74,18 @@ class DownloadSetScreen extends StatelessWidget {
                         serverPF(context),
                         sharePF(context),
                       );
-                      showSnackBar(context: context, message: 'Deleted');
+                      showSnackBar(
+                        context: context,
+                        message: 'deleted'.i18n(),
+                      );
                     },
-                    title: 'Confirm Delete?',
-                    subTitle:
-                        'This will delete all tasks with all files from the storage and stop downloading ones.',
+                    title: 'confirm-delete'.i18n(),
+                    subTitle: 'delete-task-note'.i18n(),
                   ),
                 );
               },
               title: Text(
-                'Delete all downloads with files',
+                'delete-with-files-task'.i18n(),
                 style: h4LightTextStyle,
               ),
             ),

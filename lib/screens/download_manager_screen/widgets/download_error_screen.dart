@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_card.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DownloadErrorScreen extends StatelessWidget {
   const DownloadErrorScreen({
@@ -37,7 +38,7 @@ class DownloadErrorScreen extends StatelessWidget {
                         ),
                         VSpace(factor: .5),
                         Text(
-                          'No Failed Downloads',
+                          'no-error-downloads'.i18n(),
                           style: h3InactiveTextStyle,
                         ),
                       ],

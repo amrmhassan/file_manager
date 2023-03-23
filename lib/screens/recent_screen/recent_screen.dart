@@ -269,9 +269,9 @@ void handleConnectToLaptopButton(
       .handleConnect(code);
   if (!connected) {
     showSnackBar(
-        context: context,
-        message:
-            'Please ensure that both devices are connected to either the same Wi-Fi or to the hotspot of one of the devices.');
+      context: context,
+      message: 'not-reachable-note'.i18n(),
+    );
   }
   try {
     Navigator.pushNamed(

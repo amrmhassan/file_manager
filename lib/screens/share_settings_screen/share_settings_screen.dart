@@ -13,6 +13,7 @@ import 'package:explorer/screens/share_settings_screen/widgets/my_name_with_edit
 import 'package:explorer/screens/share_settings_screen/widgets/pick_icon_button.dart';
 import 'package:explorer/screens/white_block_list_screen/white_block_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class ShareSettingsScreen extends StatelessWidget {
   static const String routeName = '/ShareSettingsScreen';
@@ -26,7 +27,7 @@ class ShareSettingsScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'Share Settings',
+              'share-settings'.i18n(),
               style: h3TextStyle,
             ),
           ),
@@ -38,10 +39,10 @@ class ShareSettingsScreen extends StatelessWidget {
           MyNameWithEditWidget(),
           VSpace(factor: .5),
           DeviceIDViewer(),
-          AppDrawerItem(
-            title: 'Devices White List',
-            onTap: () {},
-          ),
+          // AppDrawerItem(
+          //   title: 'Devices White List',
+          //   onTap: () {},
+          // ),
           ListTile(
             leading: Image.asset(
               'assets/icons/friends.png',
@@ -54,7 +55,7 @@ class ShareSettingsScreen extends StatelessWidget {
             },
             contentPadding: EdgeInsets.symmetric(horizontal: kHPad),
             trailing: Text(
-              'White List',
+              'white-list'.i18n(),
               style: h4TextStyle,
             ),
           ),
@@ -70,7 +71,7 @@ class ShareSettingsScreen extends StatelessWidget {
             },
             contentPadding: EdgeInsets.symmetric(horizontal: kHPad),
             trailing: Text(
-              'Blocked List',
+              'blocked-list'.i18n(),
               style: h4TextStyle,
             ),
           ),

@@ -13,6 +13,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class ConnLaptopComingSoon extends StatelessWidget {
@@ -32,7 +33,7 @@ class ConnLaptopComingSoon extends StatelessWidget {
             SizedBox(width: double.infinity),
             CustomAppBar(
               title: Text(
-                'Laptop (Windows)',
+                'laptop-windows'.i18n(),
                 style: h2liteTextStyle,
               ),
             ),
@@ -44,7 +45,7 @@ class ConnLaptopComingSoon extends StatelessWidget {
             VSpace(factor: 2),
             PaddingWrapper(
               child: Text(
-                'Now you can control your windows storage from your phone and vice versa',
+                'laptop-windows-note-1'.i18n(),
                 style: h4TextStyleInactive,
                 textAlign: TextAlign.center,
               ),
@@ -59,7 +60,7 @@ class ConnLaptopComingSoon extends StatelessWidget {
                   children: [
                     SizedBox(width: double.infinity),
                     Text(
-                      'First, you need to download windows client and install it on your windows device',
+                      'laptop-windows-note-2'.i18n(),
                       style: h3TextStyle,
                       textAlign: TextAlign.center,
                     ),
@@ -84,7 +85,7 @@ class ConnLaptopComingSoon extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    'Download',
+                    'download'.i18n(),
                   ),
                 ),
                 HSpace(),
@@ -101,14 +102,14 @@ class ConnLaptopComingSoon extends StatelessWidget {
                     }
                   },
                   child: Text(
-                    'Copy Link',
+                    'copy-link'.i18n(),
                   ),
                 ),
               ],
             ),
             VSpace(factor: .1),
             Text(
-              '40 MB',
+              '70-mb'.i18n(),
               style: h3InactiveTextStyle,
               textAlign: TextAlign.center,
             ),

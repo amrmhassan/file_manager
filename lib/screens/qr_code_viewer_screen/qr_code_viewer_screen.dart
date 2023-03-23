@@ -33,7 +33,7 @@ class QrCodeViewerScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'No Data Needed',
+              'no-data-needed'.i18n(),
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
@@ -71,47 +71,47 @@ class QrCodeViewerScreen extends StatelessWidget {
                 SizedBox(width: kHPad / 2),
               ],
             ),
-            leftIcon: Row(
-              children: [
-                SizedBox(width: kHPad / 2),
-                ButtonWrapper(
-                  padding: EdgeInsets.all(largePadding),
-                  borderRadius: 0,
-                  onTap: () {
-                    showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) => ModalWrapper(
-                        color: kCardBackgroundColor,
-                        showTopLine: false,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '1- Host Device Can connect over wifi or hotspot',
-                            ),
-                            Text(
-                              '2- Joining Devices must connect over wifi',
-                            ),
-                            Text(
-                              '3- Open hotspot from one device, it will be host',
-                            ),
-                            Text(
-                              '4- Connect others to the hotspot then scan QR',
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  child: Image.asset(
-                    'assets/icons/info.png',
-                    width: mediumIconSize,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
+            // leftIcon: Row(
+            //   children: [
+            //     SizedBox(width: kHPad / 2),
+            //     ButtonWrapper(
+            //       padding: EdgeInsets.all(largePadding),
+            //       borderRadius: 0,
+            //       onTap: () {
+            //         showModalBottomSheet(
+            //           backgroundColor: Colors.transparent,
+            //           context: context,
+            //           builder: (context) => ModalWrapper(
+            //             color: kCardBackgroundColor,
+            //             showTopLine: false,
+            //             child: Column(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: [
+            //                 Text(
+            //                   '1- Host Device Can connect over wifi or hotspot',
+            //                 ),
+            //                 Text(
+            //                   '2- Joining Devices must connect over wifi',
+            //                 ),
+            //                 Text(
+            //                   '3- Open hotspot from one device, it will be host',
+            //                 ),
+            //                 Text(
+            //                   '4- Connect others to the hotspot then scan QR',
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         );
+            //       },
+            //       child: Image.asset(
+            //         'assets/icons/info.png',
+            //         width: mediumIconSize,
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ),
           Expanded(
             child: Column(
@@ -181,21 +181,21 @@ class QrCodeViewerScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(width: double.infinity),
-                Text('Guides:'),
+                Text('guides'.i18n()),
                 PaddingWrapper(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '1- Connect the devices to the same network',
+                        'guides-1'.i18n(),
                         style: h4TextStyleInactive,
                       ),
                       Text(
-                        '2- Network can be router(wifi) or one of the devices hotspot',
+                        'guides-2'.i18n(),
                         style: h4TextStyleInactive,
                       ),
                       Text(
-                        '3- Others click join then scan QR code',
+                        'guides-3'.i18n(),
                         style: h4TextStyleInactive,
                       ),
                       VSpace(),

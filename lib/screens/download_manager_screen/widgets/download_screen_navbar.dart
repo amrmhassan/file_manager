@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_tab_button.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DownloadScreenNavBar extends StatelessWidget {
   final int activeTab;
@@ -38,21 +39,21 @@ class DownloadScreenNavBar extends StatelessWidget {
             iconName: 'download-circular-button',
             myIndex: 0,
             onTap: () => setActiveTab(0),
-            title: 'Active',
+            title: 'active'.i18n(),
           ),
           DownloadTabButton(
             activeTab: activeTab,
             iconName: 'accept',
             myIndex: 1,
             onTap: () => setActiveTab(1),
-            title: 'Done',
+            title: 'done'.i18n(),
           ),
           DownloadTabButton(
             activeTab: activeTab,
             iconName: 'error',
             myIndex: 2,
             onTap: () => setActiveTab(2),
-            title: 'Error',
+            title: 'error'.i18n(),
           ),
         ],
       ),

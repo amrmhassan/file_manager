@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class WindowsUpdateNoteScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class WindowsUpdateNoteScreen extends StatelessWidget {
           Image.asset('assets/icons/warning.png'),
           VSpace(),
           Text(
-            'You must update windows client first manually before using it',
+            'windows-update-note'.i18n(),
             style: h1TextStyle,
             textAlign: TextAlign.center,
           ),
@@ -42,7 +43,7 @@ class WindowsUpdateNoteScreen extends StatelessWidget {
                   handleConnectToLaptopButton(context, true);
                 },
                 child: Text(
-                  'Download',
+                  'download'.i18n(),
                 ),
               ),
               HSpace(),
@@ -55,14 +56,14 @@ class WindowsUpdateNoteScreen extends StatelessWidget {
                   handleConnectToLaptopButton(context, true);
                 },
                 child: Text(
-                  'Copy Link',
+                  'copy-link'.i18n(),
                 ),
               ),
             ],
           ),
           VSpace(factor: .1),
           Text(
-            '40 MB',
+            '70-mb'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),

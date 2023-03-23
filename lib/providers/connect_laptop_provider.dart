@@ -13,6 +13,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:localization/localization.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -112,7 +113,7 @@ class ConnectLaptopProvider extends ChangeNotifier {
     CustomClientSocket customClientSocket = CustomClientSocket(
       onServerDisconnected: () {
         logger.w('Laptop disconnected');
-        fastSnackBar(msg: 'Laptop disconnected');
+        fastSnackBar(msg: 'laptop-disconnected'.i18n());
         closeServer();
       },
     );

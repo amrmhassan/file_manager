@@ -50,7 +50,7 @@ class ActiveScreen extends StatelessWidget {
                         ),
                         VSpace(factor: .5),
                         Text(
-                          'No Active Downloads',
+                          'no-active-downloads'.i18n(),
                           style: h3InactiveTextStyle,
                         ),
                       ],

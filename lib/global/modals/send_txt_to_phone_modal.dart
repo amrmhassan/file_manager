@@ -13,6 +13,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:localization/localization.dart';
 
 class SendTextToPhoneModal extends StatefulWidget {
   const SendTextToPhoneModal({
@@ -38,7 +39,7 @@ class _SendTextToPhoneModalState extends State<SendTextToPhoneModal> {
               options: Options(
                 requestEncoder: (request, options) => utf8.encode(request),
               ));
-          showSnackBar(context: context, message: 'Message Sent');
+          showSnackBar(context: context, message: 'message-sent'.i18n());
         } catch (e) {
           showSnackBar(
             context: context,
@@ -52,7 +53,7 @@ class _SendTextToPhoneModalState extends State<SendTextToPhoneModal> {
         children: [
           CustomTextField(
             controller: data,
-            title: 'Enter some text to send',
+            title: 'enter-text-to-send'.i18n(),
             padding: EdgeInsets.zero,
             autoFocus: true,
             textInputType: TextInputType.multiline,
@@ -64,7 +65,7 @@ class _SendTextToPhoneModalState extends State<SendTextToPhoneModal> {
         ],
       ),
       okColor: kBlueColor,
-      okText: 'Send',
+      okText: 'send'.i18n(),
     );
   }
 }

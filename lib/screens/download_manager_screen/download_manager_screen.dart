@@ -14,6 +14,7 @@ import 'package:explorer/screens/download_manager_screen/widgets/download_error_
 import 'package:explorer/screens/download_manager_screen/widgets/download_screen_navbar.dart';
 import 'package:explorer/screens/download_settings_screen/download_settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DownloadManagerScreen extends StatefulWidget {
   static const String routeName = '/DownloadManagerScreen';
@@ -54,7 +55,7 @@ class _DownloadManagerScreenState extends State<DownloadManagerScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              'Download Manager',
+              'download-manager'.i18n(),
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),

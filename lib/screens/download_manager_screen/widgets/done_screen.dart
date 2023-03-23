@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_card.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DoneScreen extends StatelessWidget {
   const DoneScreen({
@@ -38,7 +39,7 @@ class DoneScreen extends StatelessWidget {
                         ),
                         VSpace(factor: .5),
                         Text(
-                          'No Finished Downloads',
+                          'no-done-downloads'.i18n(),
                           style: h3InactiveTextStyle,
                         ),
                       ],

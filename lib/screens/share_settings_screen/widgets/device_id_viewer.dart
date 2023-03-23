@@ -5,6 +5,7 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DeviceIDViewer extends StatelessWidget {
   const DeviceIDViewer({
@@ -20,7 +21,7 @@ class DeviceIDViewer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Device ID',
+            'device-id'.i18n(),
             style: h4TextStyleInactive,
           ),
           GestureDetector(

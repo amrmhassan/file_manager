@@ -51,7 +51,7 @@ class QrResultModal extends StatelessWidget {
                               Navigator.pop(context);
                             },
                             child: Text(
-                              'Open Website',
+                              'open-website'.i18n(),
                               style: h4TextStyle,
                             ),
                           ),
@@ -69,7 +69,7 @@ class QrResultModal extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      'Copy',
+                      'copy'.i18n(),
                       style: h4TextStyle,
                     ),
                   ),

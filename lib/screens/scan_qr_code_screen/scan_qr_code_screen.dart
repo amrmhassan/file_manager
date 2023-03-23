@@ -14,6 +14,7 @@ import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_comin
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:localization/localization.dart';
 
 class ScanQRCodeScreen extends StatefulWidget {
   static const String routeName = '/ScanQRCodeScreen';
@@ -93,7 +94,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              'Scan Qr Code',
+              'scan-qr-code'.i18n(),
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),

@@ -48,7 +48,7 @@ class IntroScreen extends StatelessWidget {
             Navigator.pushReplacementNamed(context, HomeScreen.routeName);
           },
           child: Text(
-            'Done',
+            'done'.i18n(),
             style: h4LiteTextStyle,
           )),
       overrideSkip: ButtonWrapper(

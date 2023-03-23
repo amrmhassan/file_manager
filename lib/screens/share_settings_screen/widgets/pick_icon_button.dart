@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class PickMyIconButton extends StatelessWidget {
   const PickMyIconButton({
@@ -44,7 +45,9 @@ class PickMyIconButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(smallBorderRadius),
           ),
           child: Text(
-            shareProvider.myImagePath == null ? 'Add Image' : 'Edit',
+            shareProvider.myImagePath == null
+                ? 'add-image'.i18n()
+                : 'edit'.i18n(),
             style: h4TextStyle.copyWith(
               fontWeight: FontWeight.normal,
             ),
@@ -68,7 +71,7 @@ class PickMyIconButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(smallBorderRadius),
                 ),
                 child: Text(
-                  'Clear',
+                  'clear'.i18n(),
                   style: h4TextStyle.copyWith(
                     fontWeight: FontWeight.normal,
                   ),

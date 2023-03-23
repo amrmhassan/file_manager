@@ -14,6 +14,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class GroupInfoModal extends StatelessWidget {
   const GroupInfoModal({
@@ -37,7 +38,7 @@ class GroupInfoModal extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Your Name',
+                  'your-name'.i18n(),
                   style: h4TextStyle,
                 ),
                 HSpace(factor: .2),
@@ -53,7 +54,7 @@ class GroupInfoModal extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Connected Devices',
+                  'connected-devices'.i18n(),
                   style: h4TextStyle,
                 ),
                 HSpace(factor: .2),
@@ -69,7 +70,7 @@ class GroupInfoModal extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Member Type',
+                  'member-type'.i18n(),
                   style: h4TextStyle,
                 ),
                 HSpace(factor: .2),
@@ -85,7 +86,7 @@ class GroupInfoModal extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Your Ip',
+                  'your-ip'.i18n(),
                   style: h4TextStyle,
                 ),
                 HSpace(factor: .2),
@@ -102,7 +103,7 @@ class GroupInfoModal extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Your Port',
+                    'your-port'.i18n(),
                     style: h4TextStyle,
                   ),
                   HSpace(factor: .2),
@@ -131,19 +132,18 @@ class GroupInfoModal extends StatelessWidget {
                       onLeaveGroup();
                     },
                     okText: serverProvider.myType == MemberType.host
-                        ? 'Close'
-                        : 'Leave',
-                    title: 'Are you sure?',
-                    subTitle:
-                        'closing the group will cut any downloads or streams',
+                        ? 'close'.i18n()
+                        : 'leave'.i18n(),
+                    title: 'are-you-sure'.i18n(),
+                    subTitle: 'are-you-sure-note'.i18n(),
                   ),
                 );
               },
               backgroundColor: kDangerColor,
               child: Text(
                 serverProvider.myType == MemberType.host
-                    ? 'Close Group'
-                    : 'Leave Group',
+                    ? 'close-group'.i18n()
+                    : 'leave-group'.i18n(),
                 style: h4TextStyle,
               ),
             ),
