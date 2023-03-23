@@ -87,6 +87,7 @@ class SearchProvider extends ChangeNotifier {
   }
 
   Future<void> _handleRunParallelSearch(List<String> paths) async {
+    DateTime before = DateTime.now();
     Completer doneComplete = Completer();
     List<String> parallelFoldersEntries = [];
     List<String> completedSearches = [];
@@ -110,6 +111,10 @@ class SearchProvider extends ChangeNotifier {
         // complete the completer to return from the future with the results
         completedSearches.add(entry);
         if (completedSearches.length == parallelFoldersEntries.length) {
+          DateTime after = DateTime.now();
+          logger.i(
+              'time taken ${after.difference(before).inMilliseconds / 1000}s');
+
           doneComplete.complete();
         }
       });

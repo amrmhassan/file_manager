@@ -12,6 +12,7 @@ import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/utils/notifications/notification_controller.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -35,9 +36,11 @@ import 'package:provider/provider.dart';
 
 //!
 //!
-//!run parallel analyzer for the analyzer provider like in the search provider to fasten the process
-//!
-//!
+//! run parallel analyzer for the analyzer provider like in the search provider to fasten the process
+//! with each extended search, deal with it as a full analyze step and use it's results to update the analyzing reports and all that stuff
+//! allow opening new tab when clicking a search result folder
+//! show selection controller in the search screen
+
 void startForegroundService() {
   ForegroundService().start();
 }
