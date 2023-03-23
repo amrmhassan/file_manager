@@ -4,16 +4,11 @@ import 'dart:isolate';
 
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer.dart';
-import 'package:explorer/analyzing_code/storage_analyzer/helpers/advanced_storage_analyzer_v2.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyzer_v4.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
-import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/models_constants.dart';
-import 'package:explorer/isolates/folder_children_isolate_class.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 
@@ -72,13 +67,11 @@ class StorageAnalyzerSplitter {
       }
     }
 
-    print(parallelFoldersEntries.length);
     for (var folderEntry in parallelFoldersEntries) {
       compute(_advancedAnalyzerCaller, {
         'sendPort': sendPort,
         'parentPath': folderEntry,
       }).then((value) {
-        print(value.allFilesInfo.length);
         allFilesInfo.addAll(value.allFilesInfo);
         allFoldersInfo.addAll(value.allFoldersInfo);
         allFolderInfoWithSize.addAll(value.allFolderInfoWithSize);
@@ -114,11 +107,8 @@ Future<StorageAnalyzerV4> _advancedAnalyzerCaller(
 
   var obj = AdvancedStorageAnalyzer(parentPath);
 
-  print('before analyzing $parentPath');
   await obj.startAnalyzing(
-    onAllDone: () {
-      print('after analyzing $parentPath');
-    },
+    onAllDone: () {},
     onFolderDone: ((localFolderInfo) {
       sendPort.send(localFolderInfo);
     }),

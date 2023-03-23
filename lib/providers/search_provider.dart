@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/isolates/folder_children_isolate_class.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:path/path.dart';

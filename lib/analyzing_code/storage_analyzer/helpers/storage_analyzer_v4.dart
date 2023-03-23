@@ -1,3 +1,5 @@
+// ignore_for_file: overridden_fields
+
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
@@ -59,7 +61,7 @@ class StorageAnalyzerV4 {
     allFiles.add(null);
     List<ExtensionInfo> extInfoList = [];
     List<String> iterateExt = [];
-    List<String> filesPathes = [];
+    List<String> filesPaths = [];
     int count = 0;
     int extSize = 0;
     LocalFileInfo? previousValue = allFiles[0];
@@ -70,16 +72,16 @@ class StorageAnalyzerV4 {
           count: count,
           ext: previousValue.ext,
           size: extSize,
-          filesPath: [...filesPathes],
+          filesPath: [...filesPaths],
         );
         extInfoList.add(ec);
-        filesPathes.clear();
+        filesPaths.clear();
         extSize = file?.size ?? 0;
         count = 1;
       } else if (file != null) {
         extSize += file.size;
         count++;
-        filesPathes.add(file.path);
+        filesPaths.add(file.path);
       }
       previousValue = file;
     }
@@ -88,7 +90,9 @@ class StorageAnalyzerV4 {
 }
 
 class StorageAnalyzerV4Creator extends StorageAnalyzerV4 {
+  @override
   final List<LocalFolderInfo> allFolderInfoWithSize;
+  @override
   final List<ExtensionInfo> allExtensionsInfo;
   StorageAnalyzerV4Creator({
     required super.parentPath,
