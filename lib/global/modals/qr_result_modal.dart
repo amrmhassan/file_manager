@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class QrResultModal extends StatelessWidget {
@@ -25,7 +26,7 @@ class QrResultModal extends StatelessWidget {
         showTopLine: false,
         child: Column(
           children: [
-            Text('Scan Result', style: h3InactiveTextStyle),
+            Text('scan-result'.i18n(), style: h3InactiveTextStyle),
             VSpace(),
             SelectableText(
               code.toString(),

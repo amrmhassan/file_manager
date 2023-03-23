@@ -13,6 +13,7 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -116,7 +117,7 @@ class QrCodeViewerScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('You can go back after scanning'),
+                Text('back-after-scanning'.i18n()),
                 VSpace(),
                 GestureDetector(
                   onTap: () {
@@ -162,7 +163,7 @@ class QrCodeViewerScreen extends StatelessWidget {
                                 },
                                 backgroundColor: kDangerColor,
                                 child: Text(
-                                  'Close Send',
+                                  'close-send'.i18n(),
                                   style: h4TextStyle,
                                 ),
                               ),

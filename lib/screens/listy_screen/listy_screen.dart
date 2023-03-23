@@ -12,6 +12,7 @@ import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/screens/listy_screen/widgets/add_listy_button.dart';
 import 'package:explorer/screens/listy_screen/widgets/listy_item.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 enum OpenMode {
@@ -76,7 +77,7 @@ class _ListyScreenState extends State<ListyScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              'Listy',
+              'listy-text'.i18n(),
               style: h2TextStyle,
             ),
             rightIcon: Row(

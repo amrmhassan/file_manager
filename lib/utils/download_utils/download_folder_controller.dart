@@ -13,6 +13,7 @@ import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/download_utils/download_task_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 //?
 
@@ -79,7 +80,7 @@ class DownloadFolderController extends DownloadTaskController {
                   strokeWidth: 2,
                 ),
                 VSpace(),
-                Text('Loading Info'),
+                Text('loading-info'.i18n()),
               ],
             ));
       },

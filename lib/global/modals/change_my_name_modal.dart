@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class ChangeMyNameModal extends StatefulWidget {
   const ChangeMyNameModal({
@@ -73,7 +74,7 @@ class _ChangeMyNameModalState extends State<ChangeMyNameModal> {
                 ),
                 borderRadius: smallBorderRadius,
                 backgroundColor: kBackgroundColor,
-                child: Text('Save'),
+                child: Text('save'.i18n()),
               ),
             ),
           ],

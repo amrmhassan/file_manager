@@ -3,6 +3,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
+import 'package:explorer/global/widgets/locale_rotation_wrapper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -59,10 +60,12 @@ class PathRow extends StatelessWidget {
                     ),
                   ),
                   if (entry.key != folders.length - 1)
-                    Image.asset(
-                      'assets/icons/right-arrow.png',
-                      width: smallIconSize,
-                      color: kInactiveColor,
+                    LocaleRotationWrapper(
+                      child: Image.asset(
+                        'assets/icons/right-arrow.png',
+                        width: smallIconSize,
+                        color: kInactiveColor,
+                      ),
                     )
                 ],
               );

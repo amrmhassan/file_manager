@@ -8,6 +8,7 @@ import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:explorer/models/types.dart';
 
@@ -47,52 +48,50 @@ class SortByModal extends StatelessWidget {
         children: [
           VSpace(),
           ModalButtonElement(
-            title: 'Name ( A to Z )',
+            title: "sort-name-a-z".i18n(),
             onTap: () => setSortOption(SortOption.nameAsc, context),
             checked: checked(SortOption.nameAsc, context),
           ),
           ModalButtonElement(
-            title: 'Name ( Z to A )',
+            title: "sort-name-z-a".i18n(),
             onTap: () => setSortOption(SortOption.nameDes, context),
             checked: checked(SortOption.nameDes, context),
           ),
           ModalButtonElement(
-            title: 'Modified ( newest first )',
+            title: "sort-modified-newest".i18n(),
             onTap: () => setSortOption(SortOption.modifiedDec, context),
             checked: checked(SortOption.modifiedDec, context),
           ),
           ModalButtonElement(
-            title: 'Modified ( oldest first )',
+            title: "sort-modified-oldest".i18n(),
             onTap: () => setSortOption(SortOption.modifiedAsc, context),
             checked: checked(SortOption.modifiedAsc, context),
           ),
           ModalButtonElement(
-            title: 'Type ( A to Z )',
+            title: "sort-type-a-z".i18n(),
             onTap: () => setSortOption(SortOption.typeAsc, context),
             checked: checked(SortOption.typeAsc, context),
           ),
           ModalButtonElement(
-            title: 'Type ( Z to A )',
+            title: "sort-type-z-a".i18n(),
             onTap: () => setSortOption(SortOption.typeDec, context),
             checked: checked(SortOption.typeDec, context),
           ),
           ModalButtonElement(
-            title: 'Size ( smallest first )',
+            title: "sort-size-smallest".i18n(),
             onTap: () {
               setSortOption(SortOption.sizeAsc, context);
               showSnackBar(
-                  context: context,
-                  message: 'You can use size explorer instead');
+                  context: context, message: 'size-exp_instead'.i18n());
             },
             checked: checked(SortOption.sizeAsc, context),
           ),
           ModalButtonElement(
-            title: 'Size ( largest first )',
+            title: "sort-size-largest".i18n(),
             onTap: () {
               setSortOption(SortOption.sizeDec, context);
               showSnackBar(
-                  context: context,
-                  message: 'You can use size explorer instead');
+                  context: context, message: 'size-exp_instead'.i18n());
             },
             checked: checked(SortOption.sizeDec, context),
           ),

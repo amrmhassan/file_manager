@@ -10,6 +10,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:localization/localization.dart';
 
 //? to save if granted in the shared prefs
 Future<void> _setGranted(bool g) async {
@@ -69,10 +70,10 @@ Future<bool> showPermissionsModal({
       onCancel: () {
         SystemNavigator.pop();
       },
-      title: 'Allow Permissions',
-      subTitle: 'This app needs storage permissions to work',
-      okText: 'Allow',
-      cancelText: 'Exit',
+      title: 'allow-permissions'.i18n(),
+      subTitle: 'allow-permissions-note'.i18n(),
+      okText: 'allow'.i18n(),
+      cancelText: 'exit'.i18n(),
       okColor: kBlueColor,
       cancelColor: kBackgroundColor,
     ),

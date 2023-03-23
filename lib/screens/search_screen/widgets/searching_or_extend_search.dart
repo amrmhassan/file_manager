@@ -7,6 +7,7 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class SearchingOrExtendSearch extends StatelessWidget {
   const SearchingOrExtendSearch({super.key});
@@ -20,7 +21,7 @@ class SearchingOrExtendSearch extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text('Searching...'),
+            Text('searching'.i18n()),
             Spacer(),
             SizedBox(
               width: smallIconSize,
@@ -40,7 +41,7 @@ class SearchingOrExtendSearch extends StatelessWidget {
                 searchProviderFalse.extendedSearch();
               },
               child: Text(
-                'Extended Search?',
+                'extended-search'.i18n(),
                 style: h4TextStyle.copyWith(color: kBlueColor),
               ),
             ),

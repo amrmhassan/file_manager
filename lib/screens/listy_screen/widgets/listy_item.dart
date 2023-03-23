@@ -13,6 +13,7 @@ import 'package:explorer/screens/listy_items_viewer_screen/listy_items_viewer_sc
 import 'package:explorer/screens/listy_screen/listy_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class ListyItem extends StatelessWidget {
@@ -70,8 +71,8 @@ class ListyItem extends StatelessWidget {
               returnValue = true;
               await removeAListy(e.title, context);
             },
-            okText: 'Remove',
-            title: 'Remove This list?',
+            okText: 'remove'.i18n(),
+            title: 'remove-this-list'.i18n(),
           ),
         );
         return returnValue;
@@ -88,7 +89,9 @@ class ListyItem extends StatelessWidget {
                     );
                   }
                 : () => addToOtherListy(e.title, path!, entityType!, context),
-            title: e.title,
+            title: e.title == defaultListyList.first.title
+                ? 'favorite'.i18n()
+                : e.title,
             iconPath: e.icon,
             logoName: '',
             color:

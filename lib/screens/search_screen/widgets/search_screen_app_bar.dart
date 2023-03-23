@@ -6,6 +6,7 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/utils/futures_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class SearchScreenAppBar extends StatefulWidget {
   const SearchScreenAppBar({
@@ -45,7 +46,7 @@ class _SearchScreenAppBarState extends State<SearchScreenAppBar> {
             controller: searchController,
             borderColor: kMainIconColor.withOpacity(.6),
             autoFocus: true,
-            title: 'Search...',
+            title: 'search'.i18n(),
             enabled: !searchProvider.searching,
             onChange: (v) {
               searchProviderFalse.setSearchQuery(v);

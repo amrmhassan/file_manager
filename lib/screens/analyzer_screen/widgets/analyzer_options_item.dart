@@ -5,6 +5,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/global/widgets/locale_rotation_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:flutter/material.dart';
 
@@ -57,10 +58,12 @@ class AnalyzerOptionsItem extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Image.asset(
-              'assets/icons/right-arrow.png',
-              width: mediumIconSize,
-              color: kMainIconColor,
+            LocaleRotationWrapper(
+              child: Image.asset(
+                'assets/icons/right-arrow.png',
+                width: mediumIconSize,
+                color: kMainIconColor,
+              ),
             )
           ],
         ),

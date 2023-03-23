@@ -23,12 +23,6 @@ class DoneScreen extends StatelessWidget {
       height: double.infinity,
       child: Column(
         children: [
-          // ElevatedButton(
-          //     onPressed: () {
-          //       downPF(context).clearAllTasks();
-          //     },
-          //     child: Text('Clear All')),
-
           VSpace(),
           Expanded(
             child: doneTasks.isEmpty

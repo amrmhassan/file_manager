@@ -94,7 +94,7 @@ class _CurrentPathViewerState extends State<CurrentPathViewer> {
               width: double.infinity,
               color: kCardBackgroundColor,
               height: pathPartHeight,
-              alignment: Alignment.centerLeft,
+              // alignment: Alignment.center,
               child: SingleChildScrollView(
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,

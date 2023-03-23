@@ -10,6 +10,7 @@ import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class MySharedItems extends StatelessWidget {
@@ -26,7 +27,7 @@ class MySharedItems extends StatelessWidget {
       children: [
         PaddingWrapper(
           child: Text(
-            'Shared Items',
+            'shared-items'.i18n(),
             style: h4TextStyleInactive,
           ),
         ),

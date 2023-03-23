@@ -12,6 +12,7 @@ import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/utils/notifications/notification_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -54,6 +55,11 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
+  static void setLocale(BuildContext context, Locale locale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(locale);
+  }
+
   const MyApp({super.key});
 
   @override
@@ -61,6 +67,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   @override
   void initState() {
     AwesomeNotifications().setListeners(
@@ -95,12 +109,16 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: supportedLocales,
         localeResolutionCallback: (locale, supportedLocales) {
+          if (kDebugMode) {
+            return arabicLocal;
+          }
+          _locale ??= (locale ?? englishLocal);
           //! this is just because i am not fully done yet with arabic language
 
           // return arabicLocal;
-          if (supportedLocales.contains(locale)) {
-            return locale;
-          } else if (locale?.languageCode == arabicLocal.languageCode) {
+          if (supportedLocales.contains(_locale)) {
+            return _locale;
+          } else if (_locale?.languageCode == arabicLocal.languageCode) {
             return arabicLocal;
           } else {
             return englishLocal;

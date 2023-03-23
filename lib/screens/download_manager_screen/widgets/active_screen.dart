@@ -10,6 +10,7 @@ import 'package:explorer/screens/download_manager_screen/widgets/download_speed_
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class ActiveScreen extends StatelessWidget {
   const ActiveScreen({
@@ -31,7 +32,7 @@ class ActiveScreen extends StatelessWidget {
                   downPF(context)
                       .clearAllTasks(serverPF(context), sharePF(context));
                 },
-                child: Text('Clear All')),
+                child: Text('clear-all'.i18n())),
           if (downloadProvider.downloadSpeed != null)
             DownloadSpeedViewer(downloadSpeed: downloadProvider.downloadSpeed!),
           VSpace(),

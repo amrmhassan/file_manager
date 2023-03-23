@@ -9,6 +9,7 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/global/widgets/locale_rotation_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
@@ -29,6 +30,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class ChildDirectoryItem extends StatefulWidget {
@@ -199,7 +201,7 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
     var directoryInfoSeparator =
         widget.storageItemModel?.hideDate == true ? '' : ' | ';
     var directoryPrimaryInfo =
-        childrenNumber == null ? '...' : '$childrenNumber Items';
+        childrenNumber == null ? '...' : '$childrenNumber ${'items'.i18n()}';
 
     return !exists && widget.storageItemModel != null
         ? SizedBox()
@@ -336,19 +338,12 @@ class _ChildDirectoryItemState extends State<ChildDirectoryItem> {
                                       );
                                     },
                               )
-                            : Transform(
-                                origin: Offset(
-                                  mediumIconSize / 2,
-                                  mediumIconSize / 2,
-                                ),
-                                transform: Matrix4.rotationZ(
-                                    CustomLocale.isArabic(context) ? pi : 0),
+                            : LocaleRotationWrapper(
                                 child: Image.asset(
-                                  'assets/icons/right-arrow.png',
-                                  width: mediumIconSize,
-                                  color: kMainIconColor.withOpacity(.4),
-                                ),
-                              )
+                                'assets/icons/right-arrow.png',
+                                width: mediumIconSize,
+                                color: kMainIconColor.withOpacity(.4),
+                              ))
                       ],
                     ),
                   ),
