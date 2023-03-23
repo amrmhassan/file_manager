@@ -340,7 +340,7 @@ class RecentProvider extends ChangeNotifier {
           folder);
       loadedFiles.addAll(res);
     }
-    logger.i('loaded files length ${loadedFiles.length}');
+    // logger.i('loaded files length ${loadedFiles.length}');
     for (var file in loadedFiles) {
       _addRecentFile(file, true);
     }
@@ -357,14 +357,14 @@ class RecentProvider extends ChangeNotifier {
     _preAnalyzeRecentFolders();
     // listen for recent folders
     _startListenForRecentFilesParents(false);
-    logger.i('loaded folders to watch for length ${folders.length}');
+    // logger.i('loaded folders to watch for length ${folders.length}');
   }
 
   Future<void> _clearThenSaveFoldersToWatchInHive() async {
     var box = (await HiveBox.foldersToWatchForOnStartUpTableName);
     await box.clear();
     await box.addAll(_foldersToWatch);
-    logger.i('saved folders to watch ${box.values.length}');
+    // logger.i('saved folders to watch ${box.values.length}');
   }
 
   void _startListenForRecentFilesParents([bool saveToHive = true]) async {

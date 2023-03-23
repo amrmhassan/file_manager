@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 
 //! this is good implementation it takes about 4 seconds on my phone
+// this class is to get all folder children recursive with some info
 class AdvancedStorageAnalyzer {
   String path;
   List<LocalFileInfo> filesInfo = [];
@@ -28,7 +29,7 @@ class AdvancedStorageAnalyzer {
   Future<void> startAnalyzing({
     //* this will run after the whole folder is scanned
     required VoidCallback onAllDone,
-    //* this will run after a snigle folder gets scanned
+    //* this will run after a single folder gets scanned
     required Function(
       LocalFolderInfo localFolderInfo,
     )
@@ -36,7 +37,7 @@ class AdvancedStorageAnalyzer {
     Function(LocalFileInfo localFileInfo)? onFileScanned,
     required Function(Object e, Directory directory) onError,
   }) async {
-    //* the single function of it scan the direct children, but it is recrusive
+    //* the single function of it scan the direct children, but it is recursive
     getDirChildren(
       path: path,
       onAllDone: onAllDone,
@@ -46,7 +47,7 @@ class AdvancedStorageAnalyzer {
     );
   }
 
-//? scan single folder, but it is recrusive so it scans the whole children and sub-children folders
+//? scan single folder, but it is recursive so it scans the whole children and sub-children folders
   Future<void> getDirChildren({
     required String path,
     required VoidCallback onAllDone,
@@ -54,7 +55,7 @@ class AdvancedStorageAnalyzer {
     Function(LocalFileInfo localFileInfo)? onFileScanned,
     required Function(Object e, Directory directory) onError,
   }) async {
-    //* the current folder unscanned sub-folders
+    //* the current folder unscarred sub-folders
     List<String> unscannedFoldersPath = [];
     //* the current folder children (files)
     List<LocalFileInfo> folderFilesChildren = [];
@@ -93,7 +94,7 @@ class AdvancedStorageAnalyzer {
         } else {
           //* adding the folder path to the scan queue
           unscannedFoldersPath.add(fileSystemEntity.path);
-          //* adding it to the waitingtoscafolder list will help us know when the whole operation is totally finished
+          //* adding it to the waiting to scan folder list will help us know when the whole operation is totally finished
           waitingToScanFolders.add(fileSystemEntity.path);
         }
       });
@@ -122,7 +123,7 @@ class AdvancedStorageAnalyzer {
           onAllDone();
         }
 
-        //* this will be the recrusive part of the method to scan all sub-folders to the ground
+        //* this will be the recursive part of the method to scan all sub-folders to the ground
         for (var unscannedFolder in unscannedFoldersPath) {
           try {
             await getDirChildren(
@@ -134,7 +135,6 @@ class AdvancedStorageAnalyzer {
             );
           } catch (e) {
             //
-
           }
         }
       });

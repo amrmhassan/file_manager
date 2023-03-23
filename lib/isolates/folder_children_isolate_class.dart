@@ -44,7 +44,10 @@ class FolderChildrenIsolate {
     return children.map((e) => e.path).toList();
   }
 
-  static List<String> getFolderChildrenAsPathsRecursive(String folderPath) {
+  static List<String> getFolderChildrenAsPathsRecursive(
+    String folderPath, {
+    Function(Object e, String folderPath)? onError,
+  }) {
     List<String> paths = [];
     Directory dir = Directory(folderPath);
     try {
@@ -58,6 +61,9 @@ class FolderChildrenIsolate {
       }
       return paths;
     } catch (e) {
+      if (onError != null) {
+        onError(e, folderPath);
+      }
       return [];
     }
   }

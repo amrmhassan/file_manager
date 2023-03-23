@@ -125,6 +125,7 @@ class AnalyzerProvider extends ChangeNotifier {
   //? to start analyzing storage
 
   Future<void> handleAnalyzeEvent(RecentProvider recentProvider) async {
+    logger.i('analyzing storage');
     // _loading = true;
     ReceivePort receivePort = ReceivePort();
     SendPort sendPort = receivePort.sendPort;
@@ -190,10 +191,10 @@ class AnalyzerProvider extends ChangeNotifier {
       await foldersInfoBox.clear();
       await foldersInfoBox
           .addAll(_storageAnalyzerV4!.allFoldersInfo.map((e) => e.path));
-      logger.i(
-          'all folders info length is ${_storageAnalyzerV4!.allFoldersInfo.length}');
-      logger.i(
-          'all folders info length from the box is ${foldersInfoBox.values.length}');
+      // logger.i(
+      //     'all folders info length is ${_storageAnalyzerV4!.allFoldersInfo.length}');
+      // logger.i(
+      // 'all folders info length from the box is ${foldersInfoBox.values.length}');
     } catch (e) {
       logger.e(e);
     }
