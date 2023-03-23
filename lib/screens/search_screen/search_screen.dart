@@ -11,9 +11,11 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/storage_item_model.dart';
+import 'package:explorer/screens/explorer_screen/widgets/entity_operations/entity_operations.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/utils/futures_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -32,6 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     var searchProviderFalse = searchPF(context);
     var searchProvider = searchP(context);
+    var foProvider = foPF(context);
 
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
@@ -164,14 +167,17 @@ class _SearchScreenState extends State<SearchScreen> {
                                       searchProvider.searchResults[index])
                                   .toStorageItemModel();
                           return StorageItem(
-                            onDirTapped: (p) {},
+                            onDirTapped: (p) {
+                              handleOpenTabFromOtherScreen(p, context);
+                            },
                             sizesExplorer: false,
                             parentSize: 0,
                             storageItemModel: storageItemModel,
                           );
                         },
                       ),
-          )
+          ),
+          if (!foProvider.loadingOperation) EntityOperations(),
         ],
       ),
     );
