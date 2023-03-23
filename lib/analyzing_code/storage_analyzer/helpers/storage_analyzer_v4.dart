@@ -4,7 +4,6 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_inf
 
 class StorageAnalyzerV4 {
   String parentPath;
-  List<String> children;
   List<LocalFileInfo> allFilesInfo;
   List<LocalFolderInfo> allFoldersInfo;
   List<LocalFolderInfo> allFolderInfoWithSize = [];
@@ -12,7 +11,6 @@ class StorageAnalyzerV4 {
 
   StorageAnalyzerV4({
     required this.parentPath,
-    required this.children,
     required this.allFilesInfo,
     required this.allFoldersInfo,
   });
@@ -87,4 +85,16 @@ class StorageAnalyzerV4 {
     }
     return extInfoList;
   }
+}
+
+class StorageAnalyzerV4Creator extends StorageAnalyzerV4 {
+  final List<LocalFolderInfo> allFolderInfoWithSize;
+  final List<ExtensionInfo> allExtensionsInfo;
+  StorageAnalyzerV4Creator({
+    required super.parentPath,
+    required super.allFilesInfo,
+    required super.allFoldersInfo,
+    required this.allExtensionsInfo,
+    required this.allFolderInfoWithSize,
+  });
 }

@@ -5,14 +5,23 @@ import 'package:explorer/analyzing_code/storage_analyzer/helpers/storage_analyze
 import 'package:explorer/utils/general_utils.dart';
 
 //? to start analyzing the storage
-void runAnalyzeStorageIsolate(Map<String, dynamic> data) {
+void runAnalyzeStorageIsolate(Map<String, dynamic> data) async {
   SendPort sendPort = data['sendPort'];
   String parentPath = data['parentPath'];
 
   ReceivePort receivePort = ReceivePort();
   sendPort.send(receivePort.sendPort);
-  var obj = AdvancedStorageAnalyzer(parentPath);
   DateTime beforeScanning = DateTime.now();
+
+  // var splitter = StorageAnalyzerSplitter(parentPath, sendPort);
+  // var res = await splitter.run();
+  // DateTime after = DateTime.now();
+  // sendPort.send(after.difference(beforeScanning).inMilliseconds);
+  // sendPort.send(res);
+  // logger.i('Analyzing Done');
+  // return;
+
+  var obj = AdvancedStorageAnalyzer(parentPath);
   obj.startAnalyzing(
     onAllDone: () {
       DateTime afterScanning = DateTime.now();
@@ -22,7 +31,6 @@ void runAnalyzeStorageIsolate(Map<String, dynamic> data) {
         StorageAnalyzerV4 storageAnalyzerV4 = StorageAnalyzerV4(
           allFilesInfo: obj.filesInfo,
           allFoldersInfo: obj.foldersInfo,
-          children: obj.allEntitiesPaths,
           parentPath: parentPath,
         );
         storageAnalyzerV4.run();
