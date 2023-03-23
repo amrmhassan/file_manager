@@ -89,16 +89,16 @@ class StorageAnalyzerV4 {
   }
 }
 
-class StorageAnalyzerV4Creator extends StorageAnalyzerV4 {
-  @override
-  final List<LocalFolderInfo> allFolderInfoWithSize;
-  @override
-  final List<ExtensionInfo> allExtensionsInfo;
-  StorageAnalyzerV4Creator({
-    required super.parentPath,
-    required super.allFilesInfo,
-    required super.allFoldersInfo,
-    required this.allExtensionsInfo,
-    required this.allFolderInfoWithSize,
-  });
-}
+// class StorageAnalyzerV4Creator extends StorageAnalyzerV4 {
+//   @override
+//   final List<LocalFolderInfo> allFolderInfoWithSize;
+//   @override
+//   final List<ExtensionInfo> allExtensionsInfo;
+//   StorageAnalyzerV4Creator({
+//     required super.parentPath,
+//     required super.allFilesInfo,
+//     required super.allFoldersInfo,
+//     required this.allExtensionsInfo,
+//     required this.allFolderInfoWithSize,
+//   });
+// }
