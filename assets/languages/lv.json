@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "mape neeksistē",
     "cant-resume-this-failed-task": "Nevar atsākt šo neveiksmīgo uzdevumu",
     "failed": "Neizdevās",
-    "downloading": "Notiek lejupielāde"
+    "downloading": "Notiek lejupielāde",
+    "file-already-downloaded": "Fails jau ir lejupielādēts",
+    "overwrite": "Pārrakstīt",
+    "file-already-downloaded-note": "Pārrakstīt lejupielādēto failu vai pārdēvēt jauno?",
+    "wants-access-to-share-space": "vēlas piekļūt jūsu koplietošanas vietai",
+    "block": "Bloķēt",
+    "share-space-request": "Kopīgojiet vietas pieprasījumu",
+    "remember-for-later": "Atcerieties vēlākam laikam"
 }

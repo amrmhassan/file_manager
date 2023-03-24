@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "klasör mevcut değil",
     "cant-resume-this-failed-task": "Bu başarısız göreve devam edilemiyor",
     "failed": "Arızalı",
-    "downloading": "indiriliyor"
+    "downloading": "indiriliyor",
+    "file-already-downloaded": "Dosya zaten indirildi",
+    "overwrite": "üzerine yaz",
+    "file-already-downloaded-note": "İndirilen dosyanın üzerine yaz veya yenisini yeniden adlandır?",
+    "wants-access-to-share-space": "paylaşım alanınıza erişmek istiyor",
+    "block": "Engellemek",
+    "share-space-request": "Alan İsteğini Paylaşın",
+    "remember-for-later": "Sonrası için hatırla"
 }

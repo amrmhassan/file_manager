@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "ਫੋਲਡਰ ਮੌਜੂਦ ਨਹੀਂ ਹੈ",
     "cant-resume-this-failed-task": "ਇਸ ਅਸਫਲ ਕਾਰਜ ਨੂੰ ਮੁੜ-ਚਾਲੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ",
     "failed": "ਅਸਫਲ ਰਿਹਾ",
-    "downloading": "ਡਾਊਨਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+    "downloading": "ਡਾਊਨਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
+    "file-already-downloaded": "ਫ਼ਾਈਲ ਪਹਿਲਾਂ ਹੀ ਡਾਊਨਲੋਡ ਕੀਤੀ ਗਈ ਹੈ",
+    "overwrite": "ਓਵਰਰਾਈਟ ਕਰੋ",
+    "file-already-downloaded-note": "ਡਾਊਨਲੋਡ ਕੀਤੀ ਫਾਈਲ ਨੂੰ ਓਵਰਰਾਈਟ ਕਰਨਾ ਹੈ ਜਾਂ ਨਵੀਂ ਦਾ ਨਾਮ ਬਦਲਣਾ ਹੈ?",
+    "wants-access-to-share-space": "ਤੁਹਾਡੀ ਸ਼ੇਅਰ ਸਪੇਸ ਤੱਕ ਪਹੁੰਚ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ",
+    "block": "ਬਲਾਕ",
+    "share-space-request": "ਸਪੇਸ ਬੇਨਤੀ ਸਾਂਝੀ ਕਰੋ",
+    "remember-for-later": "ਬਾਅਦ ਲਈ ਯਾਦ ਰੱਖੋ"
 }

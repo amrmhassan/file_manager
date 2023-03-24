@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "priečinok neexistuje",
     "cant-resume-this-failed-task": "Táto neúspešná úloha sa nedá obnoviť",
     "failed": "Nepodarilo sa",
-    "downloading": "Sťahovanie"
+    "downloading": "Sťahovanie",
+    "file-already-downloaded": "Súbor je už stiahnutý",
+    "overwrite": "Prepísať",
+    "file-already-downloaded-note": "Prepísať stiahnutý súbor alebo premenovať nový?",
+    "wants-access-to-share-space": "chcete získať prístup k vášmu zdieľanému priestoru",
+    "block": "Blokovať",
+    "share-space-request": "Zdieľať požiadavku na priestor",
+    "remember-for-later": "Pamätaj na neskôr"
 }

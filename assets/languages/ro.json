@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "folderul nu există",
     "cant-resume-this-failed-task": "Nu se poate relua această sarcină eșuată",
     "failed": "A eșuat",
-    "downloading": "Descărcarea"
+    "downloading": "Descărcarea",
+    "file-already-downloaded": "Fișierul a fost deja descărcat",
+    "overwrite": "Suprascrie",
+    "file-already-downloaded-note": "Suprascrieți fișierul descărcat sau redenumiți-l pe cel nou?",
+    "wants-access-to-share-space": "vrei să accesezi spațiul tău de partajare",
+    "block": "bloc",
+    "share-space-request": "Solicitare de distribuire a spațiului",
+    "remember-for-later": "Ține minte pentru mai târziu"
 }

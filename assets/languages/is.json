@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "mappa er ekki til",
     "cant-resume-this-failed-task": "Ekki er hægt að halda áfram með þetta misheppnaða verkefni",
     "failed": "Mistókst",
-    "downloading": "Niðurhal"
+    "downloading": "Niðurhal",
+    "file-already-downloaded": "Skrá þegar hlaðið niður",
+    "overwrite": "Skrifa yfir",
+    "file-already-downloaded-note": "Skrifa yfir niðurhalaða skrá Eða endurnefna hina nýju?",
+    "wants-access-to-share-space": "vill fá aðgang að deilirýminu þínu",
+    "block": "Block",
+    "share-space-request": "Deila rúmbeiðni",
+    "remember-for-later": "Mundu til síðar"
 }

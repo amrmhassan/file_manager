@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "папка не існуе",
     "cant-resume-this-failed-task": "Немагчыма аднавіць гэту няўдалую задачу",
     "failed": "Не атрымалася",
-    "downloading": "Ідзе загрузка"
+    "downloading": "Ідзе загрузка",
+    "file-already-downloaded": "Файл ужо спампаваны",
+    "overwrite": "Перазапісаць",
+    "file-already-downloaded-note": "Перазапісаць спампаваны файл Ці перайменаваць новы?",
+    "wants-access-to-share-space": "хоча атрымаць доступ да вашай агульнай прасторы",
+    "block": "Блок",
+    "share-space-request": "Падзяліцца запытам прасторы",
+    "remember-for-later": "Запомніце на потым"
 }

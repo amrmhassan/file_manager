@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "ফোল্ডার বিদ্যমান নেই",
     "cant-resume-this-failed-task": "এই ব্যর্থ টাস্ক আবার শুরু করা যাবে না",
     "failed": "ব্যর্থ",
-    "downloading": "ডাউনলোড হচ্ছে"
+    "downloading": "ডাউনলোড হচ্ছে",
+    "file-already-downloaded": "ফাইল ইতিমধ্যে ডাউনলোড করা হয়েছে",
+    "overwrite": "ওভাররাইট করুন",
+    "file-already-downloaded-note": "ডাউনলোড করা ফাইলটি ওভাররাইট করবেন নাকি নতুন নাম পরিবর্তন করবেন?",
+    "wants-access-to-share-space": "আপনার শেয়ার স্পেস অ্যাক্সেস করতে চান",
+    "block": "ব্লক",
+    "share-space-request": "স্পেস অনুরোধ শেয়ার করুন",
+    "remember-for-later": "পরে মনে রাখবেন"
 }

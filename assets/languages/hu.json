@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "mappa nem létezik",
     "cant-resume-this-failed-task": "Ezt a sikertelen feladatot nem lehet folytatni",
     "failed": "nem sikerült",
-    "downloading": "Letöltés"
+    "downloading": "Letöltés",
+    "file-already-downloaded": "A fájl már letöltve",
+    "overwrite": "Átír",
+    "file-already-downloaded-note": "A letöltött fájl felülírása vagy az új átnevezése?",
+    "wants-access-to-share-space": "hozzá akar férni a megosztási területéhez",
+    "block": "Blokk",
+    "share-space-request": "Share Space Request",
+    "remember-for-later": "Ne feledje későbbre"
 }

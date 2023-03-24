@@ -223,5 +223,12 @@
   "folder-doesnt-exist": "folder doesn't exist",
   "cant-resume-this-failed-task": "Can't resume this failed task",
   "failed": "Failed",
-  "downloading": "Downloading"
+  "downloading": "Downloading",
+  "file-already-downloaded": "File already downloaded",
+  "overwrite": "Overwrite",
+  "file-already-downloaded-note": "Overwrite the downloaded file Or rename the new one ?",
+  "wants-access-to-share-space": "want's to access your share space",
+  "block": "Block",
+  "share-space-request": "Share Space Request",
+  "remember-for-later": "Remember for later"
 }

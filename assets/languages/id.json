@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "folder tidak ada",
     "cant-resume-this-failed-task": "Tidak dapat melanjutkan tugas yang gagal ini",
     "failed": "Gagal",
-    "downloading": "Mengunduh"
+    "downloading": "Mengunduh",
+    "file-already-downloaded": "File sudah diunduh",
+    "overwrite": "Timpa",
+    "file-already-downloaded-note": "Timpa file yang diunduh Atau ganti nama yang baru?",
+    "wants-access-to-share-space": "ingin mengakses ruang berbagi Anda",
+    "block": "Memblokir",
+    "share-space-request": "Bagikan Permintaan Ruang",
+    "remember-for-later": "Ingat untuk nanti"
 }

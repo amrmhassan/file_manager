@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "kansiota ei ole olemassa",
     "cant-resume-this-failed-task": "Tätä epäonnistunutta tehtävää ei voi jatkaa",
     "failed": "Epäonnistui",
-    "downloading": "Ladataan"
+    "downloading": "Ladataan",
+    "file-already-downloaded": "Tiedosto on jo ladattu",
+    "overwrite": "Korvaa",
+    "file-already-downloaded-note": "Korvaa ladattu tiedosto tai nimeä uusi?",
+    "wants-access-to-share-space": "haluaa käyttää jaettua tilaasi",
+    "block": "Lohko",
+    "share-space-request": "Jaa tilapyyntö",
+    "remember-for-later": "Muista myöhempää käyttöä varten"
 }

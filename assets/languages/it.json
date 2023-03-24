@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "cartella non esiste",
     "cant-resume-this-failed-task": "Impossibile riprendere questa attività non riuscita",
     "failed": "Fallito",
-    "downloading": "Download"
+    "downloading": "Download",
+    "file-already-downloaded": "File già scaricato",
+    "overwrite": "Sovrascrivi",
+    "file-already-downloaded-note": "Sovrascrivi il file scaricato o rinomina quello nuovo?",
+    "wants-access-to-share-space": "vuole accedere al tuo spazio di condivisione",
+    "block": "Bloccare",
+    "share-space-request": "Condividi richiesta di spazio",
+    "remember-for-later": "Ricorda per dopo"
 }

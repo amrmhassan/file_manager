@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "mappen eksisterer ikke",
     "cant-resume-this-failed-task": "Kan ikke gjenoppta denne mislykkede oppgaven",
     "failed": "Mislyktes",
-    "downloading": "Laster ned"
+    "downloading": "Laster ned",
+    "file-already-downloaded": "Filen er allerede lastet ned",
+    "overwrite": "Overskriv",
+    "file-already-downloaded-note": "Overskrive den nedlastede filen Eller gi nytt navn til den nye?",
+    "wants-access-to-share-space": "ønsker å få tilgang til deleplassen din",
+    "block": "Blokkere",
+    "share-space-request": "Del plassforespørsel",
+    "remember-for-later": "Husk til senere"
 }

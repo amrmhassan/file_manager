@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "aplankas neegzistuoja",
     "cant-resume-this-failed-task": "Negalima tęsti šios nepavykusios užduoties",
     "failed": "Nepavyko",
-    "downloading": "Atsisiunčiama"
+    "downloading": "Atsisiunčiama",
+    "file-already-downloaded": "Failas jau atsisiųstas",
+    "overwrite": "Perrašyti",
+    "file-already-downloaded-note": "Perrašyti atsisiųstą failą Ar pervardyti naują?",
+    "wants-access-to-share-space": "nori pasiekti jūsų bendrinimo erdvę",
+    "block": "Blokuoti",
+    "share-space-request": "Dalintis erdvės užklausa",
+    "remember-for-later": "Prisiminkite vėliau"
 }

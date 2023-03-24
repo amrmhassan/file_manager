@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "ffolder ddim yn bodoli",
     "cant-resume-this-failed-task": "Ni fu modd ailddechrau'r dasg hon a fethwyd",
     "failed": "Wedi methu",
-    "downloading": "Wrthi'n llwytho i lawr"
+    "downloading": "Wrthi'n llwytho i lawr",
+    "file-already-downloaded": "Ffeil wedi'i lawrlwytho eisoes",
+    "overwrite": "Trosysgrifo",
+    "file-already-downloaded-note": "Trosysgrifo'r ffeil a lawrlwythwyd Neu ailenwi'r un newydd ?",
+    "wants-access-to-share-space": "eisiau cael mynediad i'ch gofod rhannu",
+    "block": "Bloc",
+    "share-space-request": "Cais Rhannu Gofod",
+    "remember-for-later": "Cofiwch am nes ymlaen"
 }

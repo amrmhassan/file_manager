@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "папка не существует",
     "cant-resume-this-failed-task": "Не удается возобновить эту невыполненную задачу",
     "failed": "Неуспешный",
-    "downloading": "Загрузка"
+    "downloading": "Загрузка",
+    "file-already-downloaded": "Файл уже скачан",
+    "overwrite": "перезаписать",
+    "file-already-downloaded-note": "Перезаписать загруженный файл или переименовать новый?",
+    "wants-access-to-share-space": "хотите получить доступ к вашему общему пространству",
+    "block": "Блокировать",
+    "share-space-request": "Запрос на совместное использование пространства",
+    "remember-for-later": "Запомнить на потом"
 }

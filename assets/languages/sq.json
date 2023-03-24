@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "dosje nuk ekziston",
     "cant-resume-this-failed-task": "Kjo detyrë e dështuar nuk mund të rifillojë",
     "failed": "Dështoi",
-    "downloading": "Po shkarkohet"
+    "downloading": "Po shkarkohet",
+    "file-already-downloaded": "Skedari tashmë është shkarkuar",
+    "overwrite": "Mbishkruani",
+    "file-already-downloaded-note": "Mbishkruani skedarin e shkarkuar Apo riemërtoni të riun?",
+    "wants-access-to-share-space": "dëshiron të hyjë në hapësirën tënde të përbashkët",
+    "block": "Blloko",
+    "share-space-request": "Kërkesë për ndarjen e hapësirës",
+    "remember-for-later": "Mbani mend për më vonë"
 }

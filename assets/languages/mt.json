@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "folder ma jeżistix",
     "cant-resume-this-failed-task": "Ma nistax nibda dan il-kompitu fallut",
     "failed": "Falliet",
-    "downloading": "Tniżżil"
+    "downloading": "Tniżżil",
+    "file-already-downloaded": "Fajl diġà mniżżel",
+    "overwrite": "Ikteb mill-ġdid",
+    "file-already-downloaded-note": "Ikteb fuq il-fajl imniżżel Jew semmi mill-ġdid il-ġdid?",
+    "wants-access-to-share-space": "trid taċċessa l-ispazju tas-sehem tiegħek",
+    "block": "Blokk",
+    "share-space-request": "Share Talba għall-Ispazju",
+    "remember-for-later": "Ftakar għal aktar tard"
 }

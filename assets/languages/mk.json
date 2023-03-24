@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "папката не постои",
     "cant-resume-this-failed-task": "Не може да се продолжи со оваа неуспешна задача",
     "failed": "Неуспешно",
-    "downloading": "Преземање"
+    "downloading": "Преземање",
+    "file-already-downloaded": "Датотеката е веќе преземена",
+    "overwrite": "Презапишете",
+    "file-already-downloaded-note": "Презапишете ја преземената датотека Или преименувајте ја новата?",
+    "wants-access-to-share-space": "сака да пристапи до вашиот простор за споделување",
+    "block": "Блокирај",
+    "share-space-request": "Сподели барање за простор",
+    "remember-for-later": "Запомнете за подоцна"
 }

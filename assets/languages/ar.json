@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "المجلد غير موجود",
     "cant-resume-this-failed-task": "لا يمكن استكمال التنزيل",
     "failed": "فشلت",
-    "downloading": "تحميل"
+    "downloading": "تحميل",
+    "file-already-downloaded": "الملف تم تنزيله بالفعل",
+    "overwrite": "تنزيل",
+    "file-already-downloaded-note": "تنزيل الملف مرة أخري أو تنزيله وإعادة تسميته؟",
+    "wants-access-to-share-space": "يريد أن يري ملفاتك المشتركة",
+    "block": "حظر",
+    "share-space-request": "طلب الملفات المشتركة",
+    "remember-for-later": "تذكر"
 }

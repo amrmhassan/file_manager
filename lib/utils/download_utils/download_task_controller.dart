@@ -16,6 +16,7 @@ import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:uuid/uuid.dart';
+import 'package:localization/localization.dart';
 
 class ChunkProgressModel {
   final int size;
@@ -207,10 +208,10 @@ class DownloadTaskController {
             rename = true;
           },
           okColor: kBlueColor,
-          okText: 'Overwrite',
-          cancelText: 'Rename ',
-          title: 'File already download',
-          subTitle: 'Overwrite the downloaded file Or rename the new one ?',
+          okText: 'overwrite'.i18n(),
+          cancelText: 'rename'.i18n(),
+          title: 'file-already-downloaded'.i18n(),
+          subTitle: 'file-already-downloaded-note'.i18n(),
         ),
       );
     }

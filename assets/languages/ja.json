@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "フォルダが存在しません",
     "cant-resume-this-failed-task": "この失敗したタスクを再開できません",
     "failed": "失敗した",
-    "downloading": "ダウンロード中"
+    "downloading": "ダウンロード中",
+    "file-already-downloaded": "ファイルは既にダウンロードされています",
+    "overwrite": "上書き",
+    "file-already-downloaded-note": "ダウンロードしたファイルを上書きするか、新しいファイルの名前を変更しますか?",
+    "wants-access-to-share-space": "あなたの共有スペースにアクセスしたい",
+    "block": "ブロック",
+    "share-space-request": "スペースリクエストの共有",
+    "remember-for-later": "後で覚えておいてください"
 }

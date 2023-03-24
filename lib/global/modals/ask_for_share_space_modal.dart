@@ -5,11 +5,11 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/home_screen/widgets/custom_check_box.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class AskForShareSpaceModal extends StatefulWidget {
   const AskForShareSpaceModal({
@@ -34,8 +34,7 @@ class _AskForShareSpaceModalState extends State<AskForShareSpaceModal> {
         await serverPF(context).blockDevice(widget.deviceID, remember);
         showSnackBar(
           context: context,
-          message: 'Block considering remember $remember',
-          snackBarType: SnackBarType.error,
+          message: 'block'.i18n(),
         );
         // this will tell the parent function that it is blocked
         Navigator.pop(context, false);
@@ -44,18 +43,18 @@ class _AskForShareSpaceModalState extends State<AskForShareSpaceModal> {
         await serverPF(context).allowDevice(widget.deviceID, remember);
         showSnackBar(
           context: context,
-          message: 'Allow considering remember $remember',
+          message: 'allow'.i18n(),
         );
 
         // this will tell the parent function that it is allowed
         Navigator.pop(context, true);
       },
       autoPop: false,
-      okText: 'Block',
+      okText: 'block'.i18n(),
       cancelColor: kBlueColor,
-      cancelText: 'Allow',
-      title: 'Share Space Request',
-      subTitle: '${widget.userName} want\'s to access your share space',
+      cancelText: 'allow'.i18n(),
+      title: 'share-space-request'.i18n(),
+      subTitle: '${widget.userName} ${"wants-access-to-share-space".i18n()}',
       reverseButtonsOrder: true,
       extra: GestureDetector(
         onTap: () {
@@ -73,7 +72,7 @@ class _AskForShareSpaceModalState extends State<AskForShareSpaceModal> {
                 ),
                 HSpace(factor: .4),
                 Text(
-                  'Remember for later',
+                  'remember-for-later'.i18n(),
                   style: h4TextStyleInactive,
                 ),
               ],

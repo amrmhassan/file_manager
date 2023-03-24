@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "Ordner existiert nicht",
     "cant-resume-this-failed-task": "Diese fehlgeschlagene Aufgabe kann nicht fortgesetzt werden",
     "failed": "Fehlgeschlagen",
-    "downloading": "wird heruntergeladen"
+    "downloading": "wird heruntergeladen",
+    "file-already-downloaded": "Datei bereits heruntergeladen",
+    "overwrite": "Überschreiben",
+    "file-already-downloaded-note": "Die heruntergeladene Datei überschreiben oder die neue umbenennen?",
+    "wants-access-to-share-space": "möchte auf Ihren freigegebenen Speicherplatz zugreifen",
+    "block": "Block",
+    "share-space-request": "Space-Anfrage teilen",
+    "remember-for-later": "Merken Sie sich für später"
 }

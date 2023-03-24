@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "e le o iai le faila",
     "cant-resume-this-failed-task": "Le mafai ona toe fa'aauau lenei galuega ua le manuia",
     "failed": "Ua le manuia",
-    "downloading": "La'uina"
+    "downloading": "La'uina",
+    "file-already-downloaded": "Ua uma ona la'uina faila",
+    "overwrite": "Sui tusi",
+    "file-already-downloaded-note": "Su'e le faila na sii mai pe toe faaigoa le faila fou ?",
+    "wants-access-to-share-space": "mana'o e maua lau avanoa fa'asoa",
+    "block": "Poloka",
+    "share-space-request": "Faasoa Avanoa Talosaga",
+    "remember-for-later": "Manatua mo se taimi mulimuli ane"
 }

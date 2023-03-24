@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "map bestaat niet",
     "cant-resume-this-failed-task": "Kan deze mislukte taak niet hervatten",
     "failed": "Mislukt",
-    "downloading": "downloaden"
+    "downloading": "downloaden",
+    "file-already-downloaded": "Bestand al gedownload",
+    "overwrite": "Overschrijven",
+    "file-already-downloaded-note": "Overschrijf het gedownloade bestand Of hernoem het nieuwe?",
+    "wants-access-to-share-space": "wil toegang tot uw gedeelde ruimte",
+    "block": "Blok",
+    "share-space-request": "Ruimteverzoek delen",
+    "remember-for-later": "Onthoud voor later"
 }

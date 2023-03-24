@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "mappen finns inte",
     "cant-resume-this-failed-task": "Det går inte att återuppta den här misslyckade uppgiften",
     "failed": "Misslyckades",
-    "downloading": "Laddar ner"
+    "downloading": "Laddar ner",
+    "file-already-downloaded": "Filen har redan laddats ned",
+    "overwrite": "Skriva över",
+    "file-already-downloaded-note": "Skriv över den nedladdade filen Eller byt namn på den nya?",
+    "wants-access-to-share-space": "vill komma åt ditt delade utrymme",
+    "block": "Blockera",
+    "share-space-request": "Dela utrymmesbegäran",
+    "remember-for-later": "Kom ihåg till senare"
 }

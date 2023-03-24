@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "ෆෝල්ඩරය නොපවතී",
     "cant-resume-this-failed-task": "මෙම අසාර්ථක කාර්යය නැවත ආරම්භ කළ නොහැක",
     "failed": "අසාර්ථකයි",
-    "downloading": "බාගත කිරීම"
+    "downloading": "බාගත කිරීම",
+    "file-already-downloaded": "ගොනුව දැනටමත් බාගත කර ඇත",
+    "overwrite": "උඩින් ලියන්න",
+    "file-already-downloaded-note": "බාගත කළ ගොනුව උඩින් ලියන්නද නැතහොත් අලුත් එක නැවත නම් කරන්නද?",
+    "wants-access-to-share-space": "ඔබගේ කොටස් ඉඩ ප්‍රවේශ කිරීමට අවශ්‍යයි",
+    "block": "අවහිර කරන්න",
+    "share-space-request": "ඉඩ ඉල්ලීම බෙදා ගන්න",
+    "remember-for-later": "පසුව මතක තබා ගන්න"
 }

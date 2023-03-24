@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "文件夹不存在",
     "cant-resume-this-failed-task": "无法恢复这个失败的任务",
     "failed": "失败的",
-    "downloading": "下载中"
+    "downloading": "下载中",
+    "file-already-downloaded": "文件已下载",
+    "overwrite": "覆盖",
+    "file-already-downloaded-note": "覆盖下载的文件还是重命名新文件？",
+    "wants-access-to-share-space": "想要访问您的共享空间",
+    "block": "堵塞",
+    "share-space-request": "共享空间请求",
+    "remember-for-later": "以后记得"
 }

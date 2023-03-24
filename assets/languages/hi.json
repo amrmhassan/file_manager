@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "फ़ोल्डर मौजूद नहीं है",
     "cant-resume-this-failed-task": "इस विफल कार्य को फिर से शुरू नहीं कर सकते",
     "failed": "असफल",
-    "downloading": "डाउनलोड"
+    "downloading": "डाउनलोड",
+    "file-already-downloaded": "फ़ाइल पहले ही डाउनलोड हो चुकी है",
+    "overwrite": "ओवरराइट",
+    "file-already-downloaded-note": "डाउनलोड की गई फ़ाइल को अधिलेखित करें या नए का नाम बदलें?",
+    "wants-access-to-share-space": "आपके साझा स्थान को एक्सेस करना चाहते हैं",
+    "block": "अवरोध पैदा करना",
+    "share-space-request": "स्थान अनुरोध साझा करें",
+    "remember-for-later": "बाद के लिए याद रखें"
 }

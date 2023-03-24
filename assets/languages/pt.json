@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "a pasta não existe",
     "cant-resume-this-failed-task": "Não é possível retomar esta tarefa com falha",
     "failed": "Fracassado",
-    "downloading": "Baixando"
+    "downloading": "Baixando",
+    "file-already-downloaded": "Arquivo já baixado",
+    "overwrite": "Sobrescrever",
+    "file-already-downloaded-note": "Sobrescrever o arquivo baixado ou renomear o novo?",
+    "wants-access-to-share-space": "deseja acessar seu espaço de compartilhamento",
+    "block": "Bloquear",
+    "share-space-request": "Compartilhar solicitação de espaço",
+    "remember-for-later": "Lembre-se para mais tarde"
 }

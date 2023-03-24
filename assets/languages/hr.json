@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "mapa ne postoji",
     "cant-resume-this-failed-task": "Nije moguće nastaviti ovaj neuspjeli zadatak",
     "failed": "Neuspjeh",
-    "downloading": "Preuzimanje"
+    "downloading": "Preuzimanje",
+    "file-already-downloaded": "Datoteka je već preuzeta",
+    "overwrite": "Prebrisati",
+    "file-already-downloaded-note": "Prepisati preuzetu datoteku ili preimenovati novu?",
+    "wants-access-to-share-space": "želi pristupiti vašem zajedničkom prostoru",
+    "block": "Blok",
+    "share-space-request": "Zahtjev za dijeljenje prostora",
+    "remember-for-later": "Zapamti za kasnije"
 }

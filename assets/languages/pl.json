@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "folder nie istnieje",
     "cant-resume-this-failed-task": "Nie można wznowić tego nieudanego zadania",
     "failed": "Przegrany",
-    "downloading": "Ściąganie"
+    "downloading": "Ściąganie",
+    "file-already-downloaded": "Plik już pobrany",
+    "overwrite": "Przepisać",
+    "file-already-downloaded-note": "Nadpisać pobrany plik Lub zmienić nazwę nowego?",
+    "wants-access-to-share-space": "chcą uzyskać dostęp do Twojej przestrzeni współdzielonej",
+    "block": "Blok",
+    "share-space-request": "Prośba o udostępnienie miejsca",
+    "remember-for-later": "Pamiętaj na później"
 }

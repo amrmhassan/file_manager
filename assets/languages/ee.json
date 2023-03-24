@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "kausta pole olemas",
     "cant-resume-this-failed-task": "Seda nurjunud ülesannet ei saa jätkata",
     "failed": "Ebaõnnestunud",
-    "downloading": "Allalaadimine"
+    "downloading": "Allalaadimine",
+    "file-already-downloaded": "Fail on juba alla laaditud",
+    "overwrite": "Üle kirjutada",
+    "file-already-downloaded-note": "Kirjutage allalaaditud fail üle või nimetage uus fail ümber?",
+    "wants-access-to-share-space": "soovib pääseda teie jagamisruumi",
+    "block": "Blokeeri",
+    "share-space-request": "Jaga ruumitaotlus",
+    "remember-for-later": "Pidage meeles hilisemaks"
 }

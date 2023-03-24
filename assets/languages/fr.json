@@ -223,5 +223,12 @@
     "folder-doesnt-exist": "le dossier n'existe pas",
     "cant-resume-this-failed-task": "Impossible de reprendre cette tâche ayant échoué",
     "failed": "Échoué",
-    "downloading": "Téléchargement"
+    "downloading": "Téléchargement",
+    "file-already-downloaded": "Fichier déjà téléchargé",
+    "overwrite": "Écraser",
+    "file-already-downloaded-note": "Ecraser le fichier téléchargé Ou renommer le nouveau ?",
+    "wants-access-to-share-space": "veulent accéder à votre espace de partage",
+    "block": "Bloc",
+    "share-space-request": "Partager la demande d'espace",
+    "remember-for-later": "Rappelez-vous pour plus tard"
 }
