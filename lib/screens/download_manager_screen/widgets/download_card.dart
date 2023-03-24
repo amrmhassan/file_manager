@@ -22,6 +22,7 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:path/path.dart' as path_operations;
 
 class DownloadCard extends StatefulWidget {
@@ -78,8 +79,8 @@ class _DownloadCardState extends State<DownloadCard> {
               Navigator.pop(context, true);
             },
             onCancel: () => Navigator.pop(context),
-            title: 'Confirm Delete?',
-            subTitle: 'Delete this task from storage?',
+            title: 'confirm-delete'.i18n(),
+            subTitle: 'confirm-delete-1-note'.i18n(),
           ),
         );
         if (confirm == true) {
@@ -94,7 +95,7 @@ class _DownloadCardState extends State<DownloadCard> {
           QuickNotification.closeDownloadNotification(
               widget.downloadTaskModel.id);
 
-          showSnackBar(context: context, message: 'Deleted');
+          showSnackBar(context: context, message: 'deleted'.i18n());
         }
         return false;
       },
@@ -180,7 +181,7 @@ class _DownloadCardState extends State<DownloadCard> {
       } else {
         showSnackBar(
           context: context,
-          message: 'folder doesn\'t exist',
+          message: 'folder-doesnt-exist'.i18n(),
           snackBarType: SnackBarType.error,
         );
       }
@@ -195,7 +196,7 @@ class _DownloadCardState extends State<DownloadCard> {
       } else {
         showSnackBar(
           context: context,
-          message: 'file doesn\'t exist',
+          message: 'file-doesnt-exist'.i18n(),
           snackBarType: SnackBarType.error,
         );
       }

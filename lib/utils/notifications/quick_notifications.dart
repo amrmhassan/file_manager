@@ -4,6 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class NotificationsIDS {
   static const int audioNitificationID = 100;
@@ -40,7 +41,7 @@ class QuickNotification {
           autoDismissible: false,
           id: notiID,
           channelKey: 'basic_channel',
-          title: 'Downloading - $progress%',
+          title: '${"downloading".i18n()} - $progress%',
           body: fileName,
           actionType: ActionType.Default,
           locked: true,

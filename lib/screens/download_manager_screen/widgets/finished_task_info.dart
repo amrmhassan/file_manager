@@ -12,6 +12,7 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class FinishedTaskInfo extends StatelessWidget {
   final VoidCallback navigateToFile;
@@ -53,22 +54,22 @@ class FinishedTaskInfo extends StatelessWidget {
               onTap: () {
                 confirmDeleteEntityModal(
                   context: context,
-                  title: 'Delete this task?',
-                  subTitle: 'Do you want to delete the actual file also?',
-                  cancelText: 'Task Only',
-                  okText: 'Also File',
+                  title: 'delete-this-task'.i18n(),
+                  subTitle: 'delete-file-also'.i18n(),
+                  cancelText: 'task-only'.i18n(),
+                  okText: 'also-file'.i18n(),
                   onOk: () async {
                     // this will delete the task and the file associated with it
                     try {} catch (e) {
                       showSnackBar(
                         context: context,
-                        message: 'File does\'t exist already ',
+                        message: 'file-doesnt-exist-already'.i18n(),
                         snackBarType: SnackBarType.error,
                       );
                     }
                     showSnackBar(
                       context: context,
-                      message: 'Task Deleted',
+                      message: 'deleted'.i18n(),
                     );
                     downPF(context).deleteTaskCompletely(
                       downloadTaskModel.id,
@@ -80,7 +81,7 @@ class FinishedTaskInfo extends StatelessWidget {
                   onCancel: () async {
                     showSnackBar(
                       context: context,
-                      message: 'Task Deleted',
+                      message: 'deleted'.i18n(),
                     );
                     downPF(context).deleteTaskCompletely(
                       downloadTaskModel.id,

@@ -10,6 +10,7 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class FailedTaskControllers extends StatelessWidget {
   final DownloadTaskModel downloadTaskModel;
@@ -38,7 +39,7 @@ class FailedTaskControllers extends StatelessWidget {
               if (!res) {
                 showSnackBar(
                   context: context,
-                  message: 'Can\'t resume this failed task',
+                  message: 'cant-resume-this-failed-task'.i18n(),
                   snackBarType: SnackBarType.error,
                 );
               }
@@ -54,7 +55,7 @@ class FailedTaskControllers extends StatelessWidget {
         ),
         HSpace(factor: .5),
         Text(
-          'Failed',
+          'failed'.i18n(),
           style: h4TextStyleInactive,
         ),
       ],

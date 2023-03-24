@@ -12,6 +12,7 @@ import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class MediaPlayerButton extends StatefulWidget {
@@ -102,7 +103,8 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
             ? ButtonWrapper(
                 onTap: () async {
                   if (widget.network) {
-                    showSnackBar(context: context, message: 'Loading...');
+                    showSnackBar(
+                        context: context, message: '${"loading".i18n()}...');
                     String? connLink;
                     if (shareExpPF(context).laptopExploring) {
                       connLink = connectLaptopPF(context)

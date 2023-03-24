@@ -3,6 +3,7 @@
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class HideFromShareSpaceButton extends StatelessWidget {
   const HideFromShareSpaceButton({
@@ -22,7 +23,9 @@ class HideFromShareSpaceButton extends StatelessWidget {
     return shown
         ? ModalButtonElement(
             inactiveColor: Colors.transparent,
-            title: hidden ? 'Un hide from share' : 'Hide from share explorer',
+            title: hidden
+                ? 'un-hide-from-share-space'.i18n()
+                : 'hide-from-share-space'.i18n(),
             onTap: () async {
               var selected = [...foPF(context).selectedItems];
               if (hidden) {

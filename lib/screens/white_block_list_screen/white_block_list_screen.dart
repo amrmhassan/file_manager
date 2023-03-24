@@ -10,6 +10,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/white_block_list_model.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class WhiteBlockListScreen extends StatelessWidget {
   static const String routeName = '/WhiteBlockListScreen';
@@ -28,7 +29,7 @@ class WhiteBlockListScreen extends StatelessWidget {
           children: [
             CustomAppBar(
               title: Text(
-                allowed ? 'White List' : 'Block List',
+                allowed ? 'white-list'.i18n() : 'blocked-list'.i18n(),
                 style: h2TextStyle,
               ),
             ),
@@ -37,7 +38,7 @@ class WhiteBlockListScreen extends StatelessWidget {
                 ? Expanded(
                     child: Center(
                     child: Text(
-                      'No Devices',
+                      'no-devices'.i18n(),
                       style: h4TextStyle,
                     ),
                   ))

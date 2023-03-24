@@ -91,7 +91,7 @@ class _ListyScreenState extends State<ListyScreen> {
           Expanded(
             child: lists.isEmpty
                 ? Text(
-                    'Add a listy from the add button',
+                    'add-listy-from-button'.i18n(),
                     style: h4TextStyleInactive,
                   )
                 : ListView(

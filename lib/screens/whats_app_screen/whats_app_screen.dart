@@ -14,6 +14,7 @@ import 'package:explorer/screens/whats_app_screen/widgets/status_item.dart';
 import 'package:explorer/screens/whats_app_screen/widgets/whats_app_folder_card.dart';
 import 'package:explorer/screens/whats_app_screen/widgets/whatsapp_section_title.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 enum MediaType {
   image,
@@ -45,14 +46,14 @@ class WhatsAppScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'WhatsApp Media',
+              'whatsapp-media'.i18n(),
               style: h2TextStyle,
             ),
           ),
           VSpace(),
           PaddingWrapper(
             child: WhatsAppSectionTitle(
-              title: 'Messages',
+              title: 'messages'.i18n(),
             ),
           ),
           VSpace(),
@@ -69,35 +70,35 @@ class WhatsAppScreen extends StatelessWidget {
                   // ...List.generate(10, (index) => WhatsAppFolderCard()),
                   WhatsAppFolderCard(
                     iconName: 'photo',
-                    title: 'Images',
+                    title: 'images-text'.i18n(),
                     onTap: () {
                       openFilesScreen(MediaType.image, context);
                     },
                   ),
                   WhatsAppFolderCard(
                     iconName: 'video',
-                    title: 'Videos',
+                    title: 'videos-text'.i18n(),
                     onTap: () {
                       openFilesScreen(MediaType.video, context);
                     },
                   ),
                   WhatsAppFolderCard(
                     iconName: 'audio',
-                    title: 'Audios',
+                    title: 'music-text'.i18n(),
                     onTap: () {
                       openFilesScreen(MediaType.audio, context);
                     },
                   ),
                   WhatsAppFolderCard(
                     iconName: 'voice-note',
-                    title: 'Voice Notes',
+                    title: 'voice-notes'.i18n(),
                     onTap: () {
                       openFilesScreen(MediaType.voiceNote, context);
                     },
                   ),
                   WhatsAppFolderCard(
                     iconName: 'documents',
-                    title: 'Documents',
+                    title: 'docs-text'.i18n(),
                     onTap: () {
                       openFilesScreen(MediaType.documents, context);
                     },
@@ -117,7 +118,7 @@ class WhatsAppScreen extends StatelessWidget {
             child: Column(
               children: [
                 WhatsAppSectionTitle(
-                  title: 'Statuses',
+                  title: 'statuses'.i18n(),
                 ),
                 VSpace(),
                 Row(
@@ -127,7 +128,7 @@ class WhatsAppScreen extends StatelessWidget {
                       onTap: () {
                         openFilesScreen(MediaType.statusImages, context);
                       },
-                      title: 'Images',
+                      title: 'images-text'.i18n(),
                     ),
                     HSpace(),
                     StatusItem(
@@ -135,7 +136,7 @@ class WhatsAppScreen extends StatelessWidget {
                       onTap: () {
                         openFilesScreen(MediaType.statusVideo, context);
                       },
-                      title: 'Videos',
+                      title: 'videos-text'.i18n(),
                     ),
                   ],
                 ),

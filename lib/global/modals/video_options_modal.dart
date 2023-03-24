@@ -6,6 +6,7 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class VideoOptionsModal extends StatelessWidget {
   const VideoOptionsModal({
@@ -26,9 +27,9 @@ class VideoOptionsModal extends StatelessWidget {
           children: [
             ModalButtonElement(
               value: mpProvider.videoSpeed == 1
-                  ? 'Normal'
+                  ? 'normal'.i18n()
                   : '${mpProvider.videoSpeed.toStringAsFixed(2)}x',
-              title: 'Speed',
+              title: 'speed'.i18n(),
               onTap: () {
                 Navigator.pop(context);
                 showModalBottomSheet(

@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DownloadSpeedViewer extends StatelessWidget {
   const DownloadSpeedViewer({
@@ -24,12 +25,12 @@ class DownloadSpeedViewer extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'Speed',
+            'speed'.i18n(),
             style: h3InactiveTextStyle,
           ),
           Spacer(),
           Text(
-            '${downloadSpeed.toStringAsFixed(2)} Mb/s',
+            '${downloadSpeed.toStringAsFixed(2)} ${"mb-s".i18n()}',
             style: h4TextStyleInactive,
           ),
         ],
