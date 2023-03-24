@@ -196,5 +196,7 @@
     "storage-cleaner": "Varastoinnin puhdistusaine",
     "loading": "Ladataan",
     "rescanning": "Uudelleenskannaus",
-    "apply-on-next-startup": "Tämä tulee voimaan seuraavan sovelluksen käynnistyksen yhteydessä"
+    "apply-on-next-startup": "Tämä tulee voimaan seuraavan sovelluksen käynnistyksen yhteydessä",
+    "skip": "Ohita",
+    "back-again-to-exit": "Takaisin poistuaksesi"
 }

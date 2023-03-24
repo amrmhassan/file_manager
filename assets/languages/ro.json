@@ -196,5 +196,7 @@
     "storage-cleaner": "Detergent pentru depozitare",
     "loading": "Se încarcă",
     "rescanning": "Rescanare",
-    "apply-on-next-startup": "Acest lucru se va aplica la următoarea pornire a aplicației"
+    "apply-on-next-startup": "Acest lucru se va aplica la următoarea pornire a aplicației",
+    "skip": "Ocolire",
+    "back-again-to-exit": "Înapoi din nou pentru a ieși"
 }

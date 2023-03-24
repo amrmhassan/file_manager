@@ -24,7 +24,6 @@ class MainSettings extends StatelessWidget {
           onTap: () => setSettingMode(SettingMode.animations),
           onlyDebug: true,
         ),
-        if (kDebugMode)
           AppDrawerItem(
             iconPath: 'language',
             title: 'language'.i18n(),

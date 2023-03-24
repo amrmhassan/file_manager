@@ -196,5 +196,7 @@
     "storage-cleaner": "Förvaringsrengöring",
     "loading": "Läser in",
     "rescanning": "Skannar om",
-    "apply-on-next-startup": "Detta kommer att gälla vid nästa appstart"
+    "apply-on-next-startup": "Detta kommer att gälla vid nästa appstart",
+    "skip": "Hoppa",
+    "back-again-to-exit": "Tillbaka igen för att avsluta"
 }

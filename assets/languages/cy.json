@@ -196,5 +196,7 @@
     "storage-cleaner": "Glanhawr Storio",
     "loading": "Llwytho",
     "rescanning": "Ailsganio",
-    "apply-on-next-startup": "Bydd hyn yn berthnasol yn y cychwyn app nesaf"
+    "apply-on-next-startup": "Bydd hyn yn berthnasol yn y cychwyn app nesaf",
+    "skip": "Sgipio",
+    "back-again-to-exit": "Yn ol Eto I Ymadael"
 }

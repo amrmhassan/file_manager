@@ -196,5 +196,7 @@
     "storage-cleaner": "Oppbevaringsrens",
     "loading": "Laster",
     "rescanning": "Skanner på nytt",
-    "apply-on-next-startup": "Dette vil gjelde ved neste oppstart av appen"
+    "apply-on-next-startup": "Dette vil gjelde ved neste oppstart av appen",
+    "skip": "Hopp over",
+    "back-again-to-exit": "Tilbake igjen for å avslutte"
 }

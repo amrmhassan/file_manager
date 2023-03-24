@@ -196,5 +196,7 @@
     "storage-cleaner": "Speicherreiniger",
     "loading": "Wird geladen",
     "rescanning": "Erneutes Scannen",
-    "apply-on-next-startup": "Dies gilt beim nächsten App-Start"
+    "apply-on-next-startup": "Dies gilt beim nächsten App-Start",
+    "skip": "Überspringen",
+    "back-again-to-exit": "Zurück zum Beenden"
 }

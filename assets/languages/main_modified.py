@@ -78,11 +78,18 @@ with open('en.json', 'r') as f:
 translator = Translator()
 lang_data = {}
 
+
+def get_file_name(code: str):
+    if (code.lower() == 'zh-cn'):
+        return 'zh'
+    return code.lower()
+
+
 # Translate the data to each language and save as a separate JSON file
 for name, code in languages.items():
     try:
-        if os.path.isfile(f'{code.lower()}.json'):
-            with open(f'{code.lower()}.json', 'r', encoding='utf-8') as f:
+        if os.path.isfile(f'{get_file_name(code)}.json'):
+            with open(f'{get_file_name(code)}.json', 'r', encoding='utf-8') as f:
                 lang_data = json.load(f)
         else:
             lang_data = {}
@@ -94,9 +101,9 @@ for name, code in languages.items():
                 lang_data[key] = translation
 
         # Save the data as a JSON file
-        with open(f'{code.lower()}.json', 'w', encoding='utf-8') as f:
+        with open(f'{get_file_name(code)}.json', 'w', encoding='utf-8') as f:
             json.dump(lang_data, f, ensure_ascii=False, indent=4)
 
-        print(f'Saved {name} locale as {code.lower()}.json')
+        print(f'Saved {name} locale as {get_file_name(code)}.json')
     except:
         print(f'{name} error')

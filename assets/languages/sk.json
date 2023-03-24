@@ -196,5 +196,7 @@
     "storage-cleaner": "Čistič skladov",
     "loading": "Načítava",
     "rescanning": "Opätovné skenovanie",
-    "apply-on-next-startup": "Toto bude platiť pri ďalšom spustení aplikácie"
+    "apply-on-next-startup": "Toto bude platiť pri ďalšom spustení aplikácie",
+    "skip": "Preskočiť",
+    "back-again-to-exit": "Späť na výstup"
 }

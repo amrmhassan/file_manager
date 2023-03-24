@@ -196,5 +196,7 @@
     "storage-cleaner": "स्टोरेज क्लीनर",
     "loading": "लोड हो रहा है",
     "rescanning": "पुनर्स्कैनिंग",
-    "apply-on-next-startup": "यह अगले ऐप स्टार्टअप में लागू होगा"
+    "apply-on-next-startup": "यह अगले ऐप स्टार्टअप में लागू होगा",
+    "skip": "छोडना",
+    "back-again-to-exit": "बाहर निकलने के लिए फिर से वापस"
 }

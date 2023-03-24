@@ -196,5 +196,7 @@
     "storage-cleaner": "Pembersih Penyimpanan",
     "loading": "Memuat",
     "rescanning": "Memindai ulang",
-    "apply-on-next-startup": "Ini akan berlaku di startup aplikasi berikutnya"
+    "apply-on-next-startup": "Ini akan berlaku di startup aplikasi berikutnya",
+    "skip": "Melewati",
+    "back-again-to-exit": "Kembali Lagi Untuk Keluar"
 }

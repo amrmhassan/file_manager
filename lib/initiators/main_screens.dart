@@ -1,4 +1,3 @@
-import 'package:explorer/main.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/screens/language_screen/language_screen.dart';
 import 'package:explorer/screens/search_screen/search_screen.dart';

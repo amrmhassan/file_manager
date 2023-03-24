@@ -196,5 +196,7 @@
     "storage-cleaner": "تنظيف الذاكرة",
     "loading": "تحميل",
     "rescanning": "إعادة الفحص",
-    "apply-on-next-startup": "سينم التغيير عند إعادة تشغيل البرنامج"
+    "apply-on-next-startup": "سينم التغيير عند إعادة تشغيل البرنامج",
+    "skip": "تخطي",
+    "back-again-to-exit": "اضغط مرة أخري للخروج"
 }

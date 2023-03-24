@@ -196,5 +196,7 @@
     "storage-cleaner": "Tároló tisztító",
     "loading": "Betöltés",
     "rescanning": "Újraszkennelés",
-    "apply-on-next-startup": "Ez az alkalmazás következő indításakor érvényes lesz"
+    "apply-on-next-startup": "Ez az alkalmazás következő indításakor érvényes lesz",
+    "skip": "Kihagyás",
+    "back-again-to-exit": "Vissza a Kilépéshez"
 }

@@ -196,5 +196,7 @@
     "storage-cleaner": "Nettoyant de stockage",
     "loading": "Chargement",
     "rescanning": "Renumériser",
-    "apply-on-next-startup": "Cela s'appliquera au prochain démarrage de l'application"
+    "apply-on-next-startup": "Cela s'appliquera au prochain démarrage de l'application",
+    "skip": "Sauter",
+    "back-again-to-exit": "Retour pour quitter"
 }

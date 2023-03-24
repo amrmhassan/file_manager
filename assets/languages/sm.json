@@ -196,5 +196,7 @@
     "storage-cleaner": "Fa'amama Teuga",
     "loading": "utaina",
     "rescanning": "Toe su'esu'e",
-    "apply-on-next-startup": "O le a fa'aoga lea i le isi amataga ole app"
+    "apply-on-next-startup": "O le a fa'aoga lea i le isi amataga ole app",
+    "skip": "Fa'ase'e",
+    "back-again-to-exit": "Toe Fo'i I fafo"
 }

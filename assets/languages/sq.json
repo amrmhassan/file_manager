@@ -196,5 +196,7 @@
     "storage-cleaner": "Pastrues magazinimi",
     "loading": "Po ngarkohet",
     "rescanning": "Riskanimi",
-    "apply-on-next-startup": "Kjo do të zbatohet në fillimin e ardhshëm të aplikacionit"
+    "apply-on-next-startup": "Kjo do të zbatohet në fillimin e ardhshëm të aplikacionit",
+    "skip": "Kapërce",
+    "back-again-to-exit": "Kthehu përsëri për të dalë"
 }

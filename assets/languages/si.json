@@ -196,5 +196,7 @@
     "storage-cleaner": "ගබඩා පිරිසිදු කරන්නා",
     "loading": "පැටවීම",
     "rescanning": "නැවත ස්කෑන් කිරීම",
-    "apply-on-next-startup": "මෙය මීළඟ යෙදුම් ආරම්භයේදී අදාළ වේ"
+    "apply-on-next-startup": "මෙය මීළඟ යෙදුම් ආරම්භයේදී අදාළ වේ",
+    "skip": "මඟ හරින්න",
+    "back-again-to-exit": "පිටවීමට ආපසු"
 }

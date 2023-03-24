@@ -196,5 +196,7 @@
     "storage-cleaner": "ਸਟੋਰੇਜ ਕਲੀਨਰ",
     "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ",
     "rescanning": "ਮੁੜ-ਸਕੈਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
-    "apply-on-next-startup": "ਇਹ ਅਗਲੇ ਐਪ ਸਟਾਰਟਅਪ ਵਿੱਚ ਲਾਗੂ ਹੋਵੇਗਾ"
+    "apply-on-next-startup": "ਇਹ ਅਗਲੇ ਐਪ ਸਟਾਰਟਅਪ ਵਿੱਚ ਲਾਗੂ ਹੋਵੇਗਾ",
+    "skip": "ਛੱਡੋ",
+    "back-again-to-exit": "ਬਾਹਰ ਜਾਣ ਲਈ ਦੁਬਾਰਾ ਵਾਪਸ ਜਾਓ"
 }

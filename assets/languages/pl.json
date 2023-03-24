@@ -196,5 +196,7 @@
     "storage-cleaner": "Środek do czyszczenia pamięci masowej",
     "loading": "Ładowanie",
     "rescanning": "Ponowne skanowanie",
-    "apply-on-next-startup": "Będzie to obowiązywać przy następnym uruchomieniu aplikacji"
+    "apply-on-next-startup": "Będzie to obowiązywać przy następnym uruchomieniu aplikacji",
+    "skip": "Pominąć",
+    "back-again-to-exit": "Wróć ponownie, aby wyjść"
 }

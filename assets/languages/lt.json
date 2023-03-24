@@ -196,5 +196,7 @@
     "storage-cleaner": "Sandėliavimo valiklis",
     "loading": "Įkeliama",
     "rescanning": "Pakartotinis nuskaitymas",
-    "apply-on-next-startup": "Tai bus taikoma kitą kartą paleidžiant programą"
+    "apply-on-next-startup": "Tai bus taikoma kitą kartą paleidžiant programą",
+    "skip": "Praleisti",
+    "back-again-to-exit": "Grįžti ir išeiti"
 }

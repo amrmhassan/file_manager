@@ -196,5 +196,7 @@
     "storage-cleaner": "Uzglabāšanas tīrītājs",
     "loading": "Notiek ielāde",
     "rescanning": "Atkārtota skenēšana",
-    "apply-on-next-startup": "Tas tiks piemērots nākamajā lietotnes palaišanas reizē"
+    "apply-on-next-startup": "Tas tiks piemērots nākamajā lietotnes palaišanas reizē",
+    "skip": "Izlaist",
+    "back-again-to-exit": "Atkal atpakaļ, lai izietu"
 }

@@ -196,5 +196,7 @@
     "storage-cleaner": "Opslag reiniger",
     "loading": "Bezig met laden",
     "rescanning": "Opnieuw scannen",
-    "apply-on-next-startup": "Dit is van toepassing bij het opstarten van de volgende app"
+    "apply-on-next-startup": "Dit is van toepassing bij het opstarten van de volgende app",
+    "skip": "Overslaan",
+    "back-again-to-exit": "Weer terug om af te sluiten"
 }

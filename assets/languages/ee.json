@@ -196,5 +196,7 @@
     "storage-cleaner": "Säilitamise puhastusvahend",
     "loading": "Laadimine",
     "rescanning": "Uuesti skannimine",
-    "apply-on-next-startup": "See rakendub rakenduse järgmisel käivitamisel"
+    "apply-on-next-startup": "See rakendub rakenduse järgmisel käivitamisel",
+    "skip": "Vahele jätma",
+    "back-again-to-exit": "Tagasi Väljumiseks"
 }

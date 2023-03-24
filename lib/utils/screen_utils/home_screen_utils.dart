@@ -15,6 +15,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:move_to_background/move_to_background.dart';
+import 'package:localization/localization.dart';
 
 //? handle press back button
 Future<bool> handlePressPhoneBackButton({
@@ -46,7 +47,7 @@ Future<bool> handlePressPhoneBackButton({
     exitCounter++;
     incrementExitCounter();
     if (exitCounter <= 1) {
-      showSnackBar(context: context, message: 'Back Again To Exit');
+      showSnackBar(context: context, message: 'back-again-to-exit'.i18n());
       exit = false;
     } else {
       await MoveToBackground.moveTaskToBack();

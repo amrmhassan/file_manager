@@ -196,5 +196,7 @@
     "storage-cleaner": "収納クリーナー",
     "loading": "読み込み中",
     "rescanning": "再スキャン中",
-    "apply-on-next-startup": "これは、次回のアプリ起動時に適用されます"
+    "apply-on-next-startup": "これは、次回のアプリ起動時に適用されます",
+    "skip": "スキップ",
+    "back-again-to-exit": "終了するには戻る"
 }

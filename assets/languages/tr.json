@@ -196,5 +196,7 @@
     "storage-cleaner": "Depolama Temizleyici",
     "loading": "Yükleniyor",
     "rescanning": "yeniden tarama",
-    "apply-on-next-startup": "Bu, bir sonraki uygulama başlangıcında geçerli olacak"
+    "apply-on-next-startup": "Bu, bir sonraki uygulama başlangıcında geçerli olacak",
+    "skip": "Atlamak",
+    "back-again-to-exit": "Çıkmak İçin Tekrar Geri Dön"
 }

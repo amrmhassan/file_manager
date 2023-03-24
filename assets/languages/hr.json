@@ -196,5 +196,7 @@
     "storage-cleaner": "Sredstvo za čišćenje pohrane",
     "loading": "Učitavam",
     "rescanning": "Ponovno skeniranje",
-    "apply-on-next-startup": "Ovo će se primijeniti pri sljedećem pokretanju aplikacije"
+    "apply-on-next-startup": "Ovo će se primijeniti pri sljedećem pokretanju aplikacije",
+    "skip": "Preskočiti",
+    "back-again-to-exit": "Natrag za izlaz"
 }

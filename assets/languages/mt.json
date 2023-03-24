@@ -196,5 +196,7 @@
     "storage-cleaner": "Ħażna Cleaner",
     "loading": "Tagħbija",
     "rescanning": "Skannjar mill-ġdid",
-    "apply-on-next-startup": "Dan se japplika fl-istartjar tal-app li jmiss"
+    "apply-on-next-startup": "Dan se japplika fl-istartjar tal-app li jmiss",
+    "skip": "Aqbeż",
+    "back-again-to-exit": "Lura Għal darb'oħra Biex Ħruġ"
 }

@@ -60,7 +60,7 @@ class IntroScreen extends StatelessWidget {
             Navigator.pushReplacementNamed(context, HomeScreen.routeName);
           },
           child: Text(
-            'Skip',
+            'skip'.i18n(),
             style: h4LiteTextStyle,
           )),
       pages: [
@@ -70,13 +70,13 @@ class IntroScreen extends StatelessWidget {
             children: [
               VSpace(factor: 3),
               Text(
-                'connect-windows'.i18n(),
+                'connect-windows-intro'.i18n(),
                 style: h1TextStyle,
               ),
             ],
           ),
           bodyWidget: Text(
-            'connect-windows-note'.i18n(),
+            'connect-windows-intro-note'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),
