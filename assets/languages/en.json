@@ -195,5 +195,6 @@
   "no-items-here": "No Items Here",
   "storage-cleaner": "Storage Cleaner",
   "loading": "Loading",
-  "rescanning": "Rescanning"
+  "rescanning": "Rescanning",
+  "apply-on-next-startup": "This will apply in the next app startup"
 }

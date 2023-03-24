@@ -2,7 +2,6 @@
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/languages_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
@@ -13,7 +12,6 @@ import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/utils/notifications/notification_controller.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -73,6 +71,8 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Locale? get locale => _locale;
+
   @override
   void initState() {
     AwesomeNotifications().setListeners(
@@ -109,9 +109,9 @@ class _MyAppState extends State<MyApp> {
         supportedLocales: supportedLocales,
         localeResolutionCallback: (locale, supportedLocales) {
           Intl.defaultLocale = locale?.languageCode;
-          if (kDebugMode) {
-            return arLocale;
-          }
+          // if (kDebugMode) {
+          //   return arLocale;
+          // }
           for (var l in supportedLocales) {
             if (l.languageCode.toLowerCase() ==
                 locale?.languageCode.toLowerCase()) {

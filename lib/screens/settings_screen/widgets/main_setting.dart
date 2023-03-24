@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
-import 'package:explorer/global/modals/language_modal.dart';
+import 'package:explorer/screens/language_screen/language_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,19 +19,17 @@ class MainSettings extends StatelessWidget {
     return Column(
       children: [
         AppDrawerItem(
+          iconPath: 'animation',
           title: 'animations'.i18n(),
           onTap: () => setSettingMode(SettingMode.animations),
           onlyDebug: true,
         ),
         if (kDebugMode)
           AppDrawerItem(
+            iconPath: 'language',
             title: 'language'.i18n(),
             onTap: () {
-              showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) => LanguageModal(),
-              );
+              Navigator.pushNamed(context, LanguageScreen.routeName);
             },
             onlyDebug: true,
           ),

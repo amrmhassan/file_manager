@@ -75,3 +75,127 @@ List<Locale> supportedLocales = [
   trLocale,
   zhLocale,
 ];
+
+Map<String, String> getLanguageNames(List<Locale> locales) {
+  Map<String, String> languageNameMap = {};
+
+  for (Locale locale in locales) {
+    String languageCode = locale.languageCode;
+    String languageName;
+
+    switch (languageCode) {
+      case 'ar':
+        languageName = 'العربية';
+        break;
+      case 'en':
+        languageName = 'English';
+        break;
+      case 'be':
+        languageName = 'беларуская мова';
+        break;
+      case 'bg':
+        languageName = 'български език';
+        break;
+      case 'bn':
+        languageName = 'বাংলা';
+        break;
+      case 'cy':
+        languageName = 'Cymraeg';
+        break;
+      case 'de':
+        languageName = 'Deutsch';
+        break;
+      case 'ee':
+        languageName = 'Eʋegbe';
+        break;
+      case 'es':
+        languageName = 'Español';
+        break;
+      case 'fi':
+        languageName = 'Suomi';
+        break;
+      case 'fr':
+        languageName = 'Français';
+        break;
+      case 'hi':
+        languageName = 'हिन्दी';
+        break;
+      case 'hr':
+        languageName = 'Hrvatski';
+        break;
+      case 'hu':
+        languageName = 'Magyar';
+        break;
+      case 'id':
+        languageName = 'Bahasa Indonesia';
+        break;
+      case 'is':
+        languageName = 'Íslenska';
+        break;
+      case 'it':
+        languageName = 'Italiano';
+        break;
+      case 'ja':
+        languageName = '日本語';
+        break;
+      case 'lt':
+        languageName = 'Lietuvių kalba';
+        break;
+      case 'lv':
+        languageName = 'Latviešu valoda';
+        break;
+      case 'mk':
+        languageName = 'Македонски јазик';
+        break;
+      case 'mt':
+        languageName = 'Malti';
+        break;
+      case 'nl':
+        languageName = 'Nederlands';
+        break;
+      case 'no':
+        languageName = 'Norsk';
+        break;
+      case 'pa':
+        languageName = 'ਪੰਜਾਬੀ';
+        break;
+      case 'pl':
+        languageName = 'Język polski';
+        break;
+      case 'pt':
+        languageName = 'Português';
+        break;
+      case 'ro':
+        languageName = 'Română';
+        break;
+      case 'ru':
+        languageName = 'Русский язык';
+        break;
+      case 'si':
+        languageName = 'සිංහල';
+        break;
+      case 'sk':
+        languageName = 'Slovenčina';
+        break;
+      case 'sm':
+        languageName = 'Gagana fa\'a Samoa';
+        break;
+      case 'sq':
+        languageName = 'Shqip';
+        break;
+      case 'sv':
+        languageName = 'Svenska';
+        break;
+      case 'tr':
+        languageName = 'Türkçe';
+        break;
+      case 'zh':
+        languageName = '中文';
+        break;
+      default:
+        languageName = 'Unknown';
+    }
+    languageNameMap[languageCode] = languageName;
+  }
+  return languageNameMap;
+}

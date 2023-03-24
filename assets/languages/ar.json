@@ -195,5 +195,6 @@
   "no-items-here": "لا توجد عناصر هنا",
   "storage-cleaner": "تنظيف الذاكرة",
   "loading": "تحميل",
-  "rescanning": "إعادة الفحص"
+  "rescanning": "إعادة الفحص",
+  "apply-on-next-startup": "سينم التغيير عند إعادة تشغيل البرنامج"
 }

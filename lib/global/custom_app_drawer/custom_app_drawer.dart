@@ -15,7 +15,6 @@ import 'package:explorer/helpers/hive/hive_helper.dart';
 
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
-import 'package:explorer/main.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -25,10 +24,8 @@ import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/global_utils.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:localization/localization.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -172,7 +169,7 @@ class CustomAppDrawer extends StatelessWidget {
                     AppDrawerItem(
                       title: 'change-language'.i18n(),
                       onTap: () async {
-                        CustomLocale.changeLocale(context, arLocale);
+                        CustomLocale.changeLocale(context, enLocale);
                         Navigator.pop(context);
                       },
                       onlyDebug: true,

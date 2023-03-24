@@ -1,4 +1,6 @@
+import 'package:explorer/main.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
+import 'package:explorer/screens/language_screen/language_screen.dart';
 import 'package:explorer/screens/search_screen/search_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/screens/windows_client_update_note_screen/windows_client_update_note_screen.dart';
@@ -32,6 +34,19 @@ import 'package:explorer/screens/white_block_list_screen/white_block_list_screen
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
+
+// Map<String, Widget Function(BuildContext)> get mainRoutesLocalized {
+//   Map<String, Widget Function(BuildContext)> data = {};
+
+//   for (var element in mainRoutes.entries) {
+//     data[element.key] = (context) => Localizations.override(
+//           locale: MyApp.of(context)?.locale,
+//           context: context,
+//           child: element.value.call(context),
+//         );
+//   }
+//   return data;
+// }
 
 Map<String, Widget Function(BuildContext)> mainRoutes = {
   HomeScreen.routeName: (context) => const HomeScreen(),
@@ -68,4 +83,5 @@ Map<String, Widget Function(BuildContext)> mainRoutes = {
   TouchPadScreen.routeName: (context) => const TouchPadScreen(),
   FullTextViewerScreen.routeName: (context) => const FullTextViewerScreen(),
   SearchScreen.routeName: (context) => const SearchScreen(),
+  LanguageScreen.routeName: (context) => const LanguageScreen(),
 };
