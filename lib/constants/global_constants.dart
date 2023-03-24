@@ -65,8 +65,3 @@ int maxParallelDownloadTasksDefault = 1;
 
 //? links
 const String laptopClientDownloadLink = 'https://amh-file-manager.web.app';
-
-//? localization
-Locale arabicLocal = const Locale('ar', 'EG');
-Locale englishLocal = const Locale('en', 'US');
-List<Locale> supportedLocales = [arabicLocal, englishLocal];

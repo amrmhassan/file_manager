@@ -3,6 +3,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/languages_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/initiators/init.dart';
@@ -12,10 +13,10 @@ import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/utils/notifications/notification_controller.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
@@ -59,9 +60,18 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
+  static _MyAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
 }
 
 class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+  void setLocale(Locale l) {
+    setState(() {
+      _locale = l;
+    });
+  }
+
   @override
   void initState() {
     AwesomeNotifications().setListeners(
@@ -86,6 +96,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: mainProviders,
       child: MaterialApp(
+        locale: _locale,
         localizationsDelegates: [
           // delegate from flutter_localization
           GlobalMaterialLocalizations.delegate,
@@ -96,22 +107,18 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: supportedLocales,
         localeResolutionCallback: (locale, supportedLocales) {
-          if (kDebugMode) {
-            return arabicLocal;
+          Intl.defaultLocale = locale?.languageCode;
+          logger.i(locale);
+          for (var l in supportedLocales) {
+            if (l.languageCode.toLowerCase() == l.languageCode.toLowerCase()) {
+              return locale;
+            }
           }
-          // if (lanProvider.locale == null) {
-          //   lanProviderFalse.setLocale((locale ?? englishLocal));
+          // if (kDebugMode) {
+          //   return arabicLocal;
           // }
-          //! this is just because i am not fully done yet with arabic language
 
-          // return arabicLocal;
-          if (supportedLocales.contains(locale)) {
-            return locale;
-          } else if (locale?.languageCode == arabicLocal.languageCode) {
-            return arabicLocal;
-          } else {
-            return englishLocal;
-          }
+          return enLocale;
         },
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

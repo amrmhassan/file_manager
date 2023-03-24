@@ -12,7 +12,8 @@ class LocaleRotationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Transform(
       alignment: Alignment.center,
-      transform: Matrix4.rotationZ(CustomLocale.isArabic(context) ? pi : 0),
+      transform:
+          Matrix4.rotationZ(CustomLocale.isRightToLeft(context) ? pi : 0),
       child: child,
     );
   }

@@ -11,6 +11,7 @@ import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class AboutUsScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class AboutUsScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'About Developer',
+              'about-developer'.i18n(),
               style: h2TextStyle,
             ),
           ),
@@ -59,7 +60,7 @@ class AboutUsScreen extends StatelessWidget {
                           style: h2TextStyle,
                         ),
                         Text(
-                          'Flutter developer',
+                          'Flutter ${"developer".i18n()}',
                           style: h4TextStyleInactive,
                         ),
                       ],
@@ -68,7 +69,7 @@ class AboutUsScreen extends StatelessWidget {
                 ),
                 VSpace(),
                 Text(
-                  '- Mainly Flutter developer, with previous experience in \n   MERN stack.\n- Multi skills professional.',
+                  'developer-note'.i18n(),
                   style: h4TextStyleInactive,
                   softWrap: true,
                 ),
