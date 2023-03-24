@@ -179,5 +179,22 @@
     "enter-text-to-send": "Futni një tekst për të dërguar",
     "send": "Dërgo",
     "message-sent": "Mesazhi u Dergua",
-    "laptop-disconnected": "Laptopi u shkëput"
+    "laptop-disconnected": "Laptopi u shkëput",
+    "recent-2": "E fundit",
+    "about-developer": "Rreth Zhvilluesit",
+    "developer": "zhvilluesi",
+    "developer-note": "- Kryesisht zhvillues Flutter, me përvojë të mëparshme në\n   pirg MERN.\n- Profesionist me shumë aftësi.",
+    "language": "Gjuhe",
+    "change-language": "Ndrysho gjuhën",
+    "recent-opened-files": "Skedarët e hapur së fundi",
+    "big-files": "Skedarët e mëdhenj",
+    "inactive-files": "Skedarët joaktivë",
+    "old-files": "Skedarët e Vjetër",
+    "no-files-yet": "Ende nuk ka skedarë",
+    "no-recent-items-yet": "Nuk ka ende artikuj të fundit",
+    "no-items-here": "Nuk ka artikuj këtu",
+    "storage-cleaner": "Pastrues magazinimi",
+    "loading": "Po ngarkohet",
+    "rescanning": "Riskanimi",
+    "apply-on-next-startup": "Kjo do të zbatohet në fillimin e ardhshëm të aplikacionit"
 }

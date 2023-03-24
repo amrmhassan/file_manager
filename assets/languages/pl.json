@@ -179,5 +179,22 @@
     "enter-text-to-send": "Wpisz tekst do wysłania",
     "send": "Wysłać",
     "message-sent": "Wiadomość wysłana",
-    "laptop-disconnected": "Laptop odłączony"
+    "laptop-disconnected": "Laptop odłączony",
+    "recent-2": "Ostatni",
+    "about-developer": "O Deweloperze",
+    "developer": "deweloper",
+    "developer-note": "- Głównie programista Flutter, z wcześniejszym doświadczeniem w\n   Stos MERN.\n- Wielu umiejętności zawodowych.",
+    "language": "Język",
+    "change-language": "Zmień język",
+    "recent-opened-files": "Ostatnio otwierane pliki",
+    "big-files": "Duże pliki",
+    "inactive-files": "Nieaktywne pliki",
+    "old-files": "Stare pliki",
+    "no-files-yet": "Brak plików",
+    "no-recent-items-yet": "Brak ostatnich elementów",
+    "no-items-here": "Brak elementów tutaj",
+    "storage-cleaner": "Środek do czyszczenia pamięci masowej",
+    "loading": "Ładowanie",
+    "rescanning": "Ponowne skanowanie",
+    "apply-on-next-startup": "Będzie to obowiązywać przy następnym uruchomieniu aplikacji"
 }

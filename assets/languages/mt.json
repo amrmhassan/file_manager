@@ -179,5 +179,22 @@
     "enter-text-to-send": "Daħħal xi test biex tibgħat",
     "send": "Ibgħat",
     "message-sent": "Messaġġ Mibgħut",
-    "laptop-disconnected": "Laptop skonnettjat"
+    "laptop-disconnected": "Laptop skonnettjat",
+    "recent-2": "Riċenti",
+    "about-developer": "Dwar Developer",
+    "developer": "żviluppatur",
+    "developer-note": "- Prinċipalment iżviluppatur Flutter, b'esperjenza preċedenti fil\n   Munzell MERN.\n- Multi ħiliet professjonali.",
+    "language": "Lingwa",
+    "change-language": "Bidla Lingwa",
+    "recent-opened-files": "Fajls Miftuħa Riċenti",
+    "big-files": "Fajls Kbar",
+    "inactive-files": "Fajls Inattivi",
+    "old-files": "Fajls Qadim",
+    "no-files-yet": "Għadu Ebda Fajls",
+    "no-recent-items-yet": "L-ebda Oġġetti Riċenti Għadhom",
+    "no-items-here": "Ebda Oġġetti Hawnhekk",
+    "storage-cleaner": "Ħażna Cleaner",
+    "loading": "Tagħbija",
+    "rescanning": "Skannjar mill-ġdid",
+    "apply-on-next-startup": "Dan se japplika fl-istartjar tal-app li jmiss"
 }

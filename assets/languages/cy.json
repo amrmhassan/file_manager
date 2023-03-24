@@ -179,5 +179,22 @@
     "enter-text-to-send": "Rhowch rywfaint o destun i'w anfon",
     "send": "Anfon",
     "message-sent": "Neges wedi'i Anfon",
-    "laptop-disconnected": "Gliniadur wedi'i ddatgysylltu"
+    "laptop-disconnected": "Gliniadur wedi'i ddatgysylltu",
+    "recent-2": "diweddar",
+    "about-developer": "Am y Datblygwr",
+    "developer": "datblygwr",
+    "developer-note": "- Datblygwr Flutter yn bennaf, gyda phrofiad blaenorol mewn\n   pentwr MERN.\n- Aml-sgiliau proffesiynol.",
+    "language": "Iaith",
+    "change-language": "Newid Iaith",
+    "recent-opened-files": "Ffeiliau a Agorwyd yn Ddiweddar",
+    "big-files": "Ffeiliau Mawr",
+    "inactive-files": "Ffeiliau Anweithredol",
+    "old-files": "Hen Ffeiliau",
+    "no-files-yet": "Dim Ffeiliau Eto",
+    "no-recent-items-yet": "Dim Eitemau Diweddar Eto",
+    "no-items-here": "Dim Eitemau Yma",
+    "storage-cleaner": "Glanhawr Storio",
+    "loading": "Llwytho",
+    "rescanning": "Ailsganio",
+    "apply-on-next-startup": "Bydd hyn yn berthnasol yn y cychwyn app nesaf"
 }

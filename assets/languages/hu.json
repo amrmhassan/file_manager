@@ -179,5 +179,22 @@
     "enter-text-to-send": "Írjon be egy szöveget a küldéshez",
     "send": "Küld",
     "message-sent": "Üzenet elküldve",
-    "laptop-disconnected": "Laptop leválasztva"
+    "laptop-disconnected": "Laptop leválasztva",
+    "recent-2": "Friss",
+    "about-developer": "A Fejlesztőről",
+    "developer": "fejlesztő",
+    "developer-note": "- Főleg Flutter fejlesztő, korábbi tapasztalattal\n   MERN verem.\n- Több tudású professzionális.",
+    "language": "Nyelv",
+    "change-language": "Válts nyelvet",
+    "recent-opened-files": "Legutóbb megnyitott fájlok",
+    "big-files": "Nagy fájlok",
+    "inactive-files": "Inaktív fájlok",
+    "old-files": "Régi fájlok",
+    "no-files-yet": "Még nincsenek fájlok",
+    "no-recent-items-yet": "Még nincsenek friss tételek",
+    "no-items-here": "Itt nincsenek elemek",
+    "storage-cleaner": "Tároló tisztító",
+    "loading": "Betöltés",
+    "rescanning": "Újraszkennelés",
+    "apply-on-next-startup": "Ez az alkalmazás következő indításakor érvényes lesz"
 }

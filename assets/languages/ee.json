@@ -179,5 +179,22 @@
     "enter-text-to-send": "Sisestage saatmiseks tekst",
     "send": "Saada",
     "message-sent": "Sõnum saadetud",
-    "laptop-disconnected": "Sülearvuti on lahti ühendatud"
+    "laptop-disconnected": "Sülearvuti on lahti ühendatud",
+    "recent-2": "Viimased",
+    "about-developer": "Arendaja kohta",
+    "developer": "arendaja",
+    "developer-note": "- Peamiselt Flutteri arendaja, varasema kogemusega\n   MERN virn.\n- Mitme oskusega professionaal.",
+    "language": "Keel",
+    "change-language": "Muuda keelt",
+    "recent-opened-files": "Hiljuti avatud failid",
+    "big-files": "Suured failid",
+    "inactive-files": "Mitteaktiivsed failid",
+    "old-files": "Vanad failid",
+    "no-files-yet": "Faile veel pole",
+    "no-recent-items-yet": "Viimaseid üksusi veel pole",
+    "no-items-here": "Siin pole üksusi",
+    "storage-cleaner": "Säilitamise puhastusvahend",
+    "loading": "Laadimine",
+    "rescanning": "Uuesti skannimine",
+    "apply-on-next-startup": "See rakendub rakenduse järgmisel käivitamisel"
 }

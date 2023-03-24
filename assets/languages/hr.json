@@ -179,5 +179,22 @@
     "enter-text-to-send": "Unesite tekst za slanje",
     "send": "Poslati",
     "message-sent": "Poruka je poslana",
-    "laptop-disconnected": "Prijenosno računalo isključeno"
+    "laptop-disconnected": "Prijenosno računalo isključeno",
+    "recent-2": "Nedavno",
+    "about-developer": "O razvojnom programeru",
+    "developer": "programer",
+    "developer-note": "- Uglavnom Flutter programer, s prethodnim iskustvom u\n   MERN stog.\n- Profesionalac s više vještina.",
+    "language": "Jezik",
+    "change-language": "Promijeni jezik",
+    "recent-opened-files": "Nedavno otvorene datoteke",
+    "big-files": "Velike datoteke",
+    "inactive-files": "Neaktivne datoteke",
+    "old-files": "Stari spisi",
+    "no-files-yet": "Još nema datoteka",
+    "no-recent-items-yet": "Još nema nedavnih stavki",
+    "no-items-here": "Ovdje nema stavki",
+    "storage-cleaner": "Sredstvo za čišćenje pohrane",
+    "loading": "Učitavam",
+    "rescanning": "Ponovno skeniranje",
+    "apply-on-next-startup": "Ovo će se primijeniti pri sljedećem pokretanju aplikacije"
 }

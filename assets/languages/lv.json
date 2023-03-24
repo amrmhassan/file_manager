@@ -179,5 +179,22 @@
     "enter-text-to-send": "Ievadiet tekstu, ko nosūtīt",
     "send": "Sūtīt",
     "message-sent": "Ziņa nosūtīta",
-    "laptop-disconnected": "Klēpjdators ir atvienots"
+    "laptop-disconnected": "Klēpjdators ir atvienots",
+    "recent-2": "Nesen",
+    "about-developer": "Par izstrādātāju",
+    "developer": "izstrādātājs",
+    "developer-note": "- Galvenokārt Flutter izstrādātājs ar iepriekšēju pieredzi\n   MERN kaudze.\n- Vairāku prasmju profesionālis.",
+    "language": "Valoda",
+    "change-language": "Mainīt VALODU",
+    "recent-opened-files": "Nesenie atvērtie faili",
+    "big-files": "Lieli faili",
+    "inactive-files": "Neaktīvie faili",
+    "old-files": "Vecie faili",
+    "no-files-yet": "Vēl nav failu",
+    "no-recent-items-yet": "Vēl nav jaunāko preču",
+    "no-items-here": "Šeit nav vienumu",
+    "storage-cleaner": "Uzglabāšanas tīrītājs",
+    "loading": "Notiek ielāde",
+    "rescanning": "Atkārtota skenēšana",
+    "apply-on-next-startup": "Tas tiks piemērots nākamajā lietotnes palaišanas reizē"
 }

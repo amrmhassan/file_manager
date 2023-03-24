@@ -179,5 +179,22 @@
     "enter-text-to-send": "Introduceți un text de trimis",
     "send": "Trimite",
     "message-sent": "Mesaj trimis",
-    "laptop-disconnected": "Laptopul deconectat"
+    "laptop-disconnected": "Laptopul deconectat",
+    "recent-2": "Recent",
+    "about-developer": "Despre dezvoltator",
+    "developer": "dezvoltator",
+    "developer-note": "- În principal dezvoltator Flutter, cu experiență anterioară în\n   Stiva MERN.\n- Profesionist cu abilități multiple.",
+    "language": "Limba",
+    "change-language": "Schimbați limba",
+    "recent-opened-files": "Fișiere deschise recente",
+    "big-files": "Dosare mari",
+    "inactive-files": "Fișiere inactive",
+    "old-files": "Fișiere vechi",
+    "no-files-yet": "Încă nu există fișiere",
+    "no-recent-items-yet": "Nu există încă articole recente",
+    "no-items-here": "Nu există articole aici",
+    "storage-cleaner": "Detergent pentru depozitare",
+    "loading": "Se încarcă",
+    "rescanning": "Rescanare",
+    "apply-on-next-startup": "Acest lucru se va aplica la următoarea pornire a aplicației"
 }

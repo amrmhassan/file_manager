@@ -179,5 +179,22 @@
     "enter-text-to-send": "Внесете текст за испраќање",
     "send": "Испрати",
     "message-sent": "Пораката е испратена",
-    "laptop-disconnected": "Лаптопот е исклучен"
+    "laptop-disconnected": "Лаптопот е исклучен",
+    "recent-2": "Неодамнешни",
+    "about-developer": "За програмер",
+    "developer": "програмер",
+    "developer-note": "- Главно развивач на Flutter, со претходно искуство во\n   оџак MERN.\n- Професионалец со повеќе вештини.",
+    "language": "Јазик",
+    "change-language": "Промени го јазикот",
+    "recent-opened-files": "Неодамна отворени датотеки",
+    "big-files": "Големи датотеки",
+    "inactive-files": "Неактивни датотеки",
+    "old-files": "Стари датотеки",
+    "no-files-yet": "Сè уште нема датотеки",
+    "no-recent-items-yet": "Сè уште нема неодамнешни ставки",
+    "no-items-here": "Нема ставки овде",
+    "storage-cleaner": "Чистач за складирање",
+    "loading": "Се вчитува",
+    "rescanning": "Рескенирање",
+    "apply-on-next-startup": "Ова ќе се применува при следното стартување на апликацијата"
 }

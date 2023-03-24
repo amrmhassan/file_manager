@@ -179,5 +179,22 @@
     "enter-text-to-send": "Zadajte text na odoslanie",
     "send": "Odoslať",
     "message-sent": "Správa poslaná",
-    "laptop-disconnected": "Laptop je odpojený"
+    "laptop-disconnected": "Laptop je odpojený",
+    "recent-2": "Nedávne",
+    "about-developer": "O vývojárovi",
+    "developer": "vývojár",
+    "developer-note": "- Hlavne vývojár Flutter s predchádzajúcimi skúsenosťami v\n   zásobník MERN.\n- Multi-zručnosť profesionál.",
+    "language": "Jazyk",
+    "change-language": "Zmeniť jazyk",
+    "recent-opened-files": "Naposledy otvorené súbory",
+    "big-files": "Veľké súbory",
+    "inactive-files": "Neaktívne súbory",
+    "old-files": "Staré súbory",
+    "no-files-yet": "Zatiaľ žiadne súbory",
+    "no-recent-items-yet": "Zatiaľ žiadne nedávne položky",
+    "no-items-here": "Nie sú tu žiadne položky",
+    "storage-cleaner": "Čistič skladov",
+    "loading": "Načítava",
+    "rescanning": "Opätovné skenovanie",
+    "apply-on-next-startup": "Toto bude platiť pri ďalšom spustení aplikácie"
 }

@@ -22,3 +22,6 @@ const String maxParallelDownloadsKey = 'maxParallelDownloadsKey';
 //? other keys
 const String downloadWindowsClientKey = 'downloadWindowsClientKey';
 const String windowsClientUpdateNoteKey = 'windowsClientUpdateNoteKey';
+
+//? language keys
+const String languageKey = 'languageKey';

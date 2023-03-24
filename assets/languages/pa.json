@@ -179,5 +179,22 @@
     "enter-text-to-send": "ਭੇਜਣ ਲਈ ਕੁਝ ਟੈਕਸਟ ਦਰਜ ਕਰੋ",
     "send": "ਭੇਜੋ",
     "message-sent": "ਸੁਨੇਹਾ ਭੇਜਿਆ",
-    "laptop-disconnected": "ਲੈਪਟਾਪ ਡਿਸਕਨੈਕਟ ਕੀਤਾ ਗਿਆ"
+    "laptop-disconnected": "ਲੈਪਟਾਪ ਡਿਸਕਨੈਕਟ ਕੀਤਾ ਗਿਆ",
+    "recent-2": "ਹਾਲ ਹੀ",
+    "about-developer": "ਵਿਕਾਸਕਾਰ ਬਾਰੇ",
+    "developer": "ਵਿਕਾਸਕਾਰ",
+    "developer-note": "- ਮੁੱਖ ਤੌਰ 'ਤੇ ਫਲਟਰ ਡਿਵੈਲਪਰ, ਪਿਛਲੇ ਅਨੁਭਵ ਦੇ ਨਾਲ\n   MERN ਸਟੈਕ।\n- ਮਲਟੀ ਹੁਨਰ ਪੇਸ਼ੇਵਰ.",
+    "language": "ਭਾਸ਼ਾ",
+    "change-language": "ਭਾਸ਼ਾ ਬਦਲੋ",
+    "recent-opened-files": "ਹਾਲੀਆ ਖੋਲ੍ਹੀਆਂ ਫਾਈਲਾਂ",
+    "big-files": "ਵੱਡੀਆਂ ਫਾਈਲਾਂ",
+    "inactive-files": "ਅਕਿਰਿਆਸ਼ੀਲ ਫ਼ਾਈਲਾਂ",
+    "old-files": "ਪੁਰਾਣੀਆਂ ਫਾਈਲਾਂ",
+    "no-files-yet": "ਹਾਲੇ ਤੱਕ ਕੋਈ ਫਾਈਲਾਂ ਨਹੀਂ ਹਨ",
+    "no-recent-items-yet": "ਅਜੇ ਤੱਕ ਕੋਈ ਹਾਲੀਆ ਆਈਟਮਾਂ ਨਹੀਂ ਹਨ",
+    "no-items-here": "ਇੱਥੇ ਕੋਈ ਆਈਟਮਾਂ ਨਹੀਂ",
+    "storage-cleaner": "ਸਟੋਰੇਜ ਕਲੀਨਰ",
+    "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ",
+    "rescanning": "ਮੁੜ-ਸਕੈਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
+    "apply-on-next-startup": "ਇਹ ਅਗਲੇ ਐਪ ਸਟਾਰਟਅਪ ਵਿੱਚ ਲਾਗੂ ਹੋਵੇਗਾ"
 }

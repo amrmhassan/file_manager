@@ -179,5 +179,22 @@
     "enter-text-to-send": "Geben Sie einen zu sendenden Text ein",
     "send": "Schicken",
     "message-sent": "Nachricht gesendet",
-    "laptop-disconnected": "Laptop getrennt"
+    "laptop-disconnected": "Laptop getrennt",
+    "recent-2": "Jüngste",
+    "about-developer": "Über Entwickler",
+    "developer": "Entwickler",
+    "developer-note": "- Hauptsächlich Flutter-Entwickler mit vorheriger Erfahrung in\n   MERN-Stapel.\n- Multi-Skills-Profi.",
+    "language": "Sprache",
+    "change-language": "Sprache ändern",
+    "recent-opened-files": "Zuletzt geöffnete Dateien",
+    "big-files": "Große Dateien",
+    "inactive-files": "Inaktive Dateien",
+    "old-files": "Alte Dateien",
+    "no-files-yet": "Noch keine Dateien",
+    "no-recent-items-yet": "Noch keine neuen Artikel",
+    "no-items-here": "Keine Artikel hier",
+    "storage-cleaner": "Speicherreiniger",
+    "loading": "Wird geladen",
+    "rescanning": "Erneutes Scannen",
+    "apply-on-next-startup": "Dies gilt beim nächsten App-Start"
 }

@@ -179,5 +179,22 @@
     "enter-text-to-send": "Įveskite tekstą, kurį norite siųsti",
     "send": "Siųsti",
     "message-sent": "Žinutė išsiųsta",
-    "laptop-disconnected": "Nešiojamasis kompiuteris atjungtas"
+    "laptop-disconnected": "Nešiojamasis kompiuteris atjungtas",
+    "recent-2": "Neseniai",
+    "about-developer": "Apie kūrėją",
+    "developer": "programuotojas",
+    "developer-note": "- Daugiausia „Flutter“ kūrėjas, turintis ankstesnės patirties\n   MERN krūva.\n- Kelių įgūdžių profesionalas.",
+    "language": "Kalba",
+    "change-language": "Pakeisti KALBĄ",
+    "recent-opened-files": "Neseniai atidaryti failai",
+    "big-files": "Dideli failai",
+    "inactive-files": "Neaktyvūs failai",
+    "old-files": "Seni failai",
+    "no-files-yet": "Failų dar nėra",
+    "no-recent-items-yet": "Naujausių prekių dar nėra",
+    "no-items-here": "Čia nėra elementų",
+    "storage-cleaner": "Sandėliavimo valiklis",
+    "loading": "Įkeliama",
+    "rescanning": "Pakartotinis nuskaitymas",
+    "apply-on-next-startup": "Tai bus taikoma kitą kartą paleidžiant programą"
 }

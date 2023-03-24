@@ -108,6 +108,16 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: supportedLocales,
         localeResolutionCallback: (locale, supportedLocales) {
+          // to check for the saved locale key
+          if (loadedCurrentLocale != null) {
+            Locale localeHolder = Locale.fromSubtags(
+              languageCode: loadedCurrentLocale!.languageCode,
+            );
+            Intl.defaultLocale = localeHolder.languageCode;
+            loadedCurrentLocale = null;
+
+            return localeHolder;
+          }
           Intl.defaultLocale = locale?.languageCode;
           // if (kDebugMode) {
           //   return arLocale;

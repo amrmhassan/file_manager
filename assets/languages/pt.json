@@ -179,5 +179,22 @@
     "enter-text-to-send": "Digite algum texto para enviar",
     "send": "Enviar",
     "message-sent": "Mensagem enviada",
-    "laptop-disconnected": "Notebook desconectado"
+    "laptop-disconnected": "Notebook desconectado",
+    "recent-2": "Recente",
+    "about-developer": "Sobre o Desenvolvedor",
+    "developer": "desenvolvedor",
+    "developer-note": "- Desenvolvedor principalmente Flutter, com experiência anterior em\n   Pilha MERN.\n- Profissional com múltiplas habilidades.",
+    "language": "Linguagem",
+    "change-language": "Mudar idioma",
+    "recent-opened-files": "Arquivos Abertos Recentes",
+    "big-files": "Arquivos Grandes",
+    "inactive-files": "Arquivos Inativos",
+    "old-files": "Arquivos Antigos",
+    "no-files-yet": "Nenhum arquivo ainda",
+    "no-recent-items-yet": "Ainda não há itens recentes",
+    "no-items-here": "Nenhum item aqui",
+    "storage-cleaner": "Limpador de armazenamento",
+    "loading": "Carregando",
+    "rescanning": "Redigitalizando",
+    "apply-on-next-startup": "Isso será aplicado na próxima inicialização do aplicativo"
 }

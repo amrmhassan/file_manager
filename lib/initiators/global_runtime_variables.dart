@@ -5,6 +5,7 @@ import 'package:explorer/providers/foreground_service_controller.dart';
 import 'package:explorer/services/media_service/my_media_handler.dart';
 import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:explorer/utils/notifications/notification_id_mapper.dart';
+import 'package:flutter/material.dart';
 
 bool firstTimeRunApp = false;
 bool testing = false;
@@ -22,3 +23,5 @@ late MyAudioHandler myMediaHandler;
 
 ForegroundServiceController foregroundServiceController =
     ForegroundServiceController();
+
+Locale? loadedCurrentLocale;

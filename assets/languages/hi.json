@@ -179,5 +179,22 @@
     "enter-text-to-send": "भेजने के लिए कुछ पाठ दर्ज करें",
     "send": "भेजना",
     "message-sent": "संदेश भेजा गया",
-    "laptop-disconnected": "लैपटॉप डिस्कनेक्ट हो गया"
+    "laptop-disconnected": "लैपटॉप डिस्कनेक्ट हो गया",
+    "recent-2": "हाल ही का",
+    "about-developer": "डेवलपर के बारे में",
+    "developer": "डेवलपर",
+    "developer-note": "- मुख्य रूप से स्पंदन डेवलपर, पिछले अनुभव के साथ\n   मेर्न ढेर।\n- बहु कौशल पेशेवर।",
+    "language": "भाषा",
+    "change-language": "भाषा बदलें",
+    "recent-opened-files": "हाल ही में खोली गई फ़ाइलें",
+    "big-files": "बड़ी फाइलें",
+    "inactive-files": "निष्क्रिय फ़ाइलें",
+    "old-files": "पुरानी फाइलें",
+    "no-files-yet": "अभी तक कोई फाइल नहीं है",
+    "no-recent-items-yet": "अभी हाल का कोई आइटम नहीं है",
+    "no-items-here": "यहां कोई आइटम नहीं है",
+    "storage-cleaner": "स्टोरेज क्लीनर",
+    "loading": "लोड हो रहा है",
+    "rescanning": "पुनर्स्कैनिंग",
+    "apply-on-next-startup": "यह अगले ऐप स्टार्टअप में लागू होगा"
 }

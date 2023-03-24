@@ -179,5 +179,22 @@
     "enter-text-to-send": "Введите текст для отправки",
     "send": "Отправлять",
     "message-sent": "Сообщение отправлено",
-    "laptop-disconnected": "Ноутбук отключен"
+    "laptop-disconnected": "Ноутбук отключен",
+    "recent-2": "Недавний",
+    "about-developer": "О разработчике",
+    "developer": "разработчик",
+    "developer-note": "- В основном Flutter-разработчик, с опытом работы в\n   Стек МЭРН.\n- Многопрофильный специалист.",
+    "language": "Язык",
+    "change-language": "Изменение языка",
+    "recent-opened-files": "Последние открытые файлы",
+    "big-files": "Большие файлы",
+    "inactive-files": "Неактивные файлы",
+    "old-files": "Старые файлы",
+    "no-files-yet": "Файлов пока нет",
+    "no-recent-items-yet": "Нет последних элементов еще",
+    "no-items-here": "Здесь нет элементов",
+    "storage-cleaner": "Очиститель хранилища",
+    "loading": "Загрузка",
+    "rescanning": "Повторное сканирование",
+    "apply-on-next-startup": "Это будет применяться при следующем запуске приложения."
 }

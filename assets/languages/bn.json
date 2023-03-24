@@ -179,5 +179,22 @@
     "enter-text-to-send": "পাঠাতে কিছু টেক্সট লিখুন",
     "send": "পাঠান",
     "message-sent": "বার্তা পাঠানো",
-    "laptop-disconnected": "ল্যাপটপ সংযোগ বিচ্ছিন্ন"
+    "laptop-disconnected": "ল্যাপটপ সংযোগ বিচ্ছিন্ন",
+    "recent-2": "সাম্প্রতিক",
+    "about-developer": "ডেভেলপার সম্পর্কে",
+    "developer": "বিকাশকারী",
+    "developer-note": "- প্রধানত ফ্লটার ডেভেলপার, এর পূর্ব অভিজ্ঞতা সহ\n   MERN স্ট্যাক।\n- মাল্টি দক্ষতা পেশাদার.",
+    "language": "ভাষা",
+    "change-language": "ভাষা পরিবর্তন করুন",
+    "recent-opened-files": "সাম্প্রতিক খোলা ফাইল",
+    "big-files": "বড় ফাইল",
+    "inactive-files": "নিষ্ক্রিয় ফাইল",
+    "old-files": "পুরানো ফাইল",
+    "no-files-yet": "এখনো কোনো ফাইল নেই",
+    "no-recent-items-yet": "কোন সাম্প্রতিক আইটেম এখনো",
+    "no-items-here": "এখানে কোন আইটেম নেই",
+    "storage-cleaner": "স্টোরেজ ক্লিনার",
+    "loading": "লোড হচ্ছে",
+    "rescanning": "রিস্ক্যান করা হচ্ছে",
+    "apply-on-next-startup": "এটি পরবর্তী অ্যাপ স্টার্টআপে প্রযোজ্য হবে"
 }

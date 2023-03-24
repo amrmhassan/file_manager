@@ -179,5 +179,22 @@
     "enter-text-to-send": "Sláðu inn smá texta til að senda",
     "send": "Senda",
     "message-sent": "Skilaboð send",
-    "laptop-disconnected": "Fartölva aftengd"
+    "laptop-disconnected": "Fartölva aftengd",
+    "recent-2": "Nýleg",
+    "about-developer": "Um þróunaraðila",
+    "developer": "verktaki",
+    "developer-note": "- Aðallega Flutter verktaki, með fyrri reynslu í\n   MERN stafla.\n- Fjölhæfur fagmaður.",
+    "language": "Tungumál",
+    "change-language": "Skipta um tungumál",
+    "recent-opened-files": "Nýlegar opnaðar skrár",
+    "big-files": "Stórar skrár",
+    "inactive-files": "Óvirkar skrár",
+    "old-files": "Gamlar skrár",
+    "no-files-yet": "Engar skrár enn",
+    "no-recent-items-yet": "Engin nýleg atriði ennþá",
+    "no-items-here": "Engir hlutir hér",
+    "storage-cleaner": "Geymsluhreinsiefni",
+    "loading": "Hleðsla",
+    "rescanning": "Endurskanna",
+    "apply-on-next-startup": "Þetta mun gilda í næstu ræsingu apps"
 }

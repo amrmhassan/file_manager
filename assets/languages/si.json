@@ -179,5 +179,22 @@
     "enter-text-to-send": "යැවීමට පෙළ කිහිපයක් ඇතුළත් කරන්න",
     "send": "යවන්න",
     "message-sent": "පණිවිඩය යැව්වා",
-    "laptop-disconnected": "ලැප්ටොප් පරිගණකය විසන්ධි විය"
+    "laptop-disconnected": "ලැප්ටොප් පරිගණකය විසන්ධි විය",
+    "recent-2": "මෑත",
+    "about-developer": "සංවර්ධකයා ගැන",
+    "developer": "සංවර්ධක",
+    "developer-note": "- ප්‍රධාන වශයෙන් Flutter සංවර්ධකයා, පෙර අත්දැකීම් සමඟ\n   MERN තොගය.\n- බහු කුසලතා වෘත්තීය.",
+    "language": "භාෂාව",
+    "change-language": "භාෂාව වෙනස් කරන්න",
+    "recent-opened-files": "මෑත විවෘත කරන ලද ගොනු",
+    "big-files": "විශාල ගොනු",
+    "inactive-files": "අක්රිය ගොනු",
+    "old-files": "පැරණි ගොනු",
+    "no-files-yet": "තවමත් ගොනු නැත",
+    "no-recent-items-yet": "තවමත් මෑත අයිතම නැත",
+    "no-items-here": "මෙහි අයිතම නොමැත",
+    "storage-cleaner": "ගබඩා පිරිසිදු කරන්නා",
+    "loading": "පැටවීම",
+    "rescanning": "නැවත ස්කෑන් කිරීම",
+    "apply-on-next-startup": "මෙය මීළඟ යෙදුම් ආරම්භයේදී අදාළ වේ"
 }

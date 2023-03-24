@@ -179,5 +179,22 @@
     "enter-text-to-send": "送信するテキストを入力してください",
     "send": "送信",
     "message-sent": "メッセージを送信しました",
-    "laptop-disconnected": "ラップトップが切断されました"
+    "laptop-disconnected": "ラップトップが切断されました",
+    "recent-2": "最近",
+    "about-developer": "開発者について",
+    "developer": "デベロッパー",
+    "developer-note": "- 主に Flutter 開発者で、以前は\n   MERN スタック。\n・マルチスキルのプロ。",
+    "language": "言語",
+    "change-language": "言語を変えてください",
+    "recent-opened-files": "最近開いたファイル",
+    "big-files": "大きなファイル",
+    "inactive-files": "非アクティブなファイル",
+    "old-files": "古いファイル",
+    "no-files-yet": "まだファイルがありません",
+    "no-recent-items-yet": "最近のアイテムはまだありません",
+    "no-items-here": "ここにアイテムはありません",
+    "storage-cleaner": "収納クリーナー",
+    "loading": "読み込み中",
+    "rescanning": "再スキャン中",
+    "apply-on-next-startup": "これは、次回のアプリ起動時に適用されます"
 }

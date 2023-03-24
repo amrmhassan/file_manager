@@ -179,5 +179,22 @@
     "enter-text-to-send": "Göndermek için biraz metin girin",
     "send": "Göndermek",
     "message-sent": "Mesajı gönderildi",
-    "laptop-disconnected": "Dizüstü bilgisayar bağlantısı kesildi"
+    "laptop-disconnected": "Dizüstü bilgisayar bağlantısı kesildi",
+    "recent-2": "Son",
+    "about-developer": "Geliştirici Hakkında",
+    "developer": "geliştirici",
+    "developer-note": "- Ağırlıklı olarak Flutter geliştiricisi, daha önce deneyime sahip\n   MERN yığını.\n- Çoklu beceri uzmanı.",
+    "language": "Dil",
+    "change-language": "Dili değiştir",
+    "recent-opened-files": "Son Açılan Dosyalar",
+    "big-files": "Büyük Dosyalar",
+    "inactive-files": "Etkin Olmayan Dosyalar",
+    "old-files": "Eski Dosyalar",
+    "no-files-yet": "Henüz Dosya Yok",
+    "no-recent-items-yet": "Henüz Yeni Ürün Yok",
+    "no-items-here": "Burada Öğe Yok",
+    "storage-cleaner": "Depolama Temizleyici",
+    "loading": "Yükleniyor",
+    "rescanning": "yeniden tarama",
+    "apply-on-next-startup": "Bu, bir sonraki uygulama başlangıcında geçerli olacak"
 }

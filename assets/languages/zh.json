@@ -179,5 +179,22 @@
     "enter-text-to-send": "输入一些要发送的文本",
     "send": "发送",
     "message-sent": "消息已发送",
-    "laptop-disconnected": "笔记本电脑断开连接"
+    "laptop-disconnected": "笔记本电脑断开连接",
+    "recent-2": "最近的",
+    "about-developer": "关于开发商",
+    "developer": "开发商",
+    "developer-note": "- 主要从事 Flutter 开发，有过 Flutter 开发经验\n   MERN 堆栈。\n- 多技能专业。",
+    "language": "语言",
+    "change-language": "改变语言",
+    "recent-opened-files": "最近打开的文件",
+    "big-files": "大文件",
+    "inactive-files": "非活动文件",
+    "old-files": "旧文件",
+    "no-files-yet": "还没有文件",
+    "no-recent-items-yet": "还没有最近的项目",
+    "no-items-here": "这里没有项目",
+    "storage-cleaner": "储物清洁剂",
+    "loading": "加载中",
+    "rescanning": "重新扫描",
+    "apply-on-next-startup": "这将适用于下一个应用程序启动"
 }

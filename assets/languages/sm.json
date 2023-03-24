@@ -179,5 +179,22 @@
     "enter-text-to-send": "Tu'u ni tusitusiga e lafo",
     "send": "Auina atu",
     "message-sent": "Sa auina atu le Feau",
-    "laptop-disconnected": "Ua motu le komepiuta"
+    "laptop-disconnected": "Ua motu le komepiuta",
+    "recent-2": "Talu ai nei",
+    "about-developer": "E uiga i le atia'e",
+    "developer": "atina'e",
+    "developer-note": "- Fa'apitoa Flutter developer, ma le poto masani i\n   MERN faaputuga.\n- Tele tomai fa'apolofesa.",
+    "language": "Gagana",
+    "change-language": "Suia Gagana",
+    "recent-opened-files": "Faila Tatala lata mai nei",
+    "big-files": "Faila tetele",
+    "inactive-files": "Faila le toaga",
+    "old-files": "Faila Tuai",
+    "no-files-yet": "Leai ni faila",
+    "no-recent-items-yet": "Leai se mea lata mai nei",
+    "no-items-here": "Leai ni aitema iinei",
+    "storage-cleaner": "Fa'amama Teuga",
+    "loading": "utaina",
+    "rescanning": "Toe su'esu'e",
+    "apply-on-next-startup": "O le a fa'aoga lea i le isi amataga ole app"
 }

@@ -39,8 +39,14 @@ Locale trLocale = const Locale('tr');
 Locale zhLocale = const Locale('zh');
 
 List<Locale> supportedLocales = [
-  arLocale,
   enLocale,
+  arLocale,
+  ruLocale,
+  frLocale,
+  hiLocale,
+  jaLocale,
+  zhLocale,
+  trLocale,
   bgLocale,
   bnLocale,
   cyLocale,
@@ -48,14 +54,11 @@ List<Locale> supportedLocales = [
   eeLocale,
   esLocale,
   fiLocale,
-  frLocale,
-  hiLocale,
   hrLocale,
   huLocale,
   idLocale,
   isLocale,
   itLocale,
-  jaLocale,
   ltLocale,
   lvLocale,
   mkLocale,
@@ -66,14 +69,11 @@ List<Locale> supportedLocales = [
   plLocale,
   ptLocale,
   roLocale,
-  ruLocale,
   siLocale,
   skLocale,
   smLocale,
   sqLocale,
   svLocale,
-  trLocale,
-  zhLocale,
 ];
 
 Map<String, String> getLanguageNames(List<Locale> locales) {

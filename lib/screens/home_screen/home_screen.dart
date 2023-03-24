@@ -49,6 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     Future.delayed(Duration.zero).then((value) async {
       var recentProvider = Provider.of<RecentProvider>(context, listen: false);
+      //? load language
+      await langPF(context).loadLocale(context);
+      //?
       await expPF(context).loadSortOptions();
       //?
       await analyzerPF(context).loadInitialAppData(recentProvider);

@@ -179,5 +179,22 @@
     "enter-text-to-send": "Kirjoita tekstiä lähetettäväksi",
     "send": "Lähettää",
     "message-sent": "Viesti lähetetty",
-    "laptop-disconnected": "Kannettava tietokone irrotettu"
+    "laptop-disconnected": "Kannettava tietokone irrotettu",
+    "recent-2": "Viimeaikaiset",
+    "about-developer": "Tietoja kehittäjästä",
+    "developer": "kehittäjä",
+    "developer-note": "- Pääasiassa Flutter-kehittäjä, jolla on aikaisempaa kokemusta\n   MERN pino.\n- Monipuolinen ammattilainen.",
+    "language": "Kieli",
+    "change-language": "Vaihda kieltä",
+    "recent-opened-files": "Viimeksi avatut tiedostot",
+    "big-files": "Suuret tiedostot",
+    "inactive-files": "Ei-aktiiviset tiedostot",
+    "old-files": "Vanhat tiedostot",
+    "no-files-yet": "Ei tiedostoja vielä",
+    "no-recent-items-yet": "Ei viimeaikaisia ​​tuotteita vielä",
+    "no-items-here": "Ei kohteita täällä",
+    "storage-cleaner": "Varastoinnin puhdistusaine",
+    "loading": "Ladataan",
+    "rescanning": "Uudelleenskannaus",
+    "apply-on-next-startup": "Tämä tulee voimaan seuraavan sovelluksen käynnistyksen yhteydessä"
 }

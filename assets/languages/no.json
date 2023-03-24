@@ -179,5 +179,22 @@
     "enter-text-to-send": "Skriv inn tekst for å sende",
     "send": "Sende",
     "message-sent": "Melding sendt",
-    "laptop-disconnected": "Bærbar datamaskin frakoblet"
+    "laptop-disconnected": "Bærbar datamaskin frakoblet",
+    "recent-2": "Nylig",
+    "about-developer": "Om Utvikler",
+    "developer": "utvikler",
+    "developer-note": "- Hovedsakelig Flutter-utvikler, med tidligere erfaring innen\n   MERN stabel.\n- Profesjonell med flere ferdigheter.",
+    "language": "Språk",
+    "change-language": "Skifte språk",
+    "recent-opened-files": "Nylig åpnede filer",
+    "big-files": "Store filer",
+    "inactive-files": "Inaktive filer",
+    "old-files": "Gamle filer",
+    "no-files-yet": "Ingen filer ennå",
+    "no-recent-items-yet": "Ingen nyere varer ennå",
+    "no-items-here": "Ingen varer her",
+    "storage-cleaner": "Oppbevaringsrens",
+    "loading": "Laster",
+    "rescanning": "Skanner på nytt",
+    "apply-on-next-startup": "Dette vil gjelde ved neste oppstart av appen"
 }

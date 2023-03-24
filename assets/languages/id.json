@@ -179,5 +179,22 @@
     "enter-text-to-send": "Masukkan beberapa teks untuk dikirim",
     "send": "Mengirim",
     "message-sent": "Pesan terkirim",
-    "laptop-disconnected": "Laptop terputus"
+    "laptop-disconnected": "Laptop terputus",
+    "recent-2": "Terkini",
+    "about-developer": "Tentang Pengembang",
+    "developer": "pengembang",
+    "developer-note": "- Terutama pengembang Flutter, dengan pengalaman sebelumnya di\n   tumpukan MERN.\n- Multi keterampilan profesional.",
+    "language": "Bahasa",
+    "change-language": "Ganti BAHASA",
+    "recent-opened-files": "File yang Baru Dibuka",
+    "big-files": "File Besar",
+    "inactive-files": "File Tidak Aktif",
+    "old-files": "File Lama",
+    "no-files-yet": "Belum Ada File",
+    "no-recent-items-yet": "Belum Ada Item Terbaru",
+    "no-items-here": "Tidak Ada Item Di Sini",
+    "storage-cleaner": "Pembersih Penyimpanan",
+    "loading": "Memuat",
+    "rescanning": "Memindai ulang",
+    "apply-on-next-startup": "Ini akan berlaku di startup aplikasi berikutnya"
 }

@@ -179,5 +179,22 @@
     "enter-text-to-send": "Увядзіце тэкст для адпраўкі",
     "send": "Адправіць",
     "message-sent": "Паведамленне адпраўлена",
-    "laptop-disconnected": "Ноўтбук адключаны"
+    "laptop-disconnected": "Ноўтбук адключаны",
+    "recent-2": "Апошнія",
+    "about-developer": "Аб распрацоўніку",
+    "developer": "распрацоўшчык",
+    "developer-note": "- У асноўным распрацоўшчык Flutter, з папярэднім вопытам у\n   Стэк MERN.\n- Прафесіянал з рознымі навыкамі.",
+    "language": "мова",
+    "change-language": "Змяніць мову",
+    "recent-opened-files": "Апошнія адкрытыя файлы",
+    "big-files": "Вялікія файлы",
+    "inactive-files": "Неактыўныя файлы",
+    "old-files": "Старыя файлы",
+    "no-files-yet": "Файлаў пакуль няма",
+    "no-recent-items-yet": "Нядаўніх элементаў пакуль няма",
+    "no-items-here": "Тут няма прадметаў",
+    "storage-cleaner": "Ачышчальнік захоўвання",
+    "loading": "Загрузка",
+    "rescanning": "Паўторнае сканаванне",
+    "apply-on-next-startup": "Гэта будзе прымяняцца пры наступным запуску праграмы"
 }

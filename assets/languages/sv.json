@@ -179,5 +179,22 @@
     "enter-text-to-send": "Skriv in lite text att skicka",
     "send": "Skicka",
     "message-sent": "Meddelande skickat",
-    "laptop-disconnected": "Bärbar dator frånkopplad"
+    "laptop-disconnected": "Bärbar dator frånkopplad",
+    "recent-2": "Nyligen",
+    "about-developer": "Om utvecklare",
+    "developer": "utvecklare",
+    "developer-note": "- Främst Flutter-utvecklare, med tidigare erfarenhet av\n   MERN stack.\n- Professionell med flera färdigheter.",
+    "language": "Språk",
+    "change-language": "Ändra språk",
+    "recent-opened-files": "Senast öppnade filer",
+    "big-files": "Stora filer",
+    "inactive-files": "Inaktiva filer",
+    "old-files": "Gamla filer",
+    "no-files-yet": "Inga filer än",
+    "no-recent-items-yet": "Inga nya artiklar än",
+    "no-items-here": "Inga föremål här",
+    "storage-cleaner": "Förvaringsrengöring",
+    "loading": "Läser in",
+    "rescanning": "Skannar om",
+    "apply-on-next-startup": "Detta kommer att gälla vid nästa appstart"
 }

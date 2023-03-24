@@ -179,5 +179,22 @@
     "enter-text-to-send": "Voer wat tekst in om te verzenden",
     "send": "Versturen",
     "message-sent": "Bericht verzonden",
-    "laptop-disconnected": "Laptop losgekoppeld"
+    "laptop-disconnected": "Laptop losgekoppeld",
+    "recent-2": "Recent",
+    "about-developer": "Over ontwikkelaar",
+    "developer": "ontwikkelaar",
+    "developer-note": "- Voornamelijk Flutter-ontwikkelaar, met eerdere ervaring in\n   MERN-stapel.\n- Multivaardigheden professional.",
+    "language": "Taal",
+    "change-language": "Taal wijzigen",
+    "recent-opened-files": "Recent geopende bestanden",
+    "big-files": "Grote bestanden",
+    "inactive-files": "Inactieve bestanden",
+    "old-files": "Oude bestanden",
+    "no-files-yet": "Nog geen bestanden",
+    "no-recent-items-yet": "Nog geen recente items",
+    "no-items-here": "Geen artikelen hier",
+    "storage-cleaner": "Opslag reiniger",
+    "loading": "Bezig met laden",
+    "rescanning": "Opnieuw scannen",
+    "apply-on-next-startup": "Dit is van toepassing bij het opstarten van de volgende app"
 }
