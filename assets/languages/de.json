@@ -198,5 +198,8 @@
     "rescanning": "Erneutes Scannen",
     "apply-on-next-startup": "Dies gilt beim nächsten App-Start",
     "skip": "Überspringen",
-    "back-again-to-exit": "Zurück zum Beenden"
+    "back-again-to-exit": "Zurück zum Beenden",
+    "mb": "MB",
+    "byte": "Byte",
+    "kb": "KB"
 }

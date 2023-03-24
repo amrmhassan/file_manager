@@ -198,5 +198,8 @@
     "rescanning": "Opätovné skenovanie",
     "apply-on-next-startup": "Toto bude platiť pri ďalšom spustení aplikácie",
     "skip": "Preskočiť",
-    "back-again-to-exit": "Späť na výstup"
+    "back-again-to-exit": "Späť na výstup",
+    "mb": "MB",
+    "byte": "Byte",
+    "kb": "KB"
 }

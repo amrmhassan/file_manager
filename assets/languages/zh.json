@@ -198,5 +198,8 @@
     "rescanning": "重新扫描",
     "apply-on-next-startup": "这将适用于下一个应用程序启动",
     "skip": "跳过",
-    "back-again-to-exit": "再次返回退出"
+    "back-again-to-exit": "再次返回退出",
+    "mb": "MB",
+    "byte": "字节",
+    "kb": "知识库"
 }

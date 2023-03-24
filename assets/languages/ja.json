@@ -198,5 +198,8 @@
     "rescanning": "再スキャン中",
     "apply-on-next-startup": "これは、次回のアプリ起動時に適用されます",
     "skip": "スキップ",
-    "back-again-to-exit": "終了するには戻る"
+    "back-again-to-exit": "終了するには戻る",
+    "mb": "MB",
+    "byte": "バイト",
+    "kb": "KB"
 }

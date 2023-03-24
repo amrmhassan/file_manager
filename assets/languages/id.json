@@ -198,5 +198,8 @@
     "rescanning": "Memindai ulang",
     "apply-on-next-startup": "Ini akan berlaku di startup aplikasi berikutnya",
     "skip": "Melewati",
-    "back-again-to-exit": "Kembali Lagi Untuk Keluar"
+    "back-again-to-exit": "Kembali Lagi Untuk Keluar",
+    "mb": "MB",
+    "byte": "Byte",
+    "kb": "KB"
 }

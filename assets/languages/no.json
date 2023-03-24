@@ -198,5 +198,8 @@
     "rescanning": "Skanner på nytt",
     "apply-on-next-startup": "Dette vil gjelde ved neste oppstart av appen",
     "skip": "Hopp over",
-    "back-again-to-exit": "Tilbake igjen for å avslutte"
+    "back-again-to-exit": "Tilbake igjen for å avslutte",
+    "mb": "MB",
+    "byte": "Byte",
+    "kb": "KB"
 }

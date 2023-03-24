@@ -198,5 +198,8 @@
     "rescanning": "Renumériser",
     "apply-on-next-startup": "Cela s'appliquera au prochain démarrage de l'application",
     "skip": "Sauter",
-    "back-again-to-exit": "Retour pour quitter"
+    "back-again-to-exit": "Retour pour quitter",
+    "mb": "Mo",
+    "byte": "Octet",
+    "kb": "Ko"
 }

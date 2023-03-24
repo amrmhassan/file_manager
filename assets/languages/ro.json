@@ -198,5 +198,8 @@
     "rescanning": "Rescanare",
     "apply-on-next-startup": "Acest lucru se va aplica la următoarea pornire a aplicației",
     "skip": "Ocolire",
-    "back-again-to-exit": "Înapoi din nou pentru a ieși"
+    "back-again-to-exit": "Înapoi din nou pentru a ieși",
+    "mb": "MB",
+    "byte": "octet",
+    "kb": "KB"
 }

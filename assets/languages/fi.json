@@ -198,5 +198,8 @@
     "rescanning": "Uudelleenskannaus",
     "apply-on-next-startup": "Tämä tulee voimaan seuraavan sovelluksen käynnistyksen yhteydessä",
     "skip": "Ohita",
-    "back-again-to-exit": "Takaisin poistuaksesi"
+    "back-again-to-exit": "Takaisin poistuaksesi",
+    "mb": "MB",
+    "byte": "Tavu",
+    "kb": "KB"
 }

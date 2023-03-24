@@ -198,5 +198,8 @@
     "rescanning": "Atkārtota skenēšana",
     "apply-on-next-startup": "Tas tiks piemērots nākamajā lietotnes palaišanas reizē",
     "skip": "Izlaist",
-    "back-again-to-exit": "Atkal atpakaļ, lai izietu"
+    "back-again-to-exit": "Atkal atpakaļ, lai izietu",
+    "mb": "MB",
+    "byte": "baits",
+    "kb": "KB"
 }

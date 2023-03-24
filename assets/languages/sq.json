@@ -198,5 +198,8 @@
     "rescanning": "Riskanimi",
     "apply-on-next-startup": "Kjo do të zbatohet në fillimin e ardhshëm të aplikacionit",
     "skip": "Kapërce",
-    "back-again-to-exit": "Kthehu përsëri për të dalë"
+    "back-again-to-exit": "Kthehu përsëri për të dalë",
+    "mb": "MB",
+    "byte": "Bajt",
+    "kb": "KB"
 }

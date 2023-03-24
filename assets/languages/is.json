@@ -198,5 +198,8 @@
     "rescanning": "Endurskanna",
     "apply-on-next-startup": "Þetta mun gilda í næstu ræsingu apps",
     "skip": "Skip",
-    "back-again-to-exit": "Til baka aftur til að hætta"
+    "back-again-to-exit": "Til baka aftur til að hætta",
+    "mb": "MB",
+    "byte": "Bæti",
+    "kb": "KB"
 }

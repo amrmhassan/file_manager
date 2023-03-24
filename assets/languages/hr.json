@@ -198,5 +198,8 @@
     "rescanning": "Ponovno skeniranje",
     "apply-on-next-startup": "Ovo će se primijeniti pri sljedećem pokretanju aplikacije",
     "skip": "Preskočiti",
-    "back-again-to-exit": "Natrag za izlaz"
+    "back-again-to-exit": "Natrag za izlaz",
+    "mb": "MB",
+    "byte": "Bajt",
+    "kb": "KB"
 }

@@ -198,5 +198,8 @@
     "rescanning": "Újraszkennelés",
     "apply-on-next-startup": "Ez az alkalmazás következő indításakor érvényes lesz",
     "skip": "Kihagyás",
-    "back-again-to-exit": "Vissza a Kilépéshez"
+    "back-again-to-exit": "Vissza a Kilépéshez",
+    "mb": "MB",
+    "byte": "Byte",
+    "kb": "KB"
 }

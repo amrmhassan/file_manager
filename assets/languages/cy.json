@@ -198,5 +198,8 @@
     "rescanning": "Ailsganio",
     "apply-on-next-startup": "Bydd hyn yn berthnasol yn y cychwyn app nesaf",
     "skip": "Sgipio",
-    "back-again-to-exit": "Yn ol Eto I Ymadael"
+    "back-again-to-exit": "Yn ol Eto I Ymadael",
+    "mb": "MB",
+    "byte": "Beit",
+    "kb": "KB"
 }

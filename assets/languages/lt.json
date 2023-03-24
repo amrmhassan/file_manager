@@ -198,5 +198,8 @@
     "rescanning": "Pakartotinis nuskaitymas",
     "apply-on-next-startup": "Tai bus taikoma kitą kartą paleidžiant programą",
     "skip": "Praleisti",
-    "back-again-to-exit": "Grįžti ir išeiti"
+    "back-again-to-exit": "Grįžti ir išeiti",
+    "mb": "MB",
+    "byte": "baitas",
+    "kb": "KB"
 }

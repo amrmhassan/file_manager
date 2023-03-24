@@ -198,5 +198,8 @@
     "rescanning": "Uuesti skannimine",
     "apply-on-next-startup": "See rakendub rakenduse järgmisel käivitamisel",
     "skip": "Vahele jätma",
-    "back-again-to-exit": "Tagasi Väljumiseks"
+    "back-again-to-exit": "Tagasi Väljumiseks",
+    "mb": "MB",
+    "byte": "Bait",
+    "kb": "KB"
 }

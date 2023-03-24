@@ -198,5 +198,8 @@
     "rescanning": "Skannar om",
     "apply-on-next-startup": "Detta kommer att gälla vid nästa appstart",
     "skip": "Hoppa",
-    "back-again-to-exit": "Tillbaka igen för att avsluta"
+    "back-again-to-exit": "Tillbaka igen för att avsluta",
+    "mb": "MB",
+    "byte": "Byte",
+    "kb": "KB"
 }

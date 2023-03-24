@@ -85,16 +85,16 @@ String handleConvertSize(int sizeInByte, [int fixedTo = 2]) {
   double convertedSize = 0;
   if (sizeInByte < 1024) {
     convertedSize = sizeInByte * 1;
-    unit = ' Byte';
+    unit = 'byte'.i18n();
   } else if (sizeInByte < 1024 * 1024) {
     convertedSize = sizeInByte.toKB;
-    unit = ' KB';
+    unit = 'kb'.i18n();
   } else if (sizeInByte < 1024 * 1024 * 1024) {
     convertedSize = sizeInByte.toMB;
-    unit = ' MB';
+    unit = 'mb'.i18n();
   } else {
     convertedSize = sizeInByte.toGB;
-    unit = ' GB';
+    unit = 'gb'.i18n();
   }
   return '${double.parse(convertedSize.toStringAsFixed(fixedTo))}$unit';
 }
