@@ -3,7 +3,6 @@
 import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
 import 'package:explorer/screens/language_screen/language_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
@@ -24,14 +23,14 @@ class MainSettings extends StatelessWidget {
           onTap: () => setSettingMode(SettingMode.animations),
           onlyDebug: true,
         ),
-          AppDrawerItem(
-            iconPath: 'language',
-            title: 'language'.i18n(),
-            onTap: () {
-              Navigator.pushNamed(context, LanguageScreen.routeName);
-            },
-            onlyDebug: true,
-          ),
+        AppDrawerItem(
+          iconPath: 'language',
+          title: 'language'.i18n(),
+          onTap: () {
+            Navigator.pushNamed(context, LanguageScreen.routeName);
+          },
+          onlyDebug: true,
+        ),
       ],
     );
   }

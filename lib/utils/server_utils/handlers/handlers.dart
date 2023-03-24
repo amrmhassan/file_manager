@@ -33,14 +33,16 @@ BuildContext getGlobalContext() {
 }
 
 FutureOr<void> handlerErrorSender(
-    FutureOr Function() callback, HttpResponse response) async {
+  FutureOr Function() callback,
+  HttpResponse response,
+) async {
   try {
     await callback();
-  } catch (e, s) {
+  } catch (e) {
     response
       ..statusCode = HttpStatus.internalServerError
       ..write(e);
-    logger.e(e, s);
+    logger.e(e);
   }
 }
 
@@ -50,7 +52,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var shareProviderFalse = sharePF(context);
       var serverProvider = serverPF(context);
@@ -76,8 +78,8 @@ class S1H {
   static void getShareSpaceHandler(
     HttpRequest request,
     HttpResponse response,
-  ) {
-    handlerErrorSender(() async {
+  ) async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var shareProviderFalse = sharePF(context);
       var serverProvider = serverPF(context);
@@ -101,7 +103,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var serverProvider = serverPF(context);
 
@@ -116,7 +118,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var serverProvider = serverPF(context);
 
@@ -130,7 +132,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       ShareItemsExplorerProvider shareItemsExplorerProvider =
           shareExpPF(context);
@@ -157,7 +159,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       ShareItemsExplorerProvider shareItemsExplorerProvider =
           shareExpPF(context);
@@ -234,7 +236,7 @@ class S1H {
     HttpRequest req,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       String audioPath = req.headers.value(KHeaders.filePathHeaderKey) ?? '';
       audioPath = Uri.decodeComponent(audioPath);
       if (audioPath.isEmpty) {
@@ -279,7 +281,7 @@ class S1H {
     HttpRequest req,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       String videoPath = req.headers.value(KHeaders.filePathHeaderKey) ?? '';
       videoPath = Uri.decodeComponent(videoPath);
       if (videoPath.isEmpty) {
@@ -325,7 +327,7 @@ class S1H {
     HttpRequest req,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       String? intent = req.headers.value(KHeaders.reqIntentPathHeaderKey);
       String filePath =
           Uri.decodeComponent(req.headers.value(KHeaders.filePathHeaderKey)!);
@@ -371,7 +373,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() {
+    await handlerErrorSender(() {
       BuildContext context = getGlobalContext();
       ServerProvider serverProvider = serverPF(context);
       response.write(serverProvider.myWSConnLink);
@@ -382,7 +384,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var shareProvider = sharePF(context);
       if (shareProvider.myImagePath == null) {
@@ -415,7 +417,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
       var shareProvider = sharePF(context);
       var serverProvider = serverPF(context);
@@ -489,7 +491,7 @@ class S1H {
     HttpRequest request,
     HttpResponse response,
   ) async {
-    handlerErrorSender(() async {
+    await handlerErrorSender(() async {
       BuildContext context = getGlobalContext();
 
       var listyList = listyPF(context).listyList;

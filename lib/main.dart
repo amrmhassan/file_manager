@@ -19,8 +19,6 @@ import 'package:intl/intl.dart';
 import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
-// fix continuing failed task from laptop
-
 //! add disks_desktop 1.0.1
 
 // add remaining time on the downloading card
