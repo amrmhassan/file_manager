@@ -10,6 +10,7 @@ import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.d
 import 'package:explorer/screens/items_viewer_screen/items_viewer_screen.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class StorageCleanerScreen extends StatefulWidget {
@@ -35,7 +36,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
             activeScreenIndex: 0,
             setActiveScreen: (a) {},
             sizesExplorer: true,
-            title: 'Storage Cleaner',
+            title: 'storage-cleaner'.i18n(),
           ),
           HLine(
             width: 1,
@@ -53,7 +54,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                         ),
                         VSpace(),
                         Text(
-                          'Loading',
+                          'loading'.i18n(),
                           style: h4TextStyleInactive,
                         ),
                       ],
@@ -73,7 +74,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                           arguments: ItemsType.bigFiles,
                         );
                       },
-                      title: 'Big Files',
+                      title: 'big-files'.i18n(),
                       color: kMainIconColor,
                     ),
                     VSpace(factor: .5),
@@ -86,7 +87,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                           arguments: ItemsType.inactiveFiles,
                         );
                       },
-                      title: 'Inactive Files',
+                      title: 'inactive-files'.i18n(),
                       color: kMainIconColor,
                     ),
                     VSpace(factor: .5),
@@ -99,7 +100,7 @@ class _StorageCleanerScreenState extends State<StorageCleanerScreen> {
                           arguments: ItemsType.oldFiles,
                         );
                       },
-                      title: 'Old Files',
+                      title: 'old-files'.i18n(),
                       color: kMainIconColor,
                     ),
                   ],

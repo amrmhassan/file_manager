@@ -21,6 +21,7 @@
   "host": "Host",
   "join": "Join",
   "recent": "Recent",
+  "recent-2": "Recent",
   "your-share-space": "Your Share Space",
   "host-note": "You must connect devices to the same network (wifi or hotspot of one of the devices) first",
   "continue": "Continue",
@@ -182,5 +183,17 @@
   "laptop-disconnected": "Laptop disconnected",
   "about-developer": "About Developer",
   "developer": "developer",
-  "developer-note": "- Mainly Flutter developer, with previous experience in \n   MERN stack.\n- Multi skills professional."
+  "developer-note": "- Mainly Flutter developer, with previous experience in \n   MERN stack.\n- Multi skills professional.",
+  "language": "Language",
+  "change-language": "Change Language",
+  "recent-opened-files": "Recent Opened Files",
+  "big-files": "Big Files",
+  "inactive-files": "Inactive Files",
+  "old-files": "Old Files",
+  "no-files-yet": "No Files Yet",
+  "no-recent-items-yet": "No Recent Items Yet",
+  "no-items-here": "No Items Here",
+  "storage-cleaner": "Storage Cleaner",
+  "loading": "Loading",
+  "rescanning": "Rescanning"
 }

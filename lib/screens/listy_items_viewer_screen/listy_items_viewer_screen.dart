@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/defaults_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
@@ -12,6 +13,7 @@ import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class ListyItemViewerScreen extends StatefulWidget {
@@ -62,7 +64,9 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
       child: Column(children: [
         CustomAppBar(
           title: Text(
-            listyTitle,
+            listyTitle == defaultListyList.first.title
+                ? 'favorite'.i18n()
+                : listyTitle,
             style: h2TextStyle,
           ),
         ),
@@ -74,7 +78,7 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'No Items Here',
+                          'no-items-here'.i18n(),
                           style: h4TextStyleInactive,
                         ),
                       ],

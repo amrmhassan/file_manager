@@ -11,6 +11,7 @@ import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/explorer_screen/widgets/entity_operations/entity_operations.dart';
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 enum RecentType {
@@ -117,19 +118,19 @@ class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
     RecentType recentType =
         ModalRoute.of(context)!.settings.arguments as RecentType;
     if (recentType == RecentType.image) {
-      return 'Images';
+      return 'images-text'.i18n();
     } else if (recentType == RecentType.video) {
-      return 'Videos';
+      return 'videos-text'.i18n();
     } else if (recentType == RecentType.apk) {
-      return 'APKs';
+      return 'apks-text'.i18n();
     } else if (recentType == RecentType.archives) {
-      return 'Archives';
+      return 'archives-text'.i18n();
     } else if (recentType == RecentType.doc) {
-      return 'Docs';
+      return 'docs-text'.i18n();
     } else if (recentType == RecentType.download) {
-      return 'Downloads';
+      return 'downloads-text'.i18n();
     } else if (recentType == RecentType.music) {
-      return 'Music';
+      return 'music-text'.i18n();
     } else {
       return '';
     }
@@ -152,7 +153,7 @@ class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              'Recent $title',
+              '${"recent-2".i18n()} $title',
               style: h2TextStyle.copyWith(
                 color: kActiveTextColor,
               ),
@@ -168,7 +169,7 @@ class _RecentsViewerScreenState extends State<RecentsViewerScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'No Recent Items Yet',
+                          'no-recent-items-yet'.i18n(),
                           style: h4TextStyleInactive,
                         ),
                       ],

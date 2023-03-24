@@ -7,6 +7,7 @@ import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class RescanButton extends StatelessWidget {
@@ -20,7 +21,7 @@ class RescanButton extends StatelessWidget {
         ? SizedBox()
         : AppBarIconButton(
             onTap: () {
-              showSnackBar(context: context, message: 'Rescanning');
+              showSnackBar(context: context, message: 'rescanning'.i18n());
               var recentProvider =
                   Provider.of<RecentProvider>(context, listen: false);
               Provider.of<AnalyzerProvider>(context, listen: false)

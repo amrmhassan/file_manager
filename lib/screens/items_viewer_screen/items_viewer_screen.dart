@@ -11,6 +11,7 @@ import 'package:explorer/screens/explorer_screen/widgets/entity_operations/entit
 import 'package:explorer/screens/explorer_screen/widgets/storage_item.dart';
 import 'package:explorer/utils/screen_utils/items_viewer_screen_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
@@ -53,13 +54,13 @@ class _ItemsViewerScreenState extends State<ItemsViewerScreen> {
         ModalRoute.of(context)!.settings.arguments as ItemsType;
     switch (itemsType) {
       case ItemsType.bigFiles:
-        return 'Big Files';
+        return 'big-files'.i18n();
       case ItemsType.inactiveFiles:
-        return 'Inactive Files';
+        return 'inactive-files'.i18n();
       case ItemsType.oldFiles:
-        return 'Old Files';
+        return 'old-files'.i18n();
       case ItemsType.recentOpenedFiles:
-        return 'Recent Opened Files';
+        return 'recent-opened-files'.i18n();
     }
   }
 
@@ -83,7 +84,7 @@ class _ItemsViewerScreenState extends State<ItemsViewerScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "No Files Yet",
+                        "no-files-yet".i18n(),
                         style: h4TextStyleInactive,
                       ),
                     ],

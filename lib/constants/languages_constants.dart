@@ -1,8 +1,8 @@
 //? localization
 import 'package:flutter/material.dart';
 
-Locale arLocale = const Locale('ar', 'EG');
-Locale enLocale = const Locale('en', 'US');
+Locale arLocale = const Locale('ar');
+Locale enLocale = const Locale('en');
 Locale beLocale = const Locale('be');
 Locale bgLocale = const Locale('bg');
 Locale bnLocale = const Locale('bn');

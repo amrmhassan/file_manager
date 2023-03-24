@@ -170,9 +170,9 @@ class CustomAppDrawer extends StatelessWidget {
                       onlyDebug: true,
                     ),
                     AppDrawerItem(
-                      title: 'Change Language',
+                      title: 'change-language'.i18n(),
                       onTap: () async {
-                        CustomLocale.changeLocale(context, zhLocale);
+                        CustomLocale.changeLocale(context, arLocale);
                         Navigator.pop(context);
                       },
                       onlyDebug: true,

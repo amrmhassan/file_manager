@@ -25,7 +25,7 @@ class MainSettings extends StatelessWidget {
         ),
         if (kDebugMode)
           AppDrawerItem(
-            title: 'Language',
+            title: 'language'.i18n(),
             onTap: () {
               showModalBottomSheet(
                 backgroundColor: Colors.transparent,
