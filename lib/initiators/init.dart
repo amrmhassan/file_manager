@@ -43,7 +43,6 @@ Future initBeforeRunApp() async {
     initMainDisksCustomInfo();
     listenForLifeCycleEvents();
     await loadCurrentLang();
-    // await BackgroundService.initService();
     //!
     await mediaPlayersInit();
   } catch (e) {

@@ -77,6 +77,7 @@ class MyMediaHandler extends BaseAudioHandler
           (await videoHandlersUtils.fullVideoDuration) ?? Duration.zero;
     }
     play();
+
     var item = MediaItem(
       id: path,
       title: playingFileName ?? 'No Name',
@@ -95,6 +96,12 @@ class MyMediaHandler extends BaseAudioHandler
       videoHandlersUtils.closeVideo();
     });
     playbackState.add(res);
+  }
+
+  @override
+  Future<void> onNotificationDeleted() async {
+    await stop();
+    return super.onNotificationDeleted();
   }
 
   // The most common callbacks:
