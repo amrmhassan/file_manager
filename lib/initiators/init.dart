@@ -26,19 +26,19 @@ Future initBeforeRunApp() async {
   if (kReleaseMode) {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
   } else {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   }
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
 
   try {
     await HiveInitiator().setup();
     firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
     await setThemeVariables();
-    initializeNotification();
+    await initializeNotification();
     await initialDirsInit();
     initMainDisksCustomInfo();
     listenForLifeCycleEvents();

@@ -23,21 +23,10 @@ import 'package:provider/provider.dart';
 
 // add remaining time on the downloading card
 
-//! try the flutterVersionCode to change it locally and update the app on the phone and see will it work or not
-
 //! fix playing another media when video player is open
 
-//! continue downloading failed tasks with laptop continueFailedTasks from download provider and remove laptop_id constant and name
-
-//! continue automatically adding recent files
-//! try to make the recent files automatically connected to the list in the recent provider, to update once a file added to recent files
-
-//!
-//!
 //! run parallel analyzer for the analyzer provider like in the search provider to fasten the process
 //! with each extended search, deal with it as a full analyze step and use it's results to update the analyzing reports and all that stuff
-//! allow opening new tab when clicking a search result folder
-//! show selection controller in the search screen
 
 void startForegroundService() {
   ForegroundService().start();

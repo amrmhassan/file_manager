@@ -6,11 +6,10 @@ import 'package:explorer/services/media_service/my_media_handler.dart';
 
 Future mediaPlayersInit() async {
   myMediaHandler = await AudioService.init(
-    builder: () => MyAudioHandler(),
+    builder: () => MyMediaHandler(),
     config: AudioServiceConfig(
-      androidNotificationChannelId: 'basic_channel',
+      androidNotificationChannelId: 'media_notification_channel_id',
       androidNotificationChannelName: 'Music playback',
-      androidNotificationOngoing: true,
     ),
   );
 }

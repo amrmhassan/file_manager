@@ -3,8 +3,8 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
-void initializeNotification() {
-  AwesomeNotifications().initialize(
+Future<void> initializeNotification() async {
+  await AwesomeNotifications().initialize(
     // set the icon to null if you want to use the default app icon
     null,
     [
@@ -32,6 +32,6 @@ void initializeNotification() {
         channelGroupName: 'Download',
       )
     ],
-    debug: false,
+    debug: true,
   );
 }

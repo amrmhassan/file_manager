@@ -7,21 +7,25 @@ import 'package:explorer/utils/models_transformer_utils.dart';
 import 'package:explorer/utils/notifications/notification_id_mapper.dart';
 import 'package:flutter/material.dart';
 
+//?
 bool firstTimeRunApp = false;
+//?
 bool testing = false;
+//?
 DownloadsNotificationIDSMapper notificationMapper =
     DownloadsNotificationIDSMapper();
-
+//?
 var validPaths = initialDirs.skip(1).map((e) => {
       'path': e.path,
       'type': EntityType.folder,
     });
+//?
 List<StorageItemModel> explorerMainDisks =
     pathsToStorageItemsWithType(validPaths);
-
-late MyAudioHandler myMediaHandler;
-
+//?
+late MyMediaHandler myMediaHandler;
+//?
 ForegroundServiceController foregroundServiceController =
     ForegroundServiceController();
-
+//?
 Locale? loadedCurrentLocale;

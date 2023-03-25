@@ -113,6 +113,7 @@ class _TouchPadScreenState extends State<TouchPadScreen> {
               color: kMainIconColor.withOpacity(.2),
             ),
             Row(
+              textDirection: TextDirection.ltr,
               children: [
                 Expanded(
                   child: ButtonWrapper(

@@ -14,7 +14,7 @@ enum PlayingMediaType {
   video,
 }
 
-class MyAudioHandler extends BaseAudioHandler
+class MyMediaHandler extends BaseAudioHandler
     with
         QueueHandler, // mix in default queue callback implementations
         SeekHandler {
