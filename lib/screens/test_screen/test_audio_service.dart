@@ -322,18 +322,20 @@ class MyTestAudioService extends BaseAudioHandler
         MediaAction.seek,
       },
       androidCompactActionIndices: const [0, 1, 3],
-      processingState: const {
-        ProcessingState.idle: AudioProcessingState.idle,
-        ProcessingState.loading: AudioProcessingState.loading,
-        ProcessingState.buffering: AudioProcessingState.buffering,
-        ProcessingState.ready: AudioProcessingState.ready,
-        ProcessingState.completed: AudioProcessingState.completed,
-      }[ProcessingState.ready]!,
+      processingState: _videoProcessingState(),
       playing: playing,
       updatePosition: controller.value.position,
       speed: controller.value.playbackSpeed,
       queueIndex: 1,
       bufferedPosition: controller.value.position,
     ));
+  }
+
+  AudioProcessingState _videoProcessingState() {
+    if (videoPlayerController == null) return AudioProcessingState.idle;
+    if (videoPlayerController!.value.isInitialized) {
+      return AudioProcessingState.ready;
+    }
+    return AudioProcessingState.idle;
   }
 }

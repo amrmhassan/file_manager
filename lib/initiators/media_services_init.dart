@@ -17,8 +17,8 @@ Future mediaPlayersInit() async {
   myTestMediaHandler = await AudioService.init(
     builder: () => MyTestAudioService(),
     config: AudioServiceConfig(
-      androidNotificationChannelId: 'media_notification_channel_id_test',
-      androidNotificationChannelName: 'Music playback Test',
+      androidNotificationChannelId: 'media_notification_channel_id_test_id 2',
+      androidNotificationChannelName: 'Music playback Test 2',
       androidNotificationOngoing: true,
       androidStopForegroundOnPause: true,
     ),
