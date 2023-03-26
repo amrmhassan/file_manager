@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/providers/media_player_provider.dart';
@@ -69,18 +71,13 @@ class AudioHandlersUtils {
     if (event.processingState == ProcessingState.completed) {
       onCompleted();
     }
-    //! if android sdk is less than 26 use this
-    // controls: [
-    //       MediaControl.skipToPrevious,
-    //       if (playing) MediaControl.pause else MediaControl.play,
-    //       MediaControl.stop,
-    //       MediaControl.skipToNext,
-    //     ],
+
     return PlaybackState(
       controls: [
-        MediaControl.rewind,
+        MediaControl.skipToPrevious,
         if (audioPlayer.playing) MediaControl.pause else MediaControl.play,
-        MediaControl.fastForward,
+        MediaControl.stop,
+        MediaControl.skipToNext,
       ],
       systemActions: const {
         MediaAction.seek,

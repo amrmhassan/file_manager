@@ -107,12 +107,13 @@ class VideoHandlersUtils {
 
     return PlaybackState(
       controls: [
-        MediaControl.rewind,
+        MediaControl.skipToPrevious,
         if (_videoPlayerController?.value.isPlaying ?? false)
           MediaControl.pause
         else
           MediaControl.play,
-        MediaControl.fastForward,
+        MediaControl.stop,
+        MediaControl.skipToNext,
       ],
       systemActions: const {
         MediaAction.seek,

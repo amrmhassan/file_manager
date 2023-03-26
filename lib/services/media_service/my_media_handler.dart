@@ -90,6 +90,16 @@ class MyMediaHandler extends BaseAudioHandler
     // play audio here
   }
 
+  @override
+  Future<void> skipToNext() async {
+    fastForward();
+  }
+
+  @override
+  Future<void> skipToPrevious() async {
+    rewind();
+  }
+
   void videoPlaybackStateListener(VideoState event) {
     var res = videoHandlersUtils.transformEvent(event, () {
       stop();
