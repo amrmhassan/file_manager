@@ -66,9 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
       //?
       await downPF(context).loadTasks();
       //?
-      mpPF(context).handlePlayingAudioAfterResumingApp();
+      // mpPF(context).handlePlayingAudioAfterResumingApp();
       //?
       await recentPF(context).loadFoldersToWatchThenListen();
+      //?
+      mpPF(context).initMediaListeners();
 
       //* getting storage permission
       bool res = await showPermissionsModal(

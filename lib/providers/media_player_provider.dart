@@ -1,21 +1,62 @@
 import 'dart:async';
 
+import 'package:audio_service/audio_service.dart';
+import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/services/media_service/my_media_handler.dart';
-import 'package:explorer/utils/notifications/quick_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 
 class MediaPlayerProvider extends ChangeNotifier {
   //# service stream subscriptions
-  StreamSubscription? audioPlayerStateSub;
+  // StreamSubscription? audioPlayerStateSub;
 
   Duration? fullSongDuration;
   Duration? currentDuration;
+
+  void initMediaListeners() {
+    _listenToPlaybackState();
+    _listenToCurrentPosition();
+    _listenToTotalDuration();
+  }
+
+  bool get audioFinished =>
+      (fullSongDuration?.inMilliseconds == currentDuration?.inMilliseconds) &&
+      ((currentDuration != null) || (fullSongDuration != null));
+
+  void _listenToPlaybackState() {
+    myTestMediaHandler.playbackState.listen((playbackState) {
+      if (playbackState.playing && !audioPlaying) {
+        audioPlaying = true;
+        notifyListeners();
+      } else if (!playbackState.playing && audioPlaying) {
+        audioPlaying = false;
+        notifyListeners();
+      }
+      if (((playbackState.processingState == AudioProcessingState.completed) &&
+              audioFinished) ||
+          (!playbackState.playing && audioFinished)) {
+        stopAudioPlaying();
+      }
+    });
+  }
+
+  void _listenToCurrentPosition() {
+    AudioService.position.listen((position) {
+      setCurrentSongPosition(position);
+    });
+  }
+
+  void _listenToTotalDuration() {
+    myTestMediaHandler.mediaItem.listen((mediaItem) {
+      if (mediaItem == null) return;
+      setFullSongDuration(mediaItem.duration);
+    });
+  }
 
   void setFullSongDuration(Duration? d) {
     fullSongDuration = d;
@@ -61,13 +102,13 @@ class MediaPlayerProvider extends ChangeNotifier {
   }
 
   Future<void> pauseAudioPlaying([bool callService = true]) async {
-    if (callService) myMediaHandler.pause();
+    if (callService) myTestMediaHandler.pause();
     audioPlaying = false;
     notifyListeners();
   }
 
   Future<void> resumeAudioPlaying() async {
-    myMediaHandler.play();
+    myTestMediaHandler.play();
     audioPlaying = true;
     notifyListeners();
   }
@@ -75,19 +116,17 @@ class MediaPlayerProvider extends ChangeNotifier {
   //? pause playing
   Future<void> stopAudioPlaying([bool callBackgroundService = true]) async {
     if (callBackgroundService) {
-      // AudioServiceController.pauseAudio();
-      myMediaHandler.stop();
+      myTestMediaHandler.stop();
     }
-    QuickNotification.closeAudioNotification();
 
-    audioPlayerStateSub?.cancel();
+    // audioPlayerStateSub?.cancel();
 
     audioPlaying = false;
     fullSongDuration = null;
     currentDuration = null;
     playingAudioFilePath = null;
     playerHidden = true;
-    audioPlayerStateSub = null;
+    // audioPlayerStateSub = null;
 
     notifyListeners();
   }
@@ -99,29 +138,34 @@ class MediaPlayerProvider extends ChangeNotifier {
     String? fileRemotePath,
   ]) async {
     try {
-      // AudioServiceController.playAudio(path, network, fileRemotePath);
-      myMediaHandler.playMedia(
-        PlayingMediaType.audio,
-        path,
-        this,
-        network,
-        fileRemotePath,
-      );
+      late String fileName;
+      if (network) {
+        fileName = getFileName(fileRemotePath!);
+      } else {
+        fileName = getFileName(path);
+      }
 
-      // QuickNotification.sendAudioNotification(fileName);
+      MediaItem mediaItem = MediaItem(
+        id: network ? fileRemotePath! : path,
+        title: fileName,
+        extras: {
+          'path': path,
+          'network': network,
+          'fileRemotePath': fileRemotePath
+        },
+      );
+      myTestMediaHandler.addQueueItem(mediaItem);
+      // myMediaHandler.playMedia(
+      //   PlayingMediaType.audio,
+      //   path,
+      //   this,
+      //   network,
+      //   fileRemotePath,
+      // );
+      myTestMediaHandler.play();
+
       audioPlaying = true;
       notifyListeners();
-      audioPlayerStateSub = myMediaHandler
-          .audioHandlersUtils.audioPlayer.playerStateStream
-          .listen((event) {
-        if (event.playing && !audioPlaying) {
-          audioPlaying = true;
-          notifyListeners();
-        } else if (!event.playing && audioPlaying) {
-          audioPlaying = false;
-          notifyListeners();
-        }
-      });
     } catch (e) {
       audioPlaying = false;
       fullSongDuration = null;
@@ -131,28 +175,32 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   // ? to forward by 10 seconds
   void forward10() {
-    myMediaHandler.fastForward();
+    myTestMediaHandler.fastForward();
   }
 
   // ? to backward by 10 seconds
   void backward10() {
-    myMediaHandler.rewind();
+    myTestMediaHandler.rewind();
   }
 
   //? seek to
   void seekTo(int millisecond) {
-    myMediaHandler.seek(Duration(milliseconds: millisecond));
+    myTestMediaHandler.seek(Duration(milliseconds: millisecond));
   }
 
-  void handlePlayingAudioAfterResumingApp() async {
-    bool isPlaying = myMediaHandler.isPlaying;
-    if (isPlaying) {
-      Duration? fullSongD = myMediaHandler.getFullSongDuration;
-      audioPlaying = true;
-      fullSongDuration = fullSongD;
-      notifyListeners();
-    }
-  }
+  // void handlePlayingAudioAfterResumingApp() async {
+  //   try {
+  //     bool isPlaying = myMediaHandler.isPlaying;
+  //     if (isPlaying) {
+  //       Duration? fullSongD = myMediaHandler.getFullSongDuration;
+  //       audioPlaying = true;
+  //       fullSongDuration = fullSongD;
+  //       notifyListeners();
+  //     }
+  //   } catch (e) {
+  //     logger.e(e);
+  //   }
+  // }
 
   //# video controllers
   String? playingVideoPath;

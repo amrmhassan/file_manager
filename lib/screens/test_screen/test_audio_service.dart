@@ -3,30 +3,50 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/server_constants.dart';
 import 'package:just_audio/just_audio.dart';
 
 class MyTestAudioService extends BaseAudioHandler
     with QueueHandler, SeekHandler {
   final _player = AudioPlayer();
   final _playlist = ConcatenatingAudioSource(children: []);
+  bool _somethingPlaying = false;
 
   MyTestAudioService() {
     _loadEmptyPlaylist();
     _notifyAudioHandlerAboutPlaybackEvents();
     _listenForDurationChanges();
     _listenForCurrentSongIndexChanges();
-    _listenForSequenceStateChanges();
+    // _listenForSequenceStateChanges();
   }
 
   UriAudioSource _createAudioSource(MediaItem mediaItem) {
-    return AudioSource.uri(
-      Uri.parse(mediaItem.extras!['url'] as String),
-      tag: mediaItem,
-    );
+    String path = mediaItem.extras!['path'] as String;
+    bool network = mediaItem.extras!['network'] as bool;
+    String? fileRemotePath = mediaItem.extras!['fileRemotePath'] as String?;
+
+    if (network) {
+      return AudioSource.uri(
+        Uri.parse(path),
+        headers: {
+          KHeaders.filePathHeaderKey: Uri.encodeComponent(fileRemotePath!),
+        },
+        tag: mediaItem,
+      );
+    } else {
+      return AudioSource.file(
+        path,
+        tag: mediaItem,
+      );
+    }
   }
 
   @override
-  Future<void> play() => _player.play();
+  Future<void> play() async {
+    _player.play();
+    _somethingPlaying = true;
+  }
 
   @override
   Future<void> pause() => _player.pause();
@@ -48,6 +68,9 @@ class MyTestAudioService extends BaseAudioHandler
   Future<void> addQueueItem(MediaItem mediaItem) async {
     // manage Just Audio
     final audioSource = _createAudioSource(mediaItem);
+    if (_playlist.length > 0) {
+      removeQueueItemAt(0);
+    }
     _playlist.add(audioSource);
 
     // notify system
@@ -55,16 +78,16 @@ class MyTestAudioService extends BaseAudioHandler
     queue.add(newQueue);
   }
 
-  @override
-  Future<void> addQueueItems(List<MediaItem> mediaItems) async {
-    // manage Just Audio
-    final audioSource = mediaItems.map(_createAudioSource);
-    _playlist.addAll(audioSource.toList());
+  // @override
+  // Future<void> addQueueItems(List<MediaItem> mediaItems) async {
+  //   // manage Just Audio
+  //   final audioSource = mediaItems.map(_createAudioSource);
+  //   _playlist.addAll(audioSource.toList());
 
-    // notify system
-    final newQueue = queue.value..addAll(mediaItems);
-    queue.add(newQueue);
-  }
+  //   // notify system
+  //   final newQueue = queue.value..addAll(mediaItems);
+  //   queue.add(newQueue);
+  // }
 
   @override
   Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode) async {
@@ -86,7 +109,15 @@ class MyTestAudioService extends BaseAudioHandler
 
   @override
   Future<void> stop() async {
+    if (!_somethingPlaying) return;
+    _somethingPlaying = false;
+    queue.add([]);
+
     await _player.stop();
+    _playlist.clear();
+    logger.e('stopping media ${_player.playing}');
+    seek(Duration.zero);
+
     return super.stop();
   }
 
@@ -113,14 +144,14 @@ class MyTestAudioService extends BaseAudioHandler
     }
   }
 
-  void _listenForSequenceStateChanges() {
-    _player.sequenceStateStream.listen((SequenceState? sequenceState) {
-      final sequence = sequenceState?.effectiveSequence;
-      if (sequence == null || sequence.isEmpty) return;
-      final items = sequence.map((source) => source.tag as MediaItem);
-      queue.add(items.toList());
-    });
-  }
+  // void _listenForSequenceStateChanges() {
+  //   _player.sequenceStateStream.listen((SequenceState? sequenceState) {
+  //     final sequence = sequenceState?.effectiveSequence;
+  //     if (sequence == null || sequence.isEmpty) return;
+  //     final items = sequence.map((source) => source.tag as MediaItem);
+  //     queue.add(items.toList());
+  //   });
+  // }
 
   void _listenForCurrentSongIndexChanges() {
     _player.currentIndexStream.listen((index) {
@@ -131,6 +162,18 @@ class MyTestAudioService extends BaseAudioHandler
       }
       mediaItem.add(playlist[index]);
     });
+  }
+
+  @override
+  Future<void> onNotificationDeleted() {
+    logger.e('onNotificationDeleted');
+    return super.onNotificationDeleted();
+  }
+
+  @override
+  Future<void> onTaskRemoved() {
+    logger.e('onTaskRemoved');
+    return super.onTaskRemoved();
   }
 
   void _listenForDurationChanges() {
@@ -154,10 +197,9 @@ class MyTestAudioService extends BaseAudioHandler
       final playing = _player.playing;
       playbackState.add(playbackState.value.copyWith(
         controls: [
-          MediaControl.skipToPrevious,
+          MediaControl.rewind,
           if (playing) MediaControl.pause else MediaControl.play,
-          MediaControl.stop,
-          MediaControl.skipToNext,
+          MediaControl.fastForward,
         ],
         systemActions: const {
           MediaAction.seek,
