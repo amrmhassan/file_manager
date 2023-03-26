@@ -12,6 +12,7 @@ Future mediaPlayersInit() async {
       androidNotificationChannelId: 'media_notification_channel_id',
       androidNotificationChannelName: 'Music playback',
       androidNotificationOngoing: true,
+      androidStopForegroundOnPause: true,
     ),
   );
   // myTestMediaHandler = await AudioService.init(
@@ -20,6 +21,7 @@ Future mediaPlayersInit() async {
   //     androidNotificationChannelId: 'media_notification_channel_id_test',
   //     androidNotificationChannelName: 'Music playback Test',
   //     androidNotificationOngoing: true,
+  //     androidStopForegroundOnPause: true,
   //   ),
   // );
 }
