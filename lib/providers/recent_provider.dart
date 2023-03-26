@@ -245,7 +245,7 @@ class RecentProvider extends ChangeNotifier {
 //# load data from sqlite
 
   Future loadImages() async {
-    // if (imagesFiles.isNotEmpty) return;
+    if (imagesFiles.isNotEmpty) return;
 
     imagesFiles = [
       ...(await HiveBox.imagesRecentFilesTableName).values.toList().cast()
@@ -254,7 +254,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadVideos() async {
-    // if (videosFiles.isNotEmpty) return;
+    if (videosFiles.isNotEmpty) return;
 
     videosFiles = [
       ...(await HiveBox.videosRecentFilesTableName).values.toList().cast()
@@ -263,7 +263,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadMusic() async {
-    // if (musicFiles.isNotEmpty) return;
+    if (musicFiles.isNotEmpty) return;
 
     musicFiles = [
       ...(await HiveBox.musicRecentFilesTableName).values.toList().cast()
@@ -272,7 +272,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadApk() async {
-    // if (apkFiles.isNotEmpty) return;
+    if (apkFiles.isNotEmpty) return;
 
     apkFiles = [
       ...(await HiveBox.apkRecentFilesTableName).values.toList().cast()
@@ -281,7 +281,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadArchives() async {
-    // if (archivesFiles.isNotEmpty) return;
+    if (archivesFiles.isNotEmpty) return;
 
     archivesFiles = [
       ...(await HiveBox.archivesRecentFilesTableName).values.toList().cast()
@@ -290,7 +290,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadDocs() async {
-    // if (docsFiles.isNotEmpty) return;
+    if (docsFiles.isNotEmpty) return;
 
     docsFiles = [
       ...(await HiveBox.docsRecentFilesTableName).values.toList().cast()
@@ -299,7 +299,7 @@ class RecentProvider extends ChangeNotifier {
   }
 
   Future loadDownloads() async {
-    // if (downloadsFiles.isNotEmpty) return;
+    if (downloadsFiles.isNotEmpty) return;
 
     downloadsFiles = [
       ...(await HiveBox.downloadsRecentFilesTableName).values.toList().cast()

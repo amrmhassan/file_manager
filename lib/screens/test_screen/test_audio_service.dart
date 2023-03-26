@@ -5,13 +5,19 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/services/media_service/my_media_handler.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:video_player/video_player.dart';
 
 class MyTestAudioService extends BaseAudioHandler
     with QueueHandler, SeekHandler {
+  //? video stuff
+  VideoPlayerController? videoPlayerController;
+  PlayingMediaType? playingMediaType;
+  //? video stuff
   final _player = AudioPlayer();
   final _playlist = ConcatenatingAudioSource(children: []);
-  bool _somethingPlaying = false;
 
   MyTestAudioService() {
     _loadEmptyPlaylist();
@@ -44,12 +50,21 @@ class MyTestAudioService extends BaseAudioHandler
 
   @override
   Future<void> play() async {
-    _player.play();
-    _somethingPlaying = true;
+    if (playingMediaType == PlayingMediaType.audio) {
+      _player.play();
+    } else if (playingMediaType == PlayingMediaType.video) {
+      videoPlayerController!.play();
+    }
   }
 
   @override
-  Future<void> pause() => _player.pause();
+  Future<void> pause() async {
+    if (playingMediaType == PlayingMediaType.audio) {
+      _player.pause();
+    } else if (playingMediaType == PlayingMediaType.video) {
+      videoPlayerController!.pause();
+    }
+  }
 
   @override
   Future<void> seek(Duration position) => _player.seek(position);
@@ -66,28 +81,26 @@ class MyTestAudioService extends BaseAudioHandler
 
   @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
-    // manage Just Audio
-    final audioSource = _createAudioSource(mediaItem);
-    if (_playlist.length > 0) {
-      removeQueueItemAt(0);
+    logger.i('adding media to queue');
+    queue.add([]);
+    _playlist.clear();
+    playingMediaType = mediaItem.extras!['mediaType'] == 'audio'
+        ? PlayingMediaType.audio
+        : PlayingMediaType.video;
+    if (playingMediaType == PlayingMediaType.audio) {
+      // manage Just Audio
+      final audioSource = _createAudioSource(mediaItem);
+      if (_playlist.length > 0) {
+        removeQueueItemAt(0);
+      }
+      _playlist.add(audioSource);
     }
-    _playlist.add(audioSource);
 
     // notify system
     final newQueue = queue.value..add(mediaItem);
+    logger.i(mediaItem);
     queue.add(newQueue);
   }
-
-  // @override
-  // Future<void> addQueueItems(List<MediaItem> mediaItems) async {
-  //   // manage Just Audio
-  //   final audioSource = mediaItems.map(_createAudioSource);
-  //   _playlist.addAll(audioSource.toList());
-
-  //   // notify system
-  //   final newQueue = queue.value..addAll(mediaItems);
-  //   queue.add(newQueue);
-  // }
 
   @override
   Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode) async {
@@ -109,14 +122,19 @@ class MyTestAudioService extends BaseAudioHandler
 
   @override
   Future<void> stop() async {
-    if (!_somethingPlaying) return;
-    _somethingPlaying = false;
+    if (playingMediaType == null) return;
     queue.add([]);
+    if (playingMediaType == PlayingMediaType.audio) {
+      await _player.stop();
+      _playlist.clear();
+    } else if (playingMediaType == PlayingMediaType.video &&
+        videoPlayerController != null) {
+      videoPlayerController!.pause();
+    }
 
-    await _player.stop();
-    _playlist.clear();
     logger.e('stopping media ${_player.playing}');
     seek(Duration.zero);
+    playingMediaType = null;
 
     return super.stop();
   }
@@ -176,6 +194,14 @@ class MyTestAudioService extends BaseAudioHandler
     return super.onTaskRemoved();
   }
 
+  @override
+  Future<void> setSpeed(double speed) {
+    if (playingMediaType == PlayingMediaType.video) {
+      videoPlayerController!.setPlaybackSpeed(speed);
+    }
+    return super.setSpeed(speed);
+  }
+
   void _listenForDurationChanges() {
     _player.durationStream.listen((duration) {
       var index = _player.currentIndex;
@@ -227,5 +253,87 @@ class MyTestAudioService extends BaseAudioHandler
         queueIndex: event.currentIndex,
       ));
     });
+  }
+
+  Future<void> playVideo(
+    MediaItem mediaItem,
+    MediaPlayerProvider mediaPlayerProvider,
+    Function(VideoPlayerController) durationListener,
+  ) {
+    bool videoStopped = false;
+    Completer completer = Completer();
+    String path = mediaItem.extras!['path'] as String;
+    bool network = mediaItem.extras!['network'] as bool;
+    String? fileRemotePath = mediaItem.extras!['fileRemotePath'] as String?;
+
+    videoPlayerController = VideoPlayerController.network(path,
+        httpHeaders: network
+            ? {KHeaders.filePathHeaderKey: Uri.encodeComponent(fileRemotePath!)}
+            : {},
+        videoPlayerOptions: VideoPlayerOptions(
+          allowBackgroundPlayback: true,
+        ))
+      ..initialize().then((value) {
+        playingMediaType = PlayingMediaType.video;
+        Duration fullDuration = videoPlayerController!.value.duration;
+        MediaItem editedMediaItem = mediaItem.copyWith(duration: fullDuration);
+
+        completer.complete();
+        mediaPlayerProvider.onInitVideo(videoPlayerController!, network);
+        addQueueItem(editedMediaItem);
+
+        // final newQueue = queue.value..clear();
+        // newQueue.add(editedMediaItem);
+        // queue.add(newQueue);
+        // logger.i(queue.value.first.title);
+        // logger.e(queue.value.length);
+      })
+      ..play()
+      ..addListener(() {
+        _runVideoListen(videoPlayerController!);
+        durationListener(videoPlayerController!);
+        if (videoPlayerController!.value.duration.inMilliseconds ==
+                videoPlayerController!.value.position.inMilliseconds &&
+            videoPlayerController!.value.position.inMilliseconds != 0 &&
+            videoPlayerController!.value.duration.inMilliseconds != 0) {
+          if (videoStopped) return;
+          videoStopped = true;
+          //the video stopped or completed
+          mediaPlayerProvider.closeVideo();
+          videoPlayerController!.removeListener(() {});
+          videoPlayerController!.dispose();
+          videoPlayerController == null;
+          stop();
+        }
+      });
+    return completer.future;
+  }
+
+  void _runVideoListen(VideoPlayerController controller) async {
+    final playing = controller.value.isPlaying;
+
+    playbackState.add(playbackState.value.copyWith(
+      controls: [
+        MediaControl.rewind,
+        if (playing) MediaControl.pause else MediaControl.play,
+        MediaControl.fastForward,
+      ],
+      systemActions: const {
+        MediaAction.seek,
+      },
+      androidCompactActionIndices: const [0, 1, 3],
+      processingState: const {
+        ProcessingState.idle: AudioProcessingState.idle,
+        ProcessingState.loading: AudioProcessingState.loading,
+        ProcessingState.buffering: AudioProcessingState.buffering,
+        ProcessingState.ready: AudioProcessingState.ready,
+        ProcessingState.completed: AudioProcessingState.completed,
+      }[ProcessingState.ready]!,
+      playing: playing,
+      updatePosition: controller.value.position,
+      speed: controller.value.playbackSpeed,
+      queueIndex: 1,
+      bufferedPosition: controller.value.position,
+    ));
   }
 }

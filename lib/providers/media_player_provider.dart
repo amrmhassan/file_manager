@@ -14,6 +14,11 @@ import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 class MediaPlayerProvider extends ChangeNotifier {
   //# service stream subscriptions
   // StreamSubscription? audioPlayerStateSub;
+  PlayingMediaType? playingMediaType;
+  void setPlayingMediaType(PlayingMediaType p) {
+    playingMediaType = p;
+    notifyListeners();
+  }
 
   Duration? fullSongDuration;
   Duration? currentDuration;
@@ -138,6 +143,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     String? fileRemotePath,
   ]) async {
     try {
+      setPlayingMediaType(PlayingMediaType.audio);
       late String fileName;
       if (network) {
         fileName = getFileName(fileRemotePath!);
@@ -151,17 +157,12 @@ class MediaPlayerProvider extends ChangeNotifier {
         extras: {
           'path': path,
           'network': network,
-          'fileRemotePath': fileRemotePath
+          'fileRemotePath': fileRemotePath,
+          'mediaType': 'audio',
         },
       );
       myTestMediaHandler.addQueueItem(mediaItem);
-      // myMediaHandler.playMedia(
-      //   PlayingMediaType.audio,
-      //   path,
-      //   this,
-      //   network,
-      //   fileRemotePath,
-      // );
+
       myTestMediaHandler.play();
 
       audioPlaying = true;
@@ -190,9 +191,9 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   // void handlePlayingAudioAfterResumingApp() async {
   //   try {
-  //     bool isPlaying = myMediaHandler.isPlaying;
+  //     bool isPlaying = myTestMediaHandler.isPlaying;
   //     if (isPlaying) {
-  //       Duration? fullSongD = myMediaHandler.getFullSongDuration;
+  //       Duration? fullSongD = myTestMediaHandler.getFullSongDuration;
   //       audioPlaying = true;
   //       fullSongDuration = fullSongD;
   //       notifyListeners();
@@ -223,7 +224,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     videoSpeed = s;
     notifyListeners();
     //! call set speed here with call background
-    if (callBackground) myMediaHandler.setSpeed(s);
+    if (callBackground) myTestMediaHandler.setSpeed(s);
   }
 
   //? to return the ready buffered parts to be viewed into the video player slider
@@ -261,14 +262,28 @@ class MediaPlayerProvider extends ChangeNotifier {
     String path, [
     bool network = false,
     String? fileRemotePath,
-  ]) {
-    myMediaHandler.playMedia(
-      PlayingMediaType.video,
-      path,
-      this,
-      network,
-      fileRemotePath,
+  ]) async {
+    setPlayingMediaType(PlayingMediaType.video);
+    MediaItem mediaItem = MediaItem(
+      id: network ? fileRemotePath! : path,
+      title: getFileName(network ? fileRemotePath! : path),
+      displayTitle: getFileName(network ? fileRemotePath! : path),
+      extras: {
+        'path': path,
+        'network': network,
+        'fileRemotePath': fileRemotePath,
+        'mediaType': 'video',
+      },
     );
+    await myTestMediaHandler.playVideo(
+      mediaItem,
+      this,
+      (controller) {
+        _runVideoDurationListener(controller);
+      },
+    );
+    myTestMediaHandler.play();
+
     isVideoPlaying = true;
     videoHidden = false;
 
@@ -283,6 +298,14 @@ class MediaPlayerProvider extends ChangeNotifier {
     networkVideo = network;
     isVideoPlaying = true;
     videoPlayerController = controller;
+    notifyListeners();
+  }
+
+  void _runVideoDurationListener(VideoPlayerController controller) {
+    videoDuration ??= controller.value.duration;
+    videoPosition = controller.value.position;
+    _bufferedParts = controller.value.buffered;
+    isBuffering = controller.value.isBuffering;
     notifyListeners();
   }
 
@@ -306,7 +329,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     _bufferedParts = [];
     videoSpeed = 1;
     notifyListeners();
-    if (tellBackground) myMediaHandler.stop();
+    if (tellBackground) myTestMediaHandler.stop();
   }
 
   //? toggle video play
@@ -322,7 +345,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     try {
       isVideoPlaying = false;
       notifyListeners();
-      if (callBackground) myMediaHandler.pause();
+      if (callBackground) myTestMediaHandler.pause();
     } catch (e) {
       logger.e(e);
     }
@@ -332,7 +355,7 @@ class MediaPlayerProvider extends ChangeNotifier {
     try {
       isVideoPlaying = true;
       notifyListeners();
-      myMediaHandler.play();
+      myTestMediaHandler.play();
     } catch (e) {
       logger.e(e);
     }
@@ -399,7 +422,8 @@ class MediaPlayerProvider extends ChangeNotifier {
   //# muting the video
   bool videoMuted = false;
   Future toggleMuteVideo() async {
-    myMediaHandler.toggleVideoMuted(!videoMuted);
+    // myTestMediaHandler.toggleVideoMuted(!videoMuted);
+    videoPlayerController!.setVolume(videoMuted ? 1 : 0);
 
     videoMuted = !videoMuted;
     notifyListeners();
@@ -407,11 +431,24 @@ class MediaPlayerProvider extends ChangeNotifier {
 
   //# video fast seeking
   Future videoBackWard10() async {
-    myMediaHandler.rewind();
+    int newMilliSecondDuration =
+        (videoPlayerController!.value.position).inMilliseconds - 10 * 1000;
+    if (newMilliSecondDuration < 0) {
+      newMilliSecondDuration = 0;
+    }
+    seekVideo(newMilliSecondDuration.toDouble());
   }
 
   Future videoForWard10() async {
-    myMediaHandler.fastForward();
+    Duration videoD = videoDuration ?? Duration.zero;
+
+    int newMilliSecondDuration =
+        (videoPlayerController!.value.position).inMilliseconds + 10 * 1000;
+
+    if (newMilliSecondDuration > videoD.inMilliseconds) {
+      newMilliSecondDuration = videoD.inMilliseconds;
+    }
+    seekVideo(newMilliSecondDuration.toDouble());
   }
 
   //# video play pause button animation
