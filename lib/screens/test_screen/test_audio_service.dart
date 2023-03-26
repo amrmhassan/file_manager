@@ -223,9 +223,10 @@ class MyTestAudioService extends BaseAudioHandler
       final playing = _player.playing;
       playbackState.add(playbackState.value.copyWith(
         controls: [
-          MediaControl.rewind,
+          MediaControl.skipToPrevious,
           if (playing) MediaControl.pause else MediaControl.play,
-          MediaControl.fastForward,
+          MediaControl.stop,
+          MediaControl.skipToNext,
         ],
         systemActions: const {
           MediaAction.seek,
@@ -314,9 +315,10 @@ class MyTestAudioService extends BaseAudioHandler
 
     playbackState.add(playbackState.value.copyWith(
       controls: [
-        MediaControl.rewind,
+        MediaControl.skipToPrevious,
         if (playing) MediaControl.pause else MediaControl.play,
-        MediaControl.fastForward,
+        MediaControl.stop,
+        MediaControl.skipToNext,
       ],
       systemActions: const {
         MediaAction.seek,

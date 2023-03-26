@@ -35,6 +35,7 @@ Future initBeforeRunApp() async {
   }
 
   try {
+    await mediaPlayersInit();
     await HiveInitiator().setup();
     firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
     await setThemeVariables();
@@ -44,7 +45,6 @@ Future initBeforeRunApp() async {
     listenForLifeCycleEvents();
     await loadCurrentLang();
     //!
-    await mediaPlayersInit();
   } catch (e) {
     logger.e(e);
   }

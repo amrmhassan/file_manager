@@ -2,15 +2,16 @@ package com.amh.file_manager
 
 import androidx.annotation.NonNull
 import com.amh.file_manager.helpers.ThumbnailCreator
-import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import kotlin.concurrent.thread
-import com.ryanheise.audioservice.AudioServiceActivity;
+import com.ryanheise.audioservice.AudioServiceActivity
+
+
+
 
 
 class MainActivity : AudioServiceActivity() {
-
   override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
     super.configureFlutterEngine(flutterEngine)
     MethodChannel(

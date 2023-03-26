@@ -69,6 +69,13 @@ class AudioHandlersUtils {
     if (event.processingState == ProcessingState.completed) {
       onCompleted();
     }
+    //! if android sdk is less than 26 use this
+    // controls: [
+    //       MediaControl.skipToPrevious,
+    //       if (playing) MediaControl.pause else MediaControl.play,
+    //       MediaControl.stop,
+    //       MediaControl.skipToNext,
+    //     ],
     return PlaybackState(
       controls: [
         MediaControl.rewind,
