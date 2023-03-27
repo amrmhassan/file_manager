@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/providers/media_player_provider.dart';

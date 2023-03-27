@@ -158,7 +158,7 @@ class MyTestAudioService extends BaseAudioHandler
     try {
       await _player.setAudioSource(_playlist);
     } catch (e) {
-      print("Error: $e");
+      logger.e("Error: $e");
     }
   }
 

@@ -9,6 +9,7 @@ import 'package:explorer/models/peer_permissions_model.dart';
 import 'package:explorer/screens/home_screen/widgets/custom_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 
 class AskPermissionModal extends StatefulWidget {
   const AskPermissionModal({
@@ -45,14 +46,34 @@ class _AskPermissionModalState extends State<AskPermissionModal> {
 
   @override
   Widget build(BuildContext context) {
+    var permissionProvider = permissionsPF(context);
+
     return DoubleButtonsModal(
       onOk: () async {
         //? this is block considering remember
+        if (remember) {
+          // notify the provider to save the permission status for that user
+          permissionProvider.editPeerPermission(
+            widget.deviceID,
+            permissionName: widget.permissionName,
+            status: PermissionStatus.blocked,
+            peerName: widget.userName,
+          );
+        }
 
         Navigator.pop(context, false);
       },
       onCancel: () async {
         //? this is allow considering remember
+        if (remember) {
+          // notify the provider to save the permission status for that user
+          permissionProvider.editPeerPermission(
+            widget.deviceID,
+            permissionName: widget.permissionName,
+            status: PermissionStatus.allowed,
+            peerName: widget.userName,
+          );
+        }
 
         Navigator.pop(context, true);
       },
