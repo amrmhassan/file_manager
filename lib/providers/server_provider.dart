@@ -42,8 +42,10 @@ class ServerProvider extends ChangeNotifier {
   List<WhiteBlockListModel> allowedPeers = [];
   List<WhiteBlockListModel> blockedPeers = [];
 
-  bool ifPeerConnected(String ip, int port) {
-    return (peers.any((element) => element.port == port && element.ip == ip));
+  bool ifPeerConnected(String ip, int? port) {
+    return (peers.any((element) =>
+        // element.port == port &&
+        element.ip == ip));
   }
 
   void setMyIpAsClient(String ip) {

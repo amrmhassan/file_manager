@@ -79,6 +79,7 @@ Future<Uint8List?> getPeerImage(String connLink) async {
     String url = '$connLink${EndPoints.getPeerImagePath}';
     Uri uri = Uri.parse(url);
     HttpClient client = HttpClient();
+
     var request = await client.getUrl(uri);
     var res = await request.close();
     if (res.statusCode == 404) throw Exception('No image');
@@ -132,6 +133,11 @@ Future broadcastUnsubscribeClient(
           sessionIDString: customSessionID,
           KHeaders.myServerPortHeaderKey: serverProviderFalse.myPort,
         },
+        options: Options(
+          headers: {
+            KHeaders.myServerPortHeaderKey: serverProviderFalse.myPort,
+          },
+        ),
       );
     }
   } on DioError catch (e, s) {

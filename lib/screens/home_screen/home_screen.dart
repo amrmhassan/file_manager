@@ -47,42 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       initialPage:
           Provider.of<ExplorerProvider>(context, listen: false).activeViewIndex,
     );
-    Future.delayed(Duration.zero).then((value) async {
-      var recentProvider = Provider.of<RecentProvider>(context, listen: false);
-      //? load language
-      await langPF(context).loadLocale(context);
-      //?
-      await expPF(context).loadSortOptions();
-      //?
-      await analyzerPF(context).loadInitialAppData(recentProvider);
-      //?
-      await listyPF(context).loadListyLists();
-      //?
-      await sharePF(context).loadSharedItems();
-      //?
-      await sharePF(context).loadDeviceIdAndName();
-      //?
-      await downPF(context).loadDownloadSettings();
-      //?
-      await downPF(context).loadTasks();
-      //?
-      await recentPF(context).loadFoldersToWatchThenListen();
-      //?
-      await permissionsPF(context).loadSavedPeersPermissions();
-
-      //* getting storage permission
-      bool res = await showPermissionsModal(
-        context: context,
-        callback: () => handlePermissionsGrantedCallback(context),
-      );
-      if (!res) {
-        SystemNavigator.pop();
-        return;
-      }
-
-      await Provider.of<ChildrenItemsProvider>(context, listen: false)
-          .getAndUpdateAllSavedFolders();
-    });
+    initHomeScreen(context);
 
     super.initState();
   }

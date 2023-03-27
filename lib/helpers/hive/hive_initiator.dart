@@ -6,6 +6,7 @@ import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
+import 'package:explorer/models/peer_permissions_model.dart';
 import 'package:explorer/models/recent_opened_file_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
@@ -32,5 +33,9 @@ class HiveInitiator {
     Hive.registerAdapter(ExtensionInfoAdapter()); //=>10
     Hive.registerAdapter(EntityTypeAdapter()); //=>11
     Hive.registerAdapter(TaskStatusAdapter()); //=>12
+    Hive.registerAdapter(PeerPermissionsModelAdapter()); //=>13
+    Hive.registerAdapter(PermissionModelAdapter()); //=>14
+    Hive.registerAdapter(PermissionNameAdapter()); //=>15
+    Hive.registerAdapter(PermissionStatusAdapter()); //=>16
   }
 }

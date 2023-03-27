@@ -117,8 +117,11 @@ class MiddleWares {
     String? ip = request.connectionInfo?.remoteAddress.address;
     int? port = int.tryParse(
         request.headers.value(KHeaders.myServerPortHeaderKey) ?? '');
+    //! i will just skip the port checking process until i separate the ip checking and port checking to be in a different middlewares
     // if data not provided, just return
-    if (ip == null || port == null) {
+    if (ip == null
+        // || port == null
+        ) {
       response
         ..statusCode = HttpStatus.forbidden
         ..write('Fu** you hacker, we caught you and hacked your fuc** device')

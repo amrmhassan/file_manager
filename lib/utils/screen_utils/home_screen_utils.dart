@@ -1,9 +1,10 @@
 //? to catch clicking the phone back button
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
@@ -11,8 +12,11 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
+import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:localization/localization.dart';
@@ -123,4 +127,43 @@ void handleOpenTabFromOtherScreen(
   if (filePath != null) {
     expProviderFalse.setViewedFilePath(filePath);
   }
+}
+
+void initHomeScreen(BuildContext context) async {
+  Future.delayed(Duration.zero).then((value) async {
+    var recentProvider = Provider.of<RecentProvider>(context, listen: false);
+    //? load language
+    await langPF(context).loadLocale(context);
+    //?
+    await expPF(context).loadSortOptions();
+    //?
+    await analyzerPF(context).loadInitialAppData(recentProvider);
+    //?
+    await listyPF(context).loadListyLists();
+    //?
+    await sharePF(context).loadSharedItems();
+    //?
+    await sharePF(context).loadDeviceIdAndName();
+    //?
+    await downPF(context).loadDownloadSettings();
+    //?
+    await downPF(context).loadTasks();
+    //?
+    await recentPF(context).loadFoldersToWatchThenListen();
+    //?
+    await permissionsPF(context).loadPeersPermissions();
+
+    //* getting storage permission
+    bool res = await showPermissionsModal(
+      context: context,
+      callback: () => handlePermissionsGrantedCallback(context),
+    );
+    if (!res) {
+      SystemNavigator.pop();
+      return;
+    }
+
+    await Provider.of<ChildrenItemsProvider>(context, listen: false)
+        .getAndUpdateAllSavedFolders();
+  });
 }

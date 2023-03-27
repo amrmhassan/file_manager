@@ -38,6 +38,7 @@ Future<bool> showAskForFeaturePermissionModal(
   BuildContext context,
 ) async {
   bool? res = await showModalBottomSheet(
+    backgroundColor: Colors.transparent,
     context: context,
     builder: (context) => AskPermissionModal(
       userName: userName,

@@ -12,7 +12,7 @@ class PermissionProvider extends ChangeNotifier {
 
   List<PeerPermissionsModel> _peersPermissions = [];
 
-  Future<void> loadSavedPeersPermissions() async {
+  Future<void> loadPeersPermissions() async {
     var box = await HiveBox.peerPermissionsBox;
     _peersPermissions = box.values.toList().cast();
     notifyListeners();

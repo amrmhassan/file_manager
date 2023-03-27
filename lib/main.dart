@@ -18,13 +18,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
-// master merged  with background
+// flutter packages pub run build_runner build --delete-conflicting-outputs
 
 //! add disks_desktop 1.0.1
 
 // add remaining time on the downloading card
-
-//! fix playing another media when video player is open
 
 //! run parallel analyzer for the analyzer provider like in the search provider to fasten the process
 //! with each extended search, deal with it as a full analyze step and use it's results to update the analyzing reports and all that stuff

@@ -1,6 +1,14 @@
+import 'package:hive/hive.dart';
+
+part 'peer_permissions_model.g.dart';
+
+@HiveType(typeId: 13)
 class PeerPermissionsModel {
+  @HiveField(0)
   final String peerDeviceID;
+  @HiveField(1)
   final String peerName;
+  @HiveField(2)
   final List<PermissionModel> _userPermissions = _defaultPermissions;
 
   PeerPermissionsModel(
@@ -26,8 +34,11 @@ class PeerPermissionsModel {
   }
 }
 
+@HiveType(typeId: 14)
 class PermissionModel {
+  @HiveField(0)
   final PermissionName permissionName;
+  @HiveField(1)
   PermissionStatus permissionStatus;
 
   PermissionModel({
@@ -37,18 +48,28 @@ class PermissionModel {
 }
 
 // we have some kinds of permissions like the below permissions
+@HiveType(typeId: 15)
 enum PermissionName {
+  @HiveField(0)
   fileExploring,
+  @HiveField(1)
   shareSpace,
+  @HiveField(2)
   copyClipboard,
+  @HiveField(3)
   sendFile,
+  @HiveField(4)
   sendText,
 }
 
 // each of the previous permissions has 3 status
+@HiveType(typeId: 16)
 enum PermissionStatus {
+  @HiveField(0)
   allowed,
+  @HiveField(1)
   blocked,
+  @HiveField(2)
   ask,
 }
 
