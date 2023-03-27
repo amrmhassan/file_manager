@@ -5,6 +5,7 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/ask_for_share_space_modal.dart';
+import 'package:explorer/global/modals/ask_permission_modal.dart';
 import 'package:explorer/global/modals/entity_info_modal.dart';
 import 'package:explorer/global/modals/current_active_dir_options_modal.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
@@ -13,6 +14,7 @@ import 'package:explorer/global/modals/entity_options_modal.dart';
 import 'package:explorer/global/modals/sort_by_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/models/peer_permissions_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/download_provider.dart';
@@ -28,6 +30,25 @@ import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:qr_flutter/qr_flutter.dart';
+
+Future<bool> showAskForFeaturePermissionModal(
+  String userName,
+  String deviceID,
+  PermissionName permissionName,
+  BuildContext context,
+) async {
+  bool? res = await showModalBottomSheet(
+    context: context,
+    builder: (context) => AskPermissionModal(
+      userName: userName,
+      deviceID: deviceID,
+      permissionName: permissionName,
+    ),
+  );
+  //? this wont consider remember
+  //? so if it is null it will be blocked( no care if it is remembered or not)
+  return res == true;
+}
 
 //?
 Future<bool> showAskForShareSpaceModal(

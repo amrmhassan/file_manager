@@ -56,6 +56,10 @@ class HiveBox {
       Hive.openBox(_HiveBoxesNames.allFilesInfoTableName);
   static Future<Box> get allFoldersInfoTableName =>
       Hive.openBox(_HiveBoxesNames.allFoldersInfoTableName);
+
+  // peers permissions box that save if the each user permission status
+  static Future<Box> get peerPermissionsBox =>
+      Hive.openBox(_HiveBoxesNames.peerPermissionsBox);
 }
 
 class _HiveBoxesNames {
@@ -94,4 +98,7 @@ class _HiveBoxesNames {
   // all files info, used for search
   static const String allFilesInfoTableName = 'allFilesInfoTableName';
   static const String allFoldersInfoTableName = 'allFoldersInfoTableName';
+
+  // peers permissions box that save if the each user permission status
+  static const String peerPermissionsBox = 'peerPermissionsBox';
 }

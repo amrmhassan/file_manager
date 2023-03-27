@@ -4,6 +4,7 @@ import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/language_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/permissions_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/search_provider.dart';
@@ -149,4 +150,13 @@ LanguageProvider langPF(BuildContext context) {
 
 LanguageProvider langP(BuildContext context) {
   return Provider.of<LanguageProvider>(context);
+}
+
+//? permissions provider
+PermissionProvider permissionsPF(BuildContext context) {
+  return Provider.of<PermissionProvider>(context, listen: false);
+}
+
+PermissionProvider permissionsP(BuildContext context) {
+  return Provider.of<PermissionProvider>(context);
 }
