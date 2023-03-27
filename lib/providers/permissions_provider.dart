@@ -14,16 +14,17 @@ class PermissionProvider extends ChangeNotifier {
 
   Future<void> loadPeersPermissions() async {
     var box = await HiveBox.peerPermissionsBox;
-    _peersPermissions = box.values.toList().cast();
+
+    _peersPermissions = [...box.values.toList().cast()];
     notifyListeners();
   }
 
-  Future<void> _addPeerPermission({
+  void _addPeerPermission({
     required String peerDeviceID,
     required String peerName,
-  }) async {
+  }) {
     PeerPermissionsModel newPeerPermissions =
-        PeerPermissionsModel(peerDeviceID, peerName);
+        PeerPermissionsModel(peerDeviceID, peerName, defaultPermissions);
     _peersPermissions.add(newPeerPermissions);
   }
 
@@ -35,7 +36,7 @@ class PermissionProvider extends ChangeNotifier {
   }) async {
     bool added = _peerAdded(peerDeviceID);
     if (!added) {
-      await _addPeerPermission(peerDeviceID: peerDeviceID, peerName: peerName);
+      _addPeerPermission(peerDeviceID: peerDeviceID, peerName: peerName);
     }
     //? this will return if the remember is not true, cause this will be, actually i don't need that remember thing, because i have the permissions status(allow, ignore, ask )
     if (status == PermissionStatus.ask) return;

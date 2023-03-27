@@ -1,18 +1,14 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:io';
-import 'dart:math';
-
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/languages_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
 import 'package:explorer/global/custom_app_drawer/widgets/storage_analyzer_button.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/hive/hive_collections.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
-
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/download_provider.dart';
@@ -24,7 +20,6 @@ import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:explorer/utils/global_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
@@ -153,24 +148,6 @@ class CustomAppDrawer extends StatelessWidget {
                             listen: false,
                           ),
                         );
-                        Navigator.pop(context);
-                      },
-                      onlyDebug: true,
-                    ),
-                    AppDrawerItem(
-                      title: 'Create dummy file',
-                      onTap: () async {
-                        File file = File(
-                            '/sdcard/DCIM/Camera/dummy-file${Random().nextInt(1000)}.png');
-                        file.createSync();
-                        Navigator.pop(context);
-                      },
-                      onlyDebug: true,
-                    ),
-                    AppDrawerItem(
-                      title: 'change-language'.i18n(),
-                      onTap: () async {
-                        CustomLocale.changeLocale(context, enLocale);
                         Navigator.pop(context);
                       },
                       onlyDebug: true,

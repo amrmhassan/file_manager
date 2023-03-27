@@ -109,6 +109,7 @@ Future unsubscribeMe(ServerProvider serverProviderFalse) async {
     } catch (e) {
       logger.e(e);
     }
+    serverProviderFalse.closeServer();
   } else if (serverProviderFalse.myType == MemberType.host) {
     serverProviderFalse.closeWsServer();
   }

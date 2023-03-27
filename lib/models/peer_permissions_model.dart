@@ -9,15 +9,16 @@ class PeerPermissionsModel {
   @HiveField(1)
   final String peerName;
   @HiveField(2)
-  final List<PermissionModel> _userPermissions = _defaultPermissions;
+  final List<PermissionModel> userPermissions;
 
   PeerPermissionsModel(
     this.peerDeviceID,
     this.peerName,
+    this.userPermissions,
   );
 
   PermissionStatus getPermissionStatus(PermissionName permissionName) {
-    return _userPermissions
+    return userPermissions
         .firstWhere((element) => element.permissionName == permissionName)
         .permissionStatus;
   }
@@ -26,11 +27,11 @@ class PeerPermissionsModel {
     PermissionName permissionName, {
     required PermissionStatus status,
   }) {
-    int index = _userPermissions
+    int index = userPermissions
         .indexWhere((element) => element.permissionName == permissionName);
-    PermissionModel permissionModel = _userPermissions[index];
+    PermissionModel permissionModel = userPermissions[index];
     permissionModel.permissionStatus = status;
-    _userPermissions[index] = permissionModel;
+    userPermissions[index] = permissionModel;
   }
 }
 
@@ -73,7 +74,7 @@ enum PermissionStatus {
   ask,
 }
 
-List<PermissionModel> _defaultPermissions = [
+List<PermissionModel> defaultPermissions = [
   PermissionModel(
     permissionName: PermissionName.fileExploring,
     permissionStatus: PermissionStatus.ask,

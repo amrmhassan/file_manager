@@ -1,23 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
-import 'dart:async';
 import 'dart:isolate';
-import 'package:explorer/utils/providers_calls_utils.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/media_player_provider.dart';
-import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
-import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 
 import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 

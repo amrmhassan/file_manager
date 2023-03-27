@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:audio_service/audio_service.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
-import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatefulWidget {
@@ -15,18 +13,6 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  MediaItem mediaItem = MediaItem(
-      id: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-      title: 'Media Playing',
-      extras: {
-        'url': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-      });
-  @override
-  void initState() {
-    myTestMediaHandler.addQueueItem(mediaItem);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScreensWrapper(
@@ -37,16 +23,8 @@ class _TestScreenState extends State<TestScreen> {
         children: [
           SizedBox(width: double.infinity),
           ElevatedButton(
-            onPressed: () {
-              myTestMediaHandler.play();
-            },
-            child: Text('Play'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              myTestMediaHandler.pause();
-            },
-            child: Text('Pause'),
+            onPressed: () async {},
+            child: Text('test'),
           ),
         ],
       ),

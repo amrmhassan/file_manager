@@ -19,6 +19,7 @@ class PeerPermissionsModelAdapter extends TypeAdapter<PeerPermissionsModel> {
     return PeerPermissionsModel(
       fields[0] as String,
       fields[1] as String,
+      (fields[2] as List).cast<PermissionModel>(),
     );
   }
 
@@ -31,7 +32,7 @@ class PeerPermissionsModelAdapter extends TypeAdapter<PeerPermissionsModel> {
       ..writeByte(1)
       ..write(obj.peerName)
       ..writeByte(2)
-      ..write(obj._userPermissions);
+      ..write(obj.userPermissions);
   }
 
   @override

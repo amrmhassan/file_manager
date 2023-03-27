@@ -132,6 +132,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
         //? here just open the link and start adding a client
       }
     } catch (e, s) {
+      if (!mounted) return;
       showSnackBar(
         context: context,
         message: e.toString(),
