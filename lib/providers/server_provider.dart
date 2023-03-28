@@ -10,6 +10,7 @@ import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/white_block_list_model.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/utils/beacon_server_utils.dart/beacon_server.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/server_utils/ip_utils.dart';
@@ -266,6 +267,13 @@ class ServerProvider extends ChangeNotifier {
       myPort = httpServer!.port;
       myType = memberType;
       myConnLink = connLinkQrFromIterable(myPossibleIPs, myPort);
+      try {
+        BeaconServer beaconServer = BeaconServer(myConnLink!);
+        beaconServer.startBeaconServer();
+      } catch (e) {
+        logger.e(e);
+        //! show a snack bar that users can't scan remotely for you and they must scan with qr code
+      }
 
       notifyListeners();
     } catch (e) {

@@ -7,7 +7,6 @@ import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/peer_permissions_model.dart';
 import 'package:explorer/screens/single_user_permissions_screen/widgets/user_permission_row.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';

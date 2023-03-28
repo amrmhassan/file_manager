@@ -110,7 +110,8 @@ Future<HttpServer> testingRunServerWithCustomServer(
       )
       .get(
         EndPoints.getPeerImagePath,
-        [MiddleWares.checkIfConnectedMiddleWare],
+        // i removed this image to allow users see the beacon server image
+        [],
         S1H.getUserImageHandler,
       )
       // to get my listy
