@@ -1,6 +1,6 @@
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/peer_permissions_model.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class PermissionProvider extends ChangeNotifier {
   // i will need to load these permissions after each new group connection or anything that is related to connecting to devices, either with laptop or any other thing
@@ -17,6 +17,15 @@ class PermissionProvider extends ChangeNotifier {
     var box = await HiveBox.peerPermissionsBox;
 
     _peersPermissions = [...box.values.toList().cast()];
+    if (kDebugMode) {
+      _peersPermissions.add(
+        PeerPermissionsModel(
+          'peerDeviceID',
+          'peerName',
+          defaultPermissions,
+        ),
+      );
+    }
     notifyListeners();
   }
 
@@ -88,5 +97,27 @@ class PermissionProvider extends ChangeNotifier {
   PeerPermissionsModel peerPermissionsModelFromId(String userID) {
     return _peersPermissions
         .firstWhere((element) => element.peerDeviceID == userID);
+  }
+
+  Future<void> allowAllForAUser(String userID, String userName) async {
+    for (var element in defaultPermissions) {
+      await editPeerPermission(
+        userID,
+        permissionName: element.permissionName,
+        status: PermissionStatus.allowed,
+        peerName: userName,
+      );
+    }
+  }
+
+  Future<void> blockAllForAUser(String userID, String userName) async {
+    for (var element in defaultPermissions) {
+      await editPeerPermission(
+        userID,
+        permissionName: element.permissionName,
+        status: PermissionStatus.blocked,
+        peerName: userName,
+      );
+    }
   }
 }

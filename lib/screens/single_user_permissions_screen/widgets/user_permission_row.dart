@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/models/peer_permissions_model.dart';
@@ -36,6 +37,10 @@ class UserPermissionRow extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(
                 mediumBorderRadius,
+              ),
+              border: Border.all(
+                width: 1,
+                color: kLightCardBackgroundColor,
               ),
             ),
             child: Row(

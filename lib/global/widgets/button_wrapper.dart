@@ -21,6 +21,7 @@ class ButtonWrapper extends StatelessWidget {
   final Color? hoverColor;
   final Color? focusedColor;
   final double? opacity;
+  final bool minimumSpace;
 
   const ButtonWrapper({
     Key? key,
@@ -44,11 +45,12 @@ class ButtonWrapper extends StatelessWidget {
     this.hoverColor,
     this.focusedColor,
     this.opacity,
+    this.minimumSpace = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
+    var buttonWidget = Opacity(
       opacity: opacity ?? 1,
       child: Container(
         clipBehavior: clipBehavior ?? Clip.hardEdge,
@@ -84,5 +86,18 @@ class ButtonWrapper extends StatelessWidget {
         ),
       ),
     );
+    return minimumSpace
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buttonWidget,
+                ],
+              ),
+            ],
+          )
+        : buttonWidget;
   }
 }

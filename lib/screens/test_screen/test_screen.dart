@@ -5,6 +5,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/screens/single_user_permissions_screen/single_user_permissions_screen.dart';
 import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
@@ -30,24 +31,8 @@ class _TestScreenState extends State<TestScreen> {
           SizedBox(width: double.infinity),
           ElevatedButton(
             onPressed: () async {
-              var peers = serverPF(context).peers;
-              try {
-                var data = await getPeerClipboard(peers[0]);
-                if (data == null) {
-                  //
-                  showSnackBar(context: context, message: 'No Data');
-                } else {
-                  showSnackBar(context: context, message: data.toString());
-                }
-              } on DioError catch (e) {
-                showSnackBar(
-                  context: context,
-                  message: e.response?.data,
-                  snackBarType: SnackBarType.error,
-                );
-                logger.e(e.response!.statusCode);
-                logger.e(e.response?.data);
-              }
+              Navigator.pushNamed(
+                  context, SingleUserPermissionsScreen.routeName);
             },
             child: Text('test'),
           ),
