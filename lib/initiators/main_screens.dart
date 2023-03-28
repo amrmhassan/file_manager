@@ -1,3 +1,4 @@
+import 'package:explorer/screens/connect_device_screen/connect_device_screen.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/screens/language_screen/language_screen.dart';
 import 'package:explorer/screens/search_screen/search_screen.dart';
@@ -83,4 +84,5 @@ Map<String, Widget Function(BuildContext)> mainRoutes = {
   FullTextViewerScreen.routeName: (context) => const FullTextViewerScreen(),
   SearchScreen.routeName: (context) => const SearchScreen(),
   LanguageScreen.routeName: (context) => const LanguageScreen(),
+  ConnectDeviceScreen.routeName: (context) => const ConnectDeviceScreen(),
 };

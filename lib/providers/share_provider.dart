@@ -112,7 +112,6 @@ class ShareProvider extends ChangeNotifier {
 
     if (savedName == null) {
       myName = await _getAndroidName();
-      logger.e(myName);
       notifyListeners();
       await SharedPrefHelper.setString(myNameKey, myName);
       return;

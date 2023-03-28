@@ -9,6 +9,7 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
+import 'package:explorer/screens/connect_device_screen/connect_device_screen.dart';
 import 'package:explorer/screens/share_screen/widgets/peer_icon.dart';
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,14 +29,19 @@ class ShareSpaceCard extends StatelessWidget {
       children: [
         ButtonWrapper(
           onTap: () {
+            // Navigator.pushNamed(
+            //   context,
+            //   ShareSpaceVScreen.routeName,
+            //   arguments: ShareSpaceVScreenData(
+            //     peerModel: peerModel,
+            //     laptop: false,
+            //     dataType: ShareSpaceVScreenDataType.shareSpace,
+            //   ),
+            // );
             Navigator.pushNamed(
               context,
-              ShareSpaceVScreen.routeName,
-              arguments: ShareSpaceVScreenData(
-                peerModel: peerModel,
-                laptop: false,
-                dataType: ShareSpaceVScreenDataType.shareSpace,
-              ),
+              ConnectDeviceScreen.routeName,
+              arguments: peerModel,
             );
           },
           padding: EdgeInsets.symmetric(
