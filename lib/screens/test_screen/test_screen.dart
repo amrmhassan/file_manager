@@ -9,7 +9,6 @@ import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 
 class TestScreen extends StatefulWidget {
   static const String routeName = '/TestScreen';

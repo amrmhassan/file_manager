@@ -12,7 +12,6 @@ import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
-import 'package:explorer/models/types.dart';
 import 'package:explorer/models/working_ip_model.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -25,7 +24,6 @@ import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
 import 'package:flutter/material.dart';
-import 'package:localization/localization.dart';
 
 //! make a function to send utf8 requests and handles them on the server side by reading the utf8
 //! and add the header
@@ -492,7 +490,6 @@ Future<String?> getPeerClipboard(
     String deviceID = shareProvider.myDeviceId;
 
     String connLink = peerModel.getMyLink(EndPoints.getClipboard);
-    print(connLink);
 
     var res = await Dio().get(connLink,
         options: Options(headers: {

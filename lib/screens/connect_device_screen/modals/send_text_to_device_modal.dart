@@ -1,8 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/permission_result_model.dart';
