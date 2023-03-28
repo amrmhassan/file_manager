@@ -2,13 +2,13 @@
 
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/ask_for_share_space_modal.dart';
-import 'package:explorer/global/modals/ask_permission_modal.dart';
+import 'package:explorer/models/permission_result_model.dart';
+import 'package:explorer/screens/connect_device_screen/modals/ask_permission_modal.dart';
 import 'package:explorer/global/modals/entity_info_modal.dart';
 import 'package:explorer/global/modals/current_active_dir_options_modal.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
@@ -16,16 +16,15 @@ import 'package:explorer/global/modals/details_modal/details_modal.dart';
 import 'package:explorer/global/modals/entity_options_modal.dart';
 import 'package:explorer/global/modals/sort_by_modal.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
-import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/peer_permissions_model.dart';
-import 'package:explorer/models/permission_result_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
+import 'package:explorer/screens/connect_device_screen/modals/wait_permission_modal.dart';
 import 'package:explorer/screens/home_screen/widgets/modal_button_element.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -36,54 +35,15 @@ import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:qr_flutter/qr_flutter.dart';
 
-Future<dynamic> showWaitPermissionModal(Future Function() callback) async {
-  late BuildContext modalContext;
-
-  var data = await showModalBottomSheet(
+Future<PermissionResultModel> showWaitPermissionModal(
+  Future Function() callback,
+) async {
+  PermissionResultModel data = await showModalBottomSheet(
     backgroundColor: Colors.transparent,
     context: navigatorKey.currentContext!,
-    builder: (context) {
-      modalContext = context;
-      return FutureBuilder(
-          future: callback(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              Navigator.of(modalContext).pop(
-                PermissionResultModel(
-                  error: null,
-                  result: snapshot.data,
-                ),
-              );
-            } else if (snapshot.hasError) {
-              showSnackBar(
-                context: context,
-                message: (snapshot.error as DioError).response?.data ??
-                    'Error Occurred',
-                snackBarType: SnackBarType.error,
-              );
-              Navigator.of(modalContext).pop(
-                PermissionResultModel(
-                  error: snapshot.error,
-                  result: null,
-                ),
-              );
-            }
-            return ModalWrapper(
-              showTopLine: false,
-              color: kCardBackgroundColor,
-              child: Column(
-                children: [
-                  CircularProgressIndicator(
-                    color: kMainIconColor,
-                    strokeWidth: 2,
-                  ),
-                  VSpace(),
-                  Text('loading-info'.i18n()),
-                ],
-              ),
-            );
-          });
-    },
+    builder: (context) => WaitPermissionModal(
+      callback: callback,
+    ),
   );
   return data;
 }

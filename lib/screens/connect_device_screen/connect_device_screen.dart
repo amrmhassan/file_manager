@@ -6,6 +6,7 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/permission_result_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
+import 'package:explorer/screens/connect_device_screen/modals/send_text_to_device_modal.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
@@ -162,7 +163,8 @@ class ConnectDeviceScreen extends StatelessWidget {
                     onTap: () async {
                       PermissionResultModel permissionRes =
                           await showWaitPermissionModal(
-                              () => getPeerClipboard(peerModel));
+                        () => getPeerClipboard(peerModel),
+                      );
                       if (permissionRes.error != null) return;
                       String? clipboard = permissionRes.result;
                       print(clipboard);
@@ -218,7 +220,9 @@ class ConnectDeviceScreen extends StatelessWidget {
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         context: context,
-                        builder: (context) => SendTextToPhoneModal(),
+                        builder: (context) => SendTextToDeviceModal(
+                          peerModel: peerModel,
+                        ),
                       );
                     },
                     title: 'send-text'.i18n(),

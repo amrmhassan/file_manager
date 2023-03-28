@@ -63,7 +63,9 @@ class PermissionProvider extends ChangeNotifier {
     if (!added) {
       // if the user does'nt exist i will ask the user to allow him or not
       // this will be done be returning ask
-      return PermissionStatus.ask;
+      return defaultPermissions
+          .firstWhere((element) => element.permissionName == permissionName)
+          .permissionStatus;
     }
     return _peersPermissions
         .firstWhere((element) => element.peerDeviceID == userDeviceID)
