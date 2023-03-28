@@ -98,6 +98,7 @@ class PermissionsMiddlewares {
     response
       ..statusCode = HttpStatus.badRequest
       ..headers.add(KHeaders.serverRefuseReasonHeaderKey, refuseMessage)
+      ..write(refuseMessage)
       ..close();
     return ReqResTracker(
       request,

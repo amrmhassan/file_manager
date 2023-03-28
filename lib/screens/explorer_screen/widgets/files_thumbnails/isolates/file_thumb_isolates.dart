@@ -59,7 +59,7 @@ Future<void> getFileThumbnail(
     });
     setThumbnail(compressedImagePath);
   } catch (e) {
-    printOnDebug('cant generate thumbnail');
+    printOnDebug('cant generate thumbnail $rawFilePath');
   }
 }
 

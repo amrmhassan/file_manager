@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
@@ -16,9 +17,11 @@ import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 import 'package:explorer/utils/websocket_utils/custom_client_socket.dart';
+import 'package:flutter/material.dart';
 
 //! make a function to send utf8 requests and handles them on the server side by reading the utf8
 //! and add the header
@@ -464,4 +467,41 @@ Future<String> getLaptopName(
     throw Exception('cant get laptop name');
   }
   return data.data.toString();
+}
+
+//?
+//?
+//? new features
+//?
+//?
+
+Future<String?> getPeerClipboard(
+  PeerModel peerModel,
+) async {
+  try {
+    BuildContext? context = navigatorKey.currentContext;
+    if (context == null) {
+      throw Exception('Error occurred');
+    }
+    ShareProvider shareProvider = sharePF(context);
+    String myName = shareProvider.myName;
+    String deviceID = shareProvider.myDeviceId;
+
+    String connLink = peerModel.getMyLink(EndPoints.getClipboard);
+    print(connLink);
+
+    var res = await Dio().get(connLink,
+        options: Options(headers: {
+          KHeaders.userNameHeaderKey: myName,
+          KHeaders.deviceIDHeaderKey: deviceID,
+        }));
+    String clipboard = (res.data);
+    if (clipboard.isEmpty) {
+      return null;
+    } else {
+      return clipboard;
+    }
+  } catch (e) {
+    rethrow;
+  }
 }

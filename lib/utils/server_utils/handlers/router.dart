@@ -124,6 +124,65 @@ Future<HttpServer> testingRunServerWithCustomServer(
         EndPoints.getFullFolderContent,
         [MiddleWares.checkIfConnectedMiddleWare],
         S2H.getFolderChildrenRecursive,
+      )
+      //? new features endpoints
+      .get(
+        EndPoints.getDiskNames,
+        [
+          MiddleWares.checkIfConnectedMiddleWare,
+          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+                request,
+                response,
+                PermissionName.fileExploring,
+              ),
+        ],
+        S2H.getDiskNamesHandler,
+      )
+      .get(
+        EndPoints.getFolderContent,
+        [MiddleWares.checkIfConnectedMiddleWare],
+        S2H.getPhoneFolderContentHandler,
+      )
+      .get(
+        EndPoints.getClipboard,
+        [
+          MiddleWares.checkIfConnectedMiddleWare,
+          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+                request,
+                response,
+                PermissionName.copyClipboard,
+              ),
+        ],
+        S2H.getClipboardHandler,
+      )
+      .get(
+        EndPoints.getAndroidName,
+        [MiddleWares.checkIfConnectedMiddleWare],
+        S2H.getAndroidNameHandler,
+      )
+      .post(
+        EndPoints.sendText,
+        [
+          MiddleWares.checkIfConnectedMiddleWare,
+          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+                request,
+                response,
+                PermissionName.sendText,
+              ),
+        ],
+        S2H.sendTextHandler,
+      )
+      .post(
+        EndPoints.startDownloadFile,
+        [
+          MiddleWares.checkIfConnectedMiddleWare,
+          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+                request,
+                response,
+                PermissionName.sendFile,
+              ),
+        ],
+        S2H.startDownloadActionHandler,
       );
 
   CustomServer customServer = CustomServer(
