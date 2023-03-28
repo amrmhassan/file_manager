@@ -10,8 +10,9 @@ import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 
 class BeaconServer {
   final String _connLinkQueryEncoded;
+  HttpServer? _httpServer;
 
-  const BeaconServer(this._connLinkQueryEncoded);
+  BeaconServer(this._connLinkQueryEncoded);
 
 // these ports must be static and never change for my app lifetime
   static const List<int> beaconPorts = [
@@ -22,31 +23,38 @@ class BeaconServer {
   ];
 
   Future<HttpServer> startBeaconServer() async {
-    HttpServer? httpServer;
     for (var port in beaconPorts) {
       try {
-        httpServer = await HttpServer.bind(InternetAddress.anyIPv4, port);
+        _httpServer = await HttpServer.bind(InternetAddress.anyIPv4, port);
         break;
       } catch (e) {
         logger.e('port $port is used');
       }
     }
-    if (httpServer == null) {
+    if (_httpServer == null) {
       logger.e('server isnt set yet');
       throw Exception('Server isnt set');
     }
     //? here you can use the http server
-    HttpServer validServer = httpServer;
+    HttpServer validServer = _httpServer!;
     validServer.listen((request) {
       String path = request.uri.path;
+      logger.i(
+          'beacon server received a scan from ${request.connectionInfo!.remoteAddress.address}:${request.connectionInfo!.remotePort}');
       if (path == '/') {
         // here return the query connLink
-        request.response.write(_connLinkQueryEncoded);
+        request.response
+          ..write(_connLinkQueryEncoded)
+          ..close();
       } else if (path == EndPoints.getPeerImagePath) {
         S1H.getUserImageHandler(request, request.response);
       }
     });
-    return httpServer;
+    return _httpServer!;
+  }
+
+  Future closeServer() async {
+    await _httpServer?.close();
   }
 
   static Future<void> getWorkingDevice({
@@ -69,6 +77,7 @@ class BeaconServer {
           links.add(address);
           String url = 'http://$address:$port';
           dio.get(url).then((value) {
+            onDeviceFound(value.data);
             completedInks.add(address);
             if (links.length == completedInks.length) {
               // scan finished

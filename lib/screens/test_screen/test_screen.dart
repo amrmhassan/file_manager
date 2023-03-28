@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatefulWidget {
@@ -26,6 +27,7 @@ class _TestScreenState extends State<TestScreen> {
           SizedBox(width: double.infinity),
           ElevatedButton(
             onPressed: () async {
+              logger.i('your http server is ${serverPF(context).httpServer}');
               await BeaconServer.getWorkingDevice(
                 onDeviceFound: (query) {
                   logger.i('a working device $query');

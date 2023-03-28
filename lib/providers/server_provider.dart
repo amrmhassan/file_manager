@@ -36,6 +36,7 @@ class ServerProvider extends ChangeNotifier {
   List<PeerModel> peers = [];
   late WebSocketSink myClientWsSink;
   CustomServerSocket? customServerSocket;
+  BeaconServer? beaconServer;
 
   late MemberType myType;
   HttpServer? wsServer;
@@ -268,8 +269,8 @@ class ServerProvider extends ChangeNotifier {
       myType = memberType;
       myConnLink = connLinkQrFromIterable(myPossibleIPs, myPort);
       try {
-        BeaconServer beaconServer = BeaconServer(myConnLink!);
-        beaconServer.startBeaconServer();
+        beaconServer = BeaconServer(myConnLink!);
+        beaconServer!.startBeaconServer();
       } catch (e) {
         logger.e(e);
         //! show a snack bar that users can't scan remotely for you and they must scan with qr code
@@ -289,6 +290,7 @@ class ServerProvider extends ChangeNotifier {
       logger.i('Closing normal http server');
     }
     await httpServer?.close();
+    await beaconServer?.closeServer();
     httpServer = null;
     peers.clear();
     allowedPeers.clear();
