@@ -40,7 +40,9 @@ class _AskPermissionModalState extends State<AskPermissionModal> {
   @override
   void initState() {
     //? here is the default remember option some non sensitive permissions names
-    remember = widget.permissionName == PermissionName.shareSpace;
+    remember = widget.permissionName == PermissionName.shareSpace ||
+        widget.permissionName == PermissionName.sendFile ||
+        widget.permissionName == PermissionName.sendText;
     super.initState();
   }
 

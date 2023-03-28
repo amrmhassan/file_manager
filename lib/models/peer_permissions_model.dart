@@ -1,3 +1,5 @@
+import 'package:explorer/constants/colors.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'peer_permissions_model.g.dart';
@@ -69,9 +71,9 @@ enum PermissionStatus {
   @HiveField(0)
   allowed,
   @HiveField(1)
-  blocked,
-  @HiveField(2)
   ask,
+  @HiveField(2)
+  blocked,
 }
 
 List<PermissionModel> defaultPermissions = [
@@ -146,6 +148,46 @@ class PermissionsNamesUtils {
       return 'Send Text permission';
     } else {
       return '${permissionName.name.toUpperCase()} permission';
+    }
+  }
+
+  static String getPermissionTitleMin(PermissionName permissionName) {
+    if (permissionName == PermissionName.fileExploring) {
+      return 'File Exploring';
+    } else if (permissionName == PermissionName.shareSpace) {
+      return 'Share Space';
+    } else if (permissionName == PermissionName.copyClipboard) {
+      return 'Clipboard';
+    } else if (permissionName == PermissionName.sendFile) {
+      return 'Send File';
+    } else if (permissionName == PermissionName.sendText) {
+      return 'Send Text';
+    } else {
+      return '${permissionName.name.toUpperCase()} permission';
+    }
+  }
+
+  static String getPermissionStatusTitle(PermissionStatus status) {
+    if (status == PermissionStatus.allowed) {
+      return 'Allow';
+    } else if (status == PermissionStatus.blocked) {
+      return 'Block';
+    } else if (status == PermissionStatus.ask) {
+      return 'Ask';
+    } else {
+      return '${status.name.toUpperCase()} permission';
+    }
+  }
+
+  static Color getPermissionStatusColor(PermissionStatus status) {
+    if (status == PermissionStatus.allowed) {
+      return kGreenColor;
+    } else if (status == PermissionStatus.blocked) {
+      return kDangerColor;
+    } else if (status == PermissionStatus.ask) {
+      return Colors.grey;
+    } else {
+      return Colors.transparent;
     }
   }
 }

@@ -147,9 +147,9 @@ class PermissionStatusAdapter extends TypeAdapter<PermissionStatus> {
       case 0:
         return PermissionStatus.allowed;
       case 1:
-        return PermissionStatus.blocked;
-      case 2:
         return PermissionStatus.ask;
+      case 2:
+        return PermissionStatus.blocked;
       default:
         return PermissionStatus.allowed;
     }
@@ -161,10 +161,10 @@ class PermissionStatusAdapter extends TypeAdapter<PermissionStatus> {
       case PermissionStatus.allowed:
         writer.writeByte(0);
         break;
-      case PermissionStatus.blocked:
+      case PermissionStatus.ask:
         writer.writeByte(1);
         break;
-      case PermissionStatus.ask:
+      case PermissionStatus.blocked:
         writer.writeByte(2);
         break;
     }

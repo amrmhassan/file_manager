@@ -259,15 +259,6 @@ class ConnectDeviceScreen extends StatelessWidget {
                   ),
                   VSpace(),
 
-                  AnalyzerOptionsItem(
-                    enablePadding: false,
-                    onTap: () {
-                      Navigator.pushNamed(context, TouchPadScreen.routeName);
-                    },
-                    title: 'widows-touchpad'.i18n(),
-                    logoName: 'touchpad',
-                    color: kMainIconColor,
-                  ),
                   // AnalyzerOptionsItem(
                   //   enablePadding: false,
                   //   onTap: () {},

@@ -2,6 +2,7 @@ import 'package:explorer/screens/connect_device_screen/connect_device_screen.dar
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/screens/language_screen/language_screen.dart';
 import 'package:explorer/screens/search_screen/search_screen.dart';
+import 'package:explorer/screens/single_user_permissions_screen/single_user_permissions_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/screens/windows_client_update_note_screen/windows_client_update_note_screen.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,7 @@ Map<String, Widget Function(BuildContext)> mainRoutes = {
   ShareSpaceVScreen.routeName: (context) => const ShareSpaceVScreen(),
   DownloadManagerScreen.routeName: (context) => const DownloadManagerScreen(),
   ShareSettingsScreen.routeName: (context) => const ShareSettingsScreen(),
-  WhiteBlockListScreen.routeName: (context) => const WhiteBlockListScreen(),
+  UsersPermissionScreen.routeName: (context) => const UsersPermissionScreen(),
   IntroScreen.routeName: (context) => const IntroScreen(),
   AboutUsScreen.routeName: (context) => const AboutUsScreen(),
   LaptopMessagesScreen.routeName: (context) => const LaptopMessagesScreen(),
@@ -85,4 +86,6 @@ Map<String, Widget Function(BuildContext)> mainRoutes = {
   SearchScreen.routeName: (context) => const SearchScreen(),
   LanguageScreen.routeName: (context) => const LanguageScreen(),
   ConnectDeviceScreen.routeName: (context) => const ConnectDeviceScreen(),
+  SingleUserPermissionsScreen.routeName: (context) =>
+      const SingleUserPermissionsScreen(),
 };
