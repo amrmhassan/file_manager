@@ -1,13 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/peer_permissions_model.dart';
+import 'package:explorer/screens/single_user_permissions_screen/widgets/user_permission_row.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +23,7 @@ class _SingleUserPermissionsScreenState
   @override
   Widget build(BuildContext context) {
     String userID = ModalRoute.of(context)!.settings.arguments as String;
-    var permissionsProvider = permissionsPF(context);
+    var permissionsProvider = permissionsP(context);
     var peerPermissionModel =
         permissionsProvider.peerPermissionsModelFromId(userID);
 
@@ -42,71 +40,9 @@ class _SingleUserPermissionsScreenState
           VSpace(),
           ...peerPermissionModel.userPermissions
               .map(
-                (permissionModel) => ButtonWrapper(
-                  borderRadius: 0,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: kHPad * .8,
-                    vertical: kVPad / 4,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        PermissionsNamesUtils.getPermissionTitleMin(
-                            permissionModel.permissionName),
-                      ),
-                      Spacer(),
-                      Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            mediumBorderRadius,
-                          ),
-                        ),
-                        child: Row(
-                          children: PermissionStatus.values
-                              .map(
-                                (permissionStatus) => ButtonWrapper(
-                                  onTap: () {
-                                    permissionsPF(context).editPeerPermission(
-                                      peerPermissionModel.peerDeviceID,
-                                      permissionName:
-                                          permissionModel.permissionName,
-                                      status: permissionStatus,
-                                      peerName: peerPermissionModel.peerName,
-                                    );
-                                    setState(() {});
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                        mediumBorderRadius,
-                                      ),
-                                      color: permissionModel.permissionStatus ==
-                                              permissionStatus
-                                          ? PermissionsNamesUtils
-                                              .getPermissionStatusColor(
-                                              permissionStatus,
-                                            )
-                                          : null,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: kHPad / 4,
-                                      vertical: kVPad / 6,
-                                    ),
-                                    child: Text(
-                                      PermissionsNamesUtils
-                                          .getPermissionStatusTitle(
-                                        permissionStatus,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  ),
+                (permissionModel) => UserPermissionRow(
+                  peerPermissionModel: peerPermissionModel,
+                  permissionModel: permissionModel,
                 ),
               )
               .toList()

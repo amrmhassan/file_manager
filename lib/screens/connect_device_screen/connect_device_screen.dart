@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/captures_entity_model.dart';
@@ -9,7 +8,6 @@ import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/screens/connect_device_screen/modals/send_text_to_device_modal.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
-import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +20,6 @@ import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
-import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
