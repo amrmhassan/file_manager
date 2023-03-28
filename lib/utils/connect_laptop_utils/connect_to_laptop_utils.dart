@@ -87,23 +87,23 @@ Future<String?> getPhoneClipboard(
   }
 }
 
-Future<void> startDownloadFile(
-  String filePath,
-  int fileSize,
-  BuildContext context,
-) async {
-  String connLink =
-      connectLaptopPF(context).getPhoneConnLink(EndPoints.startDownloadFile);
-  await Dio().post(
-    connLink,
-    data: filePath,
-    options: Options(
-      headers: {
-        KHeaders.fileSizeHeaderKey: fileSize,
-      },
-    ),
-  );
-}
+// Future<void> startDownloadFile(
+//   String filePath,
+//   int fileSize,
+//   BuildContext context,
+// ) async {
+//   String connLink =
+//       connectLaptopPF(context).getPhoneConnLink(EndPoints.startDownloadFile);
+//   await Dio().post(
+//     connLink,
+//     data: filePath,
+//     options: Options(
+//       headers: {
+//         KHeaders.fileSizeHeaderKey: fileSize,
+//       },
+//     ),
+//   );
+// }
 
 Future<void> downloadFolderUtil({
   required String remoteDeviceID,

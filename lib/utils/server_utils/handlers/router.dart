@@ -182,7 +182,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
                 PermissionName.sendFile,
               ),
         ],
-        S2H.startDownloadActionHandler,
+        S1H.startDownloadActionHandler,
       );
 
   CustomServer customServer = CustomServer(

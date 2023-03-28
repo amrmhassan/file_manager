@@ -20,6 +20,9 @@ import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 // flutter packages pub run build_runner build --delete-conflicting-outputs
 
+// add the ability to click the section in the recent screen and direct the user to
+// the corresponding section detailed data
+
 //! add disks_desktop 1.0.1
 
 // add remaining time on the downloading card

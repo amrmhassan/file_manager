@@ -167,7 +167,6 @@ class ConnectDeviceScreen extends StatelessWidget {
                       );
                       if (permissionRes.error != null) return;
                       String? clipboard = permissionRes.result;
-                      print(clipboard);
                       // String? clipboard = await getPeerClipboard(peerModel);
                       if (clipboard == null) {
                         showModalBottomSheet(
@@ -237,10 +236,15 @@ class ConnectDeviceScreen extends StatelessWidget {
                       if (res == null || res.files.isEmpty) return;
                       var capturedFiles =
                           pathsToEntities(res.files.map((e) => e.path));
-                      handleSendCapturesFiles(capturedFiles, context);
+                      handleSendCapturesFiles(
+                        capturedFiles,
+                        context,
+                        peerModel,
+                      );
                       showSnackBar(
-                          context: context,
-                          message: 'sending-file-to-laptop'.i18n());
+                        context: context,
+                        message: 'sending-file-to-laptop'.i18n(),
+                      );
                     },
                     title: 'send-file'.i18n(),
                     logoName: 'link',
@@ -283,9 +287,13 @@ class ConnectDeviceScreen extends StatelessWidget {
   void handleSendCapturesFiles(
     List<CapturedEntityModel> entities,
     BuildContext context,
+    PeerModel peerModel,
   ) async {
     showSnackBar(context: context, message: 'sending-to-phone'.i18n());
-    Navigator.pop(context);
-    await startSendEntities(entities, context);
+    await startSendEntitiesToDevice(
+      entities,
+      context,
+      peerModel,
+    );
   }
 }

@@ -9,6 +9,7 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
+import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
@@ -516,14 +517,17 @@ Future<String?> sendTextToDevice(String text, PeerModel peerModel) async {
     String myName = sharePF(context).myName;
     String deviceID = sharePF(context).myDeviceId;
 
-    await Dio().post(connLink,
-        data: text,
-        options: Options(
-            requestEncoder: (request, options) => utf8.encode(request),
-            headers: {
-              KHeaders.deviceIDHeaderKey: deviceID,
-              KHeaders.userNameHeaderKey: myName,
-            }));
+    await Dio().post(
+      connLink,
+      data: text,
+      options: Options(
+        requestEncoder: (request, options) => utf8.encode(request),
+        headers: {
+          KHeaders.deviceIDHeaderKey: deviceID,
+          KHeaders.userNameHeaderKey: myName,
+        },
+      ),
+    );
     return 'message sent';
   } catch (e) {
     // showSnackBar(
@@ -532,5 +536,29 @@ Future<String?> sendTextToDevice(String text, PeerModel peerModel) async {
     //   snackBarType: SnackBarType.error,
     // );
     rethrow;
+  }
+}
+
+Future<void> startSendEntitiesToDevice(
+  List<CapturedEntityModel> entities,
+  BuildContext context,
+  PeerModel peerModel,
+) async {
+  try {
+    String userName = sharePF(context).myName;
+    String deviceID = sharePF(context).myDeviceId;
+    var data = entities.map((e) => e.toJSON()).toList();
+    var encodedData = json.encode(data);
+    String connLink = peerModel.getMyLink(EndPoints.startDownloadFile);
+    await Dio().post(
+      connLink,
+      data: encodedData,
+      options: Options(headers: {
+        KHeaders.userNameHeaderKey: userName,
+        KHeaders.deviceIDHeaderKey: deviceID,
+      }),
+    );
+  } on DioError catch (e) {
+    logger.e(e.response?.data);
   }
 }

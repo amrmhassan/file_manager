@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -7,6 +9,7 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
+import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
@@ -14,6 +17,7 @@ import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
+import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
@@ -501,5 +505,54 @@ class S1H {
         ..add(encodedData)
         ..close();
     }, response);
+  }
+
+  static Future<void> startDownloadActionHandler(
+    HttpRequest request,
+    HttpResponse response,
+  ) async {
+    BuildContext? context = navigatorKey.currentContext;
+    if (context == null) {
+      response
+        ..statusCode = HttpStatus.internalServerError
+        ..write('An error with context')
+        ..close();
+      return;
+    }
+
+    try {
+      var headers = request.headers;
+
+      String deviceID = headers.value(KHeaders.deviceIDHeaderKey)!;
+      String userName = headers.value(KHeaders.userNameHeaderKey)!;
+      //
+      var decodedData = (await decodeRequest(request, true)) as List;
+      var capturedItems =
+          decodedData.map((e) => CapturedEntityModel.fromJSON(e)).toList();
+
+      for (var item in capturedItems) {
+        var downProvider = downPF(context);
+
+        await downProvider.addDownloadTask(
+          remoteEntityPath: item.path.replaceAll('\\', '/'),
+          size: item.size,
+          serverProvider: serverPF(context),
+          shareProvider: sharePF(context),
+          remoteDeviceID: deviceID,
+          entityType: item.entityType,
+          remoteDeviceName: userName,
+        );
+      }
+    } catch (e, s) {
+      response
+        ..statusCode = HttpStatus.internalServerError
+        ..write('An error downloading file')
+        ..close();
+      throw CustomException(
+        e: e,
+        s: s,
+        rethrowError: true,
+      );
+    }
   }
 }
