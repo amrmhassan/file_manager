@@ -117,8 +117,8 @@ class ConnectDeviceScreen extends StatelessWidget {
                         context,
                         ShareSpaceVScreen.routeName,
                         arguments: ShareSpaceVScreenData(
-                          peerModel: null,
-                          laptop: true,
+                          peerModel: peerModel,
+                          laptop: false,
                           dataType: ShareSpaceVScreenDataType.filesExploring,
                         ),
                       );
@@ -131,22 +131,31 @@ class ConnectDeviceScreen extends StatelessWidget {
                   AnalyzerOptionsItem(
                     enablePadding: false,
                     onTap: () {
-                      var phoneConnProvider = connectLaptopPF(context);
+                      // var phoneConnProvider = connectLaptopPF(context);
 
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   ShareSpaceVScreen.routeName,
+                      //   arguments: ShareSpaceVScreenData(
+                      //     peerModel: PeerModel(
+                      //       deviceID: laptopID,
+                      //       joinedAt: DateTime.now(),
+                      //       name: laptopName,
+                      //       memberType: MemberType.client,
+                      //       ip: phoneConnProvider.remoteIP!,
+                      //       port: phoneConnProvider.remotePort!,
+                      //       sessionID: laptopID,
+                      //     ),
+                      //     laptop: true,
+                      //     dataType: ShareSpaceVScreenDataType.shareSpace,
+                      //   ),
+                      // );
                       Navigator.pushNamed(
                         context,
                         ShareSpaceVScreen.routeName,
                         arguments: ShareSpaceVScreenData(
-                          peerModel: PeerModel(
-                            deviceID: laptopID,
-                            joinedAt: DateTime.now(),
-                            name: laptopName,
-                            memberType: MemberType.client,
-                            ip: phoneConnProvider.remoteIP!,
-                            port: phoneConnProvider.remotePort!,
-                            sessionID: laptopID,
-                          ),
-                          laptop: true,
+                          peerModel: peerModel,
+                          laptop: false,
                           dataType: ShareSpaceVScreenDataType.shareSpace,
                         ),
                       );
