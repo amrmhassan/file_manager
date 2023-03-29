@@ -41,6 +41,7 @@ Future<bool?> showAskForConnLinkModal(
 ) async {
   bool? res = await showModalBottomSheet(
     context: context,
+    backgroundColor: Colors.transparent,
     builder: (con) => DoubleButtonsModal(
       onOk: () {
         Navigator.pop(con, true);

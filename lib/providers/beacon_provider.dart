@@ -3,10 +3,12 @@
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/models/beacon_server_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server.dart';
+import 'package:explorer/utils/client_utils.dart';
 import 'package:flutter/material.dart';
 
 // the beacon server will allow everyone to view his image and name with no protection
@@ -37,12 +39,27 @@ class BeaconProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setABeaconServerImage(String url, Uint8List image) {
+  void _setABeaconServerImage(String url, Uint8List? image) {
     int index =
         _discoveredBeaconServers.indexWhere((element) => element.url == url);
     BeaconServerModel model = _discoveredBeaconServers[index];
     model.serverImage = image;
+    if (image == null) {
+      model.noImage = true;
+    }
     _discoveredBeaconServers[index] = model;
+
+    notifyListeners();
+  }
+
+  void _setABeaconServerConnLink(String url, String connLink) {
+    int index =
+        _discoveredBeaconServers.indexWhere((element) => element.url == url);
+    BeaconServerModel model = _discoveredBeaconServers[index];
+    model.connQueryLink = connLink;
+
+    _discoveredBeaconServers[index] = model;
+
     notifyListeners();
   }
 
@@ -68,28 +85,44 @@ class BeaconProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> askForBeaconServerConnLink({
-    required String id,
+  Future<void> askForBeaconServerConnLink({
     required String myName,
     required String myDeviceID,
     required String beaconServerUrl,
   }) async {
-    // this might throw an error, so handle it from the UI
-    var data = await Dio().get('$beaconServerUrl/${EndPoints.getMyConnLink}');
-    //! here you need to set the beacon server connLink to the provider
-    //? this will show a modal that you are waiting for the beacon server to accept your request to join
+    try {
+      // this might throw an error, so handle it from the UI
+      var data = await Dio().get(
+        '$beaconServerUrl${EndPoints.getMyConnLink}',
+        options: Options(
+          headers: {
+            KHeaders.userNameHeaderKey: myName,
+            KHeaders.deviceIDHeaderKey: myDeviceID,
+          },
+        ),
+      );
 
-    return data.data;
+      //! here you need to set the beacon server connLink to the provider
+      //? this will show a modal that you are waiting for the beacon server to accept your request to join
+      _setABeaconServerConnLink(beaconServerUrl, data.data);
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  Future<String> askForBeaconServerImage({
+  void askForBeaconServerImage({
     required String beaconServerUrl,
   }) async {
-    var data =
-        await Dio().get('$beaconServerUrl/${EndPoints.getPeerImagePath}');
-    //! here you need to set the beacon server image to the provider
+    var beaconServer = _discoveredBeaconServers
+        .firstWhere((element) => element.url == beaconServerUrl);
+    if (beaconServer.serverImage != null) return;
 
-    return data.data;
+    try {
+      Uint8List? image = await getPeerImage(beaconServerUrl);
+      _setABeaconServerImage(beaconServerUrl, image);
+    } catch (e) {
+      logger.i('this beacon server doesnt have an image');
+    }
   }
 
   void clearBeaconServers() {

@@ -253,7 +253,7 @@ class ServerProvider extends ChangeNotifier {
         );
       }
       //? opening the server port and setting end points
-      logger.i('Opening server');
+      // logger.i('Opening server');
       // httpServer = await HttpServer.bind(InternetAddress.anyIPv4, myPort);
 
       // CustomRouterSystem customRouterSystem =

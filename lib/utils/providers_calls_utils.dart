@@ -1,3 +1,4 @@
+import 'package:explorer/providers/beacon_provider.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
@@ -159,4 +160,13 @@ PermissionProvider permissionsPF(BuildContext context) {
 
 PermissionProvider permissionsP(BuildContext context) {
   return Provider.of<PermissionProvider>(context);
+}
+
+//? beacon provider
+BeaconProvider beaconPF(BuildContext context) {
+  return Provider.of<BeaconProvider>(context, listen: false);
+}
+
+BeaconProvider beaconP(BuildContext context) {
+  return Provider.of<BeaconProvider>(context);
 }

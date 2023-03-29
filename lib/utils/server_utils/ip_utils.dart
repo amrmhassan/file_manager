@@ -29,7 +29,7 @@ Future<Iterable<String>?> getPossibleIpAddress() async {
   try {
     var interfaces =
         await NetworkInterface.list(type: InternetAddressType.IPv4);
-    logger.i('I have ${interfaces.length} interfaces');
+    // logger.i('I have ${interfaces.length} interfaces');
     var res = interfaces.map((e) => e.addresses.first.address);
     return res;
   } catch (e) {

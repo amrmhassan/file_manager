@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
@@ -67,18 +68,28 @@ class PickImageModal extends StatelessWidget {
               ImagePickingOptionElement(
                 iconName: 'camera',
                 onTap: () async {
-                  File? file = await handlePickImage(ImageSource.camera);
-                  if (file == null) {
+                  try {
+                    File? file = await handlePickImage(ImageSource.camera);
+                    if (file == null) {
+                      showSnackBar(
+                        context: context,
+                        message: 'Can\'t pick image',
+                        snackBarType: SnackBarType.error,
+                      );
+                      Navigator.pop(context);
+                      return;
+                    }
+                    await sharePF(context).setMyImagePath(file.path);
+                    Navigator.pop(context);
+                  } catch (e) {
+                    logger.e(e);
+                    Navigator.pop(context);
                     showSnackBar(
                       context: context,
-                      message: 'Can\'t pick image',
+                      message: 'Can\'t pick an image',
                       snackBarType: SnackBarType.error,
                     );
-                    Navigator.pop(context);
-                    return;
                   }
-                  await sharePF(context).setMyImagePath(file.path);
-                  Navigator.pop(context);
                 },
               ),
               HSpace(),

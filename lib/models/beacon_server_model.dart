@@ -6,6 +6,8 @@ class BeaconServerModel {
   final String deviceName;
   String? connQueryLink;
   Uint8List? serverImage;
+
+  bool noImage;
   // this will be calculated from an endpoint and will depend on multiple calculations of response time in ms,
   // it won't define the actual distance but it will be used to compare with multiple beacon servers
   final double distanceFactor;
@@ -16,5 +18,6 @@ class BeaconServerModel {
     this.serverImage,
     this.connQueryLink,
     this.distanceFactor = 0,
+    this.noImage = false,
   });
 }

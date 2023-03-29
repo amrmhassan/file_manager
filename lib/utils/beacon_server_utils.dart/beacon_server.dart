@@ -34,6 +34,7 @@ class BeaconServer {
       try {
         _httpServer =
             await _getBeaconServerRouter(serverProvider, shareProvider, port);
+        logger.i('beacon server listening on $port');
         break;
       } catch (e) {
         logger.e('port $port is used');
@@ -90,7 +91,7 @@ class BeaconServer {
     dio.options.connectTimeout = 10000;
     dio.options.receiveTimeout = 10000;
     List<String> subnets = await _getMySubnets();
-    logger.i('my subnets $subnets');
+    // logger.i('my subnets $subnets');
 
     for (var subnet in subnets) {
       for (var port in beaconPorts) {
@@ -105,14 +106,14 @@ class BeaconServer {
             if (links.length == completedInks.length) {
               // scan finished
               completer.complete();
-              logger.i('done iterations ${completedInks.length}');
+              // logger.i('done iterations ${completedInks.length}');
             }
           }).catchError((e) {
             completedInks.add(address);
             if (links.length == completedInks.length) {
               // scan finished
               completer.complete();
-              logger.i('done iterations ${completedInks.length}');
+              // logger.i('done iterations ${completedInks.length}');
             }
           });
         }
@@ -152,7 +153,7 @@ class BeaconServer {
   }
 
   static Future<String> _getBeaconServerName(String url) async {
-    var res = await Dio().get('$url/${EndPoints.getBeaconServerName}');
+    var res = await Dio().get('$url${EndPoints.getBeaconServerName}');
     return res.data;
   }
 }
