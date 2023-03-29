@@ -47,6 +47,7 @@ class BeaconProvider extends ChangeNotifier {
   void _setABeaconServerImage(String url, Uint8List? image) {
     int index =
         _discoveredBeaconServers.indexWhere((element) => element.url == url);
+    if (index == -1) return;
     BeaconServerModel model = _discoveredBeaconServers[index];
     model.serverImage = image;
     if (image == null) {

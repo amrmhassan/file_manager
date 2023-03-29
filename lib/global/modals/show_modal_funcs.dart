@@ -49,7 +49,7 @@ Future<bool?> showAskForConnLinkModal(
       okText: 'Allow',
       okColor: kBlueColor,
       cancelColor: kDangerColor,
-      cancelText: 'Block',
+      cancelText: 'Refuse',
       autoPop: false,
       onCancel: () {
         Navigator.pop(con, false);

@@ -28,7 +28,7 @@ class ScanQRCodeScreen extends StatefulWidget {
 }
 
 class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QrScanner');
+  final GlobalKey qrKey = GlobalKey();
   // Barcode? result;
   QRViewController? controller;
   void _onQRViewCreated(QRViewController c, [bool? justScanner]) async {

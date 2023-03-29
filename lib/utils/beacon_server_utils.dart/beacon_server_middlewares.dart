@@ -53,7 +53,7 @@ class BSM {
     } else {
       response
         ..statusCode = HttpStatus.badRequest
-        ..headers.add(KHeaders.serverRefuseReasonHeaderKey, 'You are blocked')
+        ..headers.add(KHeaders.serverRefuseReasonHeaderKey, 'Host refused you')
         ..close();
       return ReqResTracker(
         request,
