@@ -138,7 +138,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                     ),
                   ),
                 ),
-                BeaconServersScanResult(),
+                BeaconServersScanResultContainer(),
               ],
             ),
           )

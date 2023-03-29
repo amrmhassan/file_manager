@@ -125,10 +125,10 @@ class BeaconProvider extends ChangeNotifier {
     }
   }
 
-  void clearBeaconServers() {
-    //! this cleared method will be called when the scanning screen is popped
-    _discoveredBeaconServers.clear();
-    _cleared = true;
-    notifyListeners();
-  }
+  // void clearBeaconServers() {
+  //! this cleared method will be called when the scanning screen is popped
+  // _discoveredBeaconServers.clear();
+  // _cleared = true;
+  // notifyListeners();
+  // }
 }

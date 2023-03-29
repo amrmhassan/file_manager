@@ -10,17 +10,18 @@ import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_title
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
-class BeaconServersScanResult extends StatefulWidget {
-  const BeaconServersScanResult({
+class BeaconServersScanResultContainer extends StatefulWidget {
+  const BeaconServersScanResultContainer({
     super.key,
   });
 
   @override
-  State<BeaconServersScanResult> createState() =>
-      _BeaconServersScanResultState();
+  State<BeaconServersScanResultContainer> createState() =>
+      _BeaconServersScanResultContainerState();
 }
 
-class _BeaconServersScanResultState extends State<BeaconServersScanResult> {
+class _BeaconServersScanResultContainerState
+    extends State<BeaconServersScanResultContainer> {
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
@@ -29,13 +30,13 @@ class _BeaconServersScanResultState extends State<BeaconServersScanResult> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    Future.delayed(Duration.zero).then((value) {
-      beaconPF(navigatorKey.currentContext!).clearBeaconServers();
-    });
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   Future.delayed(Duration.zero).then((value) {
+  //     beaconPF(navigatorKey.currentContext!).clearBeaconServers();
+  //   });
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

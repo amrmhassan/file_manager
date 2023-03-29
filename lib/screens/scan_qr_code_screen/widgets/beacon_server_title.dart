@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class BeaconServerTitle extends StatelessWidget {
@@ -26,7 +27,9 @@ class BeaconServerTitle extends StatelessWidget {
         ),
         Spacer(),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            beaconPF(context).startScanForBeaconServers(serverPF(context));
+          },
           icon: Icon(
             Icons.replay_outlined,
             color: kMainIconColor,

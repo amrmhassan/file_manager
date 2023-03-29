@@ -23,7 +23,7 @@ class _TestScreenState extends State<TestScreen> {
         children: [
           SizedBox(width: double.infinity),
           Spacer(),
-          BeaconServersScanResult(),
+          BeaconServersScanResultContainer(),
         ],
       ),
     );
