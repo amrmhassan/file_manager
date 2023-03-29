@@ -35,6 +35,31 @@ import 'package:provider/provider.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:qr_flutter/qr_flutter.dart';
 
+Future<bool?> showAskForConnLinkModal(
+  BuildContext context,
+  String userName,
+) async {
+  bool? res = await showModalBottomSheet(
+    context: context,
+    builder: (con) => DoubleButtonsModal(
+      onOk: () {
+        Navigator.pop(con, true);
+      },
+      okText: 'Allow',
+      okColor: kBlueColor,
+      cancelColor: kDangerColor,
+      cancelText: 'Block',
+      autoPop: false,
+      onCancel: () {
+        Navigator.pop(con, false);
+      },
+      title: 'Connection Request',
+      subTitle: '$userName wants to connect',
+    ),
+  );
+  return res;
+}
+
 Future<PermissionResultModel> showWaitPermissionModal(
   Future Function() callback,
 ) async {
@@ -137,6 +162,7 @@ Future<void> showFileExtChangeModal(BuildContext context,
     backgroundColor: Colors.transparent,
     context: expScreenKey.currentContext!,
     builder: (ctx) => DoubleButtonsModal(
+      autoPop: true,
       onOk: () {
         handleRenameFile(context, false);
       },
@@ -162,6 +188,7 @@ void confirmDeleteEntityModal({
     backgroundColor: Colors.transparent,
     context: context,
     builder: (context) => DoubleButtonsModal(
+      autoPop: true,
       cancelText: cancelText,
       onCancel: onCancel,
       okText: okText,

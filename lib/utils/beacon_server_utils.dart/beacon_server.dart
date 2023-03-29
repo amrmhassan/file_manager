@@ -6,13 +6,17 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/helpers/router_system/router.dart';
+import 'package:explorer/helpers/router_system/server.dart';
+import 'package:explorer/providers/server_provider.dart';
+import 'package:explorer/providers/share_provider.dart';
+import 'package:explorer/utils/beacon_server_utils.dart/beacon_server_handlers.dart';
+import 'package:explorer/utils/beacon_server_utils.dart/beacon_server_middlewares.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
+import 'package:explorer/utils/server_utils/middlewares.dart';
 
 class BeaconServer {
-  final String _connLinkQueryEncoded;
   HttpServer? _httpServer;
-
-  BeaconServer(this._connLinkQueryEncoded);
 
 // these ports must be static and never change for my app lifetime
   static const List<int> beaconPorts = [
@@ -22,10 +26,14 @@ class BeaconServer {
     8541,
   ];
 
-  Future<HttpServer> startBeaconServer() async {
+  Future<HttpServer> startBeaconServer(
+    ServerProvider serverProvider,
+    ShareProvider shareProvider,
+  ) async {
     for (var port in beaconPorts) {
       try {
-        _httpServer = await HttpServer.bind(InternetAddress.anyIPv4, port);
+        _httpServer =
+            await _getBeaconServerRouter(serverProvider, shareProvider, port);
         break;
       } catch (e) {
         logger.e('port $port is used');
@@ -35,21 +43,6 @@ class BeaconServer {
       logger.e('server isnt set yet');
       throw Exception('Server isnt set');
     }
-    //? here you can use the http server
-    HttpServer validServer = _httpServer!;
-    validServer.listen((request) {
-      String path = request.uri.path;
-      logger.i(
-          'beacon server received a scan from ${request.connectionInfo!.remoteAddress.address}:${request.connectionInfo!.remotePort}');
-      if (path == '/') {
-        // here return the query connLink
-        request.response
-          ..write(_connLinkQueryEncoded)
-          ..close();
-      } else if (path == EndPoints.getPeerImagePath) {
-        S1H.getUserImageHandler(request, request.response);
-      }
-    });
     return _httpServer!;
   }
 
@@ -126,5 +119,33 @@ class BeaconServer {
       }
     }
     return myIps;
+  }
+
+  Future<HttpServer> _getBeaconServerRouter(
+    ServerProvider serverProvider,
+    ShareProvider shareProvider,
+    int port,
+  ) async {
+    var router = CustomRouter()
+        .addTrailersMiddleWare(MiddleWares.requestLogger)
+        .get(
+          EndPoints.getBeaconServerName,
+          [],
+          BSH.getServerName,
+        )
+        .get(
+          EndPoints.getPeerImagePath,
+          [],
+          S1H.getUserImageHandler,
+        )
+        .get(
+          EndPoints.getMyConnLink,
+          [BSM.getMyConnLink],
+          BSH.getServerConnLink,
+        );
+
+    CustomServer customServer =
+        CustomServer(router, InternetAddress.anyIPv4, port);
+    return customServer.bind();
   }
 }

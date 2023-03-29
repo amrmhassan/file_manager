@@ -40,6 +40,10 @@ class EndPoints {
   static const String getLaptopDeviceName = '/getLaptopDeviceNameEndpoint';
   static const String getAndroidName = '/getAndroidNameEndPoint';
   static const String getAndroidID = '/getAndroidIDEndPoint';
+
+  // beacon server endpoints
+  static const String getBeaconServerName = '/getBeaconServerName';
+  static const String getMyConnLink = '/getBeaconServerConnLink';
 }
 
 //? headers keys

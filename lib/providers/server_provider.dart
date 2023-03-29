@@ -28,6 +28,7 @@ import '../models/peer_model.dart';
 //? including the new device which will add the clients list to his state to be used later
 
 class ServerProvider extends ChangeNotifier {
+  // this is the encrypted link used by the server to allow clients to connect with him
   String? myConnLink;
   late String myWSConnLink;
   int myPort = 0;
@@ -269,8 +270,8 @@ class ServerProvider extends ChangeNotifier {
       myType = memberType;
       myConnLink = connLinkQrFromIterable(myPossibleIPs, myPort);
       try {
-        beaconServer = BeaconServer(myConnLink!);
-        beaconServer!.startBeaconServer();
+        beaconServer = BeaconServer();
+        beaconServer!.startBeaconServer(this, shareProvider);
       } catch (e) {
         logger.e(e);
         //! show a snack bar that users can't scan remotely for you and they must scan with qr code

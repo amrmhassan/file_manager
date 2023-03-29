@@ -201,6 +201,7 @@ class DownloadTaskController {
         context: navigatorKey.currentContext!,
         backgroundColor: Colors.transparent,
         builder: (context) => DoubleButtonsModal(
+          autoPop: true,
           onOk: () {
             overwrite = true;
           },

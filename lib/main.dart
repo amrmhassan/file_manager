@@ -30,8 +30,8 @@ import 'package:provider/provider.dart';
 //! run parallel analyzer for the analyzer provider like in the search provider to fasten the process
 //! with each extended search, deal with it as a full analyze step and use it's results to update the analyzing reports and all that stuff
 
-//? for the beacon protocol you must get the device interfaces first, and try to get the subnet from the device ip from interface and try to call every ip possible from the the subnet you get from the device ip 
-//? i mean from the client device ip who wants to connect to the beacon device
+// the beacon provider to scan and get servers and the existing one done add it
+// get image of the beacon server from the widget itself
 
 void startForegroundService() {
   ForegroundService().start();

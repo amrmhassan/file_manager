@@ -96,6 +96,7 @@ class _ListyItemViewerScreenState extends State<ListyItemViewerScreen> {
                                     backgroundColor: Colors.transparent,
                                     context: context,
                                     builder: (ctx) => DoubleButtonsModal(
+                                      autoPop: true,
                                       onOk: () async {
                                         returnValue = true;
                                         await Provider.of<ListyProvider>(

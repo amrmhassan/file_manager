@@ -1,8 +1,10 @@
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
+
+import 'package:explorer/providers/beacon_provider.dart';
 import 'package:explorer/providers/language_provider.dart';
 import 'package:explorer/providers/permissions_provider.dart';
 import 'package:explorer/providers/search_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
@@ -40,4 +42,5 @@ List<SingleChildWidget> mainProviders = [
   ChangeNotifierProvider(create: (ctx) => SearchProvider()),
   ChangeNotifierProvider(create: (ctx) => LanguageProvider()),
   ChangeNotifierProvider(create: (ctx) => PermissionProvider()),
+  ChangeNotifierProvider(create: (ctx) => BeaconProvider()),
 ];

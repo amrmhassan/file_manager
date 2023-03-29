@@ -29,6 +29,7 @@ class _SendTextToPhoneModalState extends State<SendTextToPhoneModal> {
   @override
   Widget build(BuildContext context) {
     return DoubleButtonsModal(
+      autoPop: true,
       onOk: () async {
         try {
           String connLink =

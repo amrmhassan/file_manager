@@ -78,6 +78,7 @@ class ConnectLaptopScreen extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   context: context,
                   builder: (context) => DoubleButtonsModal(
+                    autoPop: true,
                     onOk: () {
                       connectLaptopPF(context).closeServer();
                     },

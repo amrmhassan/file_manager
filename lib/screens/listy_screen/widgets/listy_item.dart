@@ -67,6 +67,7 @@ class ListyItem extends StatelessWidget {
           backgroundColor: Colors.transparent,
           context: context,
           builder: (ctx) => DoubleButtonsModal(
+            autoPop: true,
             onOk: () async {
               returnValue = true;
               await removeAListy(e.title, context);

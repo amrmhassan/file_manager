@@ -128,6 +128,7 @@ class GroupInfoModal extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   context: context,
                   builder: (context) => DoubleButtonsModal(
+                    autoPop: true,
                     onOk: () {
                       onLeaveGroup();
                     },

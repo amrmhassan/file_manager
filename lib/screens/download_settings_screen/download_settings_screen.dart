@@ -69,6 +69,7 @@ class DownloadSetScreen extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   context: context,
                   builder: (context) => DoubleButtonsModal(
+                    autoPop: true,
                     onOk: () {
                       downPF(context).clearAllTasks(
                         serverPF(context),

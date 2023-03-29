@@ -32,6 +32,7 @@ class HostNoteModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DoubleButtonsModal(
+      autoPop: true,
       onOk: () async {
         try {
           bool res = await localOpenServerHandler(context);

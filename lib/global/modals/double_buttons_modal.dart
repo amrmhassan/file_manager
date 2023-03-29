@@ -36,7 +36,7 @@ class DoubleButtonsModal extends StatelessWidget {
     this.cancelText,
     this.okColor,
     this.cancelColor,
-    this.autoPop = true,
+    required this.autoPop,
     this.reverseButtonsOrder = false,
     this.extra,
     this.showCancelButton = true,
