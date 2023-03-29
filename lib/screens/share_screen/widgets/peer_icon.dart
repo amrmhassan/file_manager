@@ -45,7 +45,7 @@ class _PeerIconState extends State<PeerIcon> {
         peerImage = image;
       });
     } catch (e) {
-      logger.e('other user has no image');
+      logger.i('other user has no image');
     }
   }
 

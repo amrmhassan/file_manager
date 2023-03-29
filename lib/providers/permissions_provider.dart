@@ -120,4 +120,15 @@ class PermissionProvider extends ChangeNotifier {
       );
     }
   }
+
+  Future<void> askAllForAUser(String userID, String userName) async {
+    for (var element in defaultPermissions) {
+      await editPeerPermission(
+        userID,
+        permissionName: element.permissionName,
+        status: PermissionStatus.ask,
+        peerName: userName,
+      );
+    }
+  }
 }
