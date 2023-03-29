@@ -6,8 +6,10 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/models/beacon_server_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_icon.dart';
+import 'package:explorer/screens/share_screen/widgets/share_controllers_buttons.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BeaconServerInfoCard extends StatelessWidget {
@@ -28,9 +30,20 @@ class BeaconServerInfoCard extends StatelessWidget {
             myDeviceID: shareProvider.myDeviceId,
             beaconServerUrl: beaconServerModel.url,
           );
+          String connLink = beaconServerModel.connQueryLink!;
+          try {
+            handleConnectToHostWithCode(connLink, context);
+            Navigator.pop(context);
+          } catch (e) {
+            showSnackBar(
+              context: context,
+              message: e.toString(),
+              snackBarType: SnackBarType.error,
+            );
+          }
         } on DioError catch (e) {
           String? refuseMessage =
-              e.response!.headers.value(KHeaders.serverRefuseReasonHeaderKey);
+              e.response?.headers.value(KHeaders.serverRefuseReasonHeaderKey);
           fastSnackBar(
             msg: refuseMessage ?? 'Error Occurred',
             snackBarType: SnackBarType.error,
@@ -42,7 +55,12 @@ class BeaconServerInfoCard extends StatelessWidget {
         beaconServerModel.deviceName,
         style: h4TextStyle,
       ),
-      trailing: Text(beaconServerModel.url),
+      trailing: kDebugMode
+          ? Text(beaconServerModel.url)
+          : Text(
+              'Connect',
+              style: h4LiteTextStyle,
+            ),
     );
   }
 }

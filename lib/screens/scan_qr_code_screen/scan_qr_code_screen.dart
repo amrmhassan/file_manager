@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -32,41 +34,13 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
   void _onQRViewCreated(QRViewController c, [bool? justScanner]) async {
     try {
       await c.resumeCamera();
-      c.scannedDataStream.listen((scanData) async {
-        if (justScanner == true) {
-          await c.pauseCamera();
-
-          await showModalBottomSheet(
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (context) => QrResultModal(
-              code: scanData.code,
-            ),
-          );
-          await c.resumeCamera();
-        } else {
-          if ((scanData.code ?? '').endsWith(EndPoints.dummy) &&
-              (scanData.code ?? '').startsWith('http://')) {
-            Navigator.pop(
-                context, scanData.code?.replaceAll(EndPoints.dummy, ''));
-            await c.stopCamera();
-          } else {
-            // this time it might be for connecting to laptop option
-            String code = (scanData.code ?? '')
-              ..replaceAll(EndPoints.dummy, '');
-            var data = code.split(' ');
-            if (data.length != 2) return;
-            int? last = int.tryParse(data.last);
-            if (last == null) return;
-            await c.stopCamera();
-            try {
-              Navigator.pop(context, scanData.code);
-            } catch (e) {
-              logger.e(e);
-            }
-          }
-        }
-      });
+      c.scannedDataStream.listen(
+        (event) => onScanCapture(
+          event,
+          justScanner,
+          c,
+        ),
+      );
     } catch (e, s) {
       throw CustomException(
         e: e,
@@ -125,19 +99,22 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
           Expanded(
             child: Column(
               children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: QRView(
-                    key: qrKey,
-                    onQRViewCreated: (p0) =>
-                        _onQRViewCreated(p0, justQrScanner),
-                    overlay: QrScannerOverlayShape(
-                      borderRadius: 10,
-                      borderColor: kBackgroundColor,
-                      borderWidth: 10,
+                if (!Platform.isWindows)
+                  Expanded(
+                    flex: 5,
+                    child: QRView(
+                      key: qrKey,
+                      onQRViewCreated: (p0) =>
+                          _onQRViewCreated(p0, justQrScanner),
+                      overlay: QrScannerOverlayShape(
+                        borderRadius: 10,
+                        borderColor: kBackgroundColor,
+                        borderWidth: 10,
+                      ),
                     ),
-                  ),
-                ),
+                  )
+                else
+                  Expanded(child: SizedBox()),
                 BeaconServersScanResultContainer(),
               ],
             ),
@@ -145,5 +122,43 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
         ],
       ),
     );
+  }
+
+  void onScanCapture(
+    Barcode scanData,
+    bool? justScanner,
+    QRViewController c,
+  ) async {
+    if (justScanner == true) {
+      await c.pauseCamera();
+
+      await showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => QrResultModal(
+          code: scanData.code,
+        ),
+      );
+      await c.resumeCamera();
+    } else {
+      if ((scanData.code ?? '').endsWith(EndPoints.dummy) &&
+          (scanData.code ?? '').startsWith('http://')) {
+        Navigator.pop(context, scanData.code?.replaceAll(EndPoints.dummy, ''));
+        await c.stopCamera();
+      } else {
+        // this time it might be for connecting to laptop option
+        String code = (scanData.code ?? '')..replaceAll(EndPoints.dummy, '');
+        var data = code.split(' ');
+        if (data.length != 2) return;
+        int? last = int.tryParse(data.last);
+        if (last == null) return;
+        await c.stopCamera();
+        try {
+          Navigator.pop(context, scanData.code);
+        } catch (e) {
+          logger.e(e);
+        }
+      }
+    }
   }
 }

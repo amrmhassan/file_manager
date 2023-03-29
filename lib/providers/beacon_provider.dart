@@ -28,7 +28,7 @@ class BeaconProvider extends ChangeNotifier {
     String id,
   ) {
     String? myServerID = serverProvider.beaconServer?.serverID;
-    if (myServerID == id) return;
+    if (myServerID == id && kReleaseMode) return;
     // to return if the server is discovered once by, another interface
     if (_discoveredBeaconServers.any((element) => element.url == url)) return;
     // i want to return if the discovered beacon server url is my beacon server url

@@ -106,12 +106,23 @@ class ShareProvider extends ChangeNotifier {
     return name;
   }
 
+  Future<String> _getWindowsName() async {
+    var info = await DeviceInfoPlugin().windowsInfo;
+    String name = info.computerName;
+    if (name.replaceAll(' ', '').isEmpty) {
+      return myDefaultName;
+    }
+    return name;
+  }
+
   //? to load my saved name
   Future<void> _loadMyName() async {
     String? savedName = await SharedPrefHelper.getString(myNameKey);
 
     if (savedName == null) {
-      myName = await _getAndroidName();
+      myName = Platform.isWindows
+          ? await _getWindowsName()
+          : await _getAndroidName();
       notifyListeners();
       await SharedPrefHelper.setString(myNameKey, myName);
       return;

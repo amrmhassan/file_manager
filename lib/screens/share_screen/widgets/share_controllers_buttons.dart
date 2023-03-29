@@ -101,36 +101,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
         ScanQRCodeScreen.routeName,
       );
 
-      if (qrCode is String) {
-        if (qrCode.contains(' ') &&
-            int.tryParse(qrCode.split(' ').last) != null) {
-          //? 1] i will get a working ip of the server
-          //? 2] if there is working ip, then i will start /addClient (client_utils.addClient)
-          //? 3] done
-          String? workingLink = await client_utils.shareSpaceGetWorkingLink(
-            qrCode,
-            serverPF(context),
-            sharePF(context),
-            shareExpPF(context),
-          );
-          logger.i('Working Ip is $workingLink');
-          if (workingLink == null) {
-            await serverPF(context).closeServer();
-            throw CustomException(
-              e: 'You aren\'t connected on the same network',
-              s: StackTrace.current,
-            );
-          }
-          await client_utils.addClient(
-            'http://$workingLink',
-            sharePF(context),
-            serverPF(context),
-            shareExpPF(context),
-          );
-          //this mean that it has an encrypted text
-        }
-        //? here just open the link and start adding a client
-      }
+      handleConnectToHostWithCode(qrCode, context);
     } catch (e, s) {
       if (!mounted) return;
       showSnackBar(
@@ -140,5 +111,37 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
       );
       CustomException(e: e, s: s);
     }
+  }
+}
+
+void handleConnectToHostWithCode(Object? qrCode, BuildContext context) async {
+  if (qrCode is String) {
+    if (qrCode.contains(' ') && int.tryParse(qrCode.split(' ').last) != null) {
+      //? 1] i will get a working ip of the server
+      //? 2] if there is working ip, then i will start /addClient (client_utils.addClient)
+      //? 3] done
+      String? workingLink = await client_utils.shareSpaceGetWorkingLink(
+        qrCode,
+        serverPF(context),
+        sharePF(context),
+        shareExpPF(context),
+      );
+      logger.i('Working Ip is $workingLink');
+      if (workingLink == null) {
+        await serverPF(context).closeServer();
+        throw CustomException(
+          e: 'You aren\'t connected on the same network',
+          s: StackTrace.current,
+        );
+      }
+      await client_utils.addClient(
+        'http://$workingLink',
+        sharePF(context),
+        serverPF(context),
+        shareExpPF(context),
+      );
+      //this mean that it has an encrypted text
+    }
+    //? here just open the link and start adding a client
   }
 }
