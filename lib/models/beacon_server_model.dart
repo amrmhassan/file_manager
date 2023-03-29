@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 class BeaconServerModel {
   // this id will be set locally by each discoverer, not from the beacon server
-  final String id;
+  final String url;
   final String deviceName;
   String? connQueryLink;
   Uint8List? serverImage;
@@ -11,8 +11,8 @@ class BeaconServerModel {
   final double distanceFactor;
 
   BeaconServerModel({
-    required this.id,
     required this.deviceName,
+    required this.url,
     this.serverImage,
     this.connQueryLink,
     this.distanceFactor = 0,

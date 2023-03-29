@@ -18,7 +18,7 @@ import 'package:explorer/utils/server_utils/middlewares.dart';
 class BeaconServer {
   HttpServer? _httpServer;
 
-// these ports must be static and never change for my app lifetime
+  // these ports must be static and never change for my app lifetime
   static const List<int> beaconPorts = [
     2587,
     9632,
@@ -50,18 +50,47 @@ class BeaconServer {
     await _httpServer?.close();
   }
 
+  Future<HttpServer> _getBeaconServerRouter(
+    ServerProvider serverProvider,
+    ShareProvider shareProvider,
+    int port,
+  ) async {
+    var router = CustomRouter()
+        .addTrailersMiddleWare(MiddleWares.requestLogger)
+        .get(
+          EndPoints.getBeaconServerName,
+          [],
+          BSH.getServerName,
+        )
+        .get(
+          EndPoints.getPeerImagePath,
+          [],
+          S1H.getUserImageHandler,
+        )
+        .get(
+          EndPoints.getMyConnLink,
+          [BSM.getMyConnLink],
+          BSH.getServerConnLink,
+        );
+
+    CustomServer customServer =
+        CustomServer(router, InternetAddress.anyIPv4, port);
+    return customServer.bind();
+  }
+
+  //? the following code is for the client who want to search for beacon servers
   static Future<void> getWorkingDevice({
-    required Function(String query) onDeviceFound,
+    required Function(String url, String name) onDeviceFound,
   }) async {
     List<String> links = [];
     List<String> completedInks = [];
     Completer completer = Completer();
     Dio dio = Dio();
-    dio.options.sendTimeout = 5000;
-    dio.options.connectTimeout = 5000;
-    dio.options.receiveTimeout = 5000;
+    dio.options.sendTimeout = 10000;
+    dio.options.connectTimeout = 10000;
+    dio.options.receiveTimeout = 10000;
     List<String> subnets = await _getMySubnets();
-    logger.i(subnets);
+    logger.i('my subnets $subnets');
 
     for (var subnet in subnets) {
       for (var port in beaconPorts) {
@@ -69,8 +98,9 @@ class BeaconServer {
           final address = '$subnet.$i';
           links.add(address);
           String url = 'http://$address:$port';
-          dio.get(url).then((value) {
-            onDeviceFound(value.data);
+          dio.get(url).then((value) async {
+            String serverName = await _getBeaconServerName(url);
+            onDeviceFound(url, serverName);
             completedInks.add(address);
             if (links.length == completedInks.length) {
               // scan finished
@@ -121,31 +151,8 @@ class BeaconServer {
     return myIps;
   }
 
-  Future<HttpServer> _getBeaconServerRouter(
-    ServerProvider serverProvider,
-    ShareProvider shareProvider,
-    int port,
-  ) async {
-    var router = CustomRouter()
-        .addTrailersMiddleWare(MiddleWares.requestLogger)
-        .get(
-          EndPoints.getBeaconServerName,
-          [],
-          BSH.getServerName,
-        )
-        .get(
-          EndPoints.getPeerImagePath,
-          [],
-          S1H.getUserImageHandler,
-        )
-        .get(
-          EndPoints.getMyConnLink,
-          [BSM.getMyConnLink],
-          BSH.getServerConnLink,
-        );
-
-    CustomServer customServer =
-        CustomServer(router, InternetAddress.anyIPv4, port);
-    return customServer.bind();
+  static Future<String> _getBeaconServerName(String url) async {
+    var res = await Dio().get('$url/${EndPoints.getBeaconServerName}');
+    return res.data;
   }
 }

@@ -29,8 +29,8 @@ class _TestScreenState extends State<TestScreen> {
             onPressed: () async {
               logger.i('your http server is ${serverPF(context).httpServer}');
               await BeaconServer.getWorkingDevice(
-                onDeviceFound: (query) {
-                  logger.i('a working device $query');
+                onDeviceFound: (url, name) {
+                  logger.i('a working device $url, $name');
                 },
               );
               logger.i('scan finished');
