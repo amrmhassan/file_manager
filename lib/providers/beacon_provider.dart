@@ -25,13 +25,17 @@ class BeaconProvider extends ChangeNotifier {
     String serverName,
     String url,
     ServerProvider serverProvider,
+    String id,
   ) {
+    String? myServerID = serverProvider.beaconServer?.serverID;
+    if (myServerID == id) return;
     // to return if the server is discovered once by, another interface
     if (_discoveredBeaconServers.any((element) => element.url == url)) return;
     // i want to return if the discovered beacon server url is my beacon server url
     BeaconServerModel discoveredOne = BeaconServerModel(
       deviceName: serverName,
       url: url,
+      id: id,
     );
     _discoveredBeaconServers.add(discoveredOne);
     notifyListeners();
@@ -70,7 +74,11 @@ class BeaconProvider extends ChangeNotifier {
     _discoveredBeaconServers.clear();
     notifyListeners();
     await BeaconServer.getWorkingDevice(
-      onDeviceFound: (url, name) {
+      onDeviceFound: (
+        url,
+        name,
+        id,
+      ) {
         logger.i('beacon found $url');
         //? to prevent adding a new beacon server if cleared
         if (_cleared) return;
@@ -78,6 +86,7 @@ class BeaconProvider extends ChangeNotifier {
           name,
           url,
           serverProvider,
+          id,
         );
       },
     );
@@ -93,7 +102,7 @@ class BeaconProvider extends ChangeNotifier {
     try {
       // this might throw an error, so handle it from the UI
       var data = await Dio().get(
-        '$beaconServerUrl${EndPoints.getMyConnLink}',
+        '$beaconServerUrl${EndPoints.getBeaconServerConnLink}',
         options: Options(
           headers: {
             KHeaders.userNameHeaderKey: myName,

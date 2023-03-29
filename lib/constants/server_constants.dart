@@ -43,7 +43,8 @@ class EndPoints {
 
   // beacon server endpoints
   static const String getBeaconServerName = '/getBeaconServerName';
-  static const String getMyConnLink = '/getBeaconServerConnLink';
+  static const String getBeaconServerConnLink = '/getBeaconServerConnLink';
+  static const String getBeaconServerID = '/getBeaconServerID';
 }
 
 //? headers keys

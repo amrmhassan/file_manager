@@ -27,6 +27,26 @@ class BSH {
       ..close();
   }
 
+  static void getServerID(
+    HttpRequest request,
+    HttpResponse response,
+  ) {
+    BuildContext? context = navigatorKey.currentContext;
+    if (context == null) {
+      response
+        ..statusCode = HttpStatus.internalServerError
+        ..write('An error with context')
+        ..close();
+      return;
+    }
+    var serverProvider = serverPF(context);
+    String beaconServerID = serverProvider.beaconServer!.serverID;
+
+    response
+      ..write(beaconServerID)
+      ..close();
+  }
+
   static void getServerConnLink(
     HttpRequest request,
     HttpResponse response,

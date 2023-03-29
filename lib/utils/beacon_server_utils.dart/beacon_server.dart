@@ -14,9 +14,14 @@ import 'package:explorer/utils/beacon_server_utils.dart/beacon_server_handlers.d
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server_middlewares.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 import 'package:explorer/utils/server_utils/middlewares.dart';
+import 'package:uuid/uuid.dart';
 
 class BeaconServer {
   HttpServer? _httpServer;
+  late String serverID;
+  BeaconServer() {
+    serverID = Uuid().v4();
+  }
 
   // these ports must be static and never change for my app lifetime
   static const List<int> beaconPorts = [
@@ -69,9 +74,14 @@ class BeaconServer {
           S1H.getUserImageHandler,
         )
         .get(
-          EndPoints.getMyConnLink,
+          EndPoints.getBeaconServerConnLink,
           [BSM.getMyConnLink],
           BSH.getServerConnLink,
+        )
+        .get(
+          EndPoints.getBeaconServerID,
+          [],
+          BSH.getServerID,
         );
 
     CustomServer customServer =
@@ -81,7 +91,12 @@ class BeaconServer {
 
   //? the following code is for the client who want to search for beacon servers
   static Future<void> getWorkingDevice({
-    required Function(String url, String name) onDeviceFound,
+    required Function(
+      String url,
+      String name,
+      String id,
+    )
+        onDeviceFound,
   }) async {
     List<String> links = [];
     List<String> completedInks = [];
@@ -99,9 +114,16 @@ class BeaconServer {
           final address = '$subnet.$i';
           links.add(address);
           String url = 'http://$address:$port';
-          dio.get(url).then((value) async {
-            String serverName = await _getBeaconServerName(url);
-            onDeviceFound(url, serverName);
+          String beaconNameUrl = '$url${EndPoints.getBeaconServerName}';
+
+          dio.get(beaconNameUrl).then((res) async {
+            String serverID = await _getBeaconServerID(url);
+            String serverName = res.data;
+            onDeviceFound(
+              url,
+              serverName,
+              serverID,
+            );
             completedInks.add(address);
             if (links.length == completedInks.length) {
               // scan finished
@@ -155,8 +177,8 @@ class BeaconServer {
     return myIps;
   }
 
-  static Future<String> _getBeaconServerName(String url) async {
-    var res = await Dio().get('$url${EndPoints.getBeaconServerName}');
-    return res.data;
+  static Future<String> _getBeaconServerID(String url) async {
+    var data = await Dio().get('$url${EndPoints.getBeaconServerID}');
+    return data.data;
   }
 }
