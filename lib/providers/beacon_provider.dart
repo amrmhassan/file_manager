@@ -71,6 +71,7 @@ class BeaconProvider extends ChangeNotifier {
     notifyListeners();
     await BeaconServer.getWorkingDevice(
       onDeviceFound: (url, name) {
+        logger.i('beacon found $url');
         //? to prevent adding a new beacon server if cleared
         if (_cleared) return;
         _addBeaconServer(

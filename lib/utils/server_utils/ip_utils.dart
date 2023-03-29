@@ -1,7 +1,6 @@
 //? get my wifi address
 import 'dart:io';
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/utils/simple_encryption_utils/simple_encryption_utils.dart';
 
 Future<String?> getMyIpAddress([bool wifi = true]) async {
