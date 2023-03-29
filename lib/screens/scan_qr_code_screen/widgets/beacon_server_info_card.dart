@@ -34,7 +34,7 @@ class BeaconServerInfoCard extends StatelessWidget {
           );
           String connLink = beaconServerModel.connQueryLink!;
           try {
-            handleConnectToHostWithCode(connLink, context);
+            handleConnectToHostWithCode(connLink);
             Navigator.pop(context);
           } catch (e) {
             showSnackBar(

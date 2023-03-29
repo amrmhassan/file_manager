@@ -41,6 +41,7 @@ class PermissionsMiddlewares {
     PermissionStatus permissionStatus = permissionsProvider.getPermissionStatus(
       deviceID,
       permissionName: permissionName,
+      userName: userName,
     );
     String refuseMessage =
         PermissionsNamesUtils.blockPermissionReadable(permissionName);

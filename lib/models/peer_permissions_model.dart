@@ -48,6 +48,13 @@ class PermissionModel {
     required this.permissionName,
     required this.permissionStatus,
   });
+
+  PermissionModel copy() {
+    return PermissionModel(
+      permissionName: permissionName,
+      permissionStatus: permissionStatus,
+    );
+  }
 }
 
 // we have some kinds of permissions like the below permissions

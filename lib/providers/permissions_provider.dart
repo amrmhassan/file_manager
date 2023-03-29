@@ -17,15 +17,15 @@ class PermissionProvider extends ChangeNotifier {
     var box = await HiveBox.peerPermissionsBox;
 
     _peersPermissions = [...box.values.toList().cast()];
-    if (kDebugMode) {
-      _peersPermissions.add(
-        PeerPermissionsModel(
-          'peerDeviceID',
-          'peerName',
-          defaultPermissions,
-        ),
-      );
-    }
+    // if (kDebugMode) {
+    //   _peersPermissions.add(
+    //     PeerPermissionsModel(
+    //       'peerDeviceID',
+    //       'peerName',
+    //       defaultPermissions,
+    //     ),
+    //   );
+    // }
     notifyListeners();
   }
 
@@ -33,8 +33,14 @@ class PermissionProvider extends ChangeNotifier {
     required String peerDeviceID,
     required String peerName,
   }) {
-    PeerPermissionsModel newPeerPermissions =
-        PeerPermissionsModel(peerDeviceID, peerName, defaultPermissions);
+    var defaultPermissionsCopy = defaultPermissions.map(
+      (e) => e.copy(),
+    );
+    PeerPermissionsModel newPeerPermissions = PeerPermissionsModel(
+      peerDeviceID,
+      peerName,
+      [...defaultPermissionsCopy],
+    );
     _peersPermissions.add(newPeerPermissions);
   }
 
@@ -68,9 +74,18 @@ class PermissionProvider extends ChangeNotifier {
   PermissionStatus getPermissionStatus(
     String userDeviceID, {
     required PermissionName permissionName,
+    required String userName,
   }) {
     bool added = _peerAdded(userDeviceID);
     if (!added) {
+      editPeerPermission(
+        userDeviceID,
+        permissionName: permissionName,
+        status: defaultPermissions
+            .firstWhere((element) => element.permissionName == permissionName)
+            .permissionStatus,
+        peerName: userName,
+      );
       // if the user does'nt exist i will ask the user to allow him or not
       // this will be done be returning ask
       return defaultPermissions

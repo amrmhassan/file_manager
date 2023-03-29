@@ -4,6 +4,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/host_note_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
@@ -101,7 +102,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
         ScanQRCodeScreen.routeName,
       );
 
-      handleConnectToHostWithCode(qrCode, context);
+      handleConnectToHostWithCode(qrCode);
     } catch (e, s) {
       if (!mounted) return;
       showSnackBar(
@@ -114,31 +115,35 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
   }
 }
 
-void handleConnectToHostWithCode(Object? qrCode, BuildContext context) async {
+void handleConnectToHostWithCode(Object? qrCode) async {
   if (qrCode is String) {
     if (qrCode.contains(' ') && int.tryParse(qrCode.split(' ').last) != null) {
       //? 1] i will get a working ip of the server
       //? 2] if there is working ip, then i will start /addClient (client_utils.addClient)
       //? 3] done
+      //! i replaced context with navigatorKey context to fix an error that was showing p
       String? workingLink = await client_utils.shareSpaceGetWorkingLink(
         qrCode,
-        serverPF(context),
-        sharePF(context),
-        shareExpPF(context),
+        serverPF(navigatorKey.currentContext!),
+        sharePF(navigatorKey.currentContext!),
+        shareExpPF(navigatorKey.currentContext!),
       );
       logger.i('Working Ip is $workingLink');
       if (workingLink == null) {
-        await serverPF(context).closeServer();
+        await serverPF(navigatorKey.currentContext!).closeServer();
         throw CustomException(
           e: 'You aren\'t connected on the same network',
           s: StackTrace.current,
         );
       }
+      // BuildContext con =
+      //     context.mounted ? context : navigatorKey.currentContext!;
+      //
       await client_utils.addClient(
         'http://$workingLink',
-        sharePF(context),
-        serverPF(context),
-        shareExpPF(context),
+        sharePF(navigatorKey.currentContext!),
+        serverPF(navigatorKey.currentContext!),
+        shareExpPF(navigatorKey.currentContext!),
       );
       //this mean that it has an encrypted text
     }
