@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors
 
 import 'dart:async';
 import 'dart:io';
@@ -105,17 +105,20 @@ class BeaconServer {
             completedInks.add(address);
             if (links.length == completedInks.length) {
               // scan finished
+              if (completer.isCompleted) return;
               completer.complete();
               // logger.i('done iterations ${completedInks.length}');
             }
           }).catchError((e) {
             completedInks.add(address);
             if (links.length == completedInks.length) {
+              if (completer.isCompleted) return;
               // scan finished
               completer.complete();
               // logger.i('done iterations ${completedInks.length}');
             }
           });
+          await Future.delayed(Duration(milliseconds: 10));
         }
       }
     }

@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
@@ -9,7 +7,7 @@ import 'package:explorer/models/beacon_server_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server.dart';
 import 'package:explorer/utils/client_utils.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 // the beacon server will allow everyone to view his image and name with no protection
 // but for getting the server connLink a modal will be shown on the beacon server device to ask the user to allow another one to access
@@ -69,6 +67,7 @@ class BeaconProvider extends ChangeNotifier {
     if (_scanning) return;
     _scanning = true;
     _cleared = false;
+    _discoveredBeaconServers.clear();
     notifyListeners();
     await BeaconServer.getWorkingDevice(
       onDeviceFound: (url, name) {
