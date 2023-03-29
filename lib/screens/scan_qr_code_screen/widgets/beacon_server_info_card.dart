@@ -23,6 +23,7 @@ class BeaconServerInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () async {
+        // beaconPF(context).connectToBeaconServer(context, beaconServerModel);
         try {
           var shareProvider = sharePF(context);
           await beaconPF(context).askForBeaconServerConnLink(
@@ -41,13 +42,20 @@ class BeaconServerInfoCard extends StatelessWidget {
               snackBarType: SnackBarType.error,
             );
           }
-        } on DioError catch (e) {
-          String? refuseMessage =
-              e.response?.headers.value(KHeaders.serverRefuseReasonHeaderKey);
-          fastSnackBar(
-            msg: refuseMessage ?? 'Error Occurred',
-            snackBarType: SnackBarType.error,
-          );
+        } catch (e) {
+          if (e is DioError) {
+            String? refuseMessage =
+                e.response?.headers.value(KHeaders.serverRefuseReasonHeaderKey);
+            fastSnackBar(
+              msg: refuseMessage ?? e.toString(),
+              snackBarType: SnackBarType.error,
+            );
+          } else {
+            fastSnackBar(
+              msg: e.toString(),
+              snackBarType: SnackBarType.error,
+            );
+          }
         }
       },
       leading: BeaconServerIcon(beaconServerModel: beaconServerModel),

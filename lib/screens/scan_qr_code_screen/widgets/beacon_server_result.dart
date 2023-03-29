@@ -29,14 +29,6 @@ class _BeaconServersScanResultContainerState
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   Future.delayed(Duration.zero).then((value) {
-  //     beaconPF(navigatorKey.currentContext!).clearBeaconServers();
-  //   });
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     var beaconServer = beaconP(context);

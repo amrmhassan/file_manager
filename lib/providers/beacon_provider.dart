@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
 import 'package:explorer/models/beacon_server_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server.dart';
@@ -16,6 +17,8 @@ class BeaconProvider extends ChangeNotifier {
   bool _scanning = false;
   bool get scanning => _scanning;
   bool _cleared = false;
+  // this is the url of the beacon server that was clicked and i am waiting for his response
+  String? beaconServerUnderRequest;
 
   final List<BeaconServerModel> _discoveredBeaconServers = [];
   List<BeaconServerModel> get discoveredBeaconServers =>
@@ -99,7 +102,13 @@ class BeaconProvider extends ChangeNotifier {
     required String myDeviceID,
     required String beaconServerUrl,
   }) async {
+    bool repeatedRequest = false;
     try {
+      if (beaconServerUnderRequest != null) {
+        repeatedRequest = true;
+        throw Exception('Please wait for the host response');
+      }
+      beaconServerUnderRequest = beaconServerUrl;
       // this might throw an error, so handle it from the UI
       var data = await Dio().get(
         '$beaconServerUrl${EndPoints.getBeaconServerConnLink}',
@@ -110,11 +119,15 @@ class BeaconProvider extends ChangeNotifier {
           },
         ),
       );
+      beaconServerUnderRequest = null;
 
       //! here you need to set the beacon server connLink to the provider
       //? this will show a modal that you are waiting for the beacon server to accept your request to join
       _setABeaconServerConnLink(beaconServerUrl, data.data);
     } catch (e) {
+      if (!repeatedRequest) {
+        beaconServerUnderRequest = null;
+      }
       rethrow;
     }
   }
@@ -130,6 +143,7 @@ class BeaconProvider extends ChangeNotifier {
       Uint8List? image = await getPeerImage(beaconServerUrl);
       _setABeaconServerImage(beaconServerUrl, image);
     } catch (e) {
+      _setABeaconServerImage(beaconServerUrl, null);
       logger.i('this beacon server doesnt have an image');
     }
   }

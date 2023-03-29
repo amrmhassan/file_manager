@@ -33,6 +33,7 @@ class _BeaconServerIconState extends State<BeaconServerIcon> {
             clipBehavior: Clip.hardEdge,
             width: largeIconSize,
             height: largeIconSize,
+            padding: EdgeInsets.all(largePadding * .8),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(.2),
               borderRadius: BorderRadius.circular(1000),
@@ -61,7 +62,6 @@ class _BeaconServerIconState extends State<BeaconServerIcon> {
             // have an image
             : Container(
                 clipBehavior: Clip.hardEdge,
-                padding: EdgeInsets.all(mediumPadding),
                 width: largeIconSize,
                 height: largeIconSize,
                 decoration: BoxDecoration(
