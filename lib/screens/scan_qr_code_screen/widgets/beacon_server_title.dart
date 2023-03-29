@@ -21,20 +21,23 @@ class BeaconServerTitle extends StatelessWidget {
           alignment: Alignment.centerLeft,
           height: largeIconSize,
           child: Text(
-            'Hosting Devices',
+            'Hosts will show up here',
             style: h4TextStyleInactive,
           ),
         ),
         Spacer(),
-        IconButton(
-          onPressed: () {
-            beaconPF(context).startScanForBeaconServers(serverPF(context));
-          },
-          icon: Icon(
-            Icons.replay_outlined,
-            color: kMainIconColor,
-          ),
-        ),
+        // IconButton(
+        //   onPressed: () {
+        //     beaconPF(context).startScanForBeaconServers(
+        //       serverPF(context),
+        //       context,
+        //     );
+        //   },
+        //   icon: Icon(
+        //     Icons.replay_outlined,
+        //     color: kMainIconColor,
+        //   ),
+        // ),
         HSpace(),
       ],
     );

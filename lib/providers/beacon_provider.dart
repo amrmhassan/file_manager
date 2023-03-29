@@ -8,14 +8,14 @@ import 'package:explorer/models/beacon_server_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server.dart';
 import 'package:explorer/utils/client_utils.dart';
+import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 // the beacon server will allow everyone to view his image and name with no protection
 // but for getting the server connLink a modal will be shown on the beacon server device to ask the user to allow another one to access
 // his server, this is just to replace or to work aside with qr code scanner
 class BeaconProvider extends ChangeNotifier {
-  bool _scanning = false;
-  bool get scanning => _scanning;
   bool _cleared = false;
   // this is the url of the beacon server that was clicked and i am waiting for his response
   String? beaconServerUnderRequest;
@@ -71,30 +71,43 @@ class BeaconProvider extends ChangeNotifier {
 
   void startScanForBeaconServers(
     ServerProvider serverProvider,
+    BuildContext context,
   ) async {
-    if (_scanning) return;
-    _scanning = true;
     _cleared = false;
     _discoveredBeaconServers.clear();
     notifyListeners();
-    await BeaconServer.getWorkingDevice(
-      onDeviceFound: (
-        url,
-        name,
-        id,
-      ) {
-        logger.i('beacon found $url');
-        //? to prevent adding a new beacon server if cleared
-        if (_cleared) return;
-        _addBeaconServer(
-          name,
+    DateTime start = DateTime.now();
+    while (context.mounted) {
+      await BeaconServer.getWorkingDevice(
+        onDeviceFound: (
           url,
-          serverProvider,
+          name,
           id,
-        );
-      },
-    );
-    _scanning = false;
+        ) {
+          //? to prevent adding a new beacon server if cleared
+          if (_cleared) return;
+          _addBeaconServer(
+            name,
+            url,
+            serverProvider,
+            id,
+          );
+        },
+        onHostError: (url) {
+          int index = _discoveredBeaconServers
+              .indexWhere((element) => element.url == url);
+          if (index == -1) return;
+          _discoveredBeaconServers.removeAt(index);
+          notifyListeners();
+        },
+      );
+
+      await Future.delayed(Duration(milliseconds: 500));
+    }
+
+    DateTime end = DateTime.now();
+    logger.i('scan time took ${end.difference(start).inMilliseconds}ms');
+
     notifyListeners();
   }
 
@@ -107,7 +120,7 @@ class BeaconProvider extends ChangeNotifier {
     try {
       if (beaconServerUnderRequest != null) {
         repeatedRequest = true;
-        throw Exception('Please wait for the host response');
+        throw CustomException(e: 'Please wait for the host response');
       }
       beaconServerUnderRequest = beaconServerUrl;
       // this might throw an error, so handle it from the UI

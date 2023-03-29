@@ -38,7 +38,7 @@ class BeaconServer {
     for (var port in beaconPorts) {
       try {
         _httpServer =
-            await _getBeaconServerRouter(serverProvider, shareProvider, port);
+            await _getBeaconServer(serverProvider, shareProvider, port);
         logger.i('beacon server listening on $port');
         break;
       } catch (e) {
@@ -56,7 +56,7 @@ class BeaconServer {
     await _httpServer?.close();
   }
 
-  Future<HttpServer> _getBeaconServerRouter(
+  Future<HttpServer> _getBeaconServer(
     ServerProvider serverProvider,
     ShareProvider shareProvider,
     int port,
@@ -97,14 +97,17 @@ class BeaconServer {
       String id,
     )
         onDeviceFound,
+    required Function(
+      String url,
+    )
+        onHostError,
   }) async {
     List<String> links = [];
     List<String> completedInks = [];
-    Completer completer = Completer();
     Dio dio = Dio();
-    dio.options.sendTimeout = 10000;
-    dio.options.connectTimeout = 10000;
-    dio.options.receiveTimeout = 10000;
+    dio.options.sendTimeout = 5000;
+    dio.options.connectTimeout = 5000;
+    dio.options.receiveTimeout = 5000;
     List<String> subnets = await _getMySubnets();
     // logger.i('my subnets $subnets');
 
@@ -127,25 +130,20 @@ class BeaconServer {
             completedInks.add(address);
             if (links.length == completedInks.length) {
               // scan finished
-              if (completer.isCompleted) return;
-              completer.complete();
               // logger.i('done iterations ${completedInks.length}');
             }
           }).catchError((e) {
+            onHostError(url);
             completedInks.add(address);
             if (links.length == completedInks.length) {
-              if (completer.isCompleted) return;
               // scan finished
-              completer.complete();
               // logger.i('done iterations ${completedInks.length}');
             }
           });
-          await Future.delayed(Duration(milliseconds: 10));
+          await Future.delayed(Duration.zero);
         }
       }
     }
-
-    return completer.future;
   }
 
   static Future<List<String>> _getMySubnets() async {

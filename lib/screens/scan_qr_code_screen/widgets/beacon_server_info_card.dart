@@ -25,6 +25,7 @@ class BeaconServerInfoCard extends StatelessWidget {
       onTap: () async {
         // beaconPF(context).connectToBeaconServer(context, beaconServerModel);
         try {
+          showSnackBar(context: context, message: 'Waiting for host response');
           var shareProvider = sharePF(context);
           await beaconPF(context).askForBeaconServerConnLink(
             myName: shareProvider.myName,

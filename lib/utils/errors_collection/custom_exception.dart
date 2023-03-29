@@ -12,7 +12,7 @@ class CustomException implements Exception {
     this.s,
     this.rethrowError = false,
   }) {
-    logger.e(e);
+    // logger.e(e);
   }
   @override
   String toString() {

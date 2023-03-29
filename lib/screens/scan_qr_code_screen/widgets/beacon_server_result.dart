@@ -24,7 +24,7 @@ class _BeaconServersScanResultContainerState
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) {
-      beaconPF(context).startScanForBeaconServers(serverPF(context));
+      beaconPF(context).startScanForBeaconServers(serverPF(context), context);
     });
     super.initState();
   }
@@ -39,37 +39,41 @@ class _BeaconServersScanResultContainerState
       width: double.infinity,
       child: Column(
         children: [
-          if (beaconServer.scanning)
-            BeaconServerScanBox()
-          else if (beaconServer.discoveredBeaconServers.isNotEmpty)
-            BeaconServerTitle(),
+          // if (beaconServer.scanning)
+          //   BeaconServerScanBox()
+          // else if
+          // (beaconServer.discoveredBeaconServers.isNotEmpty)
+          BeaconServerTitle(),
           Expanded(
-            child: beaconServer.scanning &&
-                    beaconServer.discoveredBeaconServers.isEmpty
-                ? Center(
-                    child: Text(
-                      'Loading Hosts...',
-                      style: h4LightTextStyle,
-                    ),
-                  )
-                : beaconServer.discoveredBeaconServers.isEmpty
+            child:
+                // beaconServer.scanning &&
+                //         beaconServer.discoveredBeaconServers.isEmpty
+                //     ? Center(
+                //         child: Text(
+                //           'Loading Hosts...',
+                //           style: h4LightTextStyle,
+                //         ),
+
+                //       )
+                //     :
+                beaconServer.discoveredBeaconServers.isEmpty
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(width: double.infinity),
                           Text(
-                            'No Hosts found',
+                            'No Hosts found yet',
                             style: h4LightTextStyle,
                           ),
-                          TextButton(
-                            onPressed: () {
-                              beaconPF(context)
-                                  .startScanForBeaconServers(serverPF(context));
-                            },
-                            child: Text(
-                              'Rescan',
-                            ),
-                          ),
+                          // TextButton(
+                          //   onPressed: () {
+                          //     beaconPF(context).startScanForBeaconServers(
+                          //         serverPF(context), context);
+                          //   },
+                          //   child: Text(
+                          //     'Rescan',
+                          //   ),
+                          // ),
                         ],
                       )
                     : ListView(
