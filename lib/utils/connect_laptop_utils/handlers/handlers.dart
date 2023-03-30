@@ -91,8 +91,9 @@ class S2H {
           folderPath = initialDirs.last.path;
         } else {
           // here this mean i have more than one disk and i need to return only them
+          var data = initialDirs.where((element) => element.path != '/');
           await _handleSendChildrenToClient(
-            initialDirs.skip(1),
+            data,
             folderPath,
             response,
           );

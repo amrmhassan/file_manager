@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'package:dio/dio.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/permission_result_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/connect_device_screen/modals/send_text_to_device_modal.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
@@ -117,7 +119,6 @@ class ConnectDeviceScreen extends StatelessWidget {
                         ShareSpaceVScreen.routeName,
                         arguments: ShareSpaceVScreenData(
                           peerModel: peerModel,
-                          laptop: false,
                           dataType: ShareSpaceVScreenDataType.filesExploring,
                         ),
                       );
@@ -154,7 +155,6 @@ class ConnectDeviceScreen extends StatelessWidget {
                         ShareSpaceVScreen.routeName,
                         arguments: ShareSpaceVScreenData(
                           peerModel: peerModel,
-                          laptop: false,
                           dataType: ShareSpaceVScreenDataType.shareSpace,
                         ),
                       );
@@ -297,11 +297,20 @@ class ConnectDeviceScreen extends StatelessWidget {
     BuildContext context,
     PeerModel peerModel,
   ) async {
-    showSnackBar(context: context, message: 'sending-to-phone'.i18n());
-    await startSendEntitiesToDevice(
-      entities,
-      context,
-      peerModel,
-    );
+    try {
+      showSnackBar(context: context, message: 'sending-to-phone'.i18n());
+      await startSendEntitiesToDevice(
+        entities,
+        context,
+        peerModel,
+      );
+    } on DioError catch (e) {
+      String? refuseMessage = e.response?.data;
+      showSnackBar(
+        context: context,
+        message: refuseMessage ?? e.toString(),
+        snackBarType: SnackBarType.error,
+      );
+    }
   }
 }

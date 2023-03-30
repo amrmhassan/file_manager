@@ -79,11 +79,11 @@ Future<HttpServer> testingRunServerWithCustomServer(
         S1H.fileRemovedHandler,
       )
       // to get a folder content
-      .get(
-        EndPoints.phoneWsServerConnLink,
-        [MiddleWares.checkIfConnectedMiddleWare],
-        S2H.getPhoneFolderContentHandler,
-      )
+      // .get(
+      //   EndPoints.phoneWsServerConnLink,
+      //   [MiddleWares.checkIfConnectedMiddleWare],
+      //   S2H.getPhoneFolderContentHandler,
+      // )
       //
       .get(
         EndPoints.streamAudio,

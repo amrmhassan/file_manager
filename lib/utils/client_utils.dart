@@ -277,44 +277,44 @@ Future<void> broadCastFileAddedToShareSpace({
   }
 }
 
-Future<void> getFolderContent({
-  required ServerProvider serverProvider,
-  required String folderPath,
-  required ShareProvider shareProvider,
-  required String userSessionID,
-  required ShareItemsExplorerProvider shareItemsExplorerProvider,
-}) async {
-  try {
-    shareItemsExplorerProvider.setLoadingItems(true);
-    PeerModel me = serverProvider.me(shareProvider);
-    PeerModel otherPeer = serverProvider.peerModelWithSessionID(userSessionID);
-    String connLink = getConnLink(otherPeer.ip, otherPeer.port);
-    var res = await Dio().get(
-      '$connLink${EndPoints.getFolderContentEndPoint}',
-      options: Options(
-        headers: {
-          KHeaders.folderPathHeaderKey: Uri.encodeComponent(folderPath),
-          KHeaders.sessionIDHeaderKey: me.sessionID,
-          KHeaders.myServerPortHeaderKey: serverProvider.myPort,
-        },
-      ),
-    );
-    var data = res.data as List;
-    var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
-    shareItemsExplorerProvider.updatePath(folderPath, items);
+// Future<void> getFolderContent({
+//   required ServerProvider serverProvider,
+//   required String folderPath,
+//   required ShareProvider shareProvider,
+//   required String userSessionID,
+//   required ShareItemsExplorerProvider shareItemsExplorerProvider,
+// }) async {
+//   try {
+//     shareItemsExplorerProvider.setLoadingItems(true);
+//     PeerModel me = serverProvider.me(shareProvider);
+//     PeerModel otherPeer = serverProvider.peerModelWithSessionID(userSessionID);
+//     String connLink = getConnLink(otherPeer.ip, otherPeer.port);
+//     var res = await Dio().get(
+//       '$connLink${EndPoints.getFolderContentEndPoint}',
+//       options: Options(
+//         headers: {
+//           KHeaders.folderPathHeaderKey: Uri.encodeComponent(folderPath),
+//           KHeaders.sessionIDHeaderKey: me.sessionID,
+//           KHeaders.myServerPortHeaderKey: serverProvider.myPort,
+//         },
+//       ),
+//     );
+//     var data = res.data as List;
+//     var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
+//     shareItemsExplorerProvider.updatePath(folderPath, items);
 
-    shareItemsExplorerProvider.setLoadingItems(false, false);
-  } on DioError catch (e, s) {
-    logger.e(e.response?.data);
+//     shareItemsExplorerProvider.setLoadingItems(false, false);
+//   } on DioError catch (e, s) {
+//     logger.e(e.response?.data);
 
-    shareItemsExplorerProvider.setLoadingItems(false);
-    throw CustomException(
-      e: e,
-      s: s,
-      rethrowError: true,
-    );
-  }
-}
+//     shareItemsExplorerProvider.setLoadingItems(false);
+//     throw CustomException(
+//       e: e,
+//       s: s,
+//       rethrowError: true,
+//     );
+//   }
+// }
 
 //? to broadcast data to all servers except me
 Future<void> _broadcast({
@@ -559,6 +559,7 @@ Future<void> startSendEntitiesToDevice(
     );
   } on DioError catch (e) {
     logger.e(e.response?.data);
+    rethrow;
   }
 }
 
@@ -602,7 +603,9 @@ Future<void> getDeviceFolderContent({
         res.headers.value(KHeaders.parentFolderPathHeaderKey) ?? '');
     var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
     shareItemsExplorerProvider.updatePath(
-        folderPathRetrieved.isEmpty ? null : folderPathRetrieved, items);
+      folderPathRetrieved.isEmpty ? null : folderPathRetrieved,
+      items,
+    );
 
     shareItemsExplorerProvider.setLoadingItems(false, true);
   } catch (e, s) {

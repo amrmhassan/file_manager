@@ -44,7 +44,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   late ShareSpaceVScreenData data;
   bool loading = true;
 
-  //? to load shared items
+//? to load shared items
   Future loadSharedItems() async {
     var serverProviderFalse =
         Provider.of<ServerProvider>(context, listen: false);
@@ -54,7 +54,9 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
 
     try {
       List<ShareSpaceItemModel> shareItems = [];
-      // this is for initial screen open and the mode is share space mode
+      // if (data.laptop) {
+      //   await localGetFolderContent('/', true);
+      // } else
       if (data.dataType == ShareSpaceVScreenDataType.shareSpace) {
         shareItems = (await client_utils.getPeerShareSpace(
               data.peerModel.sessionID,
@@ -65,8 +67,6 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
             )) ??
             [];
       } else if (data.dataType == ShareSpaceVScreenDataType.filesExploring) {
-        // this is for initial screen open and the mode is files explore mode
-
         await localGetFolderContent('/');
       }
 
@@ -92,21 +92,46 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
     Future.delayed(Duration.zero).then((value) async {
       data =
           ModalRoute.of(context)!.settings.arguments as ShareSpaceVScreenData;
-
+      // bool means that it is from files explorer from windows device
+      // if (data.peerModel == null) {
+      //   shareExpPF(context).setLaptopExploring(true);
+      //   await connect_laptop_utils.getLaptopFolderContent(
+      //     folderPath: '/',
+      //     shareItemsExplorerProvider: shareExpPF(context),
+      //     connectLaptopProvider: connectLaptopPF(context),
+      //   );
+      //   setState(() {
+      //     loading = false;
+      //   });
+      // } else {
+      setState(() {
+        shareExpPF(context).setLaptopExploring(data.laptop);
+      });
+      // if (data.peerModel.deviceID == sharePF(context).myDeviceId) {
+      //   setState(() {
+      //     me = true;
+      //   });
+      // } else {
       loadSharedItems();
+      // }
+      // }
     });
   }
 
   String get title => shareExpP(context).loadingItems || loading
       ? '...'
-      : me
-          ? 'your-share-space'.i18n()
-          : data.dataType == ShareSpaceVScreenDataType.filesExploring
-              ? '${data.peerModel.name} Files'
-              : '${data.peerModel.name} Share Space';
+      : data.laptop
+          ? 'Laptop'
+          : me
+              ? 'your-share-space'.i18n()
+              : data.dataType == ShareSpaceVScreenDataType.filesExploring
+                  ? '${data.peerModel.name} Files'
+                  : '${data.peerModel.name} Share Space';
 
   @override
   Widget build(BuildContext context) {
+    // data = ModalRoute.of(context)!.settings.arguments as ShareSpaceVScreenData;
+
     var shareExpProvider = Provider.of<ShareItemsExplorerProvider>(context);
     String? parentPath = shareExpProvider.currentSharedFolderPath == null
         ? null
@@ -241,9 +266,22 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
     );
   }
 
-// this is for clicking a folder item(in share space mode or file exploring mode)
+// this is for loading folder content, either on file exploring mode or share space mode
   Future<void> localGetFolderContent(String path) async {
     try {
+      // to load a folder content on share space mode
+      // if (data.dataType == ShareSpaceVScreenDataType.shareSpace) {
+      //   var shareExpProvider =
+      //       Provider.of<ShareItemsExplorerProvider>(context, listen: false);
+
+      //   client_utils.getDeviceFolderContent(
+      //     folderPath: path,
+      //     shareItemsExplorerProvider: shareExpProvider,
+      //     peerModel: data.peerModel,
+      //     shareSpace: true,
+      //   );
+      // } else {
+      // to load a folder content on files exploring mode
       var shareExpProvider =
           Provider.of<ShareItemsExplorerProvider>(context, listen: false);
 

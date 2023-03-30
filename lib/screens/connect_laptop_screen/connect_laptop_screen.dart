@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/captures_entity_model.dart';
-import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
@@ -20,13 +18,10 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
-import 'package:explorer/models/peer_model.dart';
-import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
-import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:file_picker/file_picker.dart' as file_picker;
 import 'package:localization/localization.dart';
 
@@ -112,15 +107,15 @@ class ConnectLaptopScreen extends StatelessWidget {
                   AnalyzerOptionsItem(
                     enablePadding: false,
                     onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        ShareSpaceVScreen.routeName,
-                        arguments: ShareSpaceVScreenData(
-                          peerModel: null,
-                          laptop: true,
-                          dataType: ShareSpaceVScreenDataType.filesExploring,
-                        ),
-                      );
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   ShareSpaceVScreen.routeName,
+                      //   arguments: ShareSpaceVScreenData(
+                      //     peerModel: null,
+                      //     laptop: true,
+                      //     dataType: ShareSpaceVScreenDataType.filesExploring,
+                      //   ),
+                      // );
                     },
                     title: 'files-explorer'.i18n(),
                     logoName: 'folder_empty',
@@ -130,25 +125,25 @@ class ConnectLaptopScreen extends StatelessWidget {
                   AnalyzerOptionsItem(
                     enablePadding: false,
                     onTap: () {
-                      var phoneConnProvider = connectLaptopPF(context);
+                      // var phoneConnProvider = connectLaptopPF(context);
 
-                      Navigator.pushNamed(
-                        context,
-                        ShareSpaceVScreen.routeName,
-                        arguments: ShareSpaceVScreenData(
-                          peerModel: PeerModel(
-                            deviceID: laptopID,
-                            name: laptopName,
-                            memberType: MemberType.client,
-                            ip: phoneConnProvider.remoteIP!,
-                            port: phoneConnProvider.remotePort!,
-                            sessionID: laptopID,
-                            deviceType: DeviceType.windows,
-                          ),
-                          laptop: true,
-                          dataType: ShareSpaceVScreenDataType.shareSpace,
-                        ),
-                      );
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   ShareSpaceVScreen.routeName,
+                      //   arguments: ShareSpaceVScreenData(
+                      //     peerModel: PeerModel(
+                      //       deviceID: laptopID,
+                      //       name: laptopName,
+                      //       memberType: MemberType.client,
+                      //       ip: phoneConnProvider.remoteIP!,
+                      //       port: phoneConnProvider.remotePort!,
+                      //       sessionID: laptopID,
+                      //       deviceType: DeviceType.windows,
+                      //     ),
+                      //     laptop: true,
+                      //     dataType: ShareSpaceVScreenDataType.shareSpace,
+                      //   ),
+                      // );
                     },
                     title: 'share-space-intro'.i18n(),
                     logoName: 'management',

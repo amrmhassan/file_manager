@@ -8,13 +8,11 @@ enum ShareSpaceVScreenDataType {
 }
 
 class ShareSpaceVScreenData {
-  final bool laptop;
-  final PeerModel? peerModel;
+  final PeerModel peerModel;
   final ShareSpaceVScreenDataType dataType;
 
   const ShareSpaceVScreenData({
     required this.peerModel,
-    required this.laptop,
     required this.dataType,
   });
 }
