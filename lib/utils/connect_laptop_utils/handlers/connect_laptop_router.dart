@@ -13,7 +13,8 @@ Future<HttpServer> testingRunConnLaptopServerWithCustomServer() async {
       .addTrailersMiddleWare(MiddleWares.requestLogger)
       .get(EndPoints.getStorage, [], S2H.getStorageInfoHandler)
       .get(EndPoints.getDiskNames, [], S2H.getDiskNamesHandler)
-      .get(EndPoints.getFolderContent, [], S2H.getPhoneFolderContentHandler)
+      .get(
+          EndPoints.getPhoneFolderContent, [], S2H.getPhoneFolderContentHandler)
       .get(EndPoints.streamAudio, [], S1H.streamAudioHandler)
       .get(EndPoints.streamVideo, [], S1H.streamVideoHandler)
       .get(EndPoints.getClipboard, [], S2H.getClipboardHandler)

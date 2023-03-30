@@ -77,8 +77,7 @@ class BeaconServer {
         .get(
           EndPoints.getBeaconServerConnLink,
           [
-            (request, response) =>
-                PermissionsMiddlewares.getShareSpaceMiddleware(
+            (request, response) => PermissionsMiddlewares.handlePermissions(
                   request,
                   response,
                   PermissionName.beaconConnect,

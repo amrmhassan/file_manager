@@ -46,7 +46,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
         [
           MiddleWares.checkIfConnectedMiddleWare,
           // MiddleWares.getShareSpaceMiddleware,
-          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+          (request, response) => PermissionsMiddlewares.handlePermissions(
                 request,
                 response,
                 PermissionName.shareSpace,
@@ -80,9 +80,9 @@ Future<HttpServer> testingRunServerWithCustomServer(
       )
       // to get a folder content
       .get(
-        EndPoints.getFolderContentEndPoint,
+        EndPoints.phoneWsServerConnLink,
         [MiddleWares.checkIfConnectedMiddleWare],
-        S1H.getFolderContentHandler,
+        S2H.getPhoneFolderContentHandler,
       )
       //
       .get(
@@ -131,7 +131,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
         EndPoints.getDiskNames,
         [
           MiddleWares.checkIfConnectedMiddleWare,
-          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+          (request, response) => PermissionsMiddlewares.handlePermissions(
                 request,
                 response,
                 PermissionName.fileExploring,
@@ -140,15 +140,22 @@ Future<HttpServer> testingRunServerWithCustomServer(
         S2H.getDiskNamesHandler,
       )
       .get(
-        EndPoints.getFolderContent,
-        [MiddleWares.checkIfConnectedMiddleWare],
+        EndPoints.getPhoneFolderContent,
+        [
+          MiddleWares.checkIfConnectedMiddleWare,
+          (request, response) => PermissionsMiddlewares.handlePermissions(
+                request,
+                response,
+                PermissionName.fileExploring,
+              ),
+        ],
         S2H.getPhoneFolderContentHandler,
       )
       .get(
         EndPoints.getClipboard,
         [
           MiddleWares.checkIfConnectedMiddleWare,
-          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+          (request, response) => PermissionsMiddlewares.handlePermissions(
                 request,
                 response,
                 PermissionName.copyClipboard,
@@ -165,7 +172,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
         EndPoints.sendText,
         [
           MiddleWares.checkIfConnectedMiddleWare,
-          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+          (request, response) => PermissionsMiddlewares.handlePermissions(
                 request,
                 response,
                 PermissionName.sendText,
@@ -177,7 +184,7 @@ Future<HttpServer> testingRunServerWithCustomServer(
         EndPoints.startDownloadFile,
         [
           MiddleWares.checkIfConnectedMiddleWare,
-          (request, response) => PermissionsMiddlewares.getShareSpaceMiddleware(
+          (request, response) => PermissionsMiddlewares.handlePermissions(
                 request,
                 response,
                 PermissionName.sendFile,

@@ -11,7 +11,7 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
 class PermissionsMiddlewares {
-  static Future<ReqResTracker> getShareSpaceMiddleware(
+  static Future<ReqResTracker> handlePermissions(
     HttpRequest request,
     HttpResponse response,
     PermissionName permissionName,

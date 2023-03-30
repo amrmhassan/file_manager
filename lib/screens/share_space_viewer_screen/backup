@@ -47,7 +47,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
   bool loading = true;
 
 //? to load shared items
-  Future loadSharedItems() async {
+  Future loadSharedItems([String? path]) async {
     var serverProviderFalse =
         Provider.of<ServerProvider>(context, listen: false);
     var shareProviderFalse = Provider.of<ShareProvider>(context, listen: false);
@@ -58,7 +58,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
       List<ShareSpaceItemModel> shareItems = [];
       if (data.laptop) {
         await localGetFolderContent('/', true);
-      } else if (data.dataType == ShareSpaceVScreenDataType.shareSpace) {
+      } else {
         shareItems = (await client_utils.getPeerShareSpace(
               data.peerModel!.sessionID,
               serverProviderFalse,
@@ -67,8 +67,6 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
               data.peerModel!.deviceID,
             )) ??
             [];
-      } else if (data.dataType == ShareSpaceVScreenDataType.filesExploring) {
-        await localGetFolderContent('/');
       }
 
       shareItemsExplorerProvider.setCurrentSharedItems(shareItems);
@@ -125,9 +123,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
           ? 'Laptop'
           : me
               ? 'your-share-space'.i18n()
-              : data.dataType == ShareSpaceVScreenDataType.filesExploring
-                  ? '${data.peerModel!.name} Files'
-                  : '${data.peerModel!.name} Share Space';
+              : '${data.peerModel!.name} Share Space';
 
   @override
   Widget build(BuildContext context) {
@@ -279,43 +275,22 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
           connectLaptopProvider: connectLaptopPF(context),
           shareSpace: shareSpace,
         );
-      } else if (data.dataType == ShareSpaceVScreenDataType.shareSpace &&
-          shareSpace) {
-        // var shareExpProvider =
-        //     Provider.of<ShareItemsExplorerProvider>(context, listen: false);
-
-        // var serverProvider =
-        //     Provider.of<ServerProvider>(context, listen: false);
-        // String userSessionID = shareExpProvider.viewedUserSessionId!;
-        // var shareProvider = Provider.of<ShareProvider>(context, listen: false);
-        // var shareItemsExplorerProvider =
-        //     Provider.of<ShareItemsExplorerProvider>(context, listen: false);
-        // await client_utils.getFolderContent(
-        //   serverProvider: serverProvider,
-        //   folderPath: path,
-        //   shareProvider: shareProvider,
-        //   userSessionID: userSessionID,
-        //   shareItemsExplorerProvider: shareItemsExplorerProvider,
-        // );
-
-        var shareExpProvider =
-            Provider.of<ShareItemsExplorerProvider>(context, listen: false);
-
-        client_utils.getDeviceFolderContent(
-          folderPath: path,
-          shareItemsExplorerProvider: shareExpProvider,
-          peerModel: data.peerModel!,
-          shareSpace: true,
-        );
       } else {
         var shareExpProvider =
             Provider.of<ShareItemsExplorerProvider>(context, listen: false);
 
-        await client_utils.getDeviceFolderContent(
+        var serverProvider =
+            Provider.of<ServerProvider>(context, listen: false);
+        String userSessionID = shareExpProvider.viewedUserSessionId!;
+        var shareProvider = Provider.of<ShareProvider>(context, listen: false);
+        var shareItemsExplorerProvider =
+            Provider.of<ShareItemsExplorerProvider>(context, listen: false);
+        await client_utils.getFolderContent(
+          serverProvider: serverProvider,
           folderPath: path,
-          shareItemsExplorerProvider: shareExpProvider,
-          peerModel: data.peerModel!,
-          shareSpace: false,
+          shareProvider: shareProvider,
+          userSessionID: userSessionID,
+          shareItemsExplorerProvider: shareItemsExplorerProvider,
         );
       }
       // logger.i(

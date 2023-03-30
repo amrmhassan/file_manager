@@ -559,3 +559,56 @@ Future<void> startSendEntitiesToDevice(
     logger.e(e.response?.data);
   }
 }
+
+Future<void> getDeviceFolderContent({
+  required String folderPath,
+  required ShareItemsExplorerProvider shareItemsExplorerProvider,
+  required PeerModel peerModel,
+  bool shareSpace = false,
+}) async {
+  BuildContext? context = navigatorKey.currentContext;
+  if (context == null) {
+    throw Exception('Error occurred');
+  }
+  ShareProvider shareProvider = sharePF(context);
+  try {
+    shareItemsExplorerProvider.setLoadingItems(true);
+    String connLink = peerModel.getMyLink(
+      shareSpace ? EndPoints.getShareSpace : EndPoints.getPhoneFolderContent,
+    );
+
+    var res = await Dio().get(
+      connLink,
+      options: shareSpace
+          ? Options(
+              headers: {
+                KHeaders.userNameHeaderKey: shareProvider.myName,
+                KHeaders.deviceIDHeaderKey: shareProvider.myDeviceId,
+              },
+            )
+          : Options(
+              headers: {
+                KHeaders.folderPathHeaderKey: Uri.encodeComponent(folderPath),
+                KHeaders.userNameHeaderKey: shareProvider.myName,
+                KHeaders.deviceIDHeaderKey: shareProvider.myDeviceId,
+              },
+            ),
+    );
+    var data = res.data as List;
+    String? folderPathRetrieved;
+    folderPathRetrieved = Uri.decodeComponent(
+        res.headers.value(KHeaders.parentFolderPathHeaderKey) ?? '');
+    var items = data.map((e) => ShareSpaceItemModel.fromJSON(e)).toList();
+    shareItemsExplorerProvider.updatePath(
+        folderPathRetrieved.isEmpty ? null : folderPathRetrieved, items);
+
+    shareItemsExplorerProvider.setLoadingItems(false, true);
+  } catch (e, s) {
+    shareItemsExplorerProvider.setLoadingItems(false);
+    throw CustomException(
+      e: e,
+      s: s,
+      rethrowError: true,
+    );
+  }
+}
