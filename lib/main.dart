@@ -30,15 +30,8 @@ import 'package:provider/provider.dart';
 //! run parallel analyzer for the analyzer provider like in the search provider to fasten the process
 //! with each extended search, deal with it as a full analyze step and use it's results to update the analyzing reports and all that stuff
 
-// the beacon provider to scan and get servers and the existing one done add it
-// get image of the beacon server from the widget itself
 
 //! close server if the scan qr view screen disposed  without any connection
-//! fix the scanning UX, you can make the scanning process running forever as the widget is showing
-//! so you can remove already closed servers or add new servers that run during the scanning
-//@ reduce the scanning timeout to be about 1000ms or less, and scan repeatedly in the form of rounds
-//@ and these rounds will run as the scanning widget is open and close that round loop if it is disposed
-//@ while(mounted){ ...{scan code here} await 1000ms}
 
 void startForegroundService() {
   ForegroundService().start();

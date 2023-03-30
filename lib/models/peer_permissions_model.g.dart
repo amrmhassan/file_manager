@@ -91,37 +91,42 @@ class PermissionNameAdapter extends TypeAdapter<PermissionName> {
   PermissionName read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return PermissionName.fileExploring;
+        return PermissionName.beaconConnect;
       case 1:
-        return PermissionName.shareSpace;
+        return PermissionName.fileExploring;
       case 2:
-        return PermissionName.copyClipboard;
+        return PermissionName.shareSpace;
       case 3:
-        return PermissionName.sendFile;
+        return PermissionName.copyClipboard;
       case 4:
+        return PermissionName.sendFile;
+      case 5:
         return PermissionName.sendText;
       default:
-        return PermissionName.fileExploring;
+        return PermissionName.beaconConnect;
     }
   }
 
   @override
   void write(BinaryWriter writer, PermissionName obj) {
     switch (obj) {
-      case PermissionName.fileExploring:
+      case PermissionName.beaconConnect:
         writer.writeByte(0);
         break;
-      case PermissionName.shareSpace:
+      case PermissionName.fileExploring:
         writer.writeByte(1);
         break;
-      case PermissionName.copyClipboard:
+      case PermissionName.shareSpace:
         writer.writeByte(2);
         break;
-      case PermissionName.sendFile:
+      case PermissionName.copyClipboard:
         writer.writeByte(3);
         break;
-      case PermissionName.sendText:
+      case PermissionName.sendFile:
         writer.writeByte(4);
+        break;
+      case PermissionName.sendText:
+        writer.writeByte(5);
         break;
     }
   }

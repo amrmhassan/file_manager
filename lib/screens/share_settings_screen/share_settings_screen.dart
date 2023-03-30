@@ -12,6 +12,7 @@ import 'package:explorer/screens/share_settings_screen/widgets/my_image_settings
 import 'package:explorer/screens/share_settings_screen/widgets/my_name_with_edit_widget.dart';
 import 'package:explorer/screens/share_settings_screen/widgets/pick_icon_button.dart';
 import 'package:explorer/screens/white_block_list_screen/white_block_list_screen.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 
@@ -36,25 +37,13 @@ class ShareSettingsScreen extends StatelessWidget {
           VSpace(),
           PickMyIconButton(),
           VSpace(),
+          VSpace(),
+          UsersPermissionsButton(),
+          VSpace(factor: .5),
           MyNameWithEditWidget(),
           VSpace(factor: .5),
           DeviceIDViewer(),
           VSpace(),
-          ButtonWrapper(
-            borderRadius: 0,
-            padding: EdgeInsets.symmetric(
-              horizontal: kHPad,
-              vertical: kVPad / 2,
-            ),
-            alignment: Alignment.centerLeft,
-            onTap: () {
-              Navigator.pushNamed(context, UsersPermissionScreen.routeName);
-            },
-            child: Text(
-              'Users Permissions',
-              style: h4TextStyle,
-            ),
-          ),
           // AppDrawerItem(
           //   title: 'Devices White List',
           //   onTap: () {},
@@ -91,6 +80,41 @@ class ShareSettingsScreen extends StatelessWidget {
           //     style: h4TextStyle,
           //   ),
           // ),
+        ],
+      ),
+    );
+  }
+}
+
+class UsersPermissionsButton extends StatelessWidget {
+  const UsersPermissionsButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var permissionProvider = permissionsP(context);
+    return ButtonWrapper(
+      borderRadius: 0,
+      padding: EdgeInsets.symmetric(
+        horizontal: kHPad,
+        vertical: kVPad / 2,
+      ),
+      alignment: Alignment.centerLeft,
+      onTap: () {
+        Navigator.pushNamed(context, UsersPermissionScreen.routeName);
+      },
+      child: Row(
+        children: [
+          Text(
+            'Known Users',
+            style: h4TextStyle,
+          ),
+          Spacer(),
+          Text(
+            '${permissionProvider.peersPermissions.length.toString()} Users',
+            style: h4TextStyleInactive,
+          ),
         ],
       ),
     );

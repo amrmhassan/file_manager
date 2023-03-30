@@ -168,6 +168,14 @@ class QrCodeViewerScreen extends StatelessWidget {
                               ),
                             ],
                           ),
+                        VSpace(),
+                        Icon(
+                          Icons.broadcast_on_personal_outlined,
+                          color: serverProvider.beaconServerRunning
+                              ? kGreenColor
+                              : kDangerColor,
+                          size: largeIconSize,
+                        ),
                       ],
                     ),
                   ),

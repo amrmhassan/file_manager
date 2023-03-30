@@ -2,6 +2,7 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.d
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_file_info.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/models/analyzer_report_info_model.dart';
+import 'package:explorer/models/beacon_client.dart';
 import 'package:explorer/models/download_task_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/listy_item_model.dart';
@@ -37,5 +38,6 @@ class HiveInitiator {
     Hive.registerAdapter(PermissionModelAdapter()); //=>14
     Hive.registerAdapter(PermissionNameAdapter()); //=>15
     Hive.registerAdapter(PermissionStatusAdapter()); //=>16
+    Hive.registerAdapter(BeaconClientAdapter()); //=>17
   }
 }

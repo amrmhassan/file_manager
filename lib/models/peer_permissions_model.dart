@@ -61,14 +61,16 @@ class PermissionModel {
 @HiveType(typeId: 15)
 enum PermissionName {
   @HiveField(0)
-  fileExploring,
+  beaconConnect,
   @HiveField(1)
-  shareSpace,
+  fileExploring,
   @HiveField(2)
-  copyClipboard,
+  shareSpace,
   @HiveField(3)
-  sendFile,
+  copyClipboard,
   @HiveField(4)
+  sendFile,
+  @HiveField(5)
   sendText,
 }
 
@@ -104,6 +106,10 @@ List<PermissionModel> defaultPermissions = [
     permissionName: PermissionName.sendText,
     permissionStatus: PermissionStatus.allowed,
   ),
+  PermissionModel(
+    permissionName: PermissionName.beaconConnect,
+    permissionStatus: PermissionStatus.ask,
+  ),
 ];
 
 class PermissionsNamesUtils {
@@ -121,6 +127,8 @@ class PermissionsNamesUtils {
       return '$peerName wants to send you a file';
     } else if (permissionName == PermissionName.sendText) {
       return '$peerName wants to send you a text';
+    } else if (permissionName == PermissionName.beaconConnect) {
+      return '$peerName wants to connect';
     } else {
       return '$peerName wants to do this permission ${permissionName.name}';
     }
@@ -137,6 +145,8 @@ class PermissionsNamesUtils {
       return 'you can\'t send this user a file';
     } else if (permissionName == PermissionName.sendText) {
       return 'you can\'t send this user a text';
+    } else if (permissionName == PermissionName.beaconConnect) {
+      return 'you can\'t connect to this host';
     } else {
       return 'you can\'t do this permission ${permissionName.name}';
     }
@@ -153,6 +163,8 @@ class PermissionsNamesUtils {
       return 'Send File permission';
     } else if (permissionName == PermissionName.sendText) {
       return 'Send Text permission';
+    } else if (permissionName == PermissionName.beaconConnect) {
+      return 'Connect permission';
     } else {
       return '${permissionName.name.toUpperCase()} permission';
     }
@@ -169,6 +181,8 @@ class PermissionsNamesUtils {
       return 'Send File';
     } else if (permissionName == PermissionName.sendText) {
       return 'Send Text';
+    } else if (permissionName == PermissionName.beaconConnect) {
+      return 'Connect';
     } else {
       return '${permissionName.name.toUpperCase()} permission';
     }

@@ -8,11 +8,13 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/helpers/router_system/router.dart';
 import 'package:explorer/helpers/router_system/server.dart';
+import 'package:explorer/models/peer_permissions_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server_handlers.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server_middlewares.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
+import 'package:explorer/utils/server_utils/handlers/permissions_middleware.dart';
 import 'package:explorer/utils/server_utils/middlewares.dart';
 import 'package:uuid/uuid.dart';
 
@@ -75,7 +77,14 @@ class BeaconServer {
         )
         .get(
           EndPoints.getBeaconServerConnLink,
-          [BSM.getMyConnLink],
+          [
+            (request, response) =>
+                PermissionsMiddlewares.getShareSpaceMiddleware(
+                  request,
+                  response,
+                  PermissionName.beaconConnect,
+                )
+          ],
           BSH.getServerConnLink,
         )
         .get(

@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/helpers/router_system/helpers/req_res_tracker.dart';
+import 'package:explorer/models/beacon_client.dart';
 import 'package:explorer/models/beacon_server_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server.dart';
@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 // but for getting the server connLink a modal will be shown on the beacon server device to ask the user to allow another one to access
 // his server, this is just to replace or to work aside with qr code scanner
 class BeaconProvider extends ChangeNotifier {
+  //# for beacon client
   bool _cleared = false;
   // this is the url of the beacon server that was clicked and i am waiting for his response
   String? beaconServerUnderRequest;
@@ -75,6 +76,7 @@ class BeaconProvider extends ChangeNotifier {
   ) async {
     _cleared = false;
     _discoveredBeaconServers.clear();
+    beaconServerUnderRequest = null;
     notifyListeners();
     DateTime start = DateTime.now();
     while (context.mounted) {
@@ -168,4 +170,7 @@ class BeaconProvider extends ChangeNotifier {
   // _cleared = true;
   // notifyListeners();
   // }
+
+  //# for beacon server
+  List<BeaconClient> beaconClients = [];
 }

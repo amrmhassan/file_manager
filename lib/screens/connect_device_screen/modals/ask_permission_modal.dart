@@ -42,7 +42,8 @@ class _AskPermissionModalState extends State<AskPermissionModal> {
     //? here is the default remember option some non sensitive permissions names
     remember = widget.permissionName == PermissionName.shareSpace ||
         widget.permissionName == PermissionName.sendFile ||
-        widget.permissionName == PermissionName.sendText;
+        widget.permissionName == PermissionName.sendText ||
+        widget.permissionName == PermissionName.beaconConnect;
     super.initState();
   }
 

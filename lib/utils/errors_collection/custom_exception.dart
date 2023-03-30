@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:explorer/constants/global_constants.dart';
-
 class CustomException implements Exception {
   StackTrace? s;
   Object e;

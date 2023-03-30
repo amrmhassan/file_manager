@@ -4,7 +4,6 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_info_card.dart';
-import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_scan_box.dart';
 import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_title.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
