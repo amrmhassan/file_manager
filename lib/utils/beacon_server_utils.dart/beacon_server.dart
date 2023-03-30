@@ -12,7 +12,6 @@ import 'package:explorer/models/peer_permissions_model.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/utils/beacon_server_utils.dart/beacon_server_handlers.dart';
-import 'package:explorer/utils/beacon_server_utils.dart/beacon_server_middlewares.dart';
 import 'package:explorer/utils/server_utils/handlers/handlers.dart';
 import 'package:explorer/utils/server_utils/handlers/permissions_middleware.dart';
 import 'package:explorer/utils/server_utils/middlewares.dart';
