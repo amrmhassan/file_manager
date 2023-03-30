@@ -8,6 +8,7 @@ import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
+import 'package:explorer/helpers/string_to_type.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/peer_model.dart';
@@ -18,6 +19,7 @@ import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';
 import 'package:explorer/utils/server_utils/encoding_utils.dart';
@@ -42,11 +44,12 @@ FutureOr<void> handlerErrorSender(
 ) async {
   try {
     await callback();
-  } catch (e) {
+  } catch (e, s) {
     response
       ..statusCode = HttpStatus.internalServerError
       ..write(e);
     logger.e(e);
+    logger.e(s);
   }
 }
 
@@ -67,9 +70,19 @@ class S1H {
       String ip = body[ipString] as String;
       int port = body[portString];
       String sessionID = body[sessionIDString];
+      DeviceType deviceType = stringToEnum(
+        body[deviceTypeString],
+        DeviceType.values,
+      );
 
-      PeerModel peerModel =
-          serverProvider.addPeer(sessionID, deviceID, name, ip, port);
+      PeerModel peerModel = serverProvider.addPeer(
+        sessionID,
+        deviceID,
+        name,
+        ip,
+        port,
+        deviceType,
+      );
       response
         ..headers.contentType = ContentType.json
         ..write(
@@ -459,7 +472,12 @@ class S1H {
       }
       if (serverProvider.myIp == null) {
         logger.i('setting my ip(host) to be $myIp');
-        serverProvider.firstConnected(myIp, shareProvider, MemberType.host);
+        serverProvider.firstConnected(
+          myIp,
+          shareProvider,
+          MemberType.host,
+          getDeviceType(),
+        );
         //!
         var customServerSocket =
             CustomServerSocket(myIp, serverProvider, shareProvider);

@@ -8,6 +8,7 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/share_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -204,4 +205,12 @@ String createNewPath(String path) {
   String parentName = path_operations.dirname(path);
   String newPath = '$parentName/$randomName.$fileExt';
   return newPath;
+}
+
+DeviceType getDeviceType() {
+  if (Platform.isAndroid) {
+    return DeviceType.android;
+  } else {
+    return DeviceType.windows;
+  }
 }

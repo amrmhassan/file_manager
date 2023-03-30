@@ -9,23 +9,25 @@ import 'package:explorer/utils/server_utils/connection_utils.dart';
 class PeerModel {
   final String deviceID;
   final String name;
-  final DateTime joinedAt;
   final MemberType memberType;
   final String ip;
   final int port;
   final String sessionID;
   late String connLink;
+  final DeviceType deviceType;
+  late DateTime joinedAt;
 
   PeerModel({
     required this.deviceID,
-    required this.joinedAt,
     required this.name,
     required this.memberType,
     required this.ip,
     required this.port,
     required this.sessionID,
+    required this.deviceType,
   }) {
     connLink = getConnLink(ip, port);
+    joinedAt = DateTime.now();
   }
 
   String getMyLink(String endPoint) {
@@ -36,23 +38,28 @@ class PeerModel {
     return {
       deviceIDString: deviceID,
       nameString: name,
-      joinedAtString: joinedAt.toIso8601String(),
+      // joinedAtString: joinedAt.toIso8601String(),
       memberTypeString: memberType.name,
       ipString: ip,
       portString: port.toString(),
       sessionIDString: sessionID,
+      deviceTypeString: deviceType.name,
     };
   }
 
   static PeerModel fromJSON(Map<String, dynamic> obj) {
     return PeerModel(
       deviceID: obj[deviceIDString],
-      joinedAt: DateTime.parse(obj[joinedAtString]),
+      // joinedAt: DateTime.parse(obj[joinedAtString]),
       name: obj[nameString],
       memberType: stringToEnum(obj[memberTypeString], MemberType.values),
       ip: obj[ipString],
       port: int.parse(obj[portString]),
       sessionID: obj[sessionIDString],
+      deviceType: stringToEnum(
+        obj[deviceTypeString] ?? DeviceType.android.name,
+        DeviceType.values,
+      ),
     );
   }
 }

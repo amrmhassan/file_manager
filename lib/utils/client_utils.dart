@@ -53,6 +53,7 @@ Future addClient(
     String name = shareProvider.myName;
     String myIp = serverProviderFalse.myIp!;
     int myPort = serverProviderFalse.myPort;
+
     await Dio().post(
       '$connLink${EndPoints.addClient}',
       data: {
@@ -61,6 +62,7 @@ Future addClient(
         portString: myPort,
         ipString: myIp,
         sessionIDString: mySessionID,
+        deviceTypeString: getDeviceType().name,
       },
     );
     foregroundServiceController.shareSpaceServerStarted();

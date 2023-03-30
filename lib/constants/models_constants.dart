@@ -51,6 +51,7 @@ const String memberTypeString = 'memberTypeString';
 const String ipString = 'ipString';
 const String portString = 'portString';
 const String sessionIDString = 'sessionIDString';
+const String deviceTypeString = 'deviceTypeString';
 
 //? share item model
 const String shareSpaceItemModelString = 'shareSpaceItemModelString';

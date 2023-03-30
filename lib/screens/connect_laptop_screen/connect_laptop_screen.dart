@@ -138,12 +138,12 @@ class ConnectLaptopScreen extends StatelessWidget {
                         arguments: ShareSpaceVScreenData(
                           peerModel: PeerModel(
                             deviceID: laptopID,
-                            joinedAt: DateTime.now(),
                             name: laptopName,
                             memberType: MemberType.client,
                             ip: phoneConnProvider.remoteIP!,
                             port: phoneConnProvider.remotePort!,
                             sessionID: laptopID,
+                            deviceType: DeviceType.windows,
                           ),
                           laptop: true,
                           dataType: ShareSpaceVScreenDataType.shareSpace,

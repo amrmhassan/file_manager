@@ -61,25 +61,32 @@ class ServerProvider extends ChangeNotifier {
     String myIp,
     ShareProvider shareProvider,
     MemberType memberType,
+    DeviceType deviceType,
   ) {
     this.myIp = myIp;
     // then add a client
-    addMyPeerModel(myIp, shareProvider, memberType);
+    addMyPeerModel(
+      myIp,
+      shareProvider,
+      memberType,
+      deviceType,
+    );
   }
 
   void addMyPeerModel(
     String ip,
     ShareProvider shareProvider,
     MemberType memberType,
+    DeviceType deviceType,
   ) {
     PeerModel meHost = PeerModel(
       deviceID: shareProvider.myDeviceId,
-      joinedAt: DateTime.now(),
       name: shareProvider.myName,
       memberType: memberType,
       ip: ip,
       port: myPort,
       sessionID: Uuid().v4(),
+      deviceType: deviceType,
     );
     peers.add(meHost);
     notifyListeners();
@@ -318,19 +325,25 @@ class ServerProvider extends ChangeNotifier {
 
   //# server functions
   PeerModel addPeer(
-      String sessionID, String clientId, String name, String ip, int port) {
+    String sessionID,
+    String clientId,
+    String name,
+    String ip,
+    int port,
+    DeviceType deviceType,
+  ) {
     // if the peer is already registered
     // this might mean that he disconnected
     // so i will replace the current session with the new one
     bool exists = peers.any((element) => element.deviceID == clientId);
     PeerModel peerModel = PeerModel(
       deviceID: clientId,
-      joinedAt: DateTime.now(),
       name: name,
       memberType: MemberType.client,
       ip: ip,
       port: port,
       sessionID: sessionID,
+      deviceType: deviceType,
     );
     if (exists) {
       printOnDebug(
