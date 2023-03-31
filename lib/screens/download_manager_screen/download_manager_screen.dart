@@ -7,7 +7,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/h_space.dart';
-import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/active_screen.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/done_screen.dart';
 import 'package:explorer/screens/download_manager_screen/widgets/download_error_screen.dart';

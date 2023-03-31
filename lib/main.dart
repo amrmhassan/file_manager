@@ -32,7 +32,10 @@ import 'package:provider/provider.dart';
 
 //! close server if the scan qr view screen disposed  without any connection
 
-//! make a header to be sent with each request to know if the other device will be used to share or not
+//! make a header to be
+//sent with each request to know if the other device will be used to share or not
+
+//@ add a third screen next to recent screen and explorer screen to view the share screen and add an icon for it
 
 void startForegroundService() {
   ForegroundService().start();

@@ -85,6 +85,7 @@ class AppInit {
       await initWindowSize();
       await DartVLC.initialize();
       downloadFolder = (await getApplicationDocumentsDirectory()).path;
+      initialDirsInitForWindows();
     } catch (e) {
       printOnDebug('Error with first time app in main() or theme variables');
     }

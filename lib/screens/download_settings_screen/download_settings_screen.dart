@@ -6,7 +6,7 @@ import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
 import 'package:explorer/global/modals/max_parallel_downloads_modal.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';

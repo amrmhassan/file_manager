@@ -11,7 +11,7 @@ import 'package:explorer/global/modals/qr_result_modal.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/h_space.dart';
-import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:explorer/screens/connect_laptop_coming_soon/connect_laptop_coming_soon.dart';
 import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_result.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';

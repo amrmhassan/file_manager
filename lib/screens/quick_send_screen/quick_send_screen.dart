@@ -1,4 +1,4 @@
-import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class QuickSendScreen extends StatelessWidget {

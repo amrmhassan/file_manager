@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/windows_app_code/providers/animation_provider.dart';
 import 'package:explorer/windows_app_code/providers/window_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -50,9 +48,13 @@ List<SingleChildWidget> mainProviders = [
   ChangeNotifierProvider(create: (ctx) => LanguageProvider()),
   ChangeNotifierProvider(create: (ctx) => PermissionProvider()),
   ChangeNotifierProvider(create: (ctx) => BeaconProvider()),
-  ChangeNotifierProvider(create: (ctx) => MediaPlayerProvider()),
+  if (Platform.isAndroid)
+    ChangeNotifierProvider(create: (ctx) => MediaPlayerProvider()),
   //? windows providers
-  ChangeNotifierProvider(create: (ctx) => MediaPlayerProviderWindows()),
-  ChangeNotifierProvider(create: (ctx) => WindowProvider()),
-  ChangeNotifierProvider(create: (ctx) => AnimationProvider()),
+  if (Platform.isWindows)
+    ChangeNotifierProvider(create: (ctx) => MediaPlayerProviderWindows()),
+  if (Platform.isWindows)
+    ChangeNotifierProvider(create: (ctx) => WindowProvider()),
+  if (Platform.isWindows)
+    ChangeNotifierProvider(create: (ctx) => AnimationProvider()),
 ];

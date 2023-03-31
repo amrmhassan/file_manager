@@ -1,17 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'dart:io';
 import 'dart:isolate';
-import 'package:provider/provider.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:explorer/windows_app_code/utils/windows_provider_calls.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
-import 'package:explorer/providers/explorer_provider.dart';
-import 'package:explorer/providers/media_player_provider.dart';
 import 'package:explorer/screens/explorer_screen/explorer_screen.dart';
 import 'package:explorer/screens/recent_screen/recent_screen.dart';
 import 'package:explorer/utils/screen_utils/home_screen_utils.dart';
 
-import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/screens/home_screen/widgets/home_app_bar.dart';
 
@@ -38,18 +38,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     pageController = PageController(
-      initialPage:
-          Provider.of<ExplorerProvider>(context, listen: false).activeViewIndex,
+      initialPage: expPF(context).activeViewIndex,
     );
     initHomeScreen(context);
 
     super.initState();
   }
 
+  bool get withPopScope {
+    if (Platform.isAndroid) {
+      var mpProvider = mpP(context);
+      return !mpProvider.videoHidden &&
+          mpProvider.videoPlayerController != null;
+    } else {
+      var mpProvider = WindowSProviders.mpP(context);
+      return !mpProvider.videoHidden &&
+          mpProvider.videoPlayerController != null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var expProvider = Provider.of<ExplorerProvider>(context);
-    var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    var expProvider = expP(context);
 
     var homeScreenContent = ScreensWrapper(
       scfKey: expScreenKey,
@@ -67,8 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: PageView(
                   onPageChanged: (value) {
-                    Provider.of<ExplorerProvider>(context, listen: false)
-                        .setActivePageIndex(value);
+                    expPF(context).setActivePageIndex(value);
                   },
                   controller: pageController,
                   physics: BouncingScrollPhysics(),
@@ -87,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-    return !mpProvider.videoHidden && mpProvider.videoPlayerController != null
+    return withPopScope
         ? homeScreenContent
         : WillPopScope(
             onWillPop: () => handlePressPhoneBackButton(

@@ -95,10 +95,14 @@ class SearchProvider extends ChangeNotifier {
     List<String> completedSearches = [];
 
     for (var path in paths) {
-      _handleFilterSearchResults([path]);
-      bool isPathDir = isDir(path);
-      if (isPathDir) {
-        parallelFoldersEntries.add(path);
+      try {
+        _handleFilterSearchResults([path]);
+        bool isPathDir = isDir(path);
+        if (isPathDir) {
+          parallelFoldersEntries.add(path);
+        }
+      } catch (e) {
+        logger.e(e);
       }
     }
     // after filtering, start search

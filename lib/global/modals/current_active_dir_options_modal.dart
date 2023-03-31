@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
@@ -67,13 +69,14 @@ class CurrentActiveDirOptionsModal extends StatelessWidget {
               sortByModal(context);
             },
           ),
-          ModalButtonElement(
-            title: 'search-files'.i18n(),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, SearchScreen.routeName);
-            },
-          ),
+          if (Platform.isAndroid)
+            ModalButtonElement(
+              title: 'search-files'.i18n(),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, SearchScreen.routeName);
+              },
+            ),
           VSpace(),
         ],
       ),

@@ -2,7 +2,7 @@
 
 import 'package:explorer/analyzing_code/storage_analyzer/models/extension_info.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/global/widgets/screens_wrapper.dart';
+import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/global/widgets/table/extensions_table.dart';
 import 'package:flutter/material.dart';

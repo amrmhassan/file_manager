@@ -1,19 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/providers/media_player_provider.dart';
-import 'package:explorer/providers/server_provider.dart';
-import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:explorer/windows_app_code/utils/windows_provider_calls.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
-import 'package:provider/provider.dart';
 
 class MediaPlayerButton extends StatefulWidget {
   final String mediaPath;
@@ -42,9 +41,11 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
 
   @override
   Widget build(BuildContext context) {
-    var mpProvider = Provider.of<MediaPlayerProvider>(context);
-    var mpProviderFalse =
-        Provider.of<MediaPlayerProvider>(context, listen: false);
+    var mpProviderAndroid = mediaP(context);
+    var mpProviderFalseAndroid = mediaPF(context);
+    var mpProviderWindows = WindowSProviders.mpP(context);
+    var mpProviderFalseWindows = WindowSProviders.mpPF(context);
+
     FileType fileType = getFileType(getFileExtension(widget.mediaPath));
 
     return fileType == FileType.audio
@@ -52,14 +53,21 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
             onTap: () async {
               //
               if (mePlaying(
-                  mpProvider.playingAudioFilePath, mpProvider.audioPlaying)) {
+                Platform.isAndroid
+                    ? mpProviderAndroid.playingAudioFilePath
+                    : mpProviderWindows.playingAudioFilePath,
+                Platform.isAndroid
+                    ? mpProviderAndroid.audioPlaying
+                    : mpProviderWindows.audioPlaying,
+              )) {
                 // here i am playing and i want to pause
-                await mpProviderFalse.stopAudioPlaying();
+                if (Platform.isAndroid) {
+                  await mpProviderFalseAndroid.stopAudioPlaying();
+                } else {
+                  await mpProviderFalseWindows.pausePlaying();
+                }
               } else {
-                var sharedExpProvider = Provider.of<ShareItemsExplorerProvider>(
-                  context,
-                  listen: false,
-                );
+                var sharedExpProvider = shareExpPF(context);
                 String? connLink;
                 // sharedExpProvider.viewedUserSessionId != null &&
 
@@ -68,8 +76,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                     connLink = connectLaptopPF(context)
                         .getPhoneConnLink(EndPoints.streamAudio);
                   } else {
-                    var serverProvider =
-                        Provider.of<ServerProvider>(context, listen: false);
+                    var serverProvider = serverPF(context);
                     connLink = serverProvider
                             .peerModelWithSessionID(
                                 sharedExpProvider.viewedUserSessionId!)
@@ -79,19 +86,31 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                 }
 
                 // here i want to start over
-                await mpProviderFalse.setPlayingFile(
-                  widget.network ? '$connLink' : widget.mediaPath,
-                  widget.network,
-                  widget.mediaPath,
-                );
+                if (Platform.isAndroid) {
+                  await mpProviderFalseAndroid.setPlayingFile(
+                    widget.network ? '$connLink' : widget.mediaPath,
+                    widget.network,
+                    widget.mediaPath,
+                  );
+                } else {
+                  await mpProviderFalseWindows.setPlayingFile(
+                    widget.network ? '$connLink' : widget.mediaPath,
+                    widget.network,
+                    widget.mediaPath,
+                  );
+                }
               }
             },
             width: largeIconSize,
             height: largeIconSize,
             child: Image.asset(
               mePlaying(
-                mpProvider.playingAudioFilePath,
-                mpProvider.audioPlaying,
+                Platform.isAndroid
+                    ? mpProviderAndroid.playingAudioFilePath
+                    : mpProviderWindows.playingAudioFilePath,
+                Platform.isAndroid
+                    ? mpProviderAndroid.audioPlaying
+                    : mpProviderWindows.audioPlaying,
               )
                   ? 'assets/icons/pause.png'
                   : 'assets/icons/play-audio.png',
@@ -110,28 +129,39 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                       connLink = connectLaptopPF(context)
                           .getPhoneConnLink(EndPoints.streamVideo);
                     } else {
-                      var sharedExpProvider =
-                          Provider.of<ShareItemsExplorerProvider>(
-                        context,
-                        listen: false,
-                      );
-                      var serverProvider =
-                          Provider.of<ServerProvider>(context, listen: false);
+                      var sharedExpProvider = shareExpPF(context);
+                      var serverProvider = serverPF(context);
                       connLink = serverProvider
                               .peerModelWithSessionID(
                                   sharedExpProvider.viewedUserSessionId!)
                               .connLink +
                           EndPoints.streamVideo;
                     }
-
-                    mpProviderFalse.playVideo(
-                      connLink,
-                      widget.network,
-                      widget.mediaPath,
-                    );
-                    mpProviderFalse.setBottomVideoControllersHidden(false);
+                    if (Platform.isAndroid) {
+                      mpProviderFalseAndroid.playVideo(
+                        connLink,
+                        widget.network,
+                        widget.mediaPath,
+                      );
+                      mpProviderFalseAndroid
+                          .setBottomVideoControllersHidden(false);
+                    } else {
+                      mpProviderFalseWindows.playVideo(
+                        connLink,
+                        widget.network,
+                        widget.mediaPath,
+                      );
+                      mpProviderFalseWindows
+                          .setBottomVideoControllersHidden(false);
+                    }
                   } else {
-                    mpProviderFalse.playVideo(widget.mediaPath, widget.network);
+                    if (Platform.isAndroid) {
+                      mpProviderFalseAndroid.playVideo(
+                          widget.mediaPath, widget.network);
+                    } else {
+                      mpProviderFalseWindows.playVideo(
+                          widget.mediaPath, widget.network);
+                    }
                   }
                 },
                 width: largeIconSize,

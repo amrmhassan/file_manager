@@ -4,8 +4,7 @@ import 'package:explorer/constants/global_constants.dart';
 
 String _letters = 'abcdefghijklmnopqrstuvwxyz';
 
-List<Directory> validWindowsDisks() {
-  Directory rootDir = Directory('/');
+List<Directory> _validWindowsDisks() {
   List<Directory> validLetters = [];
   _letters.split('').forEach((letter) {
     Directory dir = Directory('$letter:');
@@ -13,13 +12,13 @@ List<Directory> validWindowsDisks() {
       validLetters.add(dir);
     }
   });
-  return [rootDir, ...validLetters];
+  return [...validLetters];
 }
 
 Future initialDirsInitForWindows() async {
   //?
   // sdcard setting
-  var path = validWindowsDisks();
+  var path = _validWindowsDisks();
   path.insert(0, Directory('/'));
   initialDirs = path.map((e) => e).toList();
 

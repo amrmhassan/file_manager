@@ -11,7 +11,7 @@ import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
-class ScreensWrapper extends StatelessWidget {
+class AndroidScreensWrapper extends StatelessWidget {
   final Widget child;
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
@@ -20,7 +20,7 @@ class ScreensWrapper extends StatelessWidget {
   final GlobalKey<ScaffoldState>? scfKey;
 
   //? drop your scaffold props here
-  const ScreensWrapper({
+  const AndroidScreensWrapper({
     Key? key,
     required this.child,
     this.floatingActionButton,
@@ -33,7 +33,7 @@ class ScreensWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mpProvider = mpP(context);
-    return Scaffold(
+    var scaffold = Scaffold(
       key: scfKey,
       drawer: drawer,
       backgroundColor: backgroundColor,
@@ -113,5 +113,6 @@ class ScreensWrapper extends StatelessWidget {
         ],
       ),
     );
+    return scaffold;
   }
 }

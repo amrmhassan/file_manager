@@ -24,7 +24,7 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
       GlobalKey<AnimatorWidgetState>();
   @override
   Widget build(BuildContext context) {
-    var mpProvider = Provider.of<MediaPlayerProvider>(context);
+    var mpProvider = mpP(context);
     var mpProviderFalse = mpPF(context);
 
     return FadeInUpBig(
