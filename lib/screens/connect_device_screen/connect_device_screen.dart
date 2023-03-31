@@ -39,7 +39,7 @@ class ConnectDeviceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     PeerModel peerModel =
         ModalRoute.of(context)!.settings.arguments as PeerModel;
-    var connectLaptopProvider = connectLaptopP(context);
+    // var connectLaptopProvider = connectLaptopP(context);
     // if (connectLaptopProvider.remoteIP == null) {
     //   if (Navigator.canPop(context)) {
     //     Future.delayed(Duration.zero).then((value) {
@@ -57,24 +57,24 @@ class ConnectDeviceScreen extends StatelessWidget {
               peerModel.name,
               style: h2TextStyle,
             ),
-            rightIcon: connectLaptopProvider.laptopMessages.isEmpty
-                ? null
-                : Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              LaptopMessagesScreen.routeName,
-                            );
-                          },
-                          icon: Icon(
-                            Icons.message,
-                            color: kMainIconColor,
-                          )),
-                      HSpace(factor: .3),
-                    ],
-                  ),
+            // rightIcon: connectLaptopProvider.laptopMessages.isEmpty
+            //     ? null
+            //     : Row(
+            //         children: [
+            //           IconButton(
+            //               onPressed: () {
+            //                 Navigator.pushNamed(
+            //                   context,
+            //                   LaptopMessagesScreen.routeName,
+            //                 );
+            //               },
+            //               icon: Icon(
+            //                 Icons.message,
+            //                 color: kMainIconColor,
+            //               )),
+            //           HSpace(factor: .3),
+            //         ],
+            //       ),
             // leftIcon: IconButton(
             //   onPressed: () {
             //     showModalBottomSheet(
