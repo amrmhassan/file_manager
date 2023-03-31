@@ -1,21 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-import 'dart:math';
-
-import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/advanced_video_player/advanced_video_player.dart';
-import 'package:explorer/global/widgets/advanced_video_player/widgets/custom_icon_button.dart';
+import 'package:explorer/global/widgets/go_back_button_windows.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/laptop_messages_button.dart';
 import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/quick_send_open_button.dart';
 import 'package:explorer/global/widgets/show_controllers_button.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player_show_button.dart';
-import 'package:explorer/screens/home_screen/home_screen.dart';
-import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -112,43 +104,7 @@ class ScreensWrapper extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (Platform.isWindows &&
-                        (ModalRoute.of(context)?.settings.name?.toString() ??
-                                '') !=
-                            HomeScreen.routeName)
-                      Container(
-                        width: double.infinity,
-                        height: largeIconSize * 1.5,
-                        color: kCardBackgroundColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            CustomIconButton(
-                              onTap: () async {
-                                bool shareViewerScreen = (ModalRoute.of(context)
-                                            ?.settings
-                                            .name
-                                            ?.toString() ??
-                                        '') ==
-                                    ShareSpaceVScreen.routeName;
-                                if (shareViewerScreen) {
-                                  bool exit =
-                                      await ShareSpaceVScreen.of(context)!
-                                          .handleScreenGoBack(context);
-                                  if (exit) {
-                                    // ignore: use_build_context_synchronously
-                                    Navigator.pop(context);
-                                  }
-                                } else {
-                                  Navigator.pop(context);
-                                }
-                              },
-                              iconData: Icons.arrow_forward_ios,
-                            ),
-                            HSpace(factor: 2),
-                          ],
-                        ),
-                      ),
+                    GoBackWindows(),
                   ],
                 ),
               ),
