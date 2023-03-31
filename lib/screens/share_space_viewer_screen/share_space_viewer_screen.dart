@@ -40,6 +40,8 @@ class ShareSpaceVScreen extends StatefulWidget {
 
   @override
   State<ShareSpaceVScreen> createState() => _ShareSpaceVScreenState();
+  static _ShareSpaceVScreenState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_ShareSpaceVScreenState>();
 }
 
 class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
@@ -130,26 +132,26 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
         shareExpProvider.currentPath?.replaceFirst(parentPath ?? '', '');
 
     return WillPopScope(
-      onWillPop: () => handleScreenGoBack(viewPath, parentPath),
+      onWillPop: () => handleScreenGoBack(context),
       child: ScreensWrapper(
         backgroundColor: kBackgroundColor,
         child: Column(
           children: [
-            if (kDebugMode)
-              Text(
-                'parentPath ${parentPath.toString()}',
-                style: h4TextStyle,
-              ),
-            if (kDebugMode)
-              Text(
-                'viewPath ${viewPath.toString()}',
-                style: h4TextStyle,
-              ),
-            if (kDebugMode)
-              Text(
-                'mode ${data.dataType.name}',
-                style: h4TextStyle,
-              ),
+            // if (kDebugMode)
+            //   Text(
+            //     'parentPath ${parentPath.toString()}',
+            //     style: h4TextStyle,
+            //   ),
+            // if (kDebugMode)
+            //   Text(
+            //     'viewPath ${viewPath.toString()}',
+            //     style: h4TextStyle,
+            //   ),
+            // if (kDebugMode)
+            //   Text(
+            //     'mode ${data.dataType.name}',
+            //     style: h4TextStyle,
+            //   ),
             CustomAppBar(
               title: Text(
                 title,
@@ -193,6 +195,15 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                       ],
                     )
                   : null,
+              leftIcon: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: kDangerColor,
+                ),
+              ),
             ),
             if (me) NotSharingView(),
             if (shareExpProvider.currentPath != null)
@@ -302,7 +313,13 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
     }
   }
 
-  Future<bool> handleScreenGoBack(String? viewPath, String? parentPath) {
+  Future<bool> handleScreenGoBack(BuildContext context) {
+    var shareExpProvider = shareExpPF(context);
+    String? parentPath = shareExpProvider.currentSharedFolderPath == null
+        ? null
+        : path_operations.dirname(shareExpProvider.currentSharedFolderPath!);
+    String? viewPath =
+        shareExpProvider.currentPath?.replaceFirst(parentPath ?? '', '');
     // this is for the first page of share space
 
     if (viewPath == null) return Future.value(true);
@@ -322,6 +339,10 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
       localGetFolderContent(previousPath);
       return Future.value(false);
     } else {
+      if (data.peerModel.deviceType == DeviceType.android &&
+          (viewPath.split('/').length <= 4)) {
+        return Future.value(true);
+      }
       if (viewPath == '/') return Future.value(true);
       // just go back until the view path is '/'
       String newPath = Directory(viewPath).parent.path;

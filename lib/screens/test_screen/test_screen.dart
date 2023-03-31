@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_result.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TestScreen extends StatefulWidget {
   static const String routeName = '/TestScreen';
@@ -28,11 +29,7 @@ class _TestScreenState extends State<TestScreen> {
           // BeaconServersScanResultContainer(),
           ElevatedButton(
             onPressed: () async {
-              ProcessResult result = await Process.run(
-                  'C:\\Windows\\System32\\tracert.exe', ['facebook.com']);
-
-              // Print the output of the command.
-              print(result.stdout);
+              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
             },
             child: Text('press'),
           ),
