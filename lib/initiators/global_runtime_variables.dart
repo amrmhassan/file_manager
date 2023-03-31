@@ -36,3 +36,6 @@ ForegroundServiceController foregroundServiceController =
 Locale? loadedCurrentLocale;
 //?
 late MyTestAudioService myTestMediaHandler;
+
+//! windows variables
+late String downloadFolder;

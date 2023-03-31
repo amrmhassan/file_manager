@@ -65,6 +65,11 @@ dependencies:
   audio_service: ^0.18.9
   localization: ^2.1.0
   rxdart: ^0.27.7
+  dart_vlc: ^0.3.0
+  window_manager: ^0.2.9
+  firedart: ^0.9.0+1
+
+
 
 
 dev_dependencies:

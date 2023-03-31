@@ -1,3 +1,9 @@
+import 'dart:io';
+
+import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/windows_app_code/providers/animation_provider.dart';
+import 'package:explorer/windows_app_code/providers/window_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -22,6 +28,8 @@ import 'package:explorer/providers/theme_provider.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
 
+import '../windows_app_code/providers/media_player_provider_windows.dart';
+
 List<SingleChildWidget> mainProviders = [
   ChangeNotifierProvider(create: (ctx) => ChildrenItemsProvider()),
   ChangeNotifierProvider(create: (ctx) => AnalyzerProvider()),
@@ -30,7 +38,6 @@ List<SingleChildWidget> mainProviders = [
   ChangeNotifierProvider(create: (ctx) => SettingsProvider()),
   ChangeNotifierProvider(create: (ctx) => RecentProvider()),
   ChangeNotifierProvider(create: (ctx) => ThemeProvider()),
-  ChangeNotifierProvider(create: (ctx) => MediaPlayerProvider()),
   ChangeNotifierProvider(create: (ctx) => ListyProvider()),
   ChangeNotifierProvider(create: (ctx) => ThumbnailProvider()),
   ChangeNotifierProvider(create: (ctx) => ShareProvider()),
@@ -43,4 +50,9 @@ List<SingleChildWidget> mainProviders = [
   ChangeNotifierProvider(create: (ctx) => LanguageProvider()),
   ChangeNotifierProvider(create: (ctx) => PermissionProvider()),
   ChangeNotifierProvider(create: (ctx) => BeaconProvider()),
+  ChangeNotifierProvider(create: (ctx) => MediaPlayerProvider()),
+  //? windows providers
+  ChangeNotifierProvider(create: (ctx) => MediaPlayerProviderWindows()),
+  ChangeNotifierProvider(create: (ctx) => WindowProvider()),
+  ChangeNotifierProvider(create: (ctx) => AnimationProvider()),
 ];

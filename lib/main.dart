@@ -30,7 +30,6 @@ import 'package:provider/provider.dart';
 //! run parallel analyzer for the analyzer provider like in the search provider to fasten the process
 //! with each extended search, deal with it as a full analyze step and use it's results to update the analyzing reports and all that stuff
 
-
 //! close server if the scan qr view screen disposed  without any connection
 
 //! make a header to be sent with each request to know if the other device will be used to share or not
@@ -44,7 +43,7 @@ void stopForegroundService() {
 }
 
 void main() async {
-  await initBeforeRunApp();
+  await AppInit.init();
   runApp(const MyApp());
 }
 

@@ -2,7 +2,6 @@
 
 import 'package:dio/dio.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
-import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/permission_result_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
@@ -10,7 +9,6 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/connect_device_screen/modals/send_text_to_device_modal.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
-import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
@@ -26,7 +24,6 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/screens/analyzer_screen/widgets/analyzer_options_item.dart';
 import 'package:explorer/utils/general_utils.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/screens/share_space_viewer_screen/share_space_viewer_screen.dart';
 import 'package:file_picker/file_picker.dart' as file_picker;
 import 'package:localization/localization.dart';
