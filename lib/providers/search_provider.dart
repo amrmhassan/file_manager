@@ -35,7 +35,9 @@ class SearchProvider extends ChangeNotifier {
     extendSearchDone = true;
     notifyListeners();
 
-    for (var dir in initialDirs.skip(1)) {
+    for (var dir in initialDirs.where(
+      (element) => element.path != initialDirs.first.path,
+    )) {
       if (dir.path == initialDirs.first.path) continue;
       // searching for the full storage path
       // split the storage and get the folders and start a separate search for each folder to fasten the process

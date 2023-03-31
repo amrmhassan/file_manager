@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:explorer/global/widgets/screens_wrapper.dart';
 import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_result.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,17 @@ class _TestScreenState extends State<TestScreen> {
         children: [
           SizedBox(width: double.infinity),
           Spacer(),
-          BeaconServersScanResultContainer(),
+          // BeaconServersScanResultContainer(),
+          ElevatedButton(
+            onPressed: () async {
+              ProcessResult result = await Process.run(
+                  'C:\\Windows\\System32\\tracert.exe', ['facebook.com']);
+
+              // Print the output of the command.
+              print(result.stdout);
+            },
+            child: Text('press'),
+          ),
         ],
       ),
     );

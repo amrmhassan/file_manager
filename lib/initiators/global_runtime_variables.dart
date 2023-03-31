@@ -16,10 +16,14 @@ bool testing = false;
 DownloadsNotificationIDSMapper notificationMapper =
     DownloadsNotificationIDSMapper();
 //?
-var validPaths = initialDirs.skip(1).map((e) => {
-      'path': e.path,
-      'type': EntityType.folder,
-    });
+var validPaths = initialDirs
+    .where(
+      (element) => element.path != initialDirs.first.path,
+    )
+    .map((e) => {
+          'path': e.path,
+          'type': EntityType.folder,
+        });
 //?
 List<StorageItemModel> explorerMainDisks =
     pathsToStorageItemsWithType(validPaths);

@@ -136,7 +136,12 @@ class AnalyzerProvider extends ChangeNotifier {
       (message) => runAnalyzeStorageIsolate(message),
       {
         'sendPort': sendPort,
-        'parentPath': initialDirs.skip(1).first.path,
+        'parentPath': initialDirs
+            .where(
+              (element) => element.path != initialDirs.first.path,
+            )
+            .first
+            .path,
       },
     );
     receivePort.listen(

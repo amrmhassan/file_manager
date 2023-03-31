@@ -115,6 +115,11 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
     }
   }
 
+  void clearCurrentSharedFolderPath() async {
+    currentSharedFolderPath = null;
+    notifyListeners();
+  }
+
   void setLoadingItems(bool i, [bool notify = true]) {
     loadingItems = i;
     if (notify) notifyListeners();

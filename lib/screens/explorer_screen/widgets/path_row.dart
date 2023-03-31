@@ -31,7 +31,11 @@ class PathRow extends StatelessWidget {
     var expProviderFalse =
         Provider.of<ExplorerProvider>(context, listen: false);
     String path = customPath ?? expProvider.currentActiveDir.path;
-    initialDirs.skip(1).forEach((mainDisk) {
+    initialDirs
+        .where(
+      (element) => element.path != initialDirs.first.path,
+    )
+        .forEach((mainDisk) {
       path = path.replaceFirst(
         mainDisk.path,
         mainDisksMapper[mainDisk.path] ?? mainDisk.path,
