@@ -42,6 +42,7 @@ class PathRow extends StatelessWidget {
       );
     });
     path = path.replaceAll('//', '/');
+    path = path.replaceAll('\\', '/');
     List<String> folders = path.split('/');
 
     return GestureDetector(

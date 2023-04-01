@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
-import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
-import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';

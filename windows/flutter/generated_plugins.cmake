@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
   connectivity_plus
   dart_vlc
+  desktop_drop
   flutter_native_view
   permission_handler_windows
   screen_retriever

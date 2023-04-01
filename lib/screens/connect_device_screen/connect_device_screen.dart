@@ -284,7 +284,8 @@ class ConnectDeviceScreen extends StatelessWidget {
                   ),
                   VSpace(),
 
-                  if (peerModel.deviceType == DeviceType.windows)
+                  if (peerModel.deviceType == DeviceType.windows &&
+                      Platform.isAndroid)
                     AnalyzerOptionsItem(
                       enablePadding: false,
                       onTap: () {

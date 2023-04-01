@@ -10,6 +10,7 @@
 #include <bitsdojo_window_windows/bitsdojo_window_plugin.h>
 #include <connectivity_plus/connectivity_plus_windows_plugin.h>
 #include <dart_vlc/dart_vlc_plugin.h>
+#include <desktop_drop/desktop_drop_plugin.h>
 #include <flutter_native_view/flutter_native_view_plugin.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
 #include <screen_retriever/screen_retriever_plugin.h>
@@ -25,6 +26,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
   DartVlcPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DartVlcPlugin"));
+  DesktopDropPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("DesktopDropPlugin"));
   FlutterNativeViewPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterNativeViewPlugin"));
   PermissionHandlerWindowsPluginRegisterWithRegistrar(

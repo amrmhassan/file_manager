@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
-import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
-import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatefulWidget {
@@ -34,10 +31,6 @@ class _TestScreenState extends State<TestScreen> {
               //     return true;
               //   });
               // });
-
-              var res =
-                  Navigator.maybeOf(navigatorKey.currentContext!)?.widget.pages;
-              print(res);
             },
             child: Text('press'),
           ),

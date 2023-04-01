@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/initiators/global_runtime_variables.dart';
 
 //? when downloading a file this function will return the download folder path
 String getSaveFilePath(FileType fileType, String fileName) {
@@ -62,10 +63,19 @@ String _folderPathCheck(String folderName) {
 
 //? for checking the main download folder
 String checkMainDownloadFolder() {
-  String mainPath = 'sdcard/$mainDownloadFolder';
-  Directory mainDir = Directory(mainPath);
-  if (!mainDir.existsSync()) {
-    mainDir.createSync();
+  if (Platform.isAndroid) {
+    String mainPath = 'sdcard/$mainDownloadFolder';
+    Directory mainDir = Directory(mainPath);
+    if (!mainDir.existsSync()) {
+      mainDir.createSync();
+    }
+    return mainPath;
+  } else {
+    String mainPath = '$downloadsFolderParent/$mainDownloadFolder';
+    Directory mainDir = Directory(mainPath);
+    if (!mainDir.existsSync()) {
+      mainDir.createSync();
+    }
+    return mainPath;
   }
-  return mainPath;
 }
