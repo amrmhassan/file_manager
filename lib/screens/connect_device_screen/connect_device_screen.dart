@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
 import 'package:explorer/global/widgets/h_space.dart';
@@ -11,6 +13,7 @@ import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/connect_device_screen/modals/send_text_to_device_modal.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
+import 'package:explorer/screens/send_files_screen/send_files_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
@@ -256,20 +259,24 @@ class ConnectDeviceScreen extends StatelessWidget {
                   AnalyzerOptionsItem(
                     enablePadding: false,
                     onTap: () async {
-                      var res = await file_picker.FilePicker.platform
-                          .pickFiles(allowMultiple: true);
-                      if (res == null || res.files.isEmpty) return;
-                      var capturedFiles =
-                          pathsToEntities(res.files.map((e) => e.path));
-                      handleSendCapturesFiles(
-                        capturedFiles,
-                        context,
-                        peerModel,
-                      );
-                      showSnackBar(
-                        context: context,
-                        message: 'sending-file-to-laptop'.i18n(),
-                      );
+                      if (Platform.isAndroid) {
+                        var res = await file_picker.FilePicker.platform
+                            .pickFiles(allowMultiple: true);
+                        if (res == null || res.files.isEmpty) return;
+                        var capturedFiles =
+                            pathsToEntities(res.files.map((e) => e.path));
+                        handleSendCapturesFiles(
+                          capturedFiles,
+                          context,
+                          peerModel,
+                        );
+                        showSnackBar(
+                          context: context,
+                          message: 'sending-file-to-laptop'.i18n(),
+                        );
+                      } else {
+                        Navigator.pushNamed(context, SendFilesScreen.routeName);
+                      }
                     },
                     title: 'send-file'.i18n(),
                     logoName: 'link',

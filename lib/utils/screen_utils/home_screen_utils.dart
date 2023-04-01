@@ -15,6 +15,7 @@ import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:explorer/windows_app_code/utils/update_utils/run_updates.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -166,4 +167,12 @@ void initHomeScreen(BuildContext context) async {
     await Provider.of<ChildrenItemsProvider>(context, listen: false)
         .getAndUpdateAllSavedFolders();
   });
+
+  if (Platform.isWindows) {
+    try {
+      runUpdates(context);
+    } catch (e) {
+      logger.e(e);
+    }
+  }
 }

@@ -214,3 +214,12 @@ DeviceType getDeviceType() {
     return DeviceType.windows;
   }
 }
+
+String? getCurrentViewedScreenName() {
+  String? name;
+  Navigator.popUntil(navigatorKey.currentContext!, (route) {
+    name = route.settings.name;
+    return true;
+  });
+  return name;
+}

@@ -503,7 +503,10 @@ class S1H {
       try {
         // Navigator.popUntil(navigatorKey.currentContext!,
         //     (route) => route.settings.name == HomeScreen.routeName);
-        Navigator.pushNamed(context, ShareScreen.routeName);
+        String? name = getCurrentViewedScreenName();
+        if (name != ShareScreen.routeName) {
+          Navigator.pushNamed(context, ShareScreen.routeName);
+        }
       } catch (e, s) {
         logger.e(e, s);
       }
