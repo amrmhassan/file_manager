@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/models/captures_entity_model.dart';
+import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/connect_laptop_provider.dart';
 import 'package:explorer/providers/server_provider.dart';
@@ -126,17 +127,26 @@ Future<void> downloadFolderUtil({
 Future<void> startSendEntities(
   List<CapturedEntityModel> entities,
   BuildContext context,
+  PeerModel peerModel,
 ) async {
   try {
     var data = entities.map((e) => e.toJSON()).toList();
     var encodedData = json.encode(data);
-    String connLink =
-        connectLaptopPF(context).getPhoneConnLink(EndPoints.startDownloadFile);
-    await Dio().post(
-      connLink,
-      data: encodedData,
-    );
+
+    // String connLink =
+    //     connectLaptopPF(context).getPhoneConnLink(EndPoints.startDownloadFile);
+    var shareProvider = sharePF(context);
+    String connLink = peerModel.getMyLink(EndPoints.startDownloadFile);
+    await Dio().post(connLink,
+        data: encodedData,
+        options: Options(
+          headers: {
+            KHeaders.deviceIDHeaderKey: shareProvider.myDeviceId,
+            KHeaders.userNameHeaderKey: shareProvider.myName,
+          },
+        ));
   } on DioError catch (e) {
     logger.e(e.response?.data);
+    rethrow;
   }
 }

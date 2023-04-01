@@ -230,5 +230,6 @@
   "wants-access-to-share-space": "want's to access your share space",
   "block": "Block",
   "share-space-request": "Share Space Request",
-  "remember-for-later": "Remember for later"
+  "remember-for-later": "Remember for later",
+  "send-files-or-folders": "Send Files or Folders"
 }

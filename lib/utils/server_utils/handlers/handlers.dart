@@ -218,8 +218,13 @@ class S1H {
         if (!connectPhone) {
           me = serverProvider.me(shareProvider);
         }
-        var folderChildren = await compute(
-            (message) => getFolderChildren(folderPath, recursive), false);
+        String path = folderPath.replaceAll('/', '\\');
+
+        var folderChildren =
+            await compute((message) => getFolderChildren(message), {
+          'path': path,
+          'rec': recursive,
+        });
         // hide marked 'hidden' elements
         List<Map<String, dynamic>> sharedItems = [];
         for (var entity in folderChildren) {
@@ -381,8 +386,9 @@ class S1H {
   }
 
 // the isolate that will get any folder children then return it when finished
-  static List<FileSystemEntity> getFolderChildren(String folderPath,
-      [bool rec = false]) {
+  static List<FileSystemEntity> getFolderChildren(Map<String, dynamic> data) {
+    String folderPath = data['path'];
+    bool rec = data['rec'] ?? false;
     return Directory(folderPath).listSync(recursive: rec);
   }
 

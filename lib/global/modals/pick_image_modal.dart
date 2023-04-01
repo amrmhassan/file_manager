@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/constants/widget_keys.dart';

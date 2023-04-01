@@ -105,7 +105,8 @@ class S2H {
       // String peerSessionID = headers[sessionIDHeaderKey]!.first;
       Directory directory = Directory(folderPath);
       if (directory.existsSync()) {
-        var folderChildren = await compute(S1H.getFolderChildren, folderPath);
+        var folderChildren =
+            await compute(S1H.getFolderChildren, {'path': folderPath});
         // hide marked 'hidden' elements
         await _handleSendChildrenToClient(folderChildren, folderPath, response);
       }

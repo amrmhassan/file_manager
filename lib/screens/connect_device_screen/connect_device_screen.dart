@@ -275,10 +275,11 @@ class ConnectDeviceScreen extends StatelessWidget {
                           message: 'sending-file-to-laptop'.i18n(),
                         );
                       } else {
-                        Navigator.pushNamed(context, SendFilesScreen.routeName);
+                        Navigator.pushNamed(context, SendFilesScreen.routeName,
+                            arguments: peerModel);
                       }
                     },
-                    title: 'send-file'.i18n(),
+                    title: 'send-files-or-folders'.i18n(),
                     logoName: 'link',
                     color: kMainIconColor,
                   ),

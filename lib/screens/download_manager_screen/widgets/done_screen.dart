@@ -48,6 +48,7 @@ class DoneScreen extends StatelessWidget {
                 : PaddingWrapper(
                     padding: EdgeInsets.symmetric(horizontal: kHPad / 2),
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       itemCount: doneTasks.length,
                       itemBuilder: (context, index) => DownloadCard(
                         downloadTaskModel: doneTasks[index],

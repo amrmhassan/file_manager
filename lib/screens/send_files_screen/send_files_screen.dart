@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:dio/dio.dart';
 import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
+import 'package:explorer/models/peer_model.dart';
+import 'package:explorer/models/types.dart';
 import 'package:explorer/utils/connect_laptop_utils/connect_to_laptop_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/colors.dart';
@@ -12,7 +15,7 @@ import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
-// import 'package:desktop_drop/desktop_drop.dart' as drop;
+import 'package:desktop_drop/desktop_drop.dart' as drop;
 import 'package:explorer/utils/general_utils.dart';
 import 'package:file_picker/file_picker.dart' as file_picker;
 
@@ -29,6 +32,9 @@ class _SendFilesScreenState extends State<SendFilesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    PeerModel peerModel =
+        ModalRoute.of(context)!.settings.arguments as PeerModel;
+
     return ScreensWrapper(
       backgroundColor: kBackgroundColor,
       child: Column(
@@ -45,23 +51,22 @@ class _SendFilesScreenState extends State<SendFilesScreen> {
               child:
                   //! after installing the drop package, just replace the SizedBox with the above line
                   //! then uncomment the handlers
-                  // drop.DropTarget
-                  SizedBox(
-                // onDragDone: (details) {
-                //   var capturedFiles =
-                //       pathsToEntities(details.files.map((e) => e.path));
-                //   handleSendCapturesFiles(capturedFiles);
-                // },
-                // onDragEntered: (details) {
-                //   setState(() {
-                //     active = true;
-                //   });
-                // },
-                // onDragExited: (details) {
-                //   setState(() {
-                //     active = false;
-                //   });
-                // },
+                  drop.DropTarget(
+                onDragDone: (details) {
+                  var capturedFiles =
+                      pathsToEntities(details.files.map((e) => e.path));
+                  handleSendCapturesFiles(capturedFiles, peerModel);
+                },
+                onDragEntered: (details) {
+                  setState(() {
+                    active = true;
+                  });
+                },
+                onDragExited: (details) {
+                  setState(() {
+                    active = false;
+                  });
+                },
                 child: Container(
                   constraints: BoxConstraints(
                     maxHeight: 400,
@@ -74,7 +79,7 @@ class _SendFilesScreenState extends State<SendFilesScreen> {
                       if (res == null || res.files.isEmpty) return;
                       var capturedFiles =
                           pathsToEntities(res.files.map((e) => e.path));
-                      handleSendCapturesFiles(capturedFiles);
+                      handleSendCapturesFiles(capturedFiles, peerModel);
                     },
                     width: Responsive.getWidth(context) / 1.2,
                     height: Responsive.getWidth(context) / 1.2,
@@ -133,9 +138,25 @@ class _SendFilesScreenState extends State<SendFilesScreen> {
     );
   }
 
-  void handleSendCapturesFiles(List<CapturedEntityModel> entities) async {
-    showSnackBar(context: context, message: 'Sending files');
-    // Navigator.pop(context);
-    await startSendEntities(entities, context);
+  void handleSendCapturesFiles(
+    List<CapturedEntityModel> entities,
+    PeerModel peerModel,
+  ) async {
+    try {
+      showSnackBar(context: context, message: 'Sending files');
+      // Navigator.pop(context);
+      await startSendEntities(
+        entities,
+        context,
+        peerModel,
+      );
+    } on DioError catch (e) {
+      String? refuseMessage = e.response?.data;
+      showSnackBar(
+        context: context,
+        message: refuseMessage ?? 'Can\'t send',
+        snackBarType: SnackBarType.error,
+      );
+    }
   }
 }

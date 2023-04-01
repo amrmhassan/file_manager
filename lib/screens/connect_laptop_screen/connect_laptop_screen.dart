@@ -266,8 +266,8 @@ class ConnectLaptopScreen extends StatelessWidget {
     List<CapturedEntityModel> entities,
     BuildContext context,
   ) async {
-    showSnackBar(context: context, message: 'sending-to-phone'.i18n());
-    Navigator.pop(context);
-    await startSendEntities(entities, context);
+    // showSnackBar(context: context, message: 'sending-to-phone'.i18n());
+    // Navigator.pop(context);
+    // await startSendEntities(entities, context, );
   }
 }
