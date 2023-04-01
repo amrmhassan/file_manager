@@ -26,22 +26,24 @@ class ShareSpaceCard extends StatelessWidget {
     return Column(
       children: [
         ButtonWrapper(
-          onTap: () {
-            // Navigator.pushNamed(
-            //   context,
-            //   ShareSpaceVScreen.routeName,
-            //   arguments: ShareSpaceVScreenData(
-            //     peerModel: peerModel,
-            //     laptop: false,
-            //     dataType: ShareSpaceVScreenDataType.shareSpace,
-            //   ),
-            // );
-            Navigator.pushNamed(
-              context,
-              ConnectDeviceScreen.routeName,
-              arguments: peerModel,
-            );
-          },
+          onTap: me
+              ? null
+              : () {
+                  // Navigator.pushNamed(
+                  //   context,
+                  //   ShareSpaceVScreen.routeName,
+                  //   arguments: ShareSpaceVScreenData(
+                  //     peerModel: peerModel,
+                  //     laptop: false,
+                  //     dataType: ShareSpaceVScreenDataType.shareSpace,
+                  //   ),
+                  // );
+                  Navigator.pushNamed(
+                    context,
+                    ConnectDeviceScreen.routeName,
+                    arguments: peerModel,
+                  );
+                },
           padding: EdgeInsets.symmetric(
             horizontal: kHPad / 2,
             vertical: kVPad / 2,

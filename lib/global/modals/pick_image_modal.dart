@@ -3,8 +3,10 @@
 import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/files_types_icons.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/styles.dart';
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
@@ -18,12 +20,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:uuid/uuid.dart';
+import 'package:file_picker/file_picker.dart' as file_picker;
 
-class PickImageModal extends StatelessWidget {
+class PickImageModal extends StatefulWidget {
   const PickImageModal({
     super.key,
   });
 
+  @override
+  State<PickImageModal> createState() => _PickImageModalState();
+}
+
+class _PickImageModalState extends State<PickImageModal> {
   Future<File?> handlePickImage(ImageSource source) async {
     PickedFile? pickedFile =
         await ImagePicker.platform.pickImage(source: source);
@@ -42,6 +50,40 @@ class PickImageModal extends StatelessWidget {
     );
     if (file == null) return null;
     return file;
+  }
+
+  void pickImageWindows() async {
+    try {
+      var res = await file_picker.FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: file_picker.FileType.image,
+      );
+
+      if (res == null || res.files.isEmpty) return;
+      String filePath = res.files.first.path!;
+      // final newPath = path_operations.join((await getTemporaryDirectory()).path,
+      //     '${Uuid().v4()}${path_operations.extension(filePath)}');
+      // File? file = await FlutterImageCompress.compressAndGetFile(
+      //   filePath,
+      //   newPath,
+      //   quality: 40,
+      // );
+
+      await sharePF(navigatorKey.currentContext!).setMyImagePath(filePath);
+    } catch (e) {
+      fastSnackBar(msg: 'can\'t change image');
+    }
+  }
+
+  @override
+  void initState() {
+    if (!Platform.isAndroid) {
+      // handlePickImage(ImageSource.gallery);
+      pickImageWindows();
+
+      Navigator.pop(context);
+    }
+    super.initState();
   }
 
   @override
