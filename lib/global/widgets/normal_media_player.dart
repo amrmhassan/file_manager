@@ -1,13 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:explorer/windows_app_code/utils/windows_provider_calls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +25,88 @@ class NormalMediaPlayer extends StatefulWidget {
 class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
   final GlobalKey<AnimatorWidgetState> mediaAnimationController =
       GlobalKey<AnimatorWidgetState>();
+
+  bool get viewSeeker {
+    if (Platform.isAndroid) {
+      var mpProvider = mpP(context);
+      return (mpProvider.fullSongDuration != null &&
+          mpProvider.currentDuration != null);
+    } else {
+      var mpProvider = WindowSProviders.mpP(context);
+      return (mpProvider.fullSongDuration != null &&
+          mpProvider.currentDuration != null);
+    }
+  }
+
+  String get currentDuration {
+    if (Platform.isAndroid) {
+      var mpProvider = mpP(context);
+
+      return formatDuration(
+          mpProvider.currentDuration ?? Duration(seconds: 30));
+    } else {
+      var mpProvider = WindowSProviders.mpP(context);
+      return formatDuration(
+          mpProvider.currentDuration ?? Duration(seconds: 30));
+    }
+  }
+
+  String get fullSongDuration {
+    if (Platform.isAndroid) {
+      var mpProvider = mpP(context);
+
+      return formatDuration(
+          mpProvider.fullSongDuration ?? Duration(seconds: 200));
+    } else {
+      var mpProvider = WindowSProviders.mpP(context);
+      return formatDuration(
+          mpProvider.fullSongDuration ?? Duration(seconds: 200));
+    }
+  }
+
+  void onSeeking(double value) {
+    if (Platform.isAndroid) {
+      var mpProvider = mpPF(context);
+      mpProvider.seekTo(value.toInt());
+    } else {
+      var mpProvider = WindowSProviders.mpPF(context);
+      mpProvider.seekTo(value.toInt());
+    }
+  }
+
+  double get currentSeekerValue {
+    if (Platform.isAndroid) {
+      var mpProvider = mpP(context);
+      return mpProvider.currentDuration!.inMilliseconds.toDouble();
+    } else {
+      var mpProvider = WindowSProviders.mpP(context);
+      return mpProvider.currentDuration!.inMilliseconds.toDouble();
+    }
+  }
+
+  double get maxSeekingValue {
+    if (Platform.isAndroid) {
+      var mpProvider = mpP(context);
+      return mpProvider.fullSongDuration!.inMilliseconds.toDouble();
+    } else {
+      var mpProvider = WindowSProviders.mpP(context);
+      return mpProvider.fullSongDuration!.inMilliseconds.toDouble();
+    }
+  }
+
+  bool get isPlaying {
+    if (Platform.isAndroid) {
+      var mpProvider = mpP(context);
+
+      return mpProvider.audioPlaying;
+    } else {
+      var mpProvider = WindowSProviders.mpP(context);
+      return mpProvider.audioPlaying;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var mpProvider = mpP(context);
-    var mpProviderFalse = mpPF(context);
-
     return FadeInUpBig(
       key: mediaAnimationController,
       preferences: AnimationPreferences(
@@ -47,13 +127,11 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
         ),
         child: Column(
           children: [
-            if (mpProvider.fullSongDuration != null &&
-                mpProvider.currentDuration != null)
+            if (viewSeeker)
               Row(
                 children: [
                   Text(
-                    formatDuration(
-                        mpProvider.currentDuration ?? Duration(seconds: 30)),
+                    currentDuration,
                     style: h4TextStyleInactive,
                   ),
                   Expanded(
@@ -61,19 +139,14 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       thumbColor: kAudioColor,
                       activeColor: kAudioColor,
                       inactiveColor: kAudioColor.withOpacity(.4),
-                      onChanged: (double value) {
-                        mpProvider.seekTo(value.toInt());
-                      },
-                      value:
-                          mpProvider.currentDuration!.inMilliseconds.toDouble(),
+                      onChanged: onSeeking,
+                      value: currentSeekerValue,
                       min: 0,
-                      max: mpProvider.fullSongDuration!.inMilliseconds
-                          .toDouble(),
+                      max: maxSeekingValue,
                     ),
                   ),
                   Text(
-                    formatDuration(
-                        mpProvider.fullSongDuration ?? Duration(seconds: 200)),
+                    fullSongDuration,
                     style: h4TextStyleInactive,
                   ),
                 ],
@@ -88,7 +161,13 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       width: largeIconSize,
                       height: largeIconSize,
                       onTap: () {
-                        mpProviderFalse.backward10();
+                        if (Platform.isAndroid) {
+                          var mpProviderFalse = mpPF(context);
+                          mpProviderFalse.backward10();
+                        } else {
+                          var mpProviderFalse = WindowSProviders.mpPF(context);
+                          mpProviderFalse.backward10();
+                        }
                       },
                       child: Image.asset(
                         'assets/icons/back_ten.png',
@@ -100,14 +179,24 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       width: largeIconSize,
                       height: largeIconSize,
                       onTap: () {
-                        if (mpProviderFalse.audioPlaying) {
-                          mpProviderFalse.pauseAudioPlaying();
+                        if (Platform.isAndroid) {
+                          var mpProviderFalse = mpPF(context);
+                          if (mpProviderFalse.audioPlaying) {
+                            mpProviderFalse.pauseAudioPlaying();
+                          } else {
+                            mpProviderFalse.resumeAudioPlaying();
+                          }
                         } else {
-                          mpProviderFalse.resumeAudioPlaying();
+                          var mpProviderFalse = WindowSProviders.mpPF(context);
+                          if (mpProviderFalse.audioPlaying) {
+                            mpProviderFalse.pausePlaying();
+                          } else {
+                            mpProviderFalse.resumePlaying();
+                          }
                         }
                       },
                       child: Image.asset(
-                        mpProvider.audioPlaying
+                        isPlaying
                             ? 'assets/icons/pause.png'
                             : 'assets/icons/play-button-arrowhead.png',
                         color: kMainIconColor,
@@ -118,7 +207,13 @@ class _NormalMediaPlayerState extends State<NormalMediaPlayer> {
                       width: largeIconSize,
                       height: largeIconSize,
                       onTap: () {
-                        mpProviderFalse.forward10();
+                        if (Platform.isAndroid) {
+                          var mpProviderFalse = mpPF(context);
+                          mpProviderFalse.forward10();
+                        } else {
+                          var mpProviderFalse = WindowSProviders.mpPF(context);
+                          mpProviderFalse.forward10();
+                        }
                       },
                       child: Image.asset(
                         'assets/icons/ten.png',

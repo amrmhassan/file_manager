@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/services/media_service/my_media_handler.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:video_player/video_player.dart';

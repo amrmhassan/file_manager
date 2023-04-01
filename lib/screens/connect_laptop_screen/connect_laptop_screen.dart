@@ -49,24 +49,24 @@ class ConnectLaptopScreen extends StatelessWidget {
               connectLaptopProvider.laptopName ?? 'your-windows'.i18n(),
               style: h2TextStyle,
             ),
-            rightIcon: connectLaptopProvider.laptopMessages.isEmpty
-                ? null
-                : Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              LaptopMessagesScreen.routeName,
-                            );
-                          },
-                          icon: Icon(
-                            Icons.message,
-                            color: kMainIconColor,
-                          )),
-                      HSpace(factor: .3),
-                    ],
-                  ),
+            // rightIcon: connectLaptopProvider.laptopMessages.isEmpty
+            //     ? null
+            //     : Row(
+            //         children: [
+            //           IconButton(
+            //               onPressed: () {
+            //                 Navigator.pushNamed(
+            //                   context,
+            //                   LaptopMessagesScreen.routeName,
+            //                 );
+            //               },
+            //               icon: Icon(
+            //                 Icons.message,
+            //                 color: kMainIconColor,
+            //               )),
+            //           HSpace(factor: .3),
+            //         ],
+            //       ),
             leftIcon: IconButton(
               onPressed: () {
                 showModalBottomSheet(

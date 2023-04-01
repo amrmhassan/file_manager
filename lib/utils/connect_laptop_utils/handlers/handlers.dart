@@ -177,15 +177,22 @@ class S2H {
     try {
       var data = await request.fold([], (bytes, chunk) => bytes..addAll(chunk));
       String payload = utf8.decode(data.cast());
+      String deviceID = request.headers.value(KHeaders.deviceIDHeaderKey)!;
+      String userName = request.headers.value(KHeaders.userNameHeaderKey)!;
+
       BuildContext? context = navigatorKey.currentContext;
       if (context == null) {
         return;
       }
-      connectLaptopPF(context).addLaptopMessage(payload);
+      msgPF(context).addLaptopMessage(
+        msg: payload,
+        senderID: deviceID,
+        senderName: userName,
+      );
     } catch (e) {
       response
         ..statusCode = HttpStatus.internalServerError
-        ..write('An error getting clipboard $e')
+        ..write('An error receiving a message')
         ..close();
     }
   }

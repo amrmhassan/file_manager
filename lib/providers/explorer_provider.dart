@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:explorer/initiators/global_runtime_variables.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

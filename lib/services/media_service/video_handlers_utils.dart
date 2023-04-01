@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:video_player/video_player.dart';
 
 enum VideoState {

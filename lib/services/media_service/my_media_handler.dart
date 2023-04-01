@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/services/media_service/audio_handlers_utils.dart';
 import 'package:explorer/services/media_service/video_handlers_utils.dart';
 import 'package:video_player/video_player.dart';

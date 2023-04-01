@@ -3,7 +3,7 @@
 import 'package:explorer/global/widgets/advanced_video_player/widgets/base_over_lay.dart';
 import 'package:explorer/global/widgets/advanced_video_player/widgets/controllers_overlay.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/actual_video_player.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

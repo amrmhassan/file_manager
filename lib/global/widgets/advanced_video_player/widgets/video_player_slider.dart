@@ -2,7 +2,7 @@
 
 import 'package:explorer/global/widgets/custom_slider/custom_circle.dart';
 import 'package:explorer/global/widgets/custom_slider/custom_slider.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/utils/futures_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

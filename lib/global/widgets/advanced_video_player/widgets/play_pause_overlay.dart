@@ -3,7 +3,7 @@
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

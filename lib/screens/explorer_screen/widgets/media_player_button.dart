@@ -35,35 +35,36 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
     return res;
   }
 
-  bool mePlaying(String? playingFilePath, bool isPlaying) {
-    return isMyPathActive(playingFilePath) && isPlaying;
+  bool get mePlaying {
+    if (Platform.isAndroid) {
+      var mpProviderAndroid = mediaPF(context);
+
+      return isMyPathActive(mpProviderAndroid.playingAudioFilePath) &&
+          mpProviderAndroid.audioPlaying;
+    } else {
+      var mpProviderWindows = WindowSProviders.mpPF(context);
+      return isMyPathActive(mpProviderWindows.playingAudioFilePath) &&
+          mpProviderWindows.audioPlaying;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var mpProviderAndroid = mediaP(context);
-    var mpProviderFalseAndroid = mediaPF(context);
-    var mpProviderWindows = WindowSProviders.mpP(context);
-    var mpProviderFalseWindows = WindowSProviders.mpPF(context);
-
     FileType fileType = getFileType(getFileExtension(widget.mediaPath));
 
     return fileType == FileType.audio
         ? ButtonWrapper(
             onTap: () async {
               //
-              if (mePlaying(
-                Platform.isAndroid
-                    ? mpProviderAndroid.playingAudioFilePath
-                    : mpProviderWindows.playingAudioFilePath,
-                Platform.isAndroid
-                    ? mpProviderAndroid.audioPlaying
-                    : mpProviderWindows.audioPlaying,
-              )) {
+              if (mePlaying) {
                 // here i am playing and i want to pause
                 if (Platform.isAndroid) {
+                  var mpProviderFalseAndroid = mediaPF(context);
+
                   await mpProviderFalseAndroid.stopAudioPlaying();
                 } else {
+                  var mpProviderFalseWindows = WindowSProviders.mpPF(context);
+
                   await mpProviderFalseWindows.pausePlaying();
                 }
               } else {
@@ -87,12 +88,16 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
 
                 // here i want to start over
                 if (Platform.isAndroid) {
+                  var mpProviderFalseAndroid = mediaPF(context);
+
                   await mpProviderFalseAndroid.setPlayingFile(
                     widget.network ? '$connLink' : widget.mediaPath,
                     widget.network,
                     widget.mediaPath,
                   );
                 } else {
+                  var mpProviderFalseWindows = WindowSProviders.mpPF(context);
+
                   await mpProviderFalseWindows.setPlayingFile(
                     widget.network ? '$connLink' : widget.mediaPath,
                     widget.network,
@@ -104,14 +109,7 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
             width: largeIconSize,
             height: largeIconSize,
             child: Image.asset(
-              mePlaying(
-                Platform.isAndroid
-                    ? mpProviderAndroid.playingAudioFilePath
-                    : mpProviderWindows.playingAudioFilePath,
-                Platform.isAndroid
-                    ? mpProviderAndroid.audioPlaying
-                    : mpProviderWindows.audioPlaying,
-              )
+              mePlaying
                   ? 'assets/icons/pause.png'
                   : 'assets/icons/play-audio.png',
               width: largeIconSize / 2,
@@ -138,6 +136,8 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                           EndPoints.streamVideo;
                     }
                     if (Platform.isAndroid) {
+                      var mpProviderFalseAndroid = mediaPF(context);
+
                       mpProviderFalseAndroid.playVideo(
                         connLink,
                         widget.network,
@@ -146,6 +146,9 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                       mpProviderFalseAndroid
                           .setBottomVideoControllersHidden(false);
                     } else {
+                      var mpProviderFalseWindows =
+                          WindowSProviders.mpPF(context);
+
                       mpProviderFalseWindows.playVideo(
                         connLink,
                         widget.network,
@@ -156,9 +159,14 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                     }
                   } else {
                     if (Platform.isAndroid) {
+                      var mpProviderFalseAndroid = mediaPF(context);
+
                       mpProviderFalseAndroid.playVideo(
                           widget.mediaPath, widget.network);
                     } else {
+                      var mpProviderFalseWindows =
+                          WindowSProviders.mpPF(context);
+
                       mpProviderFalseWindows.playVideo(
                           widget.mediaPath, widget.network);
                     }

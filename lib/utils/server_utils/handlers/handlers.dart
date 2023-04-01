@@ -17,6 +17,7 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
+import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
@@ -500,8 +501,9 @@ class S1H {
 
       if (navigatorKey.currentContext == null) return;
       try {
-        Navigator.popUntil(navigatorKey.currentContext!,
-            (route) => route.settings.name == ShareScreen.routeName);
+        // Navigator.popUntil(navigatorKey.currentContext!,
+        //     (route) => route.settings.name == HomeScreen.routeName);
+        Navigator.pushNamed(context, ShareScreen.routeName);
       } catch (e, s) {
         logger.e(e, s);
       }

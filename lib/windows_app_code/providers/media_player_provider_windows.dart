@@ -52,6 +52,14 @@ class MediaPlayerProviderWindows extends ChangeNotifier {
     notifyListeners();
   }
 
+  //? pause playing
+  Future<void> resumePlaying() async {
+    _audioPlayer.play();
+
+    audioPlaying = true;
+    notifyListeners();
+  }
+
   //? to play an audio
   Future<void> _playAudio(
     String path, [

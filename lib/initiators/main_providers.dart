@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:explorer/providers/message_provider.dart';
 import 'package:explorer/windows_app_code/providers/animation_provider.dart';
 import 'package:explorer/windows_app_code/providers/window_provider.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/providers/theme_provider.dart';
 import 'package:explorer/providers/thumbnail_provider.dart';
@@ -48,6 +49,7 @@ List<SingleChildWidget> mainProviders = [
   ChangeNotifierProvider(create: (ctx) => LanguageProvider()),
   ChangeNotifierProvider(create: (ctx) => PermissionProvider()),
   ChangeNotifierProvider(create: (ctx) => BeaconProvider()),
+  ChangeNotifierProvider(create: (ctx) => MessageProvider()),
   if (Platform.isAndroid)
     ChangeNotifierProvider(create: (ctx) => MediaPlayerProvider()),
   //? windows providers

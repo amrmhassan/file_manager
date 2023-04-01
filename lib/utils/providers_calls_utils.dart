@@ -4,7 +4,8 @@ import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/providers/language_provider.dart';
 import 'package:explorer/providers/listy_provider.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
+import 'package:explorer/providers/message_provider.dart';
 import 'package:explorer/providers/permissions_provider.dart';
 import 'package:explorer/providers/quick_send_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
@@ -169,4 +170,13 @@ BeaconProvider beaconPF(BuildContext context) {
 
 BeaconProvider beaconP(BuildContext context) {
   return Provider.of<BeaconProvider>(context);
+}
+
+//? messages provider
+MessageProvider msgPF(BuildContext context) {
+  return Provider.of<MessageProvider>(context, listen: false);
+}
+
+MessageProvider msgP(BuildContext context) {
+  return Provider.of<MessageProvider>(context);
 }

@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class TestScreen extends StatefulWidget {
   static const String routeName = '/TestScreen';
@@ -26,7 +27,10 @@ class _TestScreenState extends State<TestScreen> {
           // BeaconServersScanResultContainer(),
           ElevatedButton(
             onPressed: () async {
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              Future.delayed(Duration(seconds: 3)).then((value) {
+                var res = ModalRoute.of(navigatorKey.currentContext!)?.canPop;
+                printOnDebug(res);
+              });
             },
             child: Text('press'),
           ),

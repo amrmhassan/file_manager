@@ -149,41 +149,41 @@ class ConnectLaptopProvider extends ChangeNotifier {
   }
 
   //# message that will come from the laptop
-  List<LaptopMessageModel> _laptopMessages = [];
+  // List<LaptopMessageModel> _laptopMessages = [];
 
-  List<LaptopMessageModel> get laptopMessages => [..._laptopMessages.reversed];
+  // List<LaptopMessageModel> get laptopMessages => [..._laptopMessages.reversed];
 
-  List<LaptopMessageModel> get viewedLaptopMessages =>
-      _laptopMessages.where((element) => element.viewed).toList();
+  // List<LaptopMessageModel> get viewedLaptopMessages =>
+  //     _laptopMessages.where((element) => element.viewed).toList();
 
-  List<LaptopMessageModel> get notViewedLaptopMessages =>
-      _laptopMessages.where((element) => !element.viewed).toList();
+  // List<LaptopMessageModel> get notViewedLaptopMessages =>
+  //     _laptopMessages.where((element) => !element.viewed).toList();
 
-  void addLaptopMessage(String msg) {
-    _laptopMessages.add(LaptopMessageModel(
-      msg: msg,
-      at: DateTime.now(),
-      id: Uuid().v4(),
-    ));
-    notifyListeners();
-  }
+  // void addLaptopMessage(String msg) {
+  //   _laptopMessages.add(LaptopMessageModel(
+  //     msg: msg,
+  //     at: DateTime.now(),
+  //     id: Uuid().v4(),
+  //   ));
+  //   notifyListeners();
+  // }
 
-  void markAllMessagesAsViewed([bool notify = true]) {
-    _laptopMessages = [
-      ..._laptopMessages.map((e) {
-        e.viewed = true;
-        return e;
-      })
-    ];
-    try {
-      if (notify) notifyListeners();
-    } catch (e) {
-      //
-    }
-  }
+  // void markAllMessagesAsViewed([bool notify = true]) {
+  //   _laptopMessages = [
+  //     ..._laptopMessages.map((e) {
+  //       e.viewed = true;
+  //       return e;
+  //     })
+  //   ];
+  //   try {
+  //     if (notify) notifyListeners();
+  //   } catch (e) {
+  //     //
+  //   }
+  // }
 
-  void removeLaptopMessage(String id) {
-    _laptopMessages.removeWhere((element) => element.id == id);
-    notifyListeners();
-  }
+  // void removeLaptopMessage(String id) {
+  //   _laptopMessages.removeWhere((element) => element.id == id);
+  //   notifyListeners();
+  // }
 }

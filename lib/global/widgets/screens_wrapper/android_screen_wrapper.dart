@@ -100,7 +100,7 @@ class AndroidScreensWrapper extends StatelessWidget {
                             AdvancedVideoPlayer(),
 
                           QuickSendOpnButton(),
-                          LaptopMessagesButton(),
+                          MessagesButton(),
                         ],
                       ),
                     ),

@@ -108,6 +108,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
 
       loadSharedItems();
       shareExpPF(context).clearCurrentSharedFolderPath();
+      shareExpPF(context).setViewedUserSessionId(data.peerModel.sessionID);
     });
   }
 
@@ -239,7 +240,10 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                   : shareExpProvider.viewedItems.isEmpty
                       ? Expanded(
                           child: EmptyShareItems(
-                          title: 'Other user share space is empty',
+                          title: data.dataType ==
+                                  ShareSpaceVScreenDataType.filesExploring
+                              ? 'This folder is empty'
+                              : 'Other user share space is empty',
                         ))
                       : Expanded(
                           child: ListView.builder(

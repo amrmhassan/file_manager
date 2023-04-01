@@ -30,6 +30,7 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
 class RecentScreen extends StatefulWidget {
   const RecentScreen({
@@ -65,96 +66,97 @@ class _RecentScreenState extends State<RecentScreen> {
                 color: kInactiveColor.withOpacity(.2),
               ),
               VSpace(),
-              PaddingWrapper(
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    // color: kCardBackgroundColor,
-                    borderRadius: BorderRadius.circular(mediumBorderRadius),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RecentItemType(
-                            iconName: 'image',
-                            title: 'images-text'.i18n(),
-                            onTap: () {
-                              openRecentScreen(RecentType.image);
-                            },
-                            color: kImagesColor,
-                          ),
-                          RecentItemType(
-                            iconName: 'play-button',
-                            title: 'videos-text'.i18n(),
-                            onTap: () {
-                              openRecentScreen(RecentType.video);
-                            },
-                            color: kVideoColor,
-                          ),
-                          RecentItemType(
-                            iconName: 'google-docs',
-                            onTap: () {
-                              openRecentScreen(RecentType.doc);
-                            },
-                            title: 'docs-text'.i18n(),
-                            color: kDocsColor,
-                          ),
-                          RecentItemType(
-                            iconName: 'musical-note',
-                            onTap: () {
-                              openRecentScreen(RecentType.music);
-                            },
-                            title: 'music-text'.i18n(),
-                            color: kAudioColor,
-                          ),
-                        ],
-                      ),
-                      VSpace(factor: .5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RecentItemType(
-                            iconName: 'android',
-                            title: 'apks-text'.i18n(),
-                            onTap: () {
-                              openRecentScreen(RecentType.apk);
-                            },
-                            color: kAPKsColor,
-                          ),
-                          RecentItemType(
-                            iconName: 'download',
-                            title: 'downloads-text'.i18n(),
-                            onTap: () {
-                              openRecentScreen(RecentType.download);
-                            },
-                            color: kDocsColor,
-                          ),
-                          RecentItemType(
-                            iconName: 'archive',
-                            onTap: () {
-                              openRecentScreen(RecentType.archives);
-                            },
-                            title: 'archives-text'.i18n(),
-                            color: kAPKsColor,
-                          ),
-                          RecentItemType(
-                            iconName: 'whatsapp',
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, WhatsAppScreen.routeName);
-                            },
-                            title: 'social-text'.i18n(),
-                            color: kWhatsAppColor,
-                          ),
-                        ],
-                      ),
-                      VSpace(),
-                    ],
+              if (Platform.isAndroid)
+                PaddingWrapper(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      // color: kCardBackgroundColor,
+                      borderRadius: BorderRadius.circular(mediumBorderRadius),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RecentItemType(
+                              iconName: 'image',
+                              title: 'images-text'.i18n(),
+                              onTap: () {
+                                openRecentScreen(RecentType.image);
+                              },
+                              color: kImagesColor,
+                            ),
+                            RecentItemType(
+                              iconName: 'play-button',
+                              title: 'videos-text'.i18n(),
+                              onTap: () {
+                                openRecentScreen(RecentType.video);
+                              },
+                              color: kVideoColor,
+                            ),
+                            RecentItemType(
+                              iconName: 'google-docs',
+                              onTap: () {
+                                openRecentScreen(RecentType.doc);
+                              },
+                              title: 'docs-text'.i18n(),
+                              color: kDocsColor,
+                            ),
+                            RecentItemType(
+                              iconName: 'musical-note',
+                              onTap: () {
+                                openRecentScreen(RecentType.music);
+                              },
+                              title: 'music-text'.i18n(),
+                              color: kAudioColor,
+                            ),
+                          ],
+                        ),
+                        VSpace(factor: .5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RecentItemType(
+                              iconName: 'android',
+                              title: 'apks-text'.i18n(),
+                              onTap: () {
+                                openRecentScreen(RecentType.apk);
+                              },
+                              color: kAPKsColor,
+                            ),
+                            RecentItemType(
+                              iconName: 'download',
+                              title: 'downloads-text'.i18n(),
+                              onTap: () {
+                                openRecentScreen(RecentType.download);
+                              },
+                              color: kDocsColor,
+                            ),
+                            RecentItemType(
+                              iconName: 'archive',
+                              onTap: () {
+                                openRecentScreen(RecentType.archives);
+                              },
+                              title: 'archives-text'.i18n(),
+                              color: kAPKsColor,
+                            ),
+                            RecentItemType(
+                              iconName: 'whatsapp',
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, WhatsAppScreen.routeName);
+                              },
+                              title: 'social-text'.i18n(),
+                              color: kWhatsAppColor,
+                            ),
+                          ],
+                        ),
+                        VSpace(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
               AnalyzerOptionsItem(
                 logoName: 'management',
                 onTap: () {
@@ -163,13 +165,14 @@ class _RecentScreenState extends State<RecentScreen> {
                 title: 'share-text'.i18n(),
                 color: Colors.white,
               ),
-              VSpace(),
-              AnalyzerOptionsItem(
-                logoName: 'laptop-icon',
-                onTap: handleClickConnectLaptop,
-                title: 'connect-laptop-text'.i18n(),
-                color: Colors.white,
-              ),
+              if (Platform.isAndroid) VSpace(),
+              if (Platform.isAndroid)
+                AnalyzerOptionsItem(
+                  logoName: 'laptop-icon',
+                  onTap: handleClickConnectLaptop,
+                  title: 'connect-laptop-text'.i18n(),
+                  color: Colors.white,
+                ),
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'clock',
@@ -183,22 +186,25 @@ class _RecentScreenState extends State<RecentScreen> {
                 title: 'recently-opened-text'.i18n(),
                 color: kMainIconColor,
               ),
-              VSpace(),
-              AnalyzerOptionsItem(
-                logoName: 'analyzer',
-                onTap: () {
-                  Navigator.pushNamed(context, AnalyzerScreen.routeName);
-                },
-                title: 'storage-analyzer-text'.i18n(),
-              ),
-              VSpace(),
-              AnalyzerOptionsItem(
-                logoName: 'cleaner',
-                onTap: () {
-                  Navigator.pushNamed(context, StorageCleanerScreen.routeName);
-                },
-                title: 'storage-cleaner-text'.i18n(),
-              ),
+              if (Platform.isAndroid) VSpace(),
+              if (Platform.isAndroid)
+                AnalyzerOptionsItem(
+                  logoName: 'analyzer',
+                  onTap: () {
+                    Navigator.pushNamed(context, AnalyzerScreen.routeName);
+                  },
+                  title: 'storage-analyzer-text'.i18n(),
+                ),
+              if (Platform.isAndroid) VSpace(),
+              if (Platform.isAndroid)
+                AnalyzerOptionsItem(
+                  logoName: 'cleaner',
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, StorageCleanerScreen.routeName);
+                  },
+                  title: 'storage-cleaner-text'.i18n(),
+                ),
               VSpace(),
               AnalyzerOptionsItem(
                 logoName: 'list1',
@@ -211,14 +217,15 @@ class _RecentScreenState extends State<RecentScreen> {
             ],
           ),
         ),
-        (analyzerProvider.allExtensionInfo == null ||
-                (analyzerProvider.allExtensionInfo ?? []).isEmpty
-            ? ShimmerWrapper(
-                baseColor: Colors.white,
-                lightColor: Color.fromARGB(255, 172, 172, 172),
-                child: StorageSegments(),
-              )
-            : StorageSegments()),
+        if (Platform.isAndroid)
+          (analyzerProvider.allExtensionInfo == null ||
+                  (analyzerProvider.allExtensionInfo ?? []).isEmpty
+              ? ShimmerWrapper(
+                  baseColor: Colors.white,
+                  lightColor: Color.fromARGB(255, 172, 172, 172),
+                  child: StorageSegments(),
+                )
+              : StorageSegments()),
       ],
     );
   }

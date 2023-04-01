@@ -12,7 +12,7 @@ class MediaControllers extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  bool isHidden(BuildContext context) {
+  bool isShown(BuildContext context) {
     if (Platform.isAndroid) {
       var mpProvider = mpP(context);
       return !mpProvider.playerHidden;
@@ -24,6 +24,6 @@ class MediaControllers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isHidden(context) ? NormalMediaPlayer() : SizedBox();
+    return isShown(context) ? NormalMediaPlayer() : SizedBox();
   }
 }

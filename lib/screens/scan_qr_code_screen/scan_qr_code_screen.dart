@@ -114,7 +114,27 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                     ),
                   )
                 else
-                  Expanded(child: SizedBox()),
+                  Expanded(
+                    child: Container(
+                      color: kCardBackgroundColor,
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Hosting devices will show up down below',
+                            style: h3InactiveTextStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                          Icon(
+                            Icons.broadcast_on_personal_outlined,
+                            color: kGreenColor,
+                            size: largeIconSize,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 BeaconServersScanResultContainer(),
               ],
             ),

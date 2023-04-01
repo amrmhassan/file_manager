@@ -53,19 +53,20 @@ class CustomAppDrawer extends StatelessWidget {
               VSpace(factor: 2),
               // LightThemeCheckBox(),
 
-              AppDrawerItem(
-                iconPath: 'qr-code',
-                title: 'qr-scanner-text'.i18n(),
-                onTap: () async {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(
-                    context,
-                    ScanQRCodeScreen.routeName,
-                    arguments: true,
-                  );
-                },
-                onlyDebug: true,
-              ),
+              if (Platform.isAndroid)
+                AppDrawerItem(
+                  iconPath: 'qr-code',
+                  title: 'qr-scanner-text'.i18n(),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(
+                      context,
+                      ScanQRCodeScreen.routeName,
+                      arguments: true,
+                    );
+                  },
+                  onlyDebug: true,
+                ),
               AppDrawerItem(
                 iconPath: 'download-circular-button',
                 title: 'downloads-text'.i18n(),
@@ -80,7 +81,7 @@ class CustomAppDrawer extends StatelessWidget {
                 allowBadge: activeTasks.isNotEmpty,
                 badgeContent: activeTasks.length.toString(),
               ),
-              StorageAnalyzerButton(),
+              if (Platform.isAndroid) StorageAnalyzerButton(),
               AppDrawerItem(
                 iconPath: 'settings',
                 title: 'settings-text'.i18n(),

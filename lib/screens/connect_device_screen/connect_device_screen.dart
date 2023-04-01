@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
+import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/models/captures_entity_model.dart';
 import 'package:explorer/models/permission_result_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
@@ -9,9 +10,11 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/screens/connect_device_screen/modals/send_text_to_device_modal.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
+import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
 import 'package:explorer/screens/touchpad_screen/touchpad_screen.dart';
 import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
+import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/styles.dart';
@@ -34,6 +37,7 @@ class ConnectDeviceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var msgProvider = msgP(context);
     PeerModel peerModel =
         ModalRoute.of(context)!.settings.arguments as PeerModel;
     // var connectLaptopProvider = connectLaptopP(context);
@@ -54,6 +58,24 @@ class ConnectDeviceScreen extends StatelessWidget {
               peerModel.name,
               style: h2TextStyle,
             ),
+            rightIcon: msgProvider.messages.isEmpty
+                ? null
+                : Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              LaptopMessagesScreen.routeName,
+                            );
+                          },
+                          icon: Icon(
+                            Icons.message,
+                            color: kMainIconColor,
+                          )),
+                      HSpace(factor: .3),
+                    ],
+                  ),
             // rightIcon: connectLaptopProvider.laptopMessages.isEmpty
             //     ? null
             //     : Row(

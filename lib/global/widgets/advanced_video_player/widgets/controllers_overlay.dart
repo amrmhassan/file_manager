@@ -10,7 +10,7 @@ import 'package:explorer/global/widgets/advanced_video_player/widgets/video_play
 import 'package:explorer/global/widgets/padding_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/utils/duration_utils.dart';
 import 'package:explorer/utils/futures_utils.dart';
 import 'package:explorer/utils/general_utils.dart';

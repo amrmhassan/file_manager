@@ -25,7 +25,8 @@ class _LaptopMessagesScreenState extends State<LaptopMessagesScreen> {
   void initState() {
     Future.delayed(Duration.zero).then(
       (value) {
-        connectLaptopPF(context).markAllMessagesAsViewed();
+        // connectLaptopPF(context).markAllMessagesAsViewed();
+        msgPF(context).markAllMessagesAsViewed();
       },
     );
     super.initState();
@@ -33,10 +34,12 @@ class _LaptopMessagesScreenState extends State<LaptopMessagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    connectLaptopPF(context).markAllMessagesAsViewed(false);
+    // connectLaptopPF(context).markAllMessagesAsViewed(false);
+    msgPF(context).markAllMessagesAsViewed(false);
+    var messageProvider = msgP(context);
 
-    var connLapProvider = connectLaptopP(context);
-    if (connLapProvider.laptopMessages.isEmpty) {
+    // var connLapProvider = connectLaptopP(context);
+    if (messageProvider.messages.isEmpty) {
       Future.delayed(Duration.zero).then((value) {
         Navigator.pop(context);
       });
@@ -56,11 +59,11 @@ class _LaptopMessagesScreenState extends State<LaptopMessagesScreen> {
               child: ListView.builder(
             physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              var message = connLapProvider.laptopMessages[index];
+              var message = messageProvider.messages.elementAt(index);
 
               return Dismissible(
                 onDismissed: (direction) {
-                  connectLaptopPF(context).removeLaptopMessage(message.id);
+                  msgPF(context).removeMessage(message.id);
                 },
                 key: UniqueKey(),
                 child: ButtonWrapper(
@@ -96,7 +99,7 @@ class _LaptopMessagesScreenState extends State<LaptopMessagesScreen> {
                 ),
               );
             },
-            itemCount: connLapProvider.laptopMessages.length,
+            itemCount: messageProvider.messages.length,
           ))
         ],
       ),

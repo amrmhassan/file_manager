@@ -9,16 +9,16 @@ import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.d
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 
-class LaptopMessagesButton extends StatelessWidget {
-  const LaptopMessagesButton({
+class MessagesButton extends StatelessWidget {
+  const MessagesButton({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    var connLaptopProvider = connectLaptopP(context);
-    return (connLaptopProvider.httpServer != null &&
-            connLaptopProvider.notViewedLaptopMessages.isNotEmpty &&
+    var msgProvider = msgP(context);
+
+    return (msgProvider.notViewedMessages.isNotEmpty &&
             ModalRoute.of(context)?.settings.name !=
                 LaptopMessagesScreen.routeName)
         ? Positioned(
@@ -61,8 +61,7 @@ class LaptopMessagesButton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(1000),
                     ),
                     child: Text(
-                      connLaptopProvider.notViewedLaptopMessages.length
-                          .toString(),
+                      msgProvider.notViewedMessages.length.toString(),
                       style: h4LightTextStyle.copyWith(height: 1),
                     ),
                   ),

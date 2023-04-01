@@ -9,7 +9,7 @@ import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';

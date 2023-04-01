@@ -5,7 +5,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_line.dart';
 import 'package:explorer/helpers/responsive.dart';
-import 'package:explorer/providers/media_player_provider.dart';
+import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

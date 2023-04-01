@@ -5,29 +5,28 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/windows_app_code/utils/windows_provider_calls.dart';
 import './widgets/base_over_lay.dart';
 import './widgets/controllers_overlay.dart';
-import '/providers/media_player_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'widgets/actual_video_player.dart';
 
-class AdvancedVideoPlayer extends StatefulWidget {
+class AdvancedVideoPlayerWindows extends StatefulWidget {
   final bool isOverlay;
   final OverlayEntry? overlayEntry;
 
-  const AdvancedVideoPlayer({
+  const AdvancedVideoPlayerWindows({
     Key? key,
     this.isOverlay = false,
     this.overlayEntry,
   }) : super(key: key);
 
   @override
-  State<AdvancedVideoPlayer> createState() => _AdvancedVideoPlayerState();
+  State<AdvancedVideoPlayerWindows> createState() =>
+      _AdvancedVideoPlayerWindowsState();
 }
 
-class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
+class _AdvancedVideoPlayerWindowsState extends State<AdvancedVideoPlayerWindows>
     with WidgetsBindingObserver {
   OverlayEntry? overlayEntry;
   bool controllerOverLayViewed = true;
@@ -49,7 +48,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
       //? here i want to show an overlay for viewing the video
       overlayEntry = OverlayEntry(
         builder: (context) => Scaffold(
-          body: AdvancedVideoPlayer(
+          body: AdvancedVideoPlayerWindows(
             isOverlay: true,
             overlayEntry: overlayEntry,
           ),
@@ -85,8 +84,7 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
     super.initState();
     Wakelock.enable();
 
-    var mediaProvider =
-        Provider.of<MediaPlayerProvider>(context, listen: false);
+    var mediaProvider = WindowSProviders.mpPF(context);
     if (mediaProvider.videoPlayerController == null) return;
   }
 

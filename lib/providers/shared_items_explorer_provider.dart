@@ -70,6 +70,11 @@ class ShareItemsExplorerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setViewedUserSessionId(String sessionID) {
+    viewedUserSessionId = sessionID;
+    notifyListeners();
+  }
+
   //? to add some items to share space when the other peer add some
   void addToPeerShareSpaceScreen({
     required List<ShareSpaceItemModel> addedItems,

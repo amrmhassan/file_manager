@@ -1,23 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-
-import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/custom_app_drawer/custom_app_drawer.dart';
-import 'package:explorer/global/widgets/advanced_video_player/advanced_video_player.dart';
-import 'package:explorer/global/widgets/advanced_video_player/widgets/custom_icon_button.dart';
+import 'package:explorer/global/widgets/go_back_button_windows.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/laptop_messages_button.dart';
-import 'package:explorer/global/widgets/media_controllers.dart';
 import 'package:explorer/global/widgets/quick_send_open_button.dart';
 import 'package:explorer/global/widgets/screens_wrapper/windows_app_bar.dart';
-import 'package:explorer/global/widgets/show_controllers_button.dart';
 import 'package:explorer/global/widgets/video_player_viewer/widgets/video_player_show_button.dart';
-import 'package:explorer/screens/home_screen/home_screen.dart';
-import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:explorer/windows_app_code/global/widgets/media_controllers_windows.dart';
 import 'package:explorer/windows_app_code/utils/windows_provider_calls.dart';
 import 'package:flutter/material.dart';
+
+import '../../../windows_app_code/global/widgets/advanced_video_player/advanced_video_player.dart';
+import '../../../windows_app_code/global/widgets/show_controllers_buttons_windows.dart';
 
 class WindowsScreensWrapper extends StatefulWidget {
   final Widget child;
@@ -86,7 +81,7 @@ class _WindowsScreensWrapperState extends State<WindowsScreensWrapper> {
                                       child: widget.child,
                                     ),
                                   ),
-                                  MediaControllers(),
+                                  MediaControllersWindows(),
                                 ],
                               ),
                               Positioned(
@@ -94,7 +89,7 @@ class _WindowsScreensWrapperState extends State<WindowsScreensWrapper> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    ShowControllersButton(),
+                                    ShowControllersButtonWindows(),
                                     HSpace(),
                                   ],
                                 ),
@@ -112,37 +107,39 @@ class _WindowsScreensWrapperState extends State<WindowsScreensWrapper> {
                               // VideoPlayerViewer(),
                               if (mpProvider.videoPlayerController != null &&
                                   (!mpProvider.videoHidden))
-                                AdvancedVideoPlayer(),
+                                AdvancedVideoPlayerWindows(),
 
                               QuickSendOpnButton(),
-                              LaptopMessagesButton(),
+                              MessagesButton(),
                             ],
                           ),
                         ),
-                        if (Platform.isWindows &&
-                            (ModalRoute.of(context)
-                                        ?.settings
-                                        .name
-                                        ?.toString() ??
-                                    '') !=
-                                HomeScreen.routeName)
-                          Container(
-                            width: double.infinity,
-                            height: largeIconSize * 1.5,
-                            color: kCardBackgroundColor,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                CustomIconButton(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  iconData: Icons.arrow_forward_ios,
-                                ),
-                                HSpace(factor: 2),
-                              ],
-                            ),
-                          ),
+                        GoBackWindows(),
+
+                        // if (Platform.isWindows &&
+                        //     (ModalRoute.of(context)
+                        //                 ?.settings
+                        //                 .name
+                        //                 ?.toString() ??
+                        //             '') !=
+                        //         HomeScreen.routeName)
+                        //   Container(
+                        //     width: double.infinity,
+                        //     height: largeIconSize * 1.5,
+                        //     color: kCardBackgroundColor,
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.end,
+                        //       children: [
+                        //         CustomIconButton(
+                        //           onTap: () {
+                        //             Navigator.pop(context);
+                        //           },
+                        //           iconData: Icons.arrow_forward_ios,
+                        //         ),
+                        //         HSpace(factor: 2),
+                        //       ],
+                        //     ),
+                        //   ),
                       ],
                     ),
                   ),
