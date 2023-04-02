@@ -11,6 +11,7 @@ import 'package:explorer/constants/models_constants.dart';
 import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/global/modals/double_buttons_modal.dart';
+import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/utils/download_utils/custom_dio.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +82,7 @@ class DownloadTaskController {
   final String remoteDeviceName;
   final String remoteDeviceID;
   final Function(int chunkSize)? onReceived;
+  final DownloadAlgorithm downloadAlgorithm;
 
   DownloadTaskController({
     required this.downloadPath,
@@ -92,7 +94,8 @@ class DownloadTaskController {
     required this.setSpeed,
     required this.remoteDeviceID,
     required this.remoteDeviceName,
-    this.maximumParallelDownloadThreads = 5,
+    required this.downloadAlgorithm,
+    this.maximumParallelDownloadThreads = 1,
     this.onReceived,
   });
 
@@ -299,7 +302,14 @@ class DownloadTaskController {
         deviceIDString: myDeviceID,
         "Accept": "application/octet-stream",
       };
-      CustomDio customDio = CustomDio();
+      late CustomDio customDio;
+      if (downloadAlgorithm == DownloadAlgorithm.customDownload) {
+        customDio = CustomDio();
+      } else {
+        customDio = CustomDioOriginalDio();
+        logger.e('you are using testing dio for download');
+      }
+
       futures.add(
         customDio.download(
           url,

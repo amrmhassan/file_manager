@@ -11,6 +11,7 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
+import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/utils/download_utils/download_task_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
@@ -39,7 +40,8 @@ class DownloadFolderController extends DownloadTaskController {
     required super.setSpeed,
     required super.remoteDeviceID,
     required super.remoteDeviceName,
-    super.maximumParallelDownloadThreads,
+    required super.maximumParallelDownloadThreads,
+    required super.downloadAlgorithm,
     required this.setTaskSize,
     required this.initialCount,
   }) {
@@ -117,6 +119,8 @@ class DownloadFolderController extends DownloadTaskController {
           EndPoints.getFullFolderContent, EndPoints.downloadFile);
 
       currentDownloadingFile = DownloadTaskController(
+        downloadAlgorithm: downloadAlgorithm,
+        maximumParallelDownloadThreads: maximumParallelDownloadThreads,
         downloadPath: localFilePath,
         myDeviceID: myDeviceID,
         mySessionID: mySessionID,

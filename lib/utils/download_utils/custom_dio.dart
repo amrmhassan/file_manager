@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+
 class CustomDio {
   Future<int> download(
     String url,
@@ -68,5 +70,37 @@ class CustomCancelToken {
   bool get isCancelled => _isCancelled;
   void cancel() {
     _isCancelled = true;
+  }
+}
+
+class CustomDioOriginalDio extends CustomDio {
+  int received = 0;
+  @override
+  Future<int> download(
+    String url,
+    String savePath, {
+    Function(
+      int total,
+      int received,
+      int chunkSize,
+    )?
+        onReceiveProgress,
+    CustomCancelToken? cancelToken,
+    bool deleteIfExist = false,
+    Map<String, dynamic>? headers,
+    int? startByte,
+  }) async {
+    await Dio().download(
+      url,
+      savePath,
+      options: Options(headers: headers),
+      onReceiveProgress: (count, total) {
+        if (onReceiveProgress != null) {
+          onReceiveProgress(total, count, count - received);
+        }
+        received = count;
+      },
+    );
+    return received;
   }
 }

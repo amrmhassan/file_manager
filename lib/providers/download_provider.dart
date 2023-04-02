@@ -31,7 +31,34 @@ import 'package:explorer/utils/files_operations_utils/download_utils.dart';
 //! failed tasks can be resumed just like the paused tasks, but make sure first you are connected to the device that the download task
 //! has his deviceID
 
+enum DownloadAlgorithm {
+  // this is custom dio that support continue
+  customDownload,
+  // this is normal dio that doesnt support continue
+  normalDownload,
+}
+
 class DownloadProvider extends ChangeNotifier {
+  static String getDownloadAlgorithmName(DownloadAlgorithm a) {
+    if (a == DownloadAlgorithm.customDownload) {
+      return 'Algo 1';
+    } else {
+      return 'Algo 2';
+    }
+  }
+
+  int maximumDownloadSplitsForAFile = 2;
+  void setMaximumDownloadSplitsForAFile(int n) {
+    maximumDownloadSplitsForAFile = n;
+    notifyListeners();
+  }
+
+  DownloadAlgorithm downloadAlgorithm = DownloadAlgorithm.customDownload;
+  void setAlgorithm(DownloadAlgorithm a) {
+    downloadAlgorithm = a;
+    notifyListeners();
+  }
+
   List<DownloadTaskModel> tasks = [];
   bool taskLoadedFromDb = false;
   late int maxDownloadsAtAtime;
@@ -265,11 +292,13 @@ class DownloadProvider extends ChangeNotifier {
     //   }
     // } else {
     // }
-    QuickNotification.sendDownloadNotification(
-      percent,
-      taskID,
-      basename(newTask.localFilePath),
-    );
+    if (Platform.isAndroid) {
+      QuickNotification.sendDownloadNotification(
+        percent,
+        taskID,
+        basename(newTask.localFilePath),
+      );
+    }
   }
   // ! when loading tasks from the sqlite don't load all tasks, just load the tasks that need to be download or whose status isn't finished,
   //! and only load the finished tasks when the user wants to see them
@@ -406,7 +435,9 @@ class DownloadProvider extends ChangeNotifier {
 
     // to close the notification if the notification download task isn't downloading
     if (newTask.taskStatus != TaskStatus.downloading) {
-      QuickNotification.closeDownloadNotification(newTask.id);
+      if (Platform.isAndroid) {
+        QuickNotification.closeDownloadNotification(newTask.id);
+      }
     }
   }
 
@@ -479,6 +510,8 @@ class DownloadProvider extends ChangeNotifier {
       if (downloadTaskModel.entityType == EntityType.file) {
         //? new way of downloading with multiple streams for faster downloading speed
         downloadTaskController = rdu.DownloadTaskController(
+          downloadAlgorithm: downloadAlgorithm,
+          maximumParallelDownloadThreads: maximumDownloadSplitsForAFile,
           downloadPath: downloadTaskModel.localFilePath,
           myDeviceID: laptop ? laptopID : me.deviceID,
           mySessionID: laptop ? laptopID : me.sessionID,
@@ -506,6 +539,8 @@ class DownloadProvider extends ChangeNotifier {
         //! you might need to look for the polymorphism principle to make both come from the same controller, but the controller will handle the way of downloading
         //? here add the download folder controller that will inherit form the download task controller
         downloadTaskController = DownloadFolderController(
+          downloadAlgorithm: downloadAlgorithm,
+          maximumParallelDownloadThreads: maximumDownloadSplitsForAFile,
           downloadPath: downloadTaskModel.localFilePath,
           myDeviceID: laptop ? laptopID : me.deviceID,
           mySessionID: laptop ? laptopID : me.sessionID,
@@ -534,7 +569,9 @@ class DownloadProvider extends ChangeNotifier {
       }
 
       var res = await downloadTaskController.downloadFile();
-      QuickNotification.closeDownloadNotification(downloadTaskModel.id);
+      if (Platform.isAndroid) {
+        QuickNotification.closeDownloadNotification(downloadTaskModel.id);
+      }
       if (res == 0) {
         // zero return mean that the download isn't finished, paused
 
