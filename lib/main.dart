@@ -24,6 +24,7 @@ import 'package:intl/intl.dart';
 import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 // flutter packages pub run build_runner build --delete-conflicting-outputs
+// git merge -X theirs windows
 
 // add the ability to click the section in the recent screen and direct the user to
 // the corresponding section detailed data
