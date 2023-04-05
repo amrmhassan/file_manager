@@ -16,6 +16,7 @@ import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:localization/localization.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path_operations;
 import 'package:uuid/uuid.dart';
@@ -70,7 +71,7 @@ class _PickImageModalState extends State<PickImageModal> {
 
       await sharePF(navigatorKey.currentContext!).setMyImagePath(filePath);
     } catch (e) {
-      fastSnackBar(msg: 'can\'t change image');
+      fastSnackBar(msg: 'cant-change-image'.i18n());
     }
   }
 
@@ -97,7 +98,7 @@ class _PickImageModalState extends State<PickImageModal> {
           Column(
             children: [
               Text(
-                'Choose Image',
+                'choose-image'.i18n(),
                 style: h3LiteTextStyle,
               ),
               VSpace()
@@ -114,7 +115,7 @@ class _PickImageModalState extends State<PickImageModal> {
                     if (file == null) {
                       showSnackBar(
                         context: context,
-                        message: 'Can\'t pick image',
+                        message: 'cant-choose-image'.i18n(),
                         snackBarType: SnackBarType.error,
                       );
                       Navigator.pop(context);
@@ -127,7 +128,7 @@ class _PickImageModalState extends State<PickImageModal> {
                     Navigator.pop(context);
                     showSnackBar(
                       context: context,
-                      message: 'Can\'t pick an image',
+                      message: 'cant-choose-image'.i18n(),
                       snackBarType: SnackBarType.error,
                     );
                   }
@@ -141,7 +142,7 @@ class _PickImageModalState extends State<PickImageModal> {
                   if (file == null) {
                     showSnackBar(
                       context: context,
-                      message: 'Can\'t pick image',
+                      message: 'cant-choose-image'.i18n(),
                       snackBarType: SnackBarType.error,
                     );
                     Navigator.pop(context);

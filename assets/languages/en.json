@@ -291,5 +291,8 @@
   "share-space-empty": "Other user share space is empty",
   "waiting": "Waiting ...",
   "no-search-results": "No Search Results!",
-  "unknown-reason": "Unknown Reason"
+  "unknown-reason": "Unknown Reason",
+  "choose-image": "Choose Image",
+  "cant-choose-image": "Can't pick an image",
+  "cant-change-image": "Can't change image"
 }

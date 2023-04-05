@@ -105,5 +105,5 @@ for name, code in languages.items():
             json.dump(lang_data, f, ensure_ascii=False, indent=4)
 
         print(f'Saved {name} locale as {get_file_name(code)}.json')
-    except:
-        print(f'{name} error')
+    except Exception as e:
+        print(f'{name} error {e}')
