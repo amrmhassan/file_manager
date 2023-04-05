@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:explorer/constants/server_constants.dart';
-import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
 

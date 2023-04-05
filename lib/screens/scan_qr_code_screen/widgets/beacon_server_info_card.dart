@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:dio/dio.dart';
-import 'package:explorer/constants/server_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/models/beacon_server_model.dart';
 import 'package:explorer/models/types.dart';

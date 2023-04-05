@@ -38,9 +38,6 @@ import 'package:provider/provider.dart';
 
 //! close server if the scan qr view screen disposed  without any connection
 
-//! make a header to be
-//sent with each request to know if the other device will be used to share or not
-
 //! add help screen
 //! make a video for the app on google play
 //! change intro screens for laptop and android

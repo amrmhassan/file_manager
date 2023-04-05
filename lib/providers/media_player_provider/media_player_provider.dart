@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/constants/server_constants.dart';
+import 'package:explorer/global/widgets/advanced_video_player/widgets/controllers_overlay.dart';
 import 'package:explorer/global/widgets/custom_slider/sub_range_model.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/services/media_service/my_media_handler.dart';
@@ -170,6 +172,7 @@ class MediaPlayerProvider extends ChangeNotifier {
   bool isBuffering = false;
   double videoSpeed = 1;
   VideoPlayerController? videoPlayerController;
+  String? networkStreamLink;
 
   void setVideoSpeed(double s, [bool callBackground = true]) {
     videoSpeed = s;
@@ -214,6 +217,9 @@ class MediaPlayerProvider extends ChangeNotifier {
     bool network = false,
     String? fileRemotePath,
   ]) {
+    if (network) {
+      networkStreamLink = '$path/${Uri.encodeComponent(fileRemotePath!)}';
+    }
     myMediaHandler.playMedia(
       PlayingMediaType.video,
       path,

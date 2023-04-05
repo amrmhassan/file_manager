@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dart_vlc/dart_vlc.dart';
+import 'package:explorer/constants/server_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 import 'package:explorer/constants/global_constants.dart';
@@ -152,6 +153,7 @@ class MediaPlayerProviderWindows extends ChangeNotifier {
   double videoSpeed = 1;
   StreamSubscription? videoPositionStream;
   StreamSubscription? videoStateStream;
+  String? networkStreamLink;
 
   void setVideoSpeed(double s) {
     videoSpeed = s;
@@ -195,6 +197,9 @@ class MediaPlayerProviderWindows extends ChangeNotifier {
     bool network = false,
     String? fileRemotePath,
   ]) {
+    if (network) {
+      networkStreamLink = '$path/${Uri.encodeComponent(fileRemotePath!)}';
+    }
     closeVideo();
     videoStateStream?.cancel();
     videoPositionStream?.cancel();

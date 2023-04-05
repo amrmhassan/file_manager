@@ -69,10 +69,6 @@ class _AdvancedVideoPlayerState extends State<AdvancedVideoPlayer>
     super.initState();
     Wakelock.enable();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
-
-    var mediaProvider =
-        Provider.of<MediaPlayerProvider>(context, listen: false);
-    if (mediaProvider.videoPlayerController == null) return;
   }
 
   @override

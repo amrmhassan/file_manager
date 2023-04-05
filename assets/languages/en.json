@@ -294,5 +294,6 @@
   "unknown-reason": "Unknown Reason",
   "choose-image": "Choose Image",
   "cant-choose-image": "Can't pick an image",
-  "cant-change-image": "Can't change image"
+  "cant-change-image": "Can't change image",
+  "Copy stream link": "Copy stream link"
 }

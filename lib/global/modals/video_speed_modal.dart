@@ -1,11 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:explorer/windows_app_code/providers/window_provider.dart';
+import 'package:explorer/windows_app_code/utils/windows_provider_calls.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class VideoSpeedsModal extends StatelessWidget {
   const VideoSpeedsModal({
@@ -27,7 +32,11 @@ class VideoSpeedsModal extends StatelessWidget {
           children: List.generate(8, (index) => (index + 1) * .25)
               .map((e) => ListTile(
                     onTap: () {
-                      mpPF(context).setVideoSpeed(e);
+                      if (Platform.isAndroid) {
+                        mpPF(context).setVideoSpeed(e);
+                      } else {
+                        WindowSProviders.mpPF(context).setVideoSpeed(e);
+                      }
                       Navigator.pop(context);
                     },
                     leading: Opacity(
@@ -39,7 +48,7 @@ class VideoSpeedsModal extends StatelessWidget {
                       ),
                     ),
                     title: Text(
-                      e == 1 ? 'Normal' : '${e.toStringAsFixed(2)}x',
+                      e == 1 ? 'normal'.i18n() : '${e.toStringAsFixed(2)}x',
                       style: h4TextStyle,
                     ),
                   ))
