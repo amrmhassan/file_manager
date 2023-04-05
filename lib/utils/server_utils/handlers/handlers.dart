@@ -390,6 +390,7 @@ class S1H {
   static List<FileSystemEntity> getFolderChildren(Map<String, dynamic> data) {
     String folderPath = data['path'];
     bool rec = data['rec'] ?? false;
+    folderPath = folderPath.replaceAll('\\', '/');
     return Directory(folderPath).listSync(recursive: rec);
   }
 

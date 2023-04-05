@@ -58,6 +58,8 @@ import 'package:provider/provider.dart';
 //@ you will need to run the beacon server once the laptop app started
 
 //! add system_tray package to hide the app instead of closing it
+//! before deploying, just change the app name, make a video for the app, make a mockup for the app images on google play, add crashlytics to desktop app
+
 void startForegroundService() {
   ForegroundService().start();
 }

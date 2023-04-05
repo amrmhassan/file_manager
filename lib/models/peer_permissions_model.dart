@@ -155,19 +155,19 @@ class PermissionsNamesUtils {
 
   static String getPermissionTitle(PermissionName permissionName) {
     if (permissionName == PermissionName.fileExploring) {
-      return '${"file-exploring".i18n()} ${"permission".i18n()}';
+      return "file-exploring".i18n();
     } else if (permissionName == PermissionName.shareSpace) {
-      return '${"share-space".i18n()} ${"permission".i18n()}';
+      return "share-space".i18n();
     } else if (permissionName == PermissionName.copyClipboard) {
-      return '${"clipboard".i18n()} ${"permission".i18n()}';
+      return "clipboard".i18n();
     } else if (permissionName == PermissionName.sendFile) {
-      return '${"send-file"} ${"permission".i18n()}';
+      return "send-file".i18n();
     } else if (permissionName == PermissionName.sendText) {
-      return '${"send-text"} ${"permission".i18n()}';
+      return "send-text".i18n();
     } else if (permissionName == PermissionName.beaconConnect) {
-      return '${"connect"} ${"permission".i18n()}';
+      return "connect".i18n();
     } else {
-      return '${permissionName.name.toUpperCase()} ${"permission".i18n()}';
+      return permissionName.name.toUpperCase();
     }
   }
 

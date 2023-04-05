@@ -409,11 +409,15 @@ class RecentProvider extends ChangeNotifier {
   }
 
   void _handleStartListenForSingleFolder(String folderPath) {
-    if (_watchedFolders.contains(folderPath)) return;
-    Directory directory = Directory(folderPath);
-    if (!directory.existsSync()) return;
-    directory.watch().listen(_handleRecentFolderEvent);
-    _watchedFolders.add(folderPath);
+    try {
+      if (_watchedFolders.contains(folderPath)) return;
+      Directory directory = Directory(folderPath);
+      if (!directory.existsSync()) return;
+      directory.watch().listen(_handleRecentFolderEvent);
+      _watchedFolders.add(folderPath);
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   void _handleRecentFolderEvent(FileSystemEvent event) {
