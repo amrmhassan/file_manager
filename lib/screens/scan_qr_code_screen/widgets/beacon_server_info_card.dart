@@ -11,6 +11,7 @@ import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class BeaconServerInfoCard extends StatelessWidget {
   final BeaconServerModel beaconServerModel;
@@ -25,7 +26,7 @@ class BeaconServerInfoCard extends StatelessWidget {
       onTap: () async {
         // beaconPF(context).connectToBeaconServer(context, beaconServerModel);
         try {
-          showSnackBar(context: context, message: 'Waiting for host response');
+          showSnackBar(context: context, message: 'waiting-for-host'.i18n());
           var shareProvider = sharePF(context);
           await beaconPF(context).askForBeaconServerConnLink(
             myName: shareProvider.myName,
@@ -45,8 +46,7 @@ class BeaconServerInfoCard extends StatelessWidget {
           }
         } catch (e) {
           if (e is DioError) {
-            String? refuseMessage =
-                e.response?.headers.value(KHeaders.serverRefuseReasonHeaderKey);
+            String? refuseMessage = e.response?.data;
             fastSnackBar(
               msg: refuseMessage ?? e.toString(),
               snackBarType: SnackBarType.error,
@@ -67,7 +67,7 @@ class BeaconServerInfoCard extends StatelessWidget {
       trailing: kDebugMode
           ? Text(beaconServerModel.url)
           : Text(
-              'Connect',
+              'connect'.i18n(),
               style: h4LiteTextStyle,
             ),
     );

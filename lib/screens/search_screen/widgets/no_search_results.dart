@@ -1,5 +1,6 @@
 import 'package:explorer/constants/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class NoSearchResults extends StatelessWidget {
   const NoSearchResults({
@@ -10,7 +11,7 @@ class NoSearchResults extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'No Search Results!',
+        'no-search-results'.i18n(),
         style: h4TextStyleInactive,
       ),
     );

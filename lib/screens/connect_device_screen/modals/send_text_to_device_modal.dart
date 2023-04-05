@@ -32,9 +32,12 @@ class _SendTextToDeviceModalState extends State<SendTextToDeviceModal> {
     return DoubleButtonsModal(
       onOk: () async {
         Navigator.pop(context);
-        PermissionResultModel result = await showWaitPermissionModal(
+        PermissionResultModel? result = await showWaitPermissionModal(
           () => sendTextToDevice(data.text, widget.peerModel),
         );
+        if (result == null) {
+          return;
+        }
 
         if (result.error != null) return;
         fastSnackBar(msg: 'message-sent'.i18n());

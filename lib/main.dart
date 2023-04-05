@@ -40,6 +40,11 @@ import 'package:provider/provider.dart';
 //! make a header to be
 //sent with each request to know if the other device will be used to share or not
 
+//! add help screen
+//! make a video for the app on google play
+//! change intro screens for laptop and android
+//! make announcement of the new sharing techniques that the laptop can share to laptop and can connect to a group like a normal device
+
 //@ add a third screen next to recent screen and explorer screen to view the share screen and add an icon for it
 
 //@

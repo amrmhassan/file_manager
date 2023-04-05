@@ -30,7 +30,7 @@ class UsersPermissionScreen extends StatelessWidget {
           children: [
             CustomAppBar(
               title: Text(
-                'Known Users',
+                'known-users'.i18n(),
                 style: h2TextStyle,
               ),
             ),
@@ -65,9 +65,8 @@ class UsersPermissionScreen extends StatelessWidget {
                               onOk: () {
                                 Navigator.pop(context, true);
                               },
-                              title: 'Remove known user?',
-                              subTitle:
-                                  'This will remove all saved permissions for this user',
+                              title: 'remove-known-user'.i18n(),
+                              subTitle: 'remove-known-user-note'.i18n(),
                             ),
                           );
                           if (res == true) {
@@ -77,7 +76,7 @@ class UsersPermissionScreen extends StatelessWidget {
                             );
                             showSnackBar(
                               context: context,
-                              message: 'All user permissions deleted',
+                              message: 'known-user-deleted'.i18n(),
                             );
                           }
 

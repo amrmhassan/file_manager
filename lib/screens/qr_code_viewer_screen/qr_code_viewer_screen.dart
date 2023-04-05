@@ -129,18 +129,20 @@ class QrCodeViewerScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: kHPad),
                     child: Column(
                       children: [
-                        Container(
-                          constraints: BoxConstraints(
-                            maxWidth: 250,
-                            maxHeight: 250,
-                            minHeight: 100,
-                            minWidth: 100,
+                        if ((quickSendLink ?? serverProvider.myConnLink) !=
+                            null)
+                          Container(
+                            constraints: BoxConstraints(
+                              maxWidth: 250,
+                              maxHeight: 250,
+                              minHeight: 100,
+                              minWidth: 100,
+                            ),
+                            child: QrImage(
+                              backgroundColor: Colors.white,
+                              data: quickSendLink ?? serverProvider.myConnLink!,
+                            ),
                           ),
-                          child: QrImage(
-                            backgroundColor: Colors.white,
-                            data: quickSendLink ?? serverProvider.myConnLink!,
-                          ),
-                        ),
                         if (quickSendLink != null)
                           SelectableText(
                             quickSendLink,

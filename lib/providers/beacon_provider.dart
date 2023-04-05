@@ -11,6 +11,7 @@ import 'package:explorer/utils/client_utils.dart';
 import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 // the beacon server will allow everyone to view his image and name with no protection
 // but for getting the server connLink a modal will be shown on the beacon server device to ask the user to allow another one to access
@@ -122,7 +123,7 @@ class BeaconProvider extends ChangeNotifier {
     try {
       if (beaconServerUnderRequest != null) {
         repeatedRequest = true;
-        throw CustomException(e: 'Please wait for the host response');
+        throw CustomException(e: 'wait-for-host'.i18n());
       }
       beaconServerUnderRequest = beaconServerUrl;
       // this might throw an error, so handle it from the UI

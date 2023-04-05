@@ -11,7 +11,8 @@ class PermissionProvider extends ChangeNotifier {
   // if status.ask is false i will only apply it for this time, and this will be handled from the middleware, not from here
 
   List<PeerPermissionsModel> _peersPermissions = [];
-  List<PeerPermissionsModel> get peersPermissions => [..._peersPermissions];
+  List<PeerPermissionsModel> get peersPermissions =>
+      [..._peersPermissions.reversed];
 
   Future<void> loadPeersPermissions() async {
     var box = await HiveBox.peerPermissionsBox;

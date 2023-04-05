@@ -29,7 +29,7 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
       title: Text(
         serverProvider.myIp == null
             ? 'your-share-space'.i18n()
-            : 'Group Share Space',
+            : 'group-share-space'.i18n(),
         style: h2TextStyle.copyWith(
           color: kActiveTextColor,
         ),

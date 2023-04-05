@@ -189,10 +189,13 @@ class ConnectDeviceScreen extends StatelessWidget {
                   AnalyzerOptionsItem(
                     enablePadding: false,
                     onTap: () async {
-                      PermissionResultModel permissionRes =
+                      PermissionResultModel? permissionRes =
                           await showWaitPermissionModal(
                         () => getPeerClipboard(peerModel),
                       );
+                      if (permissionRes == null) {
+                        return;
+                      }
                       if (permissionRes.error != null) return;
                       String? clipboard = permissionRes.result;
                       // String? clipboard = await getPeerClipboard(peerModel);
@@ -218,7 +221,7 @@ class ConnectDeviceScreen extends StatelessWidget {
                               copyToClipboard(context, clipboard);
                               Navigator.pop(context);
                             },
-                            title: 'windows-clipboard'.i18n(),
+                            title: 'clipboard'.i18n(),
                             subTitle: clipboard,
                             showCancelButton: true,
                             cancelText: 'expand'.i18n(),
@@ -279,14 +282,17 @@ class ConnectDeviceScreen extends StatelessWidget {
                             arguments: peerModel);
                       }
                     },
-                    title: 'send-files-or-folders'.i18n(),
+                    title: Platform.isAndroid
+                        ? 'send-files'.i18n()
+                        : 'send-files-or-folders'.i18n(),
                     logoName: 'link',
                     color: kMainIconColor,
                   ),
                   VSpace(),
 
                   if (peerModel.deviceType == DeviceType.windows &&
-                      Platform.isAndroid)
+                      Platform.isAndroid &&
+                      (5 == 4))
                     AnalyzerOptionsItem(
                       enablePadding: false,
                       onTap: () {

@@ -18,6 +18,7 @@ import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:desktop_drop/desktop_drop.dart' as drop;
 import 'package:explorer/utils/general_utils.dart';
 import 'package:file_picker/file_picker.dart' as file_picker;
+import 'package:localization/localization.dart';
 
 class SendFilesScreen extends StatefulWidget {
   static const String routeName = '/SendFilesScreen';
@@ -41,7 +42,7 @@ class _SendFilesScreenState extends State<SendFilesScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              'Send Files',
+              'send-files'.i18n(),
               style: h2TextStyle,
             ),
           ),
@@ -105,20 +106,20 @@ class _SendFilesScreenState extends State<SendFilesScreen> {
                         VSpace(),
                         active
                             ? Text(
-                                'Release to drop',
+                                'release-to-drop'.i18n(),
                                 style: h3LightTextStyle,
                               )
                             : RichText(
                                 text: TextSpan(
-                                  text: 'Drop files here',
+                                  text: 'drop-files-here'.i18n(),
                                   style: h3InactiveTextStyle,
                                   children: [
                                     TextSpan(
-                                      text: ' or',
+                                      text: 'or'.i18n(),
                                       style: h3TextStyle,
                                     ),
                                     TextSpan(
-                                      text: ' Browse',
+                                      text: 'browse'.i18n(),
                                       style: h3LiteTextStyle.copyWith(
                                         color: Colors.blue,
                                       ),
@@ -143,7 +144,7 @@ class _SendFilesScreenState extends State<SendFilesScreen> {
     PeerModel peerModel,
   ) async {
     try {
-      showSnackBar(context: context, message: 'Sending files');
+      showSnackBar(context: context, message: 'sending-files'.i18n());
       // Navigator.pop(context);
       await startSendEntities(
         entities,
@@ -154,7 +155,7 @@ class _SendFilesScreenState extends State<SendFilesScreen> {
       String? refuseMessage = e.response?.data;
       showSnackBar(
         context: context,
-        message: refuseMessage ?? 'Can\'t send',
+        message: refuseMessage ?? 'cant-send'.i18n(),
         snackBarType: SnackBarType.error,
       );
     }

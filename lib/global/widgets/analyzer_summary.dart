@@ -7,6 +7,7 @@ import 'package:explorer/helpers/responsive.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class AnalyzerSummary extends StatelessWidget {
@@ -40,7 +41,7 @@ class AnalyzerSummary extends StatelessWidget {
                       value: (analyzerProvider.foldersInfo?.length).toString(),
                     ),
                     SummaryItem(
-                      title: 'Files',
+                      title: 'files-title'.i18n(),
                       value: (analyzerProvider
                               .advancedStorageAnalyzer?.filesInfo.length)
                           .toString(),

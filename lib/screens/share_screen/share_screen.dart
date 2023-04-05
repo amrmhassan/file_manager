@@ -13,6 +13,7 @@ import 'package:explorer/screens/share_screen/widgets/share_screen_navbar.dart';
 import 'package:explorer/screens/share_screen/widgets/share_space_card.dart';
 import 'package:explorer/screens/share_screen/widgets/share_space_screen_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class ShareScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _ShareScreenState extends State<ShareScreen> {
                           ),
                           VSpace(factor: .8),
                           Text(
-                            'Loading Group Info',
+                            'loading-group-info'.i18n(),
                             style: h4TextStyleInactive,
                           ),
                         ],
@@ -82,8 +83,8 @@ class _ShareScreenState extends State<ShareScreen> {
                             children: [
                               Text(
                                 iamTheHost
-                                    ? 'You are the group host'
-                                    : 'Connected to ${hostPeer.name}',
+                                    ? 'you-group-host'.i18n()
+                                    : '${"connected-to-host".i18n()} ${hostPeer.name}',
                                 style: h4TextStyleInactive,
                               ),
                             ],

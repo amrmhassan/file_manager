@@ -165,8 +165,8 @@ class _RecentScreenState extends State<RecentScreen> {
                 title: 'share-text'.i18n(),
                 color: Colors.white,
               ),
-              if (Platform.isAndroid) VSpace(),
-              if (Platform.isAndroid)
+              // if (Platform.isAndroid) VSpace(),
+              if (5 == 4)
                 AnalyzerOptionsItem(
                   logoName: 'laptop-icon',
                   onTap: handleClickConnectLaptop,

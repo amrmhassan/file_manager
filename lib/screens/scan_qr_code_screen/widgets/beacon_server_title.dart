@@ -4,6 +4,7 @@ import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class BeaconServerTitle extends StatelessWidget {
   const BeaconServerTitle({
@@ -19,7 +20,7 @@ class BeaconServerTitle extends StatelessWidget {
           alignment: Alignment.centerLeft,
           height: largeIconSize,
           child: Text(
-            'Hosts will show up here',
+            'hosts-will-show-here'.i18n(),
             style: h4TextStyleInactive,
           ),
         ),

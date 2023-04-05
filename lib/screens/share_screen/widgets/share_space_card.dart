@@ -11,6 +11,7 @@ import 'package:explorer/models/peer_model.dart';
 import 'package:explorer/screens/connect_device_screen/connect_device_screen.dart';
 import 'package:explorer/screens/share_screen/widgets/peer_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class ShareSpaceCard extends StatelessWidget {
   final PeerModel peerModel;
@@ -65,7 +66,7 @@ class ShareSpaceCard extends StatelessWidget {
                   ),
                   HSpace(),
                   Text(
-                    me ? 'You' : peerModel.name,
+                    me ? 'you'.i18n() : peerModel.name,
                     style: me ? h3TextStyle : h3InactiveTextStyle,
                     overflow: TextOverflow.ellipsis,
                   ),

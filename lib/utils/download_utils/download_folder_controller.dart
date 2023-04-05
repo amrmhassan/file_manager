@@ -11,7 +11,6 @@ import 'package:explorer/global/widgets/modal_wrapper/modal_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/types.dart';
-import 'package:explorer/providers/download_provider.dart';
 import 'package:explorer/utils/download_utils/download_task_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';

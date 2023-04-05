@@ -1,6 +1,7 @@
 import 'package:explorer/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:localization/localization.dart';
 
 part 'peer_permissions_model.g.dart';
 
@@ -118,85 +119,85 @@ class PermissionsNamesUtils {
     String peerName,
   ) {
     if (permissionName == PermissionName.fileExploring) {
-      return '$peerName wants to explore your files';
+      return '$peerName ${"file-exploring-ask".i18n()}';
     } else if (permissionName == PermissionName.shareSpace) {
-      return '$peerName wants to access your share space';
+      return '$peerName ${"share-space-ask".i18n()}';
     } else if (permissionName == PermissionName.copyClipboard) {
-      return '$peerName wants to copy your clipboard';
+      return '$peerName ${"clipboard-ask".i18n()}';
     } else if (permissionName == PermissionName.sendFile) {
-      return '$peerName wants to send you a file';
+      return '$peerName ${"send-file-ask".i18n()}';
     } else if (permissionName == PermissionName.sendText) {
-      return '$peerName wants to send you a text';
+      return '$peerName ${"send-text-ask".i18n()}';
     } else if (permissionName == PermissionName.beaconConnect) {
-      return '$peerName wants to connect';
+      return '$peerName ${"connect-ask".i18n()}';
     } else {
-      return '$peerName wants to do this permission ${permissionName.name}';
+      return '$peerName ${"unknown-permission-ask".i18n()} ${permissionName.name}';
     }
   }
 
   static String blockPermissionReadable(PermissionName permissionName) {
     if (permissionName == PermissionName.fileExploring) {
-      return 'you can\'t explore this user files';
+      return 'file-exploring-refuse'.i18n();
     } else if (permissionName == PermissionName.shareSpace) {
-      return 'you can\'t access this user share space';
+      return 'share-space-refuse'.i18n();
     } else if (permissionName == PermissionName.copyClipboard) {
-      return 'you can\'t copy this user clipboard';
+      return 'copy-clipboard-refuse'.i18n();
     } else if (permissionName == PermissionName.sendFile) {
-      return 'you can\'t send this user a file';
+      return 'send-file-refuse'.i18n();
     } else if (permissionName == PermissionName.sendText) {
-      return 'you can\'t send this user a text';
+      return 'send-text-refuse'.i18n();
     } else if (permissionName == PermissionName.beaconConnect) {
-      return 'you can\'t connect to this host';
+      return 'connect-refuse'.i18n();
     } else {
-      return 'you can\'t do this permission ${permissionName.name}';
+      return '${"unknown-permission-refuse".i18n()} ${permissionName.name}';
     }
   }
 
   static String getPermissionTitle(PermissionName permissionName) {
     if (permissionName == PermissionName.fileExploring) {
-      return 'File Exploring permission';
+      return '${"file-exploring".i18n()} ${"permission".i18n()}';
     } else if (permissionName == PermissionName.shareSpace) {
-      return 'Share Space permission';
+      return '${"share-space".i18n()} ${"permission".i18n()}';
     } else if (permissionName == PermissionName.copyClipboard) {
-      return 'Clipboard Permission';
+      return '${"clipboard".i18n()} ${"permission".i18n()}';
     } else if (permissionName == PermissionName.sendFile) {
-      return 'Send File permission';
+      return '${"send-file"} ${"permission".i18n()}';
     } else if (permissionName == PermissionName.sendText) {
-      return 'Send Text permission';
+      return '${"send-text"} ${"permission".i18n()}';
     } else if (permissionName == PermissionName.beaconConnect) {
-      return 'Connect permission';
+      return '${"connect"} ${"permission".i18n()}';
     } else {
-      return '${permissionName.name.toUpperCase()} permission';
+      return '${permissionName.name.toUpperCase()} ${"permission".i18n()}';
     }
   }
 
   static String getPermissionTitleMin(PermissionName permissionName) {
     if (permissionName == PermissionName.fileExploring) {
-      return 'File Exploring';
+      return 'file-exploring'.i18n();
     } else if (permissionName == PermissionName.shareSpace) {
-      return 'Share Space';
+      return 'share-space'.i18n();
     } else if (permissionName == PermissionName.copyClipboard) {
-      return 'Clipboard';
+      return 'clipboard'.i18n();
     } else if (permissionName == PermissionName.sendFile) {
-      return 'Send File';
+      return 'send-file'.i18n();
     } else if (permissionName == PermissionName.sendText) {
-      return 'Send Text';
+      return 'send-text'.i18n();
     } else if (permissionName == PermissionName.beaconConnect) {
-      return 'Connect';
+      return 'connect'.i18n();
     } else {
-      return '${permissionName.name.toUpperCase()} permission';
+      return '${permissionName.name.toUpperCase()} ${"permission".i18n()}';
     }
   }
 
   static String getPermissionStatusTitle(PermissionStatus status) {
     if (status == PermissionStatus.allowed) {
-      return 'Allow';
+      return 'allow'.i18n();
     } else if (status == PermissionStatus.blocked) {
-      return 'Block';
+      return 'block'.i18n();
     } else if (status == PermissionStatus.ask) {
-      return 'Ask';
+      return 'ask'.i18n();
     } else {
-      return '${status.name.toUpperCase()} permission';
+      return '${status.name.toUpperCase()} ${"permission".i18n()}';
     }
   }
 

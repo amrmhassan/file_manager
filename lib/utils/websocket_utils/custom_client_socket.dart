@@ -5,6 +5,7 @@ import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/server_provider.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/rendering.dart';
+import 'package:localization/localization.dart';
 import 'package:web_socket_channel/io.dart';
 import 'constants.dart';
 
@@ -66,7 +67,7 @@ class CustomClientSocket {
     logger.w('Server Disconnected');
     serverProviderFalse.closeServer();
     fastSnackBar(
-      msg: 'Host Disconnected',
+      msg: 'host-disconnected'.i18n(),
       snackBarType: SnackBarType.error,
     );
   }

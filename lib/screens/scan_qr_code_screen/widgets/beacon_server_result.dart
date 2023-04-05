@@ -7,6 +7,7 @@ import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_info_
 import 'package:explorer/screens/scan_qr_code_screen/widgets/beacon_server_title.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class BeaconServersScanResultContainer extends StatefulWidget {
   const BeaconServersScanResultContainer({
@@ -61,7 +62,7 @@ class _BeaconServersScanResultContainerState
                         children: [
                           SizedBox(width: double.infinity),
                           Text(
-                            'No Hosts found yet',
+                            'no-hosts-found'.i18n(),
                             style: h4LightTextStyle,
                           ),
                           // TextButton(

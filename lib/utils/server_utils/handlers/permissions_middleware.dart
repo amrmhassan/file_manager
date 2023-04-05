@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:explorer/constants/server_constants.dart';
@@ -97,8 +98,9 @@ class PermissionsMiddlewares {
     String refuseMessage,
   ) {
     response
-      ..statusCode = HttpStatus.badRequest
-      ..headers.add(KHeaders.serverRefuseReasonHeaderKey, refuseMessage)
+      ..statusCode = HttpStatus.forbidden
+      ..headers
+          .add(KHeaders.serverRefuseReasonHeaderKey, utf8.encode(refuseMessage))
       ..write(refuseMessage)
       ..close();
     return ReqResTracker(

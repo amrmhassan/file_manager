@@ -3,6 +3,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
+import 'package:explorer/utils/global_utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:explorer/screens/home_screen/widgets/app_bar_icon_button.dart';
@@ -69,9 +70,16 @@ class WindowsAppBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.red,
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(
-                largeBorderRadius,
-              ),
+              bottomLeft: CustomLocale.isLeftToRight(context)
+                  ? Radius.circular(
+                      largeBorderRadius,
+                    )
+                  : Radius.circular(0),
+              bottomRight: CustomLocale.isRightToLeft(context)
+                  ? Radius.circular(
+                      largeBorderRadius,
+                    )
+                  : Radius.circular(0),
             ),
           ),
           onTap: () {

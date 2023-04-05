@@ -277,13 +277,15 @@ class ServerProvider extends ChangeNotifier {
       myPort = httpServer!.port;
       myType = memberType;
       myConnLink = connLinkQrFromIterable(myPossibleIPs, myPort);
-      try {
-        beaconServer = BeaconServer();
-        await beaconServer!.startBeaconServer(this, shareProvider);
-        beaconServerRunning = true;
-      } catch (e) {
-        logger.e(e);
-        //! show a snack bar that users can't scan remotely for you and they must scan with qr code
+      if (myType == MemberType.host) {
+        try {
+          beaconServer = BeaconServer();
+          await beaconServer!.startBeaconServer(this, shareProvider);
+          beaconServerRunning = true;
+        } catch (e) {
+          logger.e(e);
+          //! show a snack bar that users can't scan remotely for you and they must scan with qr code
+        }
       }
 
       notifyListeners();

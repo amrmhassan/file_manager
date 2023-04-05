@@ -11,6 +11,7 @@ import 'package:explorer/models/peer_permissions_model.dart';
 import 'package:explorer/screens/single_user_permissions_screen/widgets/user_permission_row.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class SingleUserPermissionsScreen extends StatefulWidget {
   static const String routeName = '/SingleUserPermissionsScreen';
@@ -36,7 +37,7 @@ class _SingleUserPermissionsScreenState
         children: [
           CustomAppBar(
             title: Text(
-              '${peerPermissionModel.peerName} Permissions',
+              '${peerPermissionModel.peerName} ${"permissions".i18n()}',
               style: h3TextStyle,
             ),
           ),
@@ -70,7 +71,7 @@ class _SingleUserPermissionsScreenState
                     vertical: kVPad / 4,
                   ),
                   backgroundColor: kGreenColor,
-                  child: Text('Allow All'),
+                  child: Text('allow-all'.i18n()),
                 ),
                 Spacer(),
                 ButtonWrapper(
@@ -89,7 +90,7 @@ class _SingleUserPermissionsScreenState
                       PermissionsNamesUtils.getPermissionStatusColor(
                     PermissionStatus.ask,
                   ),
-                  child: Text('Ask All'),
+                  child: Text('ask-all'.i18n()),
                 ),
                 Spacer(),
                 ButtonWrapper(
@@ -105,7 +106,7 @@ class _SingleUserPermissionsScreenState
                     vertical: kVPad / 4,
                   ),
                   backgroundColor: kDangerColor,
-                  child: Text('Block All'),
+                  child: Text('block-all'.i18n()),
                 ),
               ],
             ),

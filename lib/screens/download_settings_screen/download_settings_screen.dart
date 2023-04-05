@@ -77,7 +77,7 @@ class DownloadSetScreen extends StatelessWidget {
               );
             },
             title: Text(
-              'Downloading Algorithm',
+              'downloading-algorithm'.i18n(),
               style: h4LightTextStyle,
             ),
             trailing: Text(
@@ -95,8 +95,8 @@ class DownloadSetScreen extends StatelessWidget {
                   child: Text(
                     downloadProvider.downloadAlgorithm ==
                             DownloadAlgorithm.customDownload
-                        ? 'Algo 1 supports failed download continue  \nand resume/pause downloads (much reliable)'
-                        : 'Algo 2 might be a little faster than algo 1, but no failed downloads continuing nor pausing downloads',
+                        ? 'downloading-algo-note1'.i18n()
+                        : 'downloading-algo-note2'.i18n(),
                     style: h4TextStyleInactive,
                     softWrap: true,
                   ),
@@ -122,7 +122,7 @@ class DownloadSetScreen extends StatelessWidget {
                 );
               },
               title: Text(
-                'Maximum file splits',
+                'max-file-splits'.i18n(),
                 style: h4LightTextStyle,
               ),
               trailing: Text(

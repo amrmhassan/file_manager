@@ -69,6 +69,7 @@ dependencies:
   window_manager: ^0.2.9
   firedart: ^0.9.0+1
   desktop_drop: ^0.4.1
+  ffi: ^1.2.1
 
 
 

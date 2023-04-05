@@ -50,7 +50,7 @@ class MySharedItems extends StatelessWidget {
                       context, true, [shareSpaceItemModel.path]);
                   showSnackBar(
                     context: context,
-                    message: 'Removed From Share Space',
+                    message: 'removed-from-share-space'.i18n(),
                   );
                 },
                 direction: DismissDirection.endToStart,

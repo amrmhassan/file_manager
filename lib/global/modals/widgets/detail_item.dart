@@ -6,6 +6,7 @@ import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DetailItem extends StatelessWidget {
   final String title;
@@ -40,7 +41,7 @@ class DetailItem extends StatelessWidget {
                     ? () {
                         copyToClipboard(context, value);
                         showSnackBar(
-                            context: context, message: 'Copied To Clipboard');
+                            context: context, message: 'copied'.i18n());
                         Navigator.pop(context);
                       }
                     : null,

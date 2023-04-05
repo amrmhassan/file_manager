@@ -61,17 +61,21 @@ Future<bool?> showAskForConnLinkModal(
   return res;
 }
 
-Future<PermissionResultModel> showWaitPermissionModal(
+Future<PermissionResultModel?> showWaitPermissionModal(
   Future Function() callback,
 ) async {
-  PermissionResultModel data = await showModalBottomSheet(
-    backgroundColor: Colors.transparent,
-    context: navigatorKey.currentContext!,
-    builder: (context) => WaitPermissionModal(
-      callback: callback,
-    ),
-  );
-  return data;
+  try {
+    PermissionResultModel data = await showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: navigatorKey.currentContext!,
+      builder: (context) => WaitPermissionModal(
+        callback: callback,
+      ),
+    );
+    return data;
+  } catch (e) {
+    return null;
+  }
 }
 
 Future<bool> showAskForFeaturePermissionModal(

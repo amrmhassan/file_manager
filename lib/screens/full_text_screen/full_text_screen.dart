@@ -8,6 +8,7 @@ import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/screens/laptop_messages_screen/laptop_messages_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class FullTextViewerScreen extends StatelessWidget {
   static const String routeName = '/FullTextViewerScreen';
@@ -22,7 +23,7 @@ class FullTextViewerScreen extends StatelessWidget {
         children: [
           CustomAppBar(
             title: Text(
-              'Text Viewer',
+              'text-viewer'.i18n(),
               style: h2TextStyle,
             ),
             rightIcon: Row(

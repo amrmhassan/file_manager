@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables, library_private_types_in_public_api
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables, library_private_types_in_public_api, unnecessary_cast
 
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
@@ -12,6 +13,7 @@ import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
+import 'package:explorer/models/peer_permissions_model.dart';
 import 'package:explorer/models/share_space_item_model.dart';
 import 'package:explorer/models/share_space_v_screen_data.dart';
 import 'package:explorer/models/types.dart';
@@ -80,15 +82,27 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
 
       shareItemsExplorerProvider.setCurrentSharedItems(shareItems);
     } catch (e) {
-      logger.e(e);
-      Navigator.pop(context);
-      showSnackBar(
-        context: context,
-        message: e.toString(),
-        snackBarType: SnackBarType.error,
-      );
+      if (e is DioError) {
+        // String? refuseMessage = e.response?.data;
+        //! this is just temporary solution cause the response got is null
+        String? refuseMessage = PermissionsNamesUtils.blockPermissionReadable(
+            PermissionName.shareSpace) as String?;
+        logger.e(e);
+        showSnackBar(
+          context: context,
+          message: refuseMessage ?? 'unknown-reason'.i18n(),
+          snackBarType: SnackBarType.error,
+        );
+      } else {
+        showSnackBar(
+          context: context,
+          message: e.toString(),
+          snackBarType: SnackBarType.error,
+        );
+      }
     }
     if (mounted) {
+      Navigator.pop(context);
       setState(() {
         loading = false;
       });
@@ -117,8 +131,8 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
       : me
           ? 'your-share-space'.i18n()
           : data.dataType == ShareSpaceVScreenDataType.filesExploring
-              ? '${data.peerModel.name} Files'
-              : '${data.peerModel.name} Share Space';
+              ? '${data.peerModel.name} ${"files-title".i18n()}'
+              : '${data.peerModel.name} ${"share-space".i18n()}';
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +245,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                           CircularProgressIndicator(),
                           VSpace(),
                           Text(
-                            'Waiting ...',
+                            'waiting'.i18n(),
                             style: h4TextStyleInactive,
                           )
                         ],
@@ -242,8 +256,8 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
                           child: EmptyShareItems(
                           title: data.dataType ==
                                   ShareSpaceVScreenDataType.filesExploring
-                              ? 'This folder is empty'
-                              : 'Other user share space is empty',
+                              ? 'folder-empty'.i18n()
+                              : 'share-space-empty'.i18n(),
                         ))
                       : Expanded(
                           child: ListView.builder(
@@ -305,7 +319,7 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
       logger.e(e);
       showSnackBar(
         context: context,
-        message: 'Can\'t get this folder content',
+        message: 'cant-get-folder-content'.i18n(),
         snackBarType: SnackBarType.error,
       );
     }

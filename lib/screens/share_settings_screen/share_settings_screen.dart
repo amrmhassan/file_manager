@@ -107,12 +107,12 @@ class UsersPermissionsButton extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'Known Users',
+            'known-users'.i18n(),
             style: h4TextStyle,
           ),
           Spacer(),
           Text(
-            '${permissionProvider.peersPermissions.length.toString()} Users',
+            '${permissionProvider.peersPermissions.length.toString()} ${"users".i18n()}',
             style: h4TextStyleInactive,
           ),
         ],

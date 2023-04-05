@@ -35,17 +35,19 @@ class _WaitPermissionModalState extends State<WaitPermissionModal> {
           ),
         );
       } catch (e) {
-        showSnackBar(
-          context: context,
-          message: (e as DioError).response?.data ?? 'Error Occurred',
-          snackBarType: SnackBarType.error,
-        );
-        Navigator.of(context).pop(
-          PermissionResultModel(
-            error: e,
-            result: null,
-          ),
-        );
+        if (mounted) {
+          showSnackBar(
+            context: context,
+            message: (e as DioError).response?.data ?? 'Error Occurred',
+            snackBarType: SnackBarType.error,
+          );
+          Navigator.of(context).pop(
+            PermissionResultModel(
+              error: e,
+              result: null,
+            ),
+          );
+        }
       }
     });
     super.initState();
