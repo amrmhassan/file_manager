@@ -11,6 +11,7 @@ import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class LaptopMessagesScreen extends StatefulWidget {
   static const String routeName = '/LaptopMessagesScreen';
@@ -50,7 +51,7 @@ class _LaptopMessagesScreenState extends State<LaptopMessagesScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              'Laptop Messages',
+              'messages'.i18n(),
               style: h2TextStyle,
             ),
           ),

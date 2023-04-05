@@ -319,7 +319,6 @@ class ExplorerProvider extends ChangeNotifier {
   }
 
   //? update the selected items from the current dir when ever the active dir changes
-
   void updateSelectedFromActiveDir({
     required FilesOperationsProvider filesOperationsProvider,
   }) {

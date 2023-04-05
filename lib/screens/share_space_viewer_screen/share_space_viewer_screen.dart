@@ -100,9 +100,12 @@ class _ShareSpaceVScreenState extends State<ShareSpaceVScreen> {
           snackBarType: SnackBarType.error,
         );
       }
+      if(mounted){
+
+      Navigator.pop(context);
+      }
     }
     if (mounted) {
-      Navigator.pop(context);
       setState(() {
         loading = false;
       });

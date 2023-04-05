@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
@@ -17,9 +17,10 @@ class SelectAllButton extends StatelessWidget {
     var expProvider = Provider.of<ExplorerProvider>(context);
 
     return ButtonWrapper(
-      onTap: () {
+      onTap: () async {
         var currentDirChildren =
-            Provider.of<ExplorerProvider>(context, listen: false).children;
+            await Provider.of<ExplorerProvider>(context, listen: false)
+                .viewedChildren(context);
         var expProvider = Provider.of<ExplorerProvider>(context, listen: false);
         if (expProvider.allActiveDirChildrenSelected) {
           Provider.of<FilesOperationsProvider>(context, listen: false)

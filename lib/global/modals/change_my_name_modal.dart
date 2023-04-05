@@ -46,7 +46,7 @@ class _ChangeMyNameModalState extends State<ChangeMyNameModal> {
               title: 'your-name'.i18n(),
               autoFocus: true,
               controller: nameController,
-              maxLength: 10,
+              maxLength: 20,
               onChange: (v) {
                 setState(() {
                   name = v;

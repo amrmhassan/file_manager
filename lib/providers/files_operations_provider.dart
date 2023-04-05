@@ -97,7 +97,9 @@ class FilesOperationsProvider extends ChangeNotifier {
 
 //? select all
   void selectAll(
-      List<StorageItemModel> dirChildren, ExplorerProvider explorerProvider) {
+    List<StorageItemModel> dirChildren,
+    ExplorerProvider explorerProvider,
+  ) {
     for (var element in dirChildren) {
       _addToSelectedItems(element);
       explorerProvider.addToSelectedFromCurrentDir(element);

@@ -41,34 +41,39 @@ class SelectedItemsScreen extends StatelessWidget {
             ),
           ),
           VSpace(),
-          ...foProvider.selectedItems.map(
-            (e) => Dismissible(
-              onDismissed: (direction) {
-                foPF(context).toggleFromSelectedItems(e, expPF(context));
-                if (foPF(context).selectedItems.isEmpty) {
-                  Navigator.pop(context);
-                }
-              },
-              direction: DismissDirection.endToStart,
-              background: Container(
-                alignment: Alignment.centerRight,
-                padding: EdgeInsets.only(
-                  right: kHPad,
+          Expanded(
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: foProvider.selectedItems.length,
+              itemBuilder: (context, index) => Dismissible(
+                onDismissed: (direction) {
+                  foPF(context).toggleFromSelectedItems(
+                      foProvider.selectedItems[index], expPF(context));
+                  if (foPF(context).selectedItems.isEmpty) {
+                    Navigator.pop(context);
+                  }
+                },
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.only(
+                    right: kHPad,
+                  ),
+                  color: kDangerColor,
+                  child: Icon(
+                    Icons.remove,
+                    color: Colors.white,
+                  ),
                 ),
-                color: kDangerColor,
-                child: Icon(
-                  Icons.remove,
-                  color: Colors.white,
+                key: Key(foProvider.selectedItems[index].path),
+                child: StorageItem(
+                  storageItemModel: foProvider.selectedItems[index],
+                  onDirTapped: (dir) {},
+                  allowSelect: false,
+                  allowShowingFavIcon: false,
+                  sizesExplorer: false,
+                  parentSize: 0,
                 ),
-              ),
-              key: Key(e.path),
-              child: StorageItem(
-                storageItemModel: e,
-                onDirTapped: (dir) {},
-                allowSelect: false,
-                allowShowingFavIcon: false,
-                sizesExplorer: false,
-                parentSize: 0,
               ),
             ),
           ),
