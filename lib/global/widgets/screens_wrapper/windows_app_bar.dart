@@ -56,7 +56,7 @@ class WindowsAppBar extends StatelessWidget {
           // height: buttonKey.currentContext?.size?.height,
 
           onTap: () {
-            // appWindow.minimize();
+            appWindow.minimize();
             // appWindow.hide();
           },
           child: Icon(

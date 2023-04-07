@@ -1,11 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, dead_code, library_private_types_in_public_api
 
-import 'dart:io';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:explorer/constants/colors.dart';
-import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/languages_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
@@ -17,7 +13,6 @@ import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 import 'package:explorer/utils/notifications/notification_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
@@ -57,6 +52,8 @@ import 'package:provider/provider.dart';
 //! add system_tray package to hide the app instead of closing it
 //! before deploying, just change the app name, make a video for the app, make a mockup for the app images on google play, add crashlytics to desktop app
 
+//! downloads continue to download even if the group is closed(fix this)
+
 void startForegroundService() {
   ForegroundService().start();
 }
@@ -88,22 +85,22 @@ class _MyAppState extends State<MyApp> {
   }
 
   Locale? get locale => _locale;
-  Future<void> _initializePlatformState() async {
-    // Listen for the platform-specific system events
-    SystemChannels.platform.setMethodCallHandler((MethodCall methodCall) async {
-      logger.i(methodCall.method);
-      if (methodCall.method == 'SystemNavigator.pop') {
-        // Prevent the app from closing when the user tries to close it from the taskbar
-        appWindow.hide();
-      }
-    });
-  }
+  // Future<void> _initializePlatformState() async {
+  //   // Listen for the platform-specific system events
+  //   SystemChannels.platform.setMethodCallHandler((MethodCall methodCall) async {
+  //     logger.i(methodCall.method);
+  //     if (methodCall.method == 'SystemNavigator.pop') {
+  //       // Prevent the app from closing when the user tries to close it from the taskbar
+  //       appWindow.hide();
+  //     }
+  //   });
+  // }
 
   @override
   void initState() {
-    if (Platform.isWindows) {
-      _initializePlatformState();
-    }
+    // if (Platform.isWindows) {
+    //   _initializePlatformState();
+    // }
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: NotificationController.onActionReceivedMethod,
       onNotificationCreatedMethod:

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dart_vlc/dart_vlc.dart';
-import 'package:explorer/constants/server_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:volume_controller/volume_controller.dart' as volume_controllers;
 import 'package:explorer/constants/global_constants.dart';

@@ -4,6 +4,7 @@
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
+import 'package:explorer/initiators/global_runtime_variables.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
@@ -13,6 +14,7 @@ import 'package:explorer/providers/media_player_provider/media_player_provider.d
 import 'package:explorer/providers/recent_provider.dart';
 import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/home_screen/utils/permissions.dart';
+import 'package:explorer/screens/new_version_screen/new_version_screen.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/windows_app_code/utils/update_utils/run_updates.dart';
@@ -166,6 +168,9 @@ void initHomeScreen(BuildContext context) async {
 
     await Provider.of<ChildrenItemsProvider>(context, listen: false)
         .getAndUpdateAllSavedFolders();
+    if (!firstTimeRunApp) {
+      Navigator.pushNamed(context, NewVersionScreen.routeName);
+    }
   });
 
   if (Platform.isWindows) {

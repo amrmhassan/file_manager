@@ -1,6 +1,7 @@
 import 'package:explorer/screens/connect_device_screen/connect_device_screen.dart';
 import 'package:explorer/screens/full_text_screen/full_text_screen.dart';
 import 'package:explorer/screens/language_screen/language_screen.dart';
+import 'package:explorer/screens/new_version_screen/new_version_screen.dart';
 import 'package:explorer/screens/search_screen/search_screen.dart';
 import 'package:explorer/screens/send_files_screen/send_files_screen.dart';
 import 'package:explorer/screens/single_user_permissions_screen/single_user_permissions_screen.dart';
@@ -90,4 +91,5 @@ Map<String, Widget Function(BuildContext)> mainRoutes = {
   SingleUserPermissionsScreen.routeName: (context) =>
       const SingleUserPermissionsScreen(),
   SendFilesScreen.routeName: (context) => const SendFilesScreen(),
+  NewVersionScreen.routeName: (context) => const NewVersionScreen(),
 };

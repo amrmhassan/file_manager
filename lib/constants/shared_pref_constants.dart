@@ -9,6 +9,7 @@ const String permissionsGrantedKey = 'permissionsGrantedKey';
 const String deviceIdKey = 'deviceIdKey';
 const String myNameKey = 'myNameKey';
 const String myImageKey = 'myImageKey';
+const String newVersionViewedKeyV1 = 'newVersionViewedKeyV1';
 
 //? props keys
 const String activeWishlistIdKey = 'activeWishlistIdKey';
