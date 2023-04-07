@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/button_wrapper.dart';
@@ -9,6 +10,8 @@ import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
 import 'package:explorer/global/widgets/v_space.dart';
 import 'package:explorer/helpers/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class NewVersionScreen extends StatelessWidget {
   static const String routeName = '/NewVersionScreen';
@@ -28,13 +31,13 @@ class NewVersionScreen extends StatelessWidget {
           ),
           VSpace(factor: 2),
           Text(
-            'Windows To Windows Share',
+            'Windows To Windows Share'.i18n(),
             style: h2TextStyle,
           ),
           VSpace(),
           PaddingWrapper(
             child: Text(
-              'Share seamlessly across Windows and Android devices.',
+              'windows-to-windows-note'.i18n(),
               style: h3InactiveTextStyle,
               textAlign: TextAlign.center,
             ),
@@ -48,17 +51,22 @@ class NewVersionScreen extends StatelessWidget {
                   horizontal: kHPad,
                   vertical: kVPad / 2,
                 ),
-                onTap: () {},
+                onTap: () {
+                  launchUrlString(
+                    laptopClientDownloadLink,
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
                 backgroundColor: kCardBackgroundColor,
                 child: Text(
-                  'Download Now',
+                  'download-now'.i18n(),
                   style: h3LightTextStyle,
                 ),
               ),
             ],
           ),
           Text(
-            'Download Windows Version Now',
+            'download-new-version'.i18n(),
             style: h4TextStyleInactive,
           ),
         ],

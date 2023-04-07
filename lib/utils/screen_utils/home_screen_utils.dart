@@ -4,7 +4,8 @@
 import 'dart:io';
 
 import 'package:explorer/constants/global_constants.dart';
-import 'package:explorer/initiators/global_runtime_variables.dart';
+import 'package:explorer/constants/shared_pref_constants.dart';
+import 'package:explorer/helpers/shared_pref_helper.dart';
 import 'package:explorer/providers/children_info_provider.dart';
 import 'package:explorer/providers/settings_provider.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
@@ -168,7 +169,9 @@ void initHomeScreen(BuildContext context) async {
 
     await Provider.of<ChildrenItemsProvider>(context, listen: false)
         .getAndUpdateAllSavedFolders();
-    if (!firstTimeRunApp) {
+
+    bool shown = await windowsToWindowsShown();
+    if (!shown) {
       Navigator.pushNamed(context, NewVersionScreen.routeName);
     }
   });
@@ -180,4 +183,10 @@ void initHomeScreen(BuildContext context) async {
       logger.e(e);
     }
   }
+}
+
+Future<bool> windowsToWindowsShown() async {
+  bool? shown = await SharedPrefHelper.getBool(windowsToWindowsShownKey);
+  await SharedPrefHelper.setBool(windowsToWindowsShownKey, true);
+  return shown == true;
 }

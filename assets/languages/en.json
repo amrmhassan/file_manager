@@ -295,5 +295,8 @@
   "choose-image": "Choose Image",
   "cant-choose-image": "Can't pick an image",
   "cant-change-image": "Can't change image",
-  "Copy stream link": "Copy stream link"
+  "Copy stream link": "Copy stream link",
+  "Windows To Windows Share": "Windows To Windows Share",
+  "windows-to-windows-note": "Share seamlessly across Windows and Android devices.",
+  "download-new-version": "Download Windows Version Now"
 }
