@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/sizes.dart';
@@ -52,23 +54,29 @@ class NewVersionScreen extends StatelessWidget {
                   vertical: kVPad / 2,
                 ),
                 onTap: () {
-                  launchUrlString(
-                    laptopClientDownloadLink,
-                    mode: LaunchMode.externalApplication,
-                  );
+                  if (Platform.isWindows) {
+                    Navigator.pop(context);
+                  } else {
+                    launchUrlString(
+                      laptopClientDownloadLink,
+                      mode: LaunchMode.externalApplication,
+                    );
+                    Navigator.pop(context);
+                  }
                 },
                 backgroundColor: kCardBackgroundColor,
                 child: Text(
-                  'download-now'.i18n(),
+                  Platform.isWindows ? 'back'.i18n() : 'download-now'.i18n(),
                   style: h3LightTextStyle,
                 ),
               ),
             ],
           ),
-          Text(
-            'download-new-version'.i18n(),
-            style: h4TextStyleInactive,
-          ),
+          if (Platform.isAndroid)
+            Text(
+              'download-new-version'.i18n(),
+              style: h4TextStyleInactive,
+            ),
         ],
       ),
     );

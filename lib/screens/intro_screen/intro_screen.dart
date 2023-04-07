@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
@@ -28,7 +30,7 @@ class IntroScreen extends StatelessWidget {
           Colors.white.withOpacity(.4),
           Colors.white.withOpacity(.4),
           Colors.white.withOpacity(.4),
-          Colors.white.withOpacity(.4),
+          if (Platform.isAndroid) Colors.white.withOpacity(.4),
         ],
         color: Colors.black26,
         spacing: const EdgeInsets.symmetric(horizontal: 3.0),
@@ -70,13 +72,17 @@ class IntroScreen extends StatelessWidget {
             children: [
               VSpace(factor: 3),
               Text(
-                'connect-windows-intro'.i18n(),
+                Platform.isAndroid
+                    ? 'connect-windows-intro'.i18n()
+                    : 'connect-android-intro'.i18n(),
                 style: h1TextStyle,
               ),
             ],
           ),
           bodyWidget: Text(
-            'connect-windows-intro-note'.i18n(),
+            Platform.isAndroid
+                ? 'connect-windows-intro-note'.i18n()
+                : 'connect-android-intro-note'.i18n(),
             style: h3InactiveTextStyle,
             textAlign: TextAlign.center,
           ),
@@ -176,23 +182,24 @@ class IntroScreen extends StatelessWidget {
             ],
           ),
         ),
-        PageViewModel(
-          title: 'storage-analyzer-text'.i18n(),
-          bodyWidget: Text(
-            'storage-analyzer-intro-note'.i18n(),
-            style: h3InactiveTextStyle,
-            textAlign: TextAlign.center,
+        if (Platform.isAndroid)
+          PageViewModel(
+            title: 'storage-analyzer-text'.i18n(),
+            bodyWidget: Text(
+              'storage-analyzer-intro-note'.i18n(),
+              style: h3InactiveTextStyle,
+              textAlign: TextAlign.center,
+            ),
+            image: Column(
+              children: [
+                VSpace(factor: 3),
+                Image.asset(
+                  'assets/icons/intro/analyzing.png',
+                  width: Responsive.getWidthPercentage(context, .5),
+                ),
+              ],
+            ),
           ),
-          image: Column(
-            children: [
-              VSpace(factor: 3),
-              Image.asset(
-                'assets/icons/intro/analyzing.png',
-                width: Responsive.getWidthPercentage(context, .5),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }

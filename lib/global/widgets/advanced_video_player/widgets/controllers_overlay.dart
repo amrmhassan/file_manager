@@ -96,7 +96,10 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
         children: [
           Column(
             children: [
-              VideoUpperControllers(),
+              VideoUpperControllers(
+                toggleControllerOverLayViewed:
+                    widget.toggleControllerOverLayViewed,
+              ),
               Spacer(),
               if (mpProvider.videoPlayerController != null)
                 FadeInUp(
@@ -106,7 +109,9 @@ class _ControllersOverlayState extends State<ControllersOverlay> {
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      VideoLowerBackgroundShader(),
+                      VideoLowerBackgroundShader(
+                          toggleControllerOverLayViewed:
+                              widget.toggleControllerOverLayViewed),
                       Column(
                         children: [
                           VideoMuteFullScreenControllers(
@@ -158,29 +163,36 @@ class VideoDurationViewer extends StatelessWidget {
 
 class VideoLowerBackgroundShader extends StatelessWidget {
   final bool reverse;
+  final VoidCallback toggleControllerOverLayViewed;
+
   const VideoLowerBackgroundShader({
     super.key,
     this.reverse = false,
+    required this.toggleControllerOverLayViewed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: Responsive.getHeight(context) / 3,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: reverse
-              ? [
-                  Colors.transparent,
-                  Colors.black.withOpacity(.6),
-                ]
-              : [
-                  Colors.black.withOpacity(.9),
-                  Colors.transparent,
-                ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
+    return GestureDetector(
+      onTap: toggleControllerOverLayViewed,
+      child: Container(
+        width: double.infinity,
+        height: Responsive.getHeight(context) / 3,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: reverse
+                ? [
+                    Colors.transparent,
+                    Colors.black.withOpacity(.6),
+                  ]
+                : [
+                    Colors.black.withOpacity(1),
+                    Colors.transparent,
+                  ],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            stops: [0, .9],
+          ),
         ),
       ),
     );
@@ -239,8 +251,11 @@ class VideoMuteFullScreenControllers extends StatelessWidget {
 }
 
 class VideoUpperControllers extends StatelessWidget {
+  final VoidCallback toggleControllerOverLayViewed;
+
   const VideoUpperControllers({
     super.key,
+    required this.toggleControllerOverLayViewed,
   });
 
   @override
@@ -251,6 +266,7 @@ class VideoUpperControllers extends StatelessWidget {
       children: [
         VideoLowerBackgroundShader(
           reverse: true,
+          toggleControllerOverLayViewed: toggleControllerOverLayViewed,
         ),
         Row(
           children: [

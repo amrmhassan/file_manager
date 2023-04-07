@@ -16,6 +16,7 @@ import 'package:explorer/providers/explorer_provider.dart';
 import 'package:explorer/providers/files_operations_provider.dart';
 import 'package:explorer/screens/about_us_screen/about_us_screen.dart';
 import 'package:explorer/screens/download_manager_screen/download_manager_screen.dart';
+import 'package:explorer/screens/new_version_screen/new_version_screen.dart';
 import 'package:explorer/screens/scan_qr_code_screen/scan_qr_code_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
@@ -92,6 +93,15 @@ class CustomAppDrawer extends StatelessWidget {
                 onlyDebug: true,
               ),
 
+              AppDrawerItem(
+                iconPath: 'laptop-icon',
+                title: 'windows-version'.i18n(),
+                onTap: () async {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, NewVersionScreen.routeName);
+                },
+                onlyDebug: true,
+              ),
               AppDrawerItem(
                 iconPath: 'info',
                 title: 'about-us-text'.i18n(),
