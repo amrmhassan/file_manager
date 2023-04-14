@@ -5,20 +5,23 @@ import 'package:explorer/analyzing_code/globals/files_folders_operations.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/extensions/file_size.dart';
 import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_info.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/share_provider.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:localization/localization.dart';
 import 'package:path/path.dart' as path_operations;
 
 void printOnDebug(Object? object) {
-  if (kDebugMode) {
-    print(object);
-  }
+  logger.i(object);
+  // if (kDebugMode) {
+  //   print(object);
+  // } else if (kReleaseMode) {
+  // }
 }
 
 //? for showing a quick snack bar

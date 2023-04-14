@@ -26,7 +26,7 @@ class HostNoteModal extends StatelessWidget {
       MemberType.host,
       shareExpPF(context),
     );
-    return serverPF(context).httpServer != null;
+    return serverPF(navigatorKey.currentContext!).httpServer != null;
   }
 
   @override
@@ -38,11 +38,12 @@ class HostNoteModal extends StatelessWidget {
           bool res = await localOpenServerHandler(context);
           if (res) {
             await Navigator.pushNamed(
-              context,
+              navigatorKey.currentContext!,
               QrCodeViewerScreen.routeName,
             );
           }
         } catch (e, s) {
+          rethrow;
           showSnackBar(
             context: navigatorKey.currentContext!,
             message: CustomException(

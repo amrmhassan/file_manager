@@ -102,7 +102,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
         ScanQRCodeScreen.routeName,
       );
 
-      handleConnectToHostWithCode(qrCode);
+      await handleConnectToHostWithCode(qrCode);
     } catch (e, s) {
       if (!mounted) return;
       showSnackBar(
@@ -115,7 +115,7 @@ class _ShareControllersButtonsState extends State<ShareControllersButtons> {
   }
 }
 
-void handleConnectToHostWithCode(Object? qrCode) async {
+Future<void> handleConnectToHostWithCode(Object? qrCode) async {
   if (qrCode is String) {
     if (qrCode.contains(' ') && int.tryParse(qrCode.split(' ').last) != null) {
       //? 1] i will get a working ip of the server

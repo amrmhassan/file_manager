@@ -2,6 +2,7 @@
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/languages_constants.dart';
 import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
@@ -65,6 +66,7 @@ void stopForegroundService() {
 void main() async {
   await AppInit.init();
   runApp(const MyApp());
+  logger.i('[----------------------App Started----------------------]');
 }
 
 class MyApp extends StatefulWidget {

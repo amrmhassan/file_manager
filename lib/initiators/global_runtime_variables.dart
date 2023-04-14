@@ -39,3 +39,4 @@ late MyTestAudioService myTestMediaHandler;
 
 //! windows variables
 late String downloadsFolderParent;
+late String logFilePath;

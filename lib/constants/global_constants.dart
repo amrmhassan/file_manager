@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:explorer/helpers/custom_logger.dart';
 import 'package:explorer/models/types.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -9,7 +10,7 @@ String laptopName = 'Laptop';
 String laptopID = 'laptop_id';
 
 late List<Directory> initialDirs;
-final Logger logger = Logger();
+final Logger logger = CustomLogger();
 // final CustomLoggerModel logger = CustomLoggerModel();
 
 const Duration homePageViewDuration = Duration(milliseconds: 180);

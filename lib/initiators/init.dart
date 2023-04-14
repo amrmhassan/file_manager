@@ -33,6 +33,9 @@ class AppInit {
     } else {
       await _windows();
     }
+    // log file path init
+    logFilePath =
+        '${(await getApplicationDocumentsDirectory()).path}/file_rover_logs.log';
   }
 
   static Future _android() async {
