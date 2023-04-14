@@ -85,9 +85,7 @@ class ShareSpaceScreenAppBar extends StatelessWidget {
                           // and this will happen if the host is disconnected
                           // or when i am disconnected
                           // so i don't need to call the close server form here
-                          if (serverProviderFalse.myType == MemberType.host) {
-                            serverProviderFalse.closeServer();
-                          }
+                          serverProviderFalse.closeServer();
                         },
                       ),
                     );
