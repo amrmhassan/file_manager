@@ -43,7 +43,6 @@ class HostNoteModal extends StatelessWidget {
             );
           }
         } catch (e, s) {
-          rethrow;
           showSnackBar(
             context: navigatorKey.currentContext!,
             message: CustomException(

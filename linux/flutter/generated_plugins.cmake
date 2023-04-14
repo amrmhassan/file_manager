@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_linux
   dart_vlc
   desktop_drop
+  desktop_window
   screen_retriever
   url_launcher_linux
   window_manager

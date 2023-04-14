@@ -8,6 +8,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   dart_vlc
   desktop_drop
+  desktop_window
   flutter_native_view
   permission_handler_windows
   screen_retriever

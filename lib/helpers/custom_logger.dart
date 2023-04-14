@@ -7,12 +7,16 @@ import 'package:logger/logger.dart';
 class CustomLogger extends Logger {
   @override
   void log(Level level, message, [error, StackTrace? stackTrace]) {
-    super.log(level, message, error, stackTrace);
-    final file = File(logFilePath);
-    final sink = file.openWrite(mode: FileMode.append);
-    String logLine = logBeautifier(level, message, error, stackTrace);
-    sink.write(logLine);
-    sink.close();
+    try {
+      super.log(level, message, error, stackTrace);
+      final file = File(logFilePath);
+      final sink = file.openWrite(mode: FileMode.append);
+      String logLine = logBeautifier(level, message, error, stackTrace);
+      sink.write(logLine);
+      sink.close();
+    } catch (e) {
+      //
+    }
   }
 
   String logBeautifier(Level level, message, [error, StackTrace? stackTrace]) {
