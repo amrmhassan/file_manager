@@ -102,6 +102,12 @@ class DownloadFolderController extends DownloadTaskController {
       Navigator.pop(modalContext);
     } catch (e) {
       logger.e(e);
+      await Future.delayed(Duration(milliseconds: 500));
+      try {
+        Navigator.pop(modalContext);
+      } catch (e) {
+        logger.e(e);
+      }
     }
     folders = items.where((element) => element.entityType == EntityType.folder);
     files = items.where((element) => element.entityType == EntityType.file);

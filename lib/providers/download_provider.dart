@@ -448,18 +448,22 @@ class DownloadProvider extends ChangeNotifier {
     ServerProvider serverProvider,
     ShareProvider shareProvider,
   ) async {
-    int index = tasks.indexWhere((element) => element.id == downloadTaskID);
-    DownloadTaskModel newTask = tasks[index];
-    newTask.taskStatus = taskStatus;
+    try {
+      int index = tasks.indexWhere((element) => element.id == downloadTaskID);
+      DownloadTaskModel newTask = tasks[index];
+      newTask.taskStatus = taskStatus;
 
-    _updateTask(index, newTask);
+      _updateTask(index, newTask);
 
-    if (taskStatus == TaskStatus.finished) {
-      newTask.finishedAt = DateTime.now();
-      _downloadNextTask(
-        serverProvider: serverProvider,
-        shareProvider: shareProvider,
-      );
+      if (taskStatus == TaskStatus.finished) {
+        newTask.finishedAt = DateTime.now();
+        _downloadNextTask(
+          serverProvider: serverProvider,
+          shareProvider: shareProvider,
+        );
+      }
+    } catch (e) {
+      logger.e(e);
     }
   }
 

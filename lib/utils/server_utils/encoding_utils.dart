@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -6,10 +7,14 @@ Future<dynamic> decodeRequest(
   bool jsonify = true,
 ]) async {
   try {
+    String requestBody = await utf8.decoder.bind(request).join();
     if (jsonify) {
-      return json.decode(utf8.decode(await request.single));
+      var jsonData = json.decode(requestBody);
+
+      return jsonData;
     }
-    return utf8.decode(await request.single);
+    var decoded = requestBody;
+    return decoded;
   } catch (e) {
     return null;
   }

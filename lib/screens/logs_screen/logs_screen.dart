@@ -4,10 +4,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:explorer/constants/colors.dart';
+import 'package:explorer/constants/global_constants.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:explorer/global/widgets/screens_wrapper/screens_wrapper.dart';
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
+import 'package:explorer/models/log_model.dart';
+import 'package:explorer/screens/logs_screen/widgets/log_card.dart';
+import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
 
 class LogsScreen extends StatefulWidget {
@@ -21,8 +26,9 @@ class LogsScreen extends StatefulWidget {
 class _LogsScreenState extends State<LogsScreen> {
   bool loading = false;
   String? content;
+  List<LogModel> logs = [];
   StreamSubscription? watchSub;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   void loadLogs([bool allowLoading = true]) async {
     setState(() {
@@ -30,6 +36,8 @@ class _LogsScreenState extends State<LogsScreen> {
         loading = true;
       }
     });
+    var box = await HiveBox.logModelBox;
+    logs = box.values.toList().cast();
     File logFile = File(logFilePath);
     if (!logFile.existsSync()) {
       setState(() {
@@ -45,11 +53,15 @@ class _LogsScreenState extends State<LogsScreen> {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-      );
+      try {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+      } catch (e) {
+        printDebug(e);
+      }
     });
   }
 
@@ -62,7 +74,9 @@ class _LogsScreenState extends State<LogsScreen> {
       logFile.deleteSync();
     }
     content = null;
+    (await HiveBox.logModelBox).clear();
     setState(() {
+      logs.clear();
       loading = false;
     });
   }
@@ -121,11 +135,18 @@ class _LogsScreenState extends State<LogsScreen> {
                   ),
                 )
               : Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    physics: BouncingScrollPhysics(),
-                    child: Text(content ?? 'Empty Logs'),
-                  ),
+                  child: logs.isEmpty
+                      ? Center(
+                          child: Text('Logs are empty'),
+                        )
+                      : ListView.builder(
+                          controller: _scrollController,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: logs.length,
+                          itemBuilder: (context, index) => LogCard(
+                            logModel: logs[index],
+                          ),
+                        ),
                 )
         ],
       ),

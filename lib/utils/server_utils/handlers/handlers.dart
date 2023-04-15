@@ -578,16 +578,14 @@ class S1H {
           remoteDeviceName: userName,
         );
       }
+      printDebug('here');
     } catch (e, s) {
       response
         ..statusCode = HttpStatus.internalServerError
         ..write('An error downloading file')
         ..close();
-      throw CustomException(
-        e: e,
-        s: s,
-        rethrowError: true,
-      );
+      logger.e(e, s);
+      rethrow;
     }
   }
 }

@@ -10,6 +10,7 @@ import 'package:explorer/constants/widget_keys.dart';
 import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/models/types.dart';
 import 'package:explorer/providers/share_provider.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,12 @@ void printOnDebug(Object? object) {
   //   print(object);
   // } else if (kReleaseMode) {
   // }
+}
+
+void printDebug(Object? o) {
+  if (kDebugMode) {
+    print(o);
+  }
 }
 
 //? for showing a quick snack bar

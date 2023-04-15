@@ -36,7 +36,7 @@ class CustomLogger extends Logger {
     String messageString = message.toString();
     String errorString = error?.toString() ?? '';
     String stackTraceString = stackTrace?.toString() ?? '';
-    String dateTime = DateFormat('yy/MM/dd HH:mm:ss').format(DateTime.now());
+    String dateTime = DateTime.now().toIso8601String();
 
     LogModel logModel = LogModel(
       level: levelString,
