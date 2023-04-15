@@ -60,6 +60,9 @@ class HiveBox {
   // peers permissions box that save if the each user permission status
   static Future<Box> get peerPermissionsBox =>
       Hive.openBox(_HiveBoxesNames.peerPermissionsBox);
+  // peers permissions box that save if the each user permission status
+  static Future<Box> get logModelBox =>
+      Hive.openBox(_HiveBoxesNames.logModelBox);
 }
 
 class _HiveBoxesNames {
@@ -101,4 +104,6 @@ class _HiveBoxesNames {
 
   // peers permissions box that save if the each user permission status
   static const String peerPermissionsBox = 'peerPermissionsBox';
+  // peers permissions box that save if the each user permission status
+  static const String logModelBox = 'logModelBox';
 }

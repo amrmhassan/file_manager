@@ -2,6 +2,7 @@
 
 import 'package:explorer/global/custom_app_drawer/widgets/app_drawer_item.dart';
 import 'package:explorer/screens/language_screen/language_screen.dart';
+import 'package:explorer/screens/logs_screen/logs_screen.dart';
 import 'package:explorer/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
@@ -28,6 +29,14 @@ class MainSettings extends StatelessWidget {
           title: 'language'.i18n(),
           onTap: () {
             Navigator.pushNamed(context, LanguageScreen.routeName);
+          },
+          onlyDebug: true,
+        ),
+        AppDrawerItem(
+          iconPath: 'log',
+          title: 'Logs'.i18n(),
+          onTap: () {
+            Navigator.pushNamed(context, LogsScreen.routeName);
           },
           onlyDebug: true,
         ),

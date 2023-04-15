@@ -342,7 +342,7 @@ class ConnectDeviceScreen extends StatelessWidget {
       String? refuseMessage = e.response?.data;
       showSnackBar(
         context: context,
-        message: refuseMessage ?? e.toString(),
+        message: refuseMessage ?? 'Error Occurred',
         snackBarType: SnackBarType.error,
       );
     }
