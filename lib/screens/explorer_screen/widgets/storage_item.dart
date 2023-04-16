@@ -13,6 +13,7 @@ import 'package:explorer/screens/explorer_screen/widgets/child_file_item.dart';
 import 'package:explorer/screens/explorer_screen/widgets/child_item_directory.dart';
 import 'package:explorer/utils/files_operations_utils/files_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:path/path.dart' as path_operations;
@@ -168,30 +169,36 @@ class _StorageItemState extends State<StorageItem> {
                       }
                     : null,
             borderRadius: 0,
-            child: entityType == EntityType.folder
-                ? ChildDirectoryItem(
-                    fileName: path_operations.basename(path),
-                    storageItemModel: widget.storageItemModel,
-                    parentSize: widget.parentSize,
-                    sizesExplorer: widget.sizesExplorer,
-                    isSelected: widget.isSelected ?? isSelected(context),
-                    allowShowingFavIcon: widget.allowShowingFavIcon,
-                    allowSelect: widget.allowSelect,
-                    shareSpaceItemModel: widget.shareSpaceItemModel,
-                    exploreMode: widget.exploreMode,
-                    onSelectClicked: widget.onSelectClicked,
-                  )
-                : ChildFileItem(
-                    storageItemModel: widget.storageItemModel,
-                    parentSize: widget.parentSize,
-                    sizesExplorer: widget.sizesExplorer,
-                    isSelected: widget.isSelected ?? isSelected(context),
-                    allowSelect: widget.allowSelect,
-                    shareSpaceItemModel: widget.shareSpaceItemModel,
-                    network: widget.network,
-                    exploreMode: widget.exploreMode,
-                    onSelectClicked: widget.onSelectClicked,
-                  ),
+            child: Stack(
+              children: [
+                entityType == EntityType.folder
+                    ? ChildDirectoryItem(
+                        fileName: path_operations.basename(path),
+                        storageItemModel: widget.storageItemModel,
+                        parentSize: widget.parentSize,
+                        sizesExplorer: widget.sizesExplorer,
+                        isSelected: widget.isSelected ?? isSelected(context),
+                        allowShowingFavIcon: widget.allowShowingFavIcon,
+                        allowSelect: widget.allowSelect,
+                        shareSpaceItemModel: widget.shareSpaceItemModel,
+                        exploreMode: widget.exploreMode,
+                        onSelectClicked: widget.onSelectClicked,
+                      )
+                    : ChildFileItem(
+                        storageItemModel: widget.storageItemModel,
+                        parentSize: widget.parentSize,
+                        sizesExplorer: widget.sizesExplorer,
+                        isSelected: widget.isSelected ?? isSelected(context),
+                        allowSelect: widget.allowSelect,
+                        shareSpaceItemModel: widget.shareSpaceItemModel,
+                        network: widget.network,
+                        exploreMode: widget.exploreMode,
+                        onSelectClicked: widget.onSelectClicked,
+                      ),
+                if (kDebugMode)
+                  Text((widget.storageItemModel?.arrangeFactor).toString())
+              ],
+            ),
           ),
         ),
       ],

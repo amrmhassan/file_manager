@@ -16,6 +16,7 @@ class StorageItemModel {
   bool? hideDate;
   //? this is just for arranging according frequently opened
   double arrangeFactor;
+  DateTime? dateClicked;
 
   StorageItemModel({
     required this.parentPath,
@@ -25,6 +26,7 @@ class StorageItemModel {
     required this.changed,
     required this.entityType,
     required this.size,
+    this.dateClicked,
     this.arrangeFactor = 0,
     this.customThumbnail,
     this.hideDate,

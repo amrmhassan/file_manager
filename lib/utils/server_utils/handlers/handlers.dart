@@ -19,7 +19,6 @@ import 'package:explorer/providers/share_provider.dart';
 import 'package:explorer/providers/shared_items_explorer_provider.dart';
 import 'package:explorer/screens/qr_code_viewer_screen/qr_code_viewer_screen.dart';
 import 'package:explorer/screens/share_screen/share_screen.dart';
-import 'package:explorer/utils/errors_collection/custom_exception.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:explorer/utils/providers_calls_utils.dart';
 import 'package:explorer/utils/server_utils/connection_utils.dart';

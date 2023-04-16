@@ -512,6 +512,8 @@ class ExplorerProvider extends ChangeNotifier {
   }
 
   //# frequently opened feature
+  // this forgetting factor is
+  // int forgettingFactor = 1;
 
   List<EntityClickedModel> allItems = [];
   // this will be used to wait until the clicking action saves then load the new ones after clicking the new folder
@@ -542,7 +544,7 @@ class ExplorerProvider extends ChangeNotifier {
     stillSavingCompleter = Completer();
     var box = await HiveBox.entityClickedBox;
     EntityClickedModel? fetchedItem = box.get(path);
-    int timesClicked = fetchedItem?.times ?? 0;
+    int timesClicked = arrangeFactorInt(fetchedItem);
 
     int newClicks = timesClicked + 1;
     DateTime now = DateTime.now();
@@ -555,6 +557,16 @@ class ExplorerProvider extends ChangeNotifier {
 
     stillSavingCompleter?.complete();
     await box.put(itemToSave.path, itemToSave);
+  }
+
+  int arrangeFactorInt(EntityClickedModel? arrangeModel) {
+    if (arrangeModel == null) return 0;
+    double factor = getArrangeFactor(arrangeModel);
+    if (factor < 0) {
+      return 0;
+    } else {
+      return factor.toInt();
+    }
   }
 
   EntityClickedModel getClickedModel(String path) {

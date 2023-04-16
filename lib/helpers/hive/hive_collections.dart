@@ -21,4 +21,5 @@ CustomHiveCollection persistentCollection = CustomHiveCollection(boxes: [
   HiveBox.shareSpaceItem,
   HiveBox.hiddenFromShareSpace,
   HiveBox.peerPermissionsBox,
+  HiveBox.entityClickedBox,
 ]);

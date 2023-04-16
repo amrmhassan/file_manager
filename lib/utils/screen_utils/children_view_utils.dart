@@ -73,13 +73,10 @@ List<StorageItemModel> getFixedEntityList({
     for (var storageItemModel in viewedChildren) {
       EntityClickedModel arrangeModel = arrangeList
           .firstWhere((element) => element.path == storageItemModel.path);
-      int minDiff = DateTime.now()
-          .difference(DateTime.parse(arrangeModel.lastTimeClicked))
-          .inMinutes;
-      double arrangeFactor = arrangeModel.times == 0
-          ? double.negativeInfinity
-          : (arrangeModel.times - minDiff).toDouble();
+      double arrangeFactor = getArrangeFactor(arrangeModel);
       storageItemModel.arrangeFactor = arrangeFactor;
+      storageItemModel.dateClicked =
+          DateTime.parse(arrangeModel.lastTimeClicked);
     }
     viewedChildren.sort(
       (a, b) {
@@ -87,11 +84,15 @@ List<StorageItemModel> getFixedEntityList({
         if (factorComparison != 0) {
           return factorComparison;
         }
+        if (a.arrangeFactor == b.arrangeFactor) {
+          return b.dateClicked!.compareTo(a.dateClicked!);
+        }
+
         return a.path.compareTo(b.path);
       },
     );
   } else {
-    // if there is no sorting option or a worng option is selected
+    // if there is no sorting option or a wrong option is selected
     viewedChildren.sort(
       (a, b) => a.path.compareTo(b.path),
     );
@@ -118,4 +119,14 @@ List<StorageItemModel> getFixedEntityList({
   }
 
   return fixedEntities;
+}
+
+double getArrangeFactor(EntityClickedModel arrangeModel) {
+  int minDiff = DateTime.now()
+      .difference(DateTime.parse(arrangeModel.lastTimeClicked))
+      .inMinutes;
+  double arrangeFactor = arrangeModel.times == 0
+      ? double.negativeInfinity
+      : (arrangeModel.times - minDiff).toDouble();
+  return arrangeFactor;
 }
