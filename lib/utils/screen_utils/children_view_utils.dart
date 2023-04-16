@@ -136,4 +136,16 @@ double getArrangeFactor(EntityClickedModel arrangeModel) {
 
 
 // actually the sorting according to frequently usage run like this
-//
+// when clicking the item his factor increases by one
+// if the factor is actual sorting factor will be negative to allow sorting for older clicked elements as well
+// if factor is -inf this mean it never clicked
+// if no action from the user or clicking on any items, the items stay in the same position but of course the factor will decrease by 1 each minute
+// when two items have the same factor, the priority will be for the latest clicked item
+// when clicking an item, if it's factor isn't positive, it will be set to 0 then increased to 1=> means it's factor will be one
+// -- this prevent from burring old clicked elements and count from let's say-100 or so to be on the top again
+// -- this is useful to make the old clicked elements to count just like the -inf elements which was never clicked
+// and the new factor that will be saved will come from the factoring formula called by function double getArrangeFactor(EntityClickedModel arrangeModel)
+// when clicking an element
+// -- if it's factor is -inf(first time) , factor will be 1 and saved
+// -- if it's factor is positive , factor will be increased by 1 and saved
+// -- if it's factor is negative, factor will 1 and saved
