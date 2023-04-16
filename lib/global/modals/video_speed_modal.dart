@@ -27,6 +27,7 @@ class VideoSpeedsModal extends StatelessWidget {
       bottomPaddingFactor: .3,
       child: Expanded(
         child: ListView(
+          shrinkWrap: true,
           physics: BouncingScrollPhysics(),
           children: List.generate(8, (index) => (index + 1) * .25)
               .map((e) => ListTile(

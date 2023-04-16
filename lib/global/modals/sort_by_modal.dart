@@ -44,8 +44,10 @@ class SortByModal extends StatelessWidget {
       borderRadius: mediumBorderRadius,
       child: Expanded(
         child: ListView(
+          physics: BouncingScrollPhysics(),
           // mainAxisAlignment: MainAxisAlignment.start,
           // crossAxisAlignment: CrossAxisAlignment.start,
+          shrinkWrap: true,
           children: [
             VSpace(),
             ModalButtonElement(
