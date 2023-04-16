@@ -4,6 +4,7 @@ import 'package:explorer/analyzing_code/storage_analyzer/models/local_folder_inf
 import 'package:explorer/models/analyzer_report_info_model.dart';
 import 'package:explorer/models/beacon_client.dart';
 import 'package:explorer/models/download_task_model.dart';
+import 'package:explorer/models/entity_clicked_model.dart';
 import 'package:explorer/models/folder_item_info_model.dart';
 import 'package:explorer/models/listy_item_model.dart';
 import 'package:explorer/models/listy_model.dart';
@@ -41,5 +42,6 @@ class HiveInitiator {
     Hive.registerAdapter(PermissionStatusAdapter()); //=>16
     Hive.registerAdapter(BeaconClientAdapter()); //=>17
     Hive.registerAdapter(LogModelAdapter()); //=>18
+    Hive.registerAdapter(EntityClickedModelAdapter()); //=>19
   }
 }

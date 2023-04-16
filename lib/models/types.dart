@@ -39,4 +39,6 @@ enum SortOption {
   modifiedDec,
   typeAsc,
   typeDec,
+  //
+  frequentlyOpened,
 }

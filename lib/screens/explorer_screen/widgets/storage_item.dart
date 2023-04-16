@@ -134,6 +134,8 @@ class _StorageItemState extends State<StorageItem> {
             key: globalKey,
             onTap: widget.allowClick
                 ? () async {
+                    //? update the clicked item first
+                    expPF(context).increaseClickedItem(path);
                     if (entityType == EntityType.folder) {
                       //* here open the folder
                       widget.onDirTapped(path);

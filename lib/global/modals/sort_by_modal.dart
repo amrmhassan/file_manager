@@ -42,61 +42,68 @@ class SortByModal extends StatelessWidget {
       padding: EdgeInsets.zero,
       showTopLine: false,
       borderRadius: mediumBorderRadius,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          VSpace(),
-          ModalButtonElement(
-            title: "sort-name-a-z".i18n(),
-            onTap: () => setSortOption(SortOption.nameAsc, context),
-            checked: checked(SortOption.nameAsc, context),
-          ),
-          ModalButtonElement(
-            title: "sort-name-z-a".i18n(),
-            onTap: () => setSortOption(SortOption.nameDes, context),
-            checked: checked(SortOption.nameDes, context),
-          ),
-          ModalButtonElement(
-            title: "sort-modified-newest".i18n(),
-            onTap: () => setSortOption(SortOption.modifiedDec, context),
-            checked: checked(SortOption.modifiedDec, context),
-          ),
-          ModalButtonElement(
-            title: "sort-modified-oldest".i18n(),
-            onTap: () => setSortOption(SortOption.modifiedAsc, context),
-            checked: checked(SortOption.modifiedAsc, context),
-          ),
-          ModalButtonElement(
-            title: "sort-type-a-z".i18n(),
-            onTap: () => setSortOption(SortOption.typeAsc, context),
-            checked: checked(SortOption.typeAsc, context),
-          ),
-          ModalButtonElement(
-            title: "sort-type-z-a".i18n(),
-            onTap: () => setSortOption(SortOption.typeDec, context),
-            checked: checked(SortOption.typeDec, context),
-          ),
-          ModalButtonElement(
-            title: "sort-size-smallest".i18n(),
-            onTap: () {
-              setSortOption(SortOption.sizeAsc, context);
-              showSnackBar(
-                  context: context, message: 'size-exp_instead'.i18n());
-            },
-            checked: checked(SortOption.sizeAsc, context),
-          ),
-          ModalButtonElement(
-            title: "sort-size-largest".i18n(),
-            onTap: () {
-              setSortOption(SortOption.sizeDec, context);
-              showSnackBar(
-                  context: context, message: 'size-exp_instead'.i18n());
-            },
-            checked: checked(SortOption.sizeDec, context),
-          ),
-          VSpace(),
-        ],
+      child: Expanded(
+        child: ListView(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            VSpace(),
+            ModalButtonElement(
+              title: "frequently-opened".i18n(),
+              onTap: () => setSortOption(SortOption.frequentlyOpened, context),
+              checked: checked(SortOption.frequentlyOpened, context),
+            ),
+            ModalButtonElement(
+              title: "sort-name-a-z".i18n(),
+              onTap: () => setSortOption(SortOption.nameAsc, context),
+              checked: checked(SortOption.nameAsc, context),
+            ),
+            ModalButtonElement(
+              title: "sort-name-z-a".i18n(),
+              onTap: () => setSortOption(SortOption.nameDes, context),
+              checked: checked(SortOption.nameDes, context),
+            ),
+            ModalButtonElement(
+              title: "sort-modified-newest".i18n(),
+              onTap: () => setSortOption(SortOption.modifiedDec, context),
+              checked: checked(SortOption.modifiedDec, context),
+            ),
+            ModalButtonElement(
+              title: "sort-modified-oldest".i18n(),
+              onTap: () => setSortOption(SortOption.modifiedAsc, context),
+              checked: checked(SortOption.modifiedAsc, context),
+            ),
+            ModalButtonElement(
+              title: "sort-type-a-z".i18n(),
+              onTap: () => setSortOption(SortOption.typeAsc, context),
+              checked: checked(SortOption.typeAsc, context),
+            ),
+            ModalButtonElement(
+              title: "sort-type-z-a".i18n(),
+              onTap: () => setSortOption(SortOption.typeDec, context),
+              checked: checked(SortOption.typeDec, context),
+            ),
+            ModalButtonElement(
+              title: "sort-size-smallest".i18n(),
+              onTap: () {
+                setSortOption(SortOption.sizeAsc, context);
+                showSnackBar(
+                    context: context, message: 'size-exp_instead'.i18n());
+              },
+              checked: checked(SortOption.sizeAsc, context),
+            ),
+            ModalButtonElement(
+              title: "sort-size-largest".i18n(),
+              onTap: () {
+                setSortOption(SortOption.sizeDec, context);
+                showSnackBar(
+                    context: context, message: 'size-exp_instead'.i18n());
+              },
+              checked: checked(SortOption.sizeDec, context),
+            ),
+            VSpace(),
+          ],
+        ),
       ),
     );
   }

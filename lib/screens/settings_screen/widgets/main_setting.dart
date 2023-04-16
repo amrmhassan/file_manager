@@ -34,7 +34,7 @@ class MainSettings extends StatelessWidget {
         ),
         AppDrawerItem(
           iconPath: 'log',
-          title: 'Logs'.i18n(),
+          title: 'logs'.i18n(),
           onTap: () {
             Navigator.pushNamed(context, LogsScreen.routeName);
           },

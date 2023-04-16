@@ -14,6 +14,7 @@ import 'package:explorer/models/log_model.dart';
 import 'package:explorer/screens/logs_screen/widgets/log_card.dart';
 import 'package:explorer/utils/general_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class LogsScreen extends StatefulWidget {
   static const String routeName = '/LogsScreen';
@@ -116,7 +117,7 @@ class _LogsScreenState extends State<LogsScreen> {
         children: [
           CustomAppBar(
             title: Text(
-              'Logs File',
+              'logs-file'.i18n(),
               style: h2TextStyle,
             ),
             rightIcon: IconButton(
@@ -137,7 +138,7 @@ class _LogsScreenState extends State<LogsScreen> {
               : Expanded(
                   child: logs.isEmpty
                       ? Center(
-                          child: Text('Logs are empty'),
+                          child: Text('empty-logs'.i18n()),
                         )
                       : ListView.builder(
                           controller: _scrollController,

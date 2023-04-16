@@ -302,5 +302,9 @@
   "back": "Back",
   "windows-version": "Windows Version",
   "connect-android-intro": "Connect Android",
-  "connect-android-intro-note": "Gain full control over your android device and vice versa"
+  "connect-android-intro-note": "Gain full control over your android device and vice versa",
+  "frequently-opened": "Frequently Opened",
+  "logs": "Logs",
+  "logs-file": "Logs File",
+  "empty-logs": "Logs are empty"
 }

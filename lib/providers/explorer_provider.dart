@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:explorer/helpers/hive/hive_helper.dart';
 import 'package:explorer/initiators/global_runtime_variables.dart';
+import 'package:explorer/models/entity_clicked_model.dart';
 import 'package:explorer/providers/media_player_provider/media_player_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -270,11 +272,16 @@ class ExplorerProvider extends ChangeNotifier {
       );
       return items;
     } else {
+      List<EntityClickedModel>? factoringItems;
+      if (_sortOption == SortOption.frequentlyOpened) {
+        factoringItems = await getUsageData(_children.map((e) => e.path));
+      }
       return getFixedEntityList(
         viewedChildren: _children,
         showHiddenFiles: _showHiddenFiles,
         prioritizeFolders: _prioritizeFolders,
         sortOption: _sortOption,
+        factoringItems: factoringItems,
       );
     }
   }
@@ -502,5 +509,77 @@ class ExplorerProvider extends ChangeNotifier {
     _tabs[index] = tabModel;
     _activeTabPath = path;
     notifyListeners();
+  }
+
+  //# frequently opened feature
+
+  List<EntityClickedModel> allItems = [];
+  // this will be used to wait until the clicking action saves then load the new ones after clicking the new folder
+  Completer? stillSavingCompleter;
+  // this will run each time a new dir is clicked and sort option is frequently opened
+  //? this function will run before the increase function because items will be empty at first until it gets filled
+  //? running this function, then the allItems will be updated continuously
+  Future<List<EntityClickedModel>> getUsageData(
+    Iterable<String> childrenItems,
+  ) async {
+    if (allItems.isEmpty) {
+      if (stillSavingCompleter != null) {
+        await stillSavingCompleter!.future;
+      }
+      var box = await HiveBox.entityClickedBox;
+      allItems = box.values.toList().cast();
+
+      var matchedItems = childrenItems.map((e) => getClickedModel(e));
+      return matchedItems.toList();
+    } else {
+      var matchedItems = childrenItems.map((e) => getClickedModel(e));
+      return matchedItems.toList();
+    }
+  }
+
+// this will be called whenever an entity is being clicked
+  Future<void> increaseClickedItem(String path) async {
+    stillSavingCompleter = Completer();
+    var box = await HiveBox.entityClickedBox;
+    EntityClickedModel? fetchedItem = box.get(path);
+    int timesClicked = fetchedItem?.times ?? 0;
+
+    int newClicks = timesClicked + 1;
+    DateTime now = DateTime.now();
+    EntityClickedModel itemToSave = EntityClickedModel(
+      path: path,
+      times: newClicks,
+      lastTimeClicked: now.toIso8601String(),
+    );
+    updateClickedItem(path, itemToSave);
+
+    stillSavingCompleter?.complete();
+    await box.put(itemToSave.path, itemToSave);
+  }
+
+  EntityClickedModel getClickedModel(String path) {
+    EntityClickedModel? model;
+    try {
+      model = allItems.firstWhere((element) => element.path == path);
+    } catch (e) {
+      // item doesn't exist in the box yet
+    }
+    model = model ??
+        EntityClickedModel(
+          path: path,
+          times: 0,
+          lastTimeClicked: DateTime.now().toIso8601String(),
+        );
+    return model;
+  }
+
+  void updateClickedItem(String path, EntityClickedModel newModel) {
+    int index = allItems.indexWhere((element) => element.path == path);
+    if (index == -1) {
+      // item doesn't exist yet
+      allItems.add(newModel);
+    } else {
+      allItems[index] = newModel;
+    }
   }
 }
