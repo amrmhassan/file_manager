@@ -274,7 +274,7 @@ class ExplorerProvider extends ChangeNotifier {
     } else {
       List<EntityClickedModel>? factoringItems;
       if (_sortOption == SortOption.frequentlyOpened) {
-        factoringItems = await getUsageData(_children.map((e) => e.path));
+        factoringItems = await _getUsageData(_children.map((e) => e.path));
       }
       return getFixedEntityList(
         viewedChildren: _children,
@@ -515,36 +515,36 @@ class ExplorerProvider extends ChangeNotifier {
   // this forgetting factor is
   // int forgettingFactor = 1;
 
-  List<EntityClickedModel> allItems = [];
+  List<EntityClickedModel> _allItems = [];
   // this will be used to wait until the clicking action saves then load the new ones after clicking the new folder
-  Completer? stillSavingCompleter;
+  Completer? _stillSavingCompleter;
   // this will run each time a new dir is clicked and sort option is frequently opened
   //? this function will run before the increase function because items will be empty at first until it gets filled
   //? running this function, then the allItems will be updated continuously
-  Future<List<EntityClickedModel>> getUsageData(
+  Future<List<EntityClickedModel>> _getUsageData(
     Iterable<String> childrenItems,
   ) async {
-    if (allItems.isEmpty) {
-      if (stillSavingCompleter != null) {
-        await stillSavingCompleter!.future;
+    if (_allItems.isEmpty) {
+      if (_stillSavingCompleter != null) {
+        await _stillSavingCompleter!.future;
       }
       var box = await HiveBox.entityClickedBox;
-      allItems = box.values.toList().cast();
+      _allItems = box.values.toList().cast();
 
-      var matchedItems = childrenItems.map((e) => getClickedModel(e));
+      var matchedItems = childrenItems.map((e) => _getClickedModel(e));
       return matchedItems.toList();
     } else {
-      var matchedItems = childrenItems.map((e) => getClickedModel(e));
+      var matchedItems = childrenItems.map((e) => _getClickedModel(e));
       return matchedItems.toList();
     }
   }
 
 // this will be called whenever an entity is being clicked
   Future<void> increaseClickedItem(String path) async {
-    stillSavingCompleter = Completer();
+    _stillSavingCompleter = Completer();
     var box = await HiveBox.entityClickedBox;
     EntityClickedModel? fetchedItem = box.get(path);
-    int timesClicked = arrangeFactorInt(fetchedItem);
+    int timesClicked = _arrangeFactorInt(fetchedItem);
 
     int newClicks = timesClicked + 1;
     DateTime now = DateTime.now();
@@ -553,13 +553,13 @@ class ExplorerProvider extends ChangeNotifier {
       times: newClicks,
       lastTimeClicked: now.toIso8601String(),
     );
-    updateClickedItem(path, itemToSave);
+    _updateClickedItem(path, itemToSave);
 
-    stillSavingCompleter?.complete();
+    _stillSavingCompleter?.complete();
     await box.put(itemToSave.path, itemToSave);
   }
 
-  int arrangeFactorInt(EntityClickedModel? arrangeModel) {
+  int _arrangeFactorInt(EntityClickedModel? arrangeModel) {
     if (arrangeModel == null) return 0;
     double factor = getArrangeFactor(arrangeModel);
     if (factor < 0) {
@@ -569,10 +569,10 @@ class ExplorerProvider extends ChangeNotifier {
     }
   }
 
-  EntityClickedModel getClickedModel(String path) {
+  EntityClickedModel _getClickedModel(String path) {
     EntityClickedModel? model;
     try {
-      model = allItems.firstWhere((element) => element.path == path);
+      model = _allItems.firstWhere((element) => element.path == path);
     } catch (e) {
       // item doesn't exist in the box yet
     }
@@ -585,13 +585,13 @@ class ExplorerProvider extends ChangeNotifier {
     return model;
   }
 
-  void updateClickedItem(String path, EntityClickedModel newModel) {
-    int index = allItems.indexWhere((element) => element.path == path);
+  void _updateClickedItem(String path, EntityClickedModel newModel) {
+    int index = _allItems.indexWhere((element) => element.path == path);
     if (index == -1) {
       // item doesn't exist yet
-      allItems.add(newModel);
+      _allItems.add(newModel);
     } else {
-      allItems[index] = newModel;
+      _allItems[index] = newModel;
     }
   }
 }

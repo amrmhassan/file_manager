@@ -89,6 +89,9 @@ List<StorageItemModel> getFixedEntityList({
         }
 
         return a.path.compareTo(b.path);
+        //تفسير
+        //afm
+        //idm
       },
     );
   } else {
@@ -130,3 +133,7 @@ double getArrangeFactor(EntityClickedModel arrangeModel) {
       : (arrangeModel.times - minDiff).toDouble();
   return arrangeFactor;
 }
+
+
+// actually the sorting according to frequently usage run like this
+//
