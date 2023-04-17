@@ -127,7 +127,7 @@ List<StorageItemModel> getFixedEntityList({
 double getArrangeFactor(EntityClickedModel arrangeModel) {
   int minDiff = DateTime.now()
       .difference(DateTime.parse(arrangeModel.lastTimeClicked))
-      .inMinutes;
+      .inHours;
   double arrangeFactor = arrangeModel.times == 0
       ? double.negativeInfinity
       : (arrangeModel.times - minDiff).toDouble();

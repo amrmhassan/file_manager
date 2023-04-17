@@ -29,8 +29,8 @@ void runUpdates(BuildContext context) async {
     return;
   }
   //? checking if the update is already downloaded
-  String updateFilePath =
-      await DownloadUpdate.getUpdateFilePath(update.latestVersion!.version);
+  String updateFilePath = await DownloadUpdate.getUpdateFilePath(
+      update.latestVersionData!.version.toString());
   if (navigatorKey.currentContext == null) return;
 
   File downloadedUpdateFile = File(updateFilePath);
@@ -40,7 +40,8 @@ void runUpdates(BuildContext context) async {
   } else {
     logger.i('downloading update');
     String path = await DownloadUpdate().downloadUpdate(
-        update.latestVersionLink!, update.latestVersion!.version);
+        update.latestVersionLink!,
+        update.latestVersionData!.version.toString());
     logger.i('update downloaded');
     _showInstallUpdateModal(path);
   }
