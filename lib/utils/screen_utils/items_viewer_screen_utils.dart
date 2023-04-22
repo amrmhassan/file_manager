@@ -47,7 +47,8 @@ Future<List<LocalFileInfo>> fetchData(
     // );
     var box = await HiveBox.recentOpenedFile;
 
-    List<RecentOpenedFileModel> recentFiles = box.values.toList().cast();
+    List<RecentOpenedFileModel> recentFiles =
+        box.values.toList().reversed.toList().cast();
     // for (var element in data) {
     //   recentFiles.add(RecentOpenedFileModel.fromJSON(element));
     // }

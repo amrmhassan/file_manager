@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -105,6 +105,10 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                   );
                 }
               }
+              if (!widget.network) {
+                foPF(context).addToRecentlyOpened(widget.mediaPath);
+              }
+              setState(() {});
             },
             width: largeIconSize,
             height: largeIconSize,
@@ -171,6 +175,11 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
                           widget.mediaPath, widget.network);
                     }
                   }
+
+                  if (!widget.network) {
+                    foPF(context).addToRecentlyOpened(widget.mediaPath);
+                  }
+                  setState(() {});
                 },
                 width: largeIconSize,
                 height: largeIconSize,

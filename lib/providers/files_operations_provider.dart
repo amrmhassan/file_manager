@@ -321,6 +321,7 @@ class FilesOperationsProvider extends ChangeNotifier {
     //   persistentDbName,
     // );
     var box = await HiveBox.recentOpenedFile;
-    box.add(recentOpenedFileModel);
+    // box.add(recentOpenedFileModel);
+    await box.put(path, recentOpenedFileModel);
   }
 }

@@ -6,7 +6,6 @@ import 'package:explorer/constants/colors.dart';
 import 'package:explorer/constants/sizes.dart';
 import 'package:explorer/constants/styles.dart';
 import 'package:explorer/global/modals/show_modal_funcs.dart';
-import 'package:explorer/global/widgets/button_wrapper.dart';
 import 'package:explorer/global/widgets/h_space.dart';
 import 'package:explorer/providers/analyzer_provider.dart';
 import 'package:explorer/providers/explorer_provider.dart';
@@ -83,7 +82,7 @@ class HomeAppBar extends StatelessWidget {
             //       color: kMainIconColor,
             //     ),
             //   )
-              ,
+            ,
             activeScreenIndex == 1
                 ? AppBarIconButton(
                     onTap: () {
