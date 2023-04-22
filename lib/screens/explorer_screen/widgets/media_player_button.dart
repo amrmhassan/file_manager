@@ -37,6 +37,19 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
 
   bool get mePlaying {
     if (Platform.isAndroid) {
+      var mpProviderAndroid = mediaP(context);
+
+      return isMyPathActive(mpProviderAndroid.playingAudioFilePath) &&
+          mpProviderAndroid.audioPlaying;
+    } else {
+      var mpProviderWindows = WindowSProviders.mpP(context);
+      return isMyPathActive(mpProviderWindows.playingAudioFilePath) &&
+          mpProviderWindows.audioPlaying;
+    }
+  }
+
+  bool get mePlayingF {
+    if (Platform.isAndroid) {
       var mpProviderAndroid = mediaPF(context);
 
       return isMyPathActive(mpProviderAndroid.playingAudioFilePath) &&
@@ -51,12 +64,11 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
   @override
   Widget build(BuildContext context) {
     FileType fileType = getFileType(getFileExtension(widget.mediaPath));
-
     return fileType == FileType.audio
         ? ButtonWrapper(
             onTap: () async {
               //
-              if (mePlaying) {
+              if (mePlayingF) {
                 // here i am playing and i want to pause
                 if (Platform.isAndroid) {
                   var mpProviderFalseAndroid = mediaPF(context);
@@ -108,7 +120,6 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
               if (!widget.network) {
                 foPF(context).addToRecentlyOpened(widget.mediaPath);
               }
-              setState(() {});
             },
             width: largeIconSize,
             height: largeIconSize,
@@ -120,75 +131,68 @@ class _MediaPlayerButtonState extends State<MediaPlayerButton> {
               color: kInactiveColor,
             ),
           )
-        : fileType == FileType.video
-            ? ButtonWrapper(
-                onTap: () async {
-                  if (widget.network) {
-                    showSnackBar(
-                        context: context, message: '${"loading".i18n()}...');
-                    String? connLink;
-                    if (shareExpPF(context).laptopExploring) {
-                      connLink = connectLaptopPF(context)
-                          .getPhoneConnLink(EndPoints.streamVideo);
-                    } else {
-                      var sharedExpProvider = shareExpPF(context);
-                      var serverProvider = serverPF(context);
-                      connLink = serverProvider
-                              .peerModelWithSessionID(
-                                  sharedExpProvider.viewedUserSessionId!)
-                              .connLink +
-                          EndPoints.streamVideo;
-                    }
-                    if (Platform.isAndroid) {
-                      var mpProviderFalseAndroid = mediaPF(context);
+        : ButtonWrapper(
+            onTap: () async {
+              if (widget.network) {
+                showSnackBar(
+                    context: context, message: '${"loading".i18n()}...');
+                String? connLink;
+                if (shareExpPF(context).laptopExploring) {
+                  connLink = connectLaptopPF(context)
+                      .getPhoneConnLink(EndPoints.streamVideo);
+                } else {
+                  var sharedExpProvider = shareExpPF(context);
+                  var serverProvider = serverPF(context);
+                  connLink = serverProvider
+                          .peerModelWithSessionID(
+                              sharedExpProvider.viewedUserSessionId!)
+                          .connLink +
+                      EndPoints.streamVideo;
+                }
+                if (Platform.isAndroid) {
+                  var mpProviderFalseAndroid = mediaPF(context);
 
-                      mpProviderFalseAndroid.playVideo(
-                        connLink,
-                        widget.network,
-                        widget.mediaPath,
-                      );
-                      mpProviderFalseAndroid
-                          .setBottomVideoControllersHidden(false);
-                    } else {
-                      var mpProviderFalseWindows =
-                          WindowSProviders.mpPF(context);
+                  mpProviderFalseAndroid.playVideo(
+                    connLink,
+                    widget.network,
+                    widget.mediaPath,
+                  );
+                  mpProviderFalseAndroid.setBottomVideoControllersHidden(false);
+                } else {
+                  var mpProviderFalseWindows = WindowSProviders.mpPF(context);
 
-                      mpProviderFalseWindows.playVideo(
-                        connLink,
-                        widget.network,
-                        widget.mediaPath,
-                      );
-                      mpProviderFalseWindows
-                          .setBottomVideoControllersHidden(false);
-                    }
-                  } else {
-                    if (Platform.isAndroid) {
-                      var mpProviderFalseAndroid = mediaPF(context);
+                  mpProviderFalseWindows.playVideo(
+                    connLink,
+                    widget.network,
+                    widget.mediaPath,
+                  );
+                  mpProviderFalseWindows.setBottomVideoControllersHidden(false);
+                }
+              } else {
+                if (Platform.isAndroid) {
+                  var mpProviderFalseAndroid = mediaPF(context);
 
-                      mpProviderFalseAndroid.playVideo(
-                          widget.mediaPath, widget.network);
-                    } else {
-                      var mpProviderFalseWindows =
-                          WindowSProviders.mpPF(context);
+                  mpProviderFalseAndroid.playVideo(
+                      widget.mediaPath, widget.network);
+                } else {
+                  var mpProviderFalseWindows = WindowSProviders.mpPF(context);
 
-                      mpProviderFalseWindows.playVideo(
-                          widget.mediaPath, widget.network);
-                    }
-                  }
+                  mpProviderFalseWindows.playVideo(
+                      widget.mediaPath, widget.network);
+                }
+              }
 
-                  if (!widget.network) {
-                    foPF(context).addToRecentlyOpened(widget.mediaPath);
-                  }
-                  setState(() {});
-                },
-                width: largeIconSize,
-                height: largeIconSize,
-                child: Image.asset(
-                  'assets/icons/view.png',
-                  width: largeIconSize / 1.5,
-                  color: kInactiveColor,
-                ),
-              )
-            : SizedBox();
+              if (!widget.network) {
+                foPF(context).addToRecentlyOpened(widget.mediaPath);
+              }
+            },
+            width: largeIconSize,
+            height: largeIconSize,
+            child: Image.asset(
+              'assets/icons/view.png',
+              width: largeIconSize / 1.5,
+              color: kInactiveColor,
+            ),
+          );
   }
 }
