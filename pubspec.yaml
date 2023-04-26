@@ -72,6 +72,7 @@ dependencies:
   ffi: ^1.2.1
   desktop_window: ^0.4.0
   package_info_plus: ^1.4.2
+  flutter_html: ^3.0.0-alpha.6
 
 
 

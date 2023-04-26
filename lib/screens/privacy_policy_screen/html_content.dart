@@ -1,14 +1,12 @@
-
-
-<!DOCTYPE html>
+const String htmlContent = """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>File Rover - Manage &amp; Share Privacy Policy</title>
-  <link rel="icon" href="./assets/icons/logo.png" type="image/x-icon">
-  <link rel="shortcut icon" href="./assets/icons/logo.png" type="image/x-icon">
+  <link rel="icon" href="./logo.png" type="image/x-icon">
+  <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
   <style>
     body {
       
@@ -86,4 +84,4 @@
   
 </body>
 
-</html>
+</html>""";

@@ -39,6 +39,8 @@ import 'package:explorer/screens/home_screen/home_screen.dart';
 import 'package:explorer/screens/intro_screen/intro_screen.dart';
 import 'package:explorer/screens/test_screen/test_screen.dart';
 
+import '../screens/privacy_policy_screen/privacy_policy_screen.dart';
+
 // Map<String, Widget Function(BuildContext)> get mainRoutesLocalized {
 //   Map<String, Widget Function(BuildContext)> data = {};
 
@@ -94,4 +96,5 @@ Map<String, Widget Function(BuildContext)> mainRoutes = {
   SendFilesScreen.routeName: (context) => const SendFilesScreen(),
   NewVersionScreen.routeName: (context) => const NewVersionScreen(),
   LogsScreen.routeName: (context) => const LogsScreen(),
+  PrivacyPolicyScreen.routeName: (context) => const PrivacyPolicyScreen(),
 };

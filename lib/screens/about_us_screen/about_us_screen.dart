@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:localization/localization.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../privacy_policy_screen/privacy_policy_screen.dart';
+
 class AboutUsScreen extends StatelessWidget {
   static const String routeName = '/AboutUsScreen';
   const AboutUsScreen({super.key});
@@ -159,10 +161,24 @@ class AboutUsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                ),
+                VSpace(factor: 2),
               ],
             ),
           ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, PrivacyPolicyScreen.routeName);
+            },
+            leading: Icon(
+              Icons.security,
+              color: kMainIconColor,
+            ),
+            title: Text(
+              'Privacy Policy',
+              style: h3InactiveTextStyle,
+            ),
+          )
         ],
       ),
     );
