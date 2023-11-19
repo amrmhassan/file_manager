@@ -178,7 +178,7 @@ void initHomeScreen(BuildContext context) async {
 
   if (Platform.isWindows) {
     try {
-      runUpdates(context);
+      // runUpdates(context);
     } catch (e) {
       logger.e(e);
     }

@@ -4,11 +4,9 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
-  bitsdojo_window_windows
   connectivity_plus
   dart_vlc
   desktop_drop
-  desktop_window
   flutter_native_view
   permission_handler_windows
   screen_retriever

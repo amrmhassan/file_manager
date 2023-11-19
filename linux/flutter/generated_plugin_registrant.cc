@@ -7,10 +7,8 @@
 #include "generated_plugin_registrant.h"
 
 #include <awesome_notifications/awesome_notifications_plugin.h>
-#include <bitsdojo_window_linux/bitsdojo_window_plugin.h>
 #include <dart_vlc/dart_vlc_plugin.h>
 #include <desktop_drop/desktop_drop_plugin.h>
-#include <desktop_window/desktop_window_plugin.h>
 #include <screen_retriever/screen_retriever_plugin.h>
 #include <url_launcher_linux/url_launcher_plugin.h>
 #include <window_manager/window_manager_plugin.h>
@@ -19,18 +17,12 @@ void fl_register_plugins(FlPluginRegistry* registry) {
   g_autoptr(FlPluginRegistrar) awesome_notifications_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "AwesomeNotificationsPlugin");
   awesome_notifications_plugin_register_with_registrar(awesome_notifications_registrar);
-  g_autoptr(FlPluginRegistrar) bitsdojo_window_linux_registrar =
-      fl_plugin_registry_get_registrar_for_plugin(registry, "BitsdojoWindowPlugin");
-  bitsdojo_window_plugin_register_with_registrar(bitsdojo_window_linux_registrar);
   g_autoptr(FlPluginRegistrar) dart_vlc_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "DartVlcPlugin");
   dart_vlc_plugin_register_with_registrar(dart_vlc_registrar);
   g_autoptr(FlPluginRegistrar) desktop_drop_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "DesktopDropPlugin");
   desktop_drop_plugin_register_with_registrar(desktop_drop_registrar);
-  g_autoptr(FlPluginRegistrar) desktop_window_registrar =
-      fl_plugin_registry_get_registrar_for_plugin(registry, "DesktopWindowPlugin");
-  desktop_window_plugin_register_with_registrar(desktop_window_registrar);
   g_autoptr(FlPluginRegistrar) screen_retriever_registrar =
       fl_plugin_registry_get_registrar_for_plugin(registry, "ScreenRetrieverPlugin");
   screen_retriever_plugin_register_with_registrar(screen_retriever_registrar);

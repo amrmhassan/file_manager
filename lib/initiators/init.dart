@@ -85,7 +85,7 @@ class AppInit {
       await HiveInitiator().setup();
       firstTimeRunApp = await SharedPrefHelper.firstTimeRunApp();
       await setThemeVariables();
-      await initWindowSize();
+      // await initWindowSize();
       await DartVLC.initialize();
       downloadsFolderParent = (await getApplicationDocumentsDirectory()).path;
       initialDirsInitForWindows();

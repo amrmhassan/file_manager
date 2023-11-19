@@ -25,22 +25,14 @@ class ScreensWrapper extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Platform.isAndroid
-        ? AndroidScreensWrapper(
-            key: key,
-            backgroundColor: backgroundColor,
-            drawer: drawer,
-            floatingActionButton: floatingActionButton,
-            floatingActionButtonLocation: floatingActionButtonLocation,
-            scfKey: scfKey,
-            child: child,
-          )
-        : WindowsScreensWrapper(
-            key: key,
-            backgroundColor: backgroundColor,
-            floatingActionButton: floatingActionButton,
-            floatingActionButtonLocation: floatingActionButtonLocation,
-            child: child,
-          );
+    return AndroidScreensWrapper(
+      key: key,
+      backgroundColor: backgroundColor,
+      drawer: drawer,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      scfKey: scfKey,
+      child: child,
+    );
   }
 }
